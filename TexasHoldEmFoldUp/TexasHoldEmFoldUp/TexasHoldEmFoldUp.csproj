@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE96DA37-3167-41B0-B2D1-F92A665ACB30}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TexasHoldEmFoldUp</RootNamespace>
+    <AssemblyName>TexasHoldEmFoldUp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BetForm.Designer.cs">
+      <DependentUpon>BetForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BetForm.resx">
+      <DependentUpon>BetForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SoundResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SoundResource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SurrenderForm.resx">
+      <DependentUpon>SurrenderForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TexasHoldem.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TexasHoldem.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SoundResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SoundResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SurrenderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SurrenderForm.Designer.cs">
+      <DependentUpon>SurrenderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TexasHoldem.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TexasHoldem.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BackGrounds\background_1.bmp" />
+    <None Include="BackGrounds\backgroundLeft_1.bmp" />
+    <Content Include="BackGrounds\background_1.jpg" />
+    <Content Include="BackGrounds\background_2.jpg" />
+    <Content Include="BackGrounds\background_3.jpg" />
+    <None Include="BackGrounds\button.bmp" />
+    <None Include="BackGrounds\BonusBackground.bmp" />
+    <None Include="BackGrounds\button16.bmp" />
+    <None Include="BackGrounds\BonusBackgroundNew.bmp" />
+    <None Include="BackGrounds\CreditWindow.bmp" />
+    <None Include="BackGrounds\bet_background1.JPG" />
+    <Content Include="Bitmap1.bmp" />
+    <Content Include="Cards\10_clubs.jpg" />
+    <Content Include="Cards\10_dia.jpg" />
+    <Content Include="Cards\10_hearts.jpg" />
+    <Content Include="Cards\10_spades.jpg" />
+    <Content Include="Cards\2_clubs.jpg" />
+    <Content Include="Cards\2_dia.jpg" />
+    <Content Include="Cards\2_hearts.jpg" />
+    <Content Include="Cards\2_spades.jpg" />
+    <Content Include="Cards\3_clubs.jpg" />
+    <Content Include="Cards\3_dia.jpg" />
+    <Content Include="Cards\3_hearts.jpg" />
+    <Content Include="Cards\3_spades.jpg" />
+    <Content Include="Cards\4_clubs.jpg" />
+    <Content Include="Cards\4_dia.jpg" />
+    <Content Include="Cards\4_hearts.jpg" />
+    <Content Include="Cards\4_spades.jpg" />
+    <Content Include="Cards\5_clubs.jpg" />
+    <Content Include="Cards\5_dia.jpg" />
+    <Content Include="Cards\5_hearts.jpg" />
+    <Content Include="Cards\5_spades.jpg" />
+    <Content Include="Cards\6_clubs.jpg" />
+    <Content Include="Cards\6_dia.jpg" />
+    <Content Include="Cards\6_hearts.jpg" />
+    <Content Include="Cards\6_spades.jpg" />
+    <Content Include="Cards\7_clubs.jpg" />
+    <Content Include="Cards\7_dia.jpg" />
+    <Content Include="Cards\7_hearts.jpg" />
+    <Content Include="Cards\7_spades.jpg" />
+    <Content Include="Cards\8_clubs.jpg" />
+    <Content Include="Cards\8_dia.jpg" />
+    <Content Include="Cards\8_hearts.jpg" />
+    <Content Include="Cards\8_spades.jpg" />
+    <Content Include="Cards\9_clubs.jpg" />
+    <Content Include="Cards\9_dia.jpg" />
+    <Content Include="Cards\9_hearts.jpg" />
+    <Content Include="Cards\9_spades.jpg" />
+    <Content Include="Cards\A_clubs.jpg" />
+    <Content Include="Cards\A_dia.jpg" />
+    <Content Include="Cards\A_hearts.jpg" />
+    <Content Include="Cards\A_spades.jpg" />
+    <Content Include="Cards\card_back.jpg" />
+    <Content Include="Cards\J_clubs.jpg" />
+    <Content Include="Cards\J_dia.jpg" />
+    <Content Include="Cards\J_hearts.jpg" />
+    <Content Include="Cards\J_spades.jpg" />
+    <Content Include="Cards\K_clubs.jpg" />
+    <Content Include="Cards\K_dia.jpg" />
+    <Content Include="Cards\K_hearts.jpg" />
+    <Content Include="Cards\K_spades.jpg" />
+    <Content Include="Cards\Q_clubs.jpg" />
+    <Content Include="Cards\Q_dia.jpg" />
+    <Content Include="Cards\Q_hearts.jpg" />
+    <Content Include="Cards\Q_spades.jpg" />
+    <None Include="Resources\CreditWindowBackground.bmp" />
+    <Content Include="sounds\s_bang.wav" />
+    <None Include="sounds\VideoWin.wav" />
+    <None Include="Resources\push2.wav" />
+    <EmbeddedResource Include="Resources\TexasHoldEm.ini" />
+    <None Include="sounds\push3.wav" />
+    <None Include="sounds\timerbeep.wav" />
+    <None Include="sounds\pressed.wav" />
+    <None Include="sounds\highlight.wav" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="Resources\card_background.jpg" />
+    <None Include="Resources\9_spades.jpg" />
+    <None Include="Resources\9_hearts.jpg" />
+    <None Include="Resources\9_dia.jpg" />
+    <None Include="Resources\9_clubs.jpg" />
+    <None Include="Resources\8_spades.jpg" />
+    <None Include="Resources\8_hearts.jpg" />
+    <None Include="Resources\8_dia.jpg" />
+    <None Include="Resources\8_clubs.jpg" />
+    <None Include="Resources\7_spades.jpg" />
+    <None Include="Resources\7_hearts.jpg" />
+    <None Include="Resources\7_dia.jpg" />
+    <None Include="Resources\7_clubs.jpg" />
+    <None Include="Resources\6_spades.jpg" />
+    <None Include="Resources\6_hearts.jpg" />
+    <None Include="Resources\6_dia.jpg" />
+    <None Include="Resources\6_clubs.jpg" />
+    <None Include="Resources\5_spades.jpg" />
+    <None Include="Resources\5_hearts.jpg" />
+    <None Include="Resources\5_dia.jpg" />
+    <None Include="Resources\5_clubs.jpg" />
+    <None Include="Resources\4_spades.jpg" />
+    <None Include="Resources\4_hearts.jpg" />
+    <None Include="Resources\4_dia.jpg" />
+    <None Include="Resources\4_clubs.jpg" />
+    <None Include="Resources\3_spades.jpg" />
+    <None Include="Resources\3_hearts.jpg" />
+    <None Include="Resources\3_dia.jpg" />
+    <None Include="Resources\3_clubs.jpg" />
+    <None Include="Resources\2_spades.jpg" />
+    <None Include="Resources\2_hearts.jpg" />
+    <None Include="Resources\2_dia.jpg" />
+    <None Include="Resources\Q_hearts.jpg" />
+    <None Include="Resources\Q_dia.jpg" />
+    <None Include="Resources\Q_clubs.jpg" />
+    <None Include="Resources\K_spades.jpg" />
+    <None Include="Resources\K_hearts.jpg" />
+    <None Include="Resources\K_dia.jpg" />
+    <None Include="Resources\K_clubs.jpg" />
+    <None Include="Resources\J_spades.jpg" />
+    <None Include="Resources\J_hearts.jpg" />
+    <None Include="Resources\J_dia.jpg" />
+    <None Include="Resources\J_clubs.jpg" />
+    <None Include="Resources\card_back.jpg" />
+    <None Include="Resources\A_spades.jpg" />
+    <None Include="Resources\A_hearts.jpg" />
+    <None Include="Resources\A_dia.jpg" />
+    <None Include="Resources\A_clubs.jpg" />
+    <None Include="Resources\10_spades.jpg" />
+    <None Include="Resources\10_hearts.jpg" />
+    <None Include="Resources\10_dia.jpg" />
+    <None Include="Resources\10_clubs.jpg" />
+    <None Include="Resources\2_clubs.jpg" />
+    <None Include="Resources\Background_1.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
