@@ -21,8 +21,8 @@ namespace TexasHoldEmFoldUp
         int tempDelay = 250;
         int nextPlayerDelay = 100;
         Point[] cardPoints = new Point[12];
-        Label[] betLabels = new Label[6];
-        Label[] creditLabels = new Label[6];
+        Label[] betLabels = new Label[Settings.playerSize];
+        Label[] creditLabels = new Label[Settings.playerSize];
         
         bool showdown = false;
         bool videoBonusWinOnly = false;
@@ -620,9 +620,9 @@ const int    HA = 51;
         public GameStates GameState;
         public BetTypes BetType;
 
-        GamePlayer[] GamePlayers = new GamePlayer[6];
+        GamePlayer[] GamePlayers = new GamePlayer[Settings.playerSize];
 
-        public bool[] GameWinners = new bool[6];
+        public bool[] GameWinners = new bool[Settings.playerSize];
         public int PotSplit = 1;
 
         Graphics formHwnd;
@@ -1211,7 +1211,7 @@ const int    HA = 51;
                     {
                         virtualTempPlayers[i] = new VirtualPlayer();
                         virtualTempPlayers[i].playerNumber = i;
-                        for (int x = 0; x < 6; x++)//lets get the raise parameters
+                        for (int x = 0; x < Settings.playerSize; x++)//lets get the raise parameters
                         {
                             virtualTempPlayers[i].RaiseLevels[x] = new RaiseLevel();
                         }
@@ -1224,7 +1224,7 @@ const int    HA = 51;
                         virtualTempPlayers[i].FoldOnAnyRaise = GetIniBool(Player, "Fold On Any Raise", false, currentDirectory + "\\TexasHoldem.ini");
                         //string value;
                         virtualTempPlayers[i].HoleMinThreshold = GetIniInt(Player, "Hole Min Threshold", 72, fileName);
-                        for (int x = 0; x < 6; x++)//lets get the raise parameters
+                        for (int x = 0; x < Settings.playerSize; x++)//lets get the raise parameters
                         {
                             test1 = x;
                             string raiseHand = "Hole Raise " + (x + 1).ToString() + " Hand Array";
@@ -1306,7 +1306,7 @@ const int    HA = 51;
             {
                 virtualPlayers[x] = null;
             }
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 //int r = rand.Next(1,virtualPlayerCount+1);
                 if (virtualPlayers[x] == null)
@@ -1353,7 +1353,7 @@ const int    HA = 51;
 
         public void updateFoldedPlayersImages(bool visible)
         {
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == false)
                 {
@@ -1405,7 +1405,7 @@ const int    HA = 51;
             if (GameState == GameStates.HoldCardBet)
             {
                 dealPlayerCards();
-                for (int x = 1; x < 6; x++)// 
+                for (int x = 1; x < Settings.playerSize; x++)// 
                 { 
                     UpdateCreditLabel(x);
                     chipImageList.Draw(formHwnd, chipBoxes[x-1].Location, getWeightedIntResult(50));
@@ -1515,7 +1515,7 @@ const int    HA = 51;
 
         public void clearBetLabels()
         {
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
                 betLabels[x].Text = "";
@@ -1527,7 +1527,7 @@ const int    HA = 51;
         
         public void clearCreditLabels()
         {
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
                 creditLabels[x].Text = "";
@@ -1573,7 +1573,7 @@ const int    HA = 51;
             cardPoints[11].X = player5hold2.Left;
             cardPoints[11].Y = player5hold2.Top;
 
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 this.Controls.Remove(betLabels[x]);
                 betLabels[x] = null;
@@ -1592,7 +1592,7 @@ const int    HA = 51;
                 this.Controls.Add(betLabels[x]);
             }
 
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 this.Controls.Remove(creditLabels[x]);
                 creditLabels[x] = null;
@@ -1984,7 +1984,7 @@ const int    HA = 51;
             testDataRetrieved = false;
 
             int player = 0;
-            for (player = 0; player < 6; player++)
+            for (player = 0; player < Settings.playerSize; player++)
             {
                 GamePlayers[player] = null;
                 GamePlayers[player] = new GamePlayer();
@@ -2005,7 +2005,7 @@ const int    HA = 51;
                 }
                 
 
-                for (int player = 0; player < 6; player++)
+                for (int player = 0; player < Settings.playerSize; player++)
                 {
                     dealCard(loop[buttonPosition + player + 1],firstcard, true);
                     if (player != 5)
@@ -2042,7 +2042,7 @@ const int    HA = 51;
             cardImages.Draw(formHwnd, new Point(flop3.Left, flop3.Top), communityCards[2]);
             dealSound.Play();
             cardsDealt = 5;
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 GamePlayers[x].hand.cardHand[2] = communityCards[0];
                 GamePlayers[x].hand.cardHand[3] = communityCards[1];
@@ -2066,7 +2066,7 @@ const int    HA = 51;
             cardImages.Draw(formHwnd, new Point(turn.Left, turn.Top), communityCards[3]);
             dealSound.Play();
             
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 GamePlayers[x].hand.cardHand[5] = communityCards[3];
                 if (x > 0)
@@ -2088,9 +2088,9 @@ const int    HA = 51;
             this.communityCards[4] = deck[deckPtr++];
             cardImages.Draw(formHwnd, new Point(river.Left, river.Top), communityCards[4]);
             dealSound.Play();
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
-                GamePlayers[x].hand.cardHand[6] = communityCards[4];
+                GamePlayers[x].hand.cardHand[Settings.playerSize] = communityCards[4];
                 if (x > 0)
                 {
                     if (virtualPlayers[x].Folded == false)
@@ -2219,7 +2219,7 @@ const int    HA = 51;
         public void EvalPlayerHands(bool hole, bool flop, bool turn, bool river)
         {
             bool suited;
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 if (hole == true)
                 {
@@ -2239,7 +2239,7 @@ const int    HA = 51;
                     suited = false;
 
                 }
-                if (x <6)
+                if (x < Settings.playerSize)
                 {
                     int firstCard = GetCardValue(playerHands[x, 0]);
                     int secondCard = GetCardValue(playerHands[x, 1]);
@@ -2278,7 +2278,7 @@ const int    HA = 51;
             FlopRank = EvaluatePokerHand(player, FlopHand);
 
             //since we are a fold up game the virtual players also get to see the folded cards
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == true)
                 {
@@ -3636,7 +3636,7 @@ const int    HA = 51;
                         }
                         if (BetType == BetTypes.checking)//we didn't fold
                         {
-                            for (int x = 0; x < 6; x++)//iterate through the raise levels
+                            for (int x = 0; x < Settings.playerSize; x++)//iterate through the raise levels
                             {
                                 if (potRaisePercentage >= virtualPlayers[player].RaiseLevels[x].Range[0] && potRaisePercentage <= virtualPlayers[player].RaiseLevels[x].Range[1])
                                 {
@@ -4627,7 +4627,7 @@ const int    HA = 51;
             //deck[15] = gaffHand[element, 15];//turn
             //deck[16] = gaffHand[element, 16];//river
             string playerData="";
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 playerData += ","+virtualPlayers[x].playerNumber.ToString();
             }
@@ -4706,7 +4706,7 @@ const int    HA = 51;
                 ShuffleVirtualPlayers();
             }
            // testDataRetrieved = false;           
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 textBox1.AppendText(" Player " + x.ToString() + " =" + virtualPlayers[x].Name + Environment.NewLine);
             }
@@ -4732,7 +4732,7 @@ const int    HA = 51;
                 }
                 //double thisAnteBet = anteBet;
                 PotAmount = 0;
-                for (int x = 0; x < 6; x++)//
+                for (int x = 0; x < Settings.playerSize; x++)//
                 {
                     PotAmount += anteBet;
                 }
@@ -4777,7 +4777,7 @@ const int    HA = 51;
                 anteBet = bettingWindow.betAmount;
                 //double thisAnteBet = anteBet;
                 PotAmount = 0;
-                for (int x = 0; x < 6; x++)//
+                for (int x = 0; x < Settings.playerSize; x++)//
                 {
                     //
                     //virtualPlayers[x].Credits += anteBet;//adjust the credits
@@ -4820,7 +4820,7 @@ const int    HA = 51;
             PotSplit = 1;
             CallAmount = 0;
             clearBetLabels();
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 ClearPlayerCards(x);
             }
@@ -4837,7 +4837,7 @@ const int    HA = 51;
             cardsDealt = 0;
             deckPtr = 0;
 
-            for (int x = 0; x < 6; x++)//every player starts with the same credits
+            for (int x = 0; x < Settings.playerSize; x++)//every player starts with the same credits
             {
                 virtualPlayers[x].Credits = PlayerCredits;
                 virtualPlayers[x].AllIn = false;
@@ -4879,7 +4879,7 @@ const int    HA = 51;
             //CumulativeReRaises = 0;
             playerCurrentBet = 0;
             
-            for (int x = 0; x < 6; x++)//
+            for (int x = 0; x < Settings.playerSize; x++)//
             {
                 //ClearPlayerCards(x);
                 //virtualPlayers[x].TwoCardBet = 0;
@@ -4930,7 +4930,7 @@ const int    HA = 51;
             //CumulativeReRaises = 0;
             playerCurrentBet = 0;
             
-            for (int x = 0; x < 6; x++)//
+            for (int x = 0; x < Settings.playerSize; x++)//
             {
                 //ClearPlayerCards(x);
                 //virtualPlayers[x].TwoCardBet = 0;
@@ -4965,7 +4965,7 @@ const int    HA = 51;
 
         private void RenewVirtualPlayerProfiles()
         {
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 virtualPlayers[x].TwoCardBet = 0;
                 virtualPlayers[x].FlopBet = 0;
@@ -4985,7 +4985,7 @@ const int    HA = 51;
         private void ResetVirtualPlayerVars()
         {
             playerCurrentBet = 0;
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 virtualPlayers[x].CurrentBetAmount = 0;
                 ///virtualPlayers[x].Folded = false;
@@ -5135,7 +5135,7 @@ const int    HA = 51;
 
         private bool checkForPlayerWin()
         {
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == false)
                 {
@@ -5148,7 +5148,7 @@ const int    HA = 51;
         private double GetCurrentBet()
         {
             double highbet = 0;
-            for (x = 0; x < 6; x++)
+            for (x = 0; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].CurrentBetAmount > highbet)
                     highbet = virtualPlayers[x].CurrentBetAmount;
@@ -5159,7 +5159,7 @@ const int    HA = 51;
         private double GetTotalRaiseAmount()
         {
             double highbet = 0;
-            for (x = 0; x < 6; x++)
+            for (x = 0; x < Settings.playerSize; x++)
             {
                 highbet += virtualPlayers[x].RoundRaiseAmount;
             }
@@ -5193,7 +5193,7 @@ const int    HA = 51;
 
         private bool CheckForAllInShowdown()
         {
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == false)
                 {
@@ -5225,7 +5225,7 @@ const int    HA = 51;
             {
 
             }
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == false)
                 {
@@ -5262,7 +5262,7 @@ const int    HA = 51;
             
             int x;
             double highBet = GetCurrentBet();
-            for (x = 0; x < 6; x++)
+            for (x = 0; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == false && virtualPlayers[x].AllIn == false)
                 {
@@ -5343,7 +5343,7 @@ const int    HA = 51;
             int winner = 0;
             double videoBonus;
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded)
                 {
@@ -5371,7 +5371,7 @@ const int    HA = 51;
             {//we have some ties and need to split the pot
                 
                 bool playerWin = false;
-                for (int x = 0; x < 6; x++)
+                for (int x = 0; x < Settings.playerSize; x++)
                 {
                     if (GameWinners[x] == true)
                     {
@@ -5452,7 +5452,7 @@ const int    HA = 51;
             {
                 winLabel.Visible = true;
                 winLabel.Text = "The Pot is Split " + split.ToString() + " Ways";
-                for (int x = 0; x < 6; x++)
+                for (int x = 0; x < Settings.playerSize; x++)
                 {
                     if (GameWinners[x] == true)
                     {
@@ -5516,14 +5516,14 @@ const int    HA = 51;
             int winner = 0;
             //int rank = 0;
             int WinnerCount = 0;
-            int[] wins = new int[6];
+            int[] wins = new int[Settings.playerSize];
             int highHand = 0;
             int highTotal = 0;
             int highKicker = 0;
             int tempRank = 0;
             int tempTotal = 0;
             int tempKicker = 0;
-            for (int player = 0; player < 6; player++)
+            for (int player = 0; player < Settings.playerSize; player++)
             {
                 if (virtualPlayers[player].Folded == false)
                 {
@@ -5559,7 +5559,7 @@ const int    HA = 51;
             }
             if (highHand >= PAIR)
             {
-                for (int player = 0; player < 6; player++)//check for ties
+                for (int player = 0; player < Settings.playerSize; player++)//check for ties
                 {
                     if (virtualPlayers[player].Folded == false)
                     {
@@ -5581,7 +5581,7 @@ const int    HA = 51;
             {
                 int highCard = 0;
                 WinnerCount = 0;
-                for (int player = 0; player < 6; player++)
+                for (int player = 0; player < Settings.playerSize; player++)
                 {
                     if (virtualPlayers[player].Folded == false)
                     {
@@ -5591,7 +5591,7 @@ const int    HA = 51;
                         }
                     }
                 }
-                for (int player = 0; player < 6; player++)//check for ties
+                for (int player = 0; player < Settings.playerSize; player++)//check for ties
                 {
                     if (virtualPlayers[player].Folded == false)
                     {
@@ -5607,8 +5607,8 @@ const int    HA = 51;
                     int HighKicker = 0;
                     int TempWinner = 10;
                     int kickerCount = 0;
-                    int[] kickers = new int[6];
-                    for (int x = 0; x < 6; x++)
+                    int[] kickers = new int[Settings.kickerSize];
+                    for (int x = 0; x < Settings.kickerSize; x++)
                     {
                         if (virtualPlayers[x].Folded == false)
                         {
@@ -5628,7 +5628,7 @@ const int    HA = 51;
                             }
                         }
                     }
-                    for (int x = 0; x < 6; x++)
+                    for (int x = 0; x < Settings.kickerSize; x++)
                     {
                         if (HighKicker == kickers[x])
                         {
@@ -5651,7 +5651,7 @@ const int    HA = 51;
             }
             if (WinnerCount == 1)
             {
-                for (int x = 0; x < 6; x++)
+                for (int x = 0; x < Settings.kickerSize; x++)
                 {
                     if (GameWinners[x] == true)
                     {
@@ -5792,7 +5792,7 @@ const int    HA = 51;
             CurrentBetPosition++;
             if (CheckForAllInShowdown() == true)
             {
-                for (int x = 1; x < 6; x++)
+                for (int x = 1; x < Settings.playerSize; x++)
                 {
                     if (virtualPlayers[x].AllIn == true)
                     {
@@ -6235,7 +6235,7 @@ const int    HA = 51;
         public int GetNotFoldedPlayerCount()
         {
             int retval = 0;
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x].Folded == false)
                     retval++;
@@ -6304,7 +6304,7 @@ const int    HA = 51;
             {
                 virtualPlayers[x] = null;
             }
-            for (int x = 1; x < 6; x++)
+            for (int x = 1; x < Settings.playerSize; x++)
             {
                 if (virtualPlayers[x] == null)
                 {
