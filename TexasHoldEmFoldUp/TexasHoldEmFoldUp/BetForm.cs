@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TexasHoldEmFoldUp
-
-{
+s{
     public partial class BetForm : Form
     {
         Form1 parentForm;
@@ -20,7 +13,6 @@ namespace TexasHoldEmFoldUp
             InitializeComponent();
             this.OKbutton.DialogResult = DialogResult.OK;
         }
-        
         
         
         public double betAmount;
@@ -74,8 +66,6 @@ namespace TexasHoldEmFoldUp
 
         private void OKbutton_Click(object sender, EventArgs e)
         {
-            
-            
             this.Hide();
             if(betAmount > 0)
 
@@ -83,7 +73,6 @@ namespace TexasHoldEmFoldUp
             {
                 parentForm.autoStart = true;
             }
-           
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -113,7 +102,6 @@ namespace TexasHoldEmFoldUp
 
         private void BetForm_VisibleChanged(object sender, EventArgs e)
         {
-
             if (this.Visible)
             {
                 getWindowTitle();
@@ -145,7 +133,6 @@ namespace TexasHoldEmFoldUp
                 //parentForm.anteBet = parentForm.lastBet;
                 BetAmount = parentForm.lastBet;
                 OKbutton_Click(sender, e);
-                
             }
         }
 

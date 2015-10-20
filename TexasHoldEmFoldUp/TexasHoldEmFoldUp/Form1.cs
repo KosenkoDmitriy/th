@@ -32,9 +32,9 @@ namespace TexasHoldEmFoldUp
 
         int virtualPlayerCount = 0;
 
-        public double gameDenomination = .25;
-        public int gameDenomMultiplier = 5;
-        public int raiseLimitMultiplier = 5;
+        public double gameDenomination = Settings.betDx;
+        public int gameDenomMultiplier = Settings.gameDenomMultiplier; 
+        public int raiseLimitMultiplier = Settings.raiseLimitMultiplier;
         int denomUnits;
 
 
@@ -711,7 +711,7 @@ const int    HA = 51;
             pixelColor = instructionBitmap.GetPixel(100, 100);
             dataGridView1.DefaultCellStyle.BackColor = Color.FromArgb(pixelColor.R, pixelColor.G, pixelColor.B);
 
-            gameOverTimer.Interval = 1000;
+            gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
             gameOverTimer.Tick += new EventHandler(gameOverTimer_Tick);
             chipBoxes = new PictureBox[] { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };            
 
@@ -780,7 +780,8 @@ const int    HA = 51;
             continueString = utils.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
             surrenderBoxString = utils.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
             realPlayerName = utils.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
-            jurisdictionalLimit = (double)utils.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", 1000, iniFile);
+            jurisdictionalLimit = (double)utils.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
+
             for (int x = 1; x < 11; x++) 
             { 
                 string instString = "Instruction " + x.ToString();
@@ -792,6 +793,7 @@ const int    HA = 51;
                 dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
                 dataGridView1.Rows[x - 1].Height = 45; 
             }
+
             BuildVideoBonusPaytable();
             bettingWindow = new BetForm(this);
             
@@ -5585,7 +5587,7 @@ const int    HA = 51;
                     {
                         if (PlayerCredits < 100)
                         {
-                            PlayerCredits = 1000;
+                            PlayerCredits = Settings.jurisdictionalBetLimit;// 1000;
                         }
                         BetPlayer(CurrentBetPosition);
                         
@@ -5709,7 +5711,7 @@ const int    HA = 51;
 
         private void playerCreditLabel_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            PlayerCredits += 1000.00;
+            PlayerCredits += Settings.jurisdictionalBetLimit;// 1000.00;
         }
 
         private void startGameOverTimer(bool win)
@@ -6081,7 +6083,7 @@ const int    HA = 51;
                 autoPlayButton.Text = "Auto Play";
                 nextPlayerTimer.Interval = nextPlayerDelay;
                 dealDelay = tempDelay;
-                gameOverTimer.Interval = 1000;
+                gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
             }
         }
 
@@ -6206,7 +6208,7 @@ const int    HA = 51;
             
             if (RealPlayerCredits  < jurisdictionalLimit || jurisdictionalLimit == 0)
             {
-                RealPlayerCredits += 1000;
+                RealPlayerCredits += Settings.jurisdictionalBetLimit; //1000
             }
             PlayerCredits += jurisdictionalLimit;
             RealPlayerCredits -= jurisdictionalLimit;
