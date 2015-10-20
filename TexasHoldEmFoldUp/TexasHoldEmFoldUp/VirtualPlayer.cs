@@ -38,7 +38,7 @@
 
     public class VirtualPlayer
     {
-        public string Name = new string(' ', 20);
+        public string Name = new string(' ', Settings.playerNameSize);
         public int playerNumber;
         public bool FoldOnAnyRaise;
         public RaiseLevel[] RaiseLevels = new RaiseLevel[6];

@@ -440,7 +440,7 @@ const int    HA = 51;
         double playerCurrentBet = 0;//the real players current bet
         double playerCurrentRaise = 0; //the real players last raise amount
 
-        bool[] ties = new bool[6];
+        bool[] ties = new bool[Settings.playerSize];
 
         public double anteBet = 0;
 
@@ -698,8 +698,11 @@ const int    HA = 51;
         DateTime now;
         int year;
         bool gameEnable;
+        Utils utils;
         public Form1()
         {
+            utils = new Utils();
+
             InitializeComponent();
             now = DateTime.Now;
             year = now.Year;
@@ -729,7 +732,7 @@ const int    HA = 51;
 
             try
             {
-                iniVersion = double.Parse(GetIniString("Version", "INI Version", "0", out charsTransferred, iniFile));
+                iniVersion = double.Parse(utils.GetIniString("Version", "INI Version", "0", out charsTransferred, iniFile));
                 if (iniVersion != currentIniVersion)
                 {
                     EraseIniFile(iniFile);
@@ -740,23 +743,22 @@ const int    HA = 51;
                 //MessageBox.Show("Version error", e.Message.ToString());
             }
             //EraseFile(logFile);
-
-            testGame = GetIniBool("Game Parameters", "Test Game", false, iniFile);
-            logging = GetIniBool("Game Parameters", "Logging", false, iniFile);
+            testGame = utils.GetIniBool("Game Parameters", "Test Game", false, iniFile);
+            logging = utils.GetIniBool("Game Parameters", "Logging", false, iniFile);
             TestingGroupBox.Visible = testGame;
-            videoBonusWinOnly = GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
-            surrenderReturnRank = GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
-            PlayerRaiseFoldThreshold = double.Parse(GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
-            surrenderMinimumPair = GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
-            highCardThreshhold = GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
-            dealDelay = tempDelay = GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
-            nextPlayerTimer.Interval = nextPlayerDelay = GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
-            virtualPlayerRaiseLimit = GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
-            gameEnable = GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
-            gameDenomination = (double)GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
+            videoBonusWinOnly = utils.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
+            surrenderReturnRank = utils.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
+            PlayerRaiseFoldThreshold = double.Parse(utils.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
+            surrenderMinimumPair = utils.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
+            highCardThreshhold = utils.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
+            dealDelay = tempDelay = utils.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
+            nextPlayerTimer.Interval = nextPlayerDelay = utils.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
+            virtualPlayerRaiseLimit = utils.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
+            gameEnable = utils.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
+            gameDenomination = (double)utils.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
             gameDenomination /= 100;
-            gameDenomMultiplier = GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
-            raiseLimitMultiplier = GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
+            gameDenomMultiplier = utils.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
+            raiseLimitMultiplier = utils.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
             
             if (gameDenomMultiplier < 9999)
             {
@@ -764,25 +766,25 @@ const int    HA = 51;
                 betLimit = gameDenomination * gameDenomMultiplier;
             }
 
-            paytableEntries = GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+            paytableEntries = utils.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
             for (int x = 0; x < 9; x++)
             {
-                PayTableAmounts[x] = GetIniInt("Video Poker Paytable", PayTableStrings[x], PayTableAmounts[x], iniFile);
+                PayTableAmounts[x] = utils.GetIniInt("Video Poker Paytable", PayTableStrings[x], PayTableAmounts[x], iniFile);
             }
-            foldString = GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
-            checkString = GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
-            callString = GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
-            raiseString = GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
-            allInString = GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
-            surrenderString = GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
-            continueString = GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
-            surrenderBoxString = GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
-            realPlayerName = GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
-            jurisdictionalLimit = (double)GetIniInt("Game Parameters", "Jurisdictional Bet Limit", 1000, iniFile);
+            foldString = utils.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
+            checkString = utils.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
+            callString = utils.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
+            raiseString = utils.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
+            allInString = utils.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
+            surrenderString = utils.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
+            continueString = utils.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
+            surrenderBoxString = utils.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
+            realPlayerName = utils.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
+            jurisdictionalLimit = (double)utils.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", 1000, iniFile);
             for (int x = 1; x < 11; x++) 
             { 
                 string instString = "Instruction " + x.ToString();
-                instrucionStrings[x] = GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
+                instrucionStrings[x] = utils.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
                 if (instrucionStrings[x].Length == 0)
                     break;
                 dataGridView1.Rows.Add();
@@ -800,7 +802,7 @@ const int    HA = 51;
             }
             
             this.Controls.Add(creditLimitWindow);
-            PlayerCredits = 1000;
+            PlayerCredits = Settings.playerCredits;
             startGameOverTimer(false);
             
             //surrenderWindow = new SurrenderForm(this);
@@ -822,7 +824,7 @@ const int    HA = 51;
 
         void gameOverTimer_Tick(object sender, EventArgs e)
         {
-            if (year == 2010)
+            if (year == Settings.year)
             {
                 if (gameEnable == false)
                 {
@@ -881,7 +883,7 @@ const int    HA = 51;
 
             if (jurisdictionalLimit == 0)
             {
-                if (PlayerCredits < 100)
+                if (PlayerCredits < Settings.playerCreditsLimit)
                 {
                     addCreditButton.Visible = true;
                 }
@@ -897,9 +899,9 @@ const int    HA = 51;
 
             if (AutoPlay == true)
             {
-                if (PlayerCredits < 100)
+                if (PlayerCredits < Settings.playerCreditsLimit)
                 {
-                    PlayerCredits = 1000;
+                    PlayerCredits = Settings.playerAutoPlayCredits;
                 }
                 newGameButton_Click(sender, e);
             }
@@ -923,263 +925,6 @@ const int    HA = 51;
             }
         }
 
-        public string GetIniString(string Section, string KeyName, string Default, out int noChars, string FileName)
-        {
-            StreamReader reader;
-            string read;
-            string compString;
-            reader = File.OpenText(FileName);
-            do
-            {
-                read = reader.ReadLine();
-                if (read.StartsWith("["+Section+"]") == true)
-                {
-                    do
-                    {
-                        read = reader.ReadLine();
-                        compString = read.Split('=')[0];
-                        compString = compString.TrimEnd(' ');
-                        if (compString == KeyName)
-                        {
-                            compString = read.Split('=')[1];
-                            compString = compString.Split(';')[0];//bye bye to comments
-                            compString = compString.Trim();
-                            reader.Close();
-                            noChars = compString.Length;
-                            return compString;
-                        }
-
-                    } while (read.StartsWith("[") == false && reader.EndOfStream == false); 
-                }
-
-            } while (reader.EndOfStream == false);
-            if (Default == null)
-            {
-                Default = "";
-            }
-            read = Default; // if we made it here we didnt find the string;
-            noChars = read.Length;
-            reader.Close();
-            return read;
-        }
-
-        public int GetIniInt(string Section, string KeyName, int Default, string FileName)
-        {
-            StreamReader reader;
-            string read;
-            string compString;
-            reader = File.OpenText(FileName);
-            do
-            {
-                read = reader.ReadLine();
-                if (read.StartsWith("[" + Section + "]") == true)
-                {
-                    do
-                    {
-                        read = reader.ReadLine();
-                        compString = read.Split('=')[0];
-                        compString = compString.TrimEnd(' ');
-                        if (compString == KeyName)
-                        {
-                            compString = read.Split('=')[1];
-                            compString = compString.Split(';')[0];//bye bye to comments
-                            compString = compString.Trim();
-                            reader.Close();
-                            return int.Parse(compString);
-                        }
-
-                    } while (read.StartsWith("[") == false && reader.EndOfStream == false);
-                }
-
-            } while (reader.EndOfStream == false);
-            if (Default == null)
-            {
-                Default = 0;
-            }
-            read = Default.ToString(); // if we made it here we didnt find the string;
-            
-            reader.Close();
-            return int.Parse(read);
-        }
-
-        public bool GetIniBool(string Section, string KeyName, bool Default, string FileName)
-        {
-            StreamReader reader;
-            string read;
-            string compString;
-            reader = File.OpenText(FileName);
-            do
-            {
-                read = reader.ReadLine();
-                if (read.StartsWith("[" + Section + "]") == true)
-                {
-                    do
-                    {
-                        read = reader.ReadLine();
-                        compString = read.Split('=')[0];
-                        compString = compString.TrimEnd(' ');
-                        if (compString == KeyName)
-                        {
-                            compString = read.Split('=')[1];
-                            compString = compString.Split(';')[0];//bye bye to comments
-                            compString = compString.Trim();
-                            if (compString.ToUpper() == "TRUE" || compString == "1")
-                            {
-                                reader.Close();
-                                return true;
-                            };
-                        }
-
-                    } while (read.StartsWith("[") == false && reader.EndOfStream == false);
-                }
-
-            } while (reader.EndOfStream == false);
-            if (Default == null)
-            {
-                Default = false;
-            }
-            //read = Default.ToString(); // if we made it here we didnt find the string;
-
-            reader.Close();
-            return Default;
-        }
-
-        public int[] GetINIIntArray(string Section, string KeyName, int minSize, string FileName)
-        {
-            int[] retArray;// = new int[100];
-            int[] tempArray = new int[200];
-            string[] strArray;
-            StreamReader reader;
-            string read;
-            string compString;
-            int ptr = 0;
-            reader = File.OpenText(FileName);
-            do
-            {
-                read = reader.ReadLine();
-                if (read.StartsWith("[" + Section + "]") == true)
-                {
-                    do
-                    {
-                        read = reader.ReadLine();
-                        compString = read.Split('=')[0];
-                        compString = compString.TrimEnd(' ');
-                        if (compString == KeyName)
-                        {
-                            compString = read.Split('=')[1];
-                            compString = compString.Split(';')[0];//bye bye to comments
-                            compString = compString.Trim();
-                            strArray = compString.Split(',');//now go get the comma delimited strings
-                            foreach (string i in strArray)
-                            {
-                                if (i.Contains("~"))
-                                {
-                                    int start = int.Parse(i.Remove(i.IndexOf('~')));
-                                    int len = i.IndexOf('~') + 1;
-                                    int end = int.Parse(i.Remove(0, len));
-                                    for (x = start; x <= end; x++)
-                                    {
-                                        tempArray[ptr++] = x;
-                                    }
-                                }
-                                else
-                                {
-                                    tempArray[ptr++] = int.Parse(i);
-                                }
-                            }
-                            reader.Close();
-                            if (ptr < minSize)
-                            {
-                                ptr = minSize;
-                            }
-                            retArray = new int[ptr];
-                            for (int x = 0; x < ptr; x++)
-                            {
-                                retArray[x] = tempArray[x];
-                            }
-                            return retArray;
-                        }
-
-                    } while (read.StartsWith("[") == false && reader.EndOfStream == false);
-                }
-
-            } while (reader.EndOfStream == false);
-            
-
-            reader.Close();
-            return retArray = new int[minSize];
-
-        }
-
-
-        public double[] GetINIDoubleArray(string Section, string KeyName, int minSize, string FileName)
-        {
-            double[] retArray;// = new int[100];
-            double[] tempArray = new double[200];
-            string[] strArray;
-            StreamReader reader;
-            string read;
-            string compString;
-            int ptr = 0;
-            reader = File.OpenText(FileName);
-            do
-            {
-                read = reader.ReadLine();
-                if (read.StartsWith("[" + Section + "]") == true)
-                {
-                    do
-                    {
-                        read = reader.ReadLine();
-                        compString = read.Split('=')[0];
-                        compString = compString.TrimEnd(' ');
-                        if (compString == KeyName)
-                        {
-                            compString = read.Split('=')[1];
-                            compString = compString.Split(';')[0];//bye bye to comments
-                            compString = compString.Trim();
-                            strArray = compString.Split(',');//now go get the comma delimited strings
-                            foreach (string i in strArray)
-                            {
-                                if (i.Contains("~"))
-                                {
-                                    int start = int.Parse(i.Remove(i.IndexOf('~')));
-                                    int len = i.IndexOf('~') + 1;
-                                    int end = int.Parse(i.Remove(0, len));
-                                    for (x = start; x <= end; x++)
-                                    {
-                                        tempArray[ptr++] = x;
-                                    }
-                                }
-                                else
-                                {
-                                    tempArray[ptr++] = double.Parse(i);
-                                }
-                            }
-                            reader.Close();
-                            if (ptr < minSize)
-                            {
-                                ptr = minSize;
-                            }
-                            retArray = new double[ptr];
-                            
-                            for (int x = 0; x < ptr; x++)
-                            {
-                                retArray[x] = tempArray[x];
-                            }
-                            return retArray;
-                        }
-
-                    } while (read.StartsWith("[") == false && reader.EndOfStream == false);
-                }
-
-            } while (reader.EndOfStream == false);
-
-
-            reader.Close();
-            retArray = new double[minSize];
-            return retArray;
-
-        }
 
         public void BuildVirtualPlayerProfiles()
         {
@@ -1199,7 +944,7 @@ const int    HA = 51;
                 Player = "Player" + i.ToString();
                 //test to see if there is anything in the player if not we are done. 
                 int charsTransferred;// = Win32Support.GetPrivateProfileString(Player, "Hole Min Threshold", null, temp, 5, currentDirectory + "\\TexasHoldem.ini");
-                string iniTest = GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, currentDirectory + "\\TexasHoldem.ini");
+                string iniTest = utils.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, currentDirectory + "\\TexasHoldem.ini");
                 if (charsTransferred == 0)
                 {
                     done = true;
@@ -1220,24 +965,24 @@ const int    HA = 51;
                             virtualTempPlayers[i].FoldLevels[x] = new FoldLevel();
                         }
                         int testchars;
-                        virtualTempPlayers[i].Name = GetIniString(Player, "Player Name", "Player " + i.ToString(), out testchars, fileName);
-                        virtualTempPlayers[i].FoldOnAnyRaise = GetIniBool(Player, "Fold On Any Raise", false, currentDirectory + "\\TexasHoldem.ini");
+                        virtualTempPlayers[i].Name = utils.GetIniString(Player, "Player Name", "Player " + i.ToString(), out testchars, fileName);
+                        virtualTempPlayers[i].FoldOnAnyRaise = utils.GetIniBool(Player, "Fold On Any Raise", false, currentDirectory + "\\TexasHoldem.ini");
                         //string value;
-                        virtualTempPlayers[i].HoleMinThreshold = GetIniInt(Player, "Hole Min Threshold", 72, fileName);
+                        virtualTempPlayers[i].HoleMinThreshold = utils.GetIniInt(Player, "Hole Min Threshold", 72, fileName);
                         for (int x = 0; x < Settings.playerSize; x++)//lets get the raise parameters
                         {
                             test1 = x;
                             string raiseHand = "Hole Raise " + (x + 1).ToString() + " Hand Array";
-                            virtualTempPlayers[i].RaiseLevels[x].RaiseHands = GetINIIntArray(Player, raiseHand,1, fileName);
+                            virtualTempPlayers[i].RaiseLevels[x].RaiseHands = utils.GetINIIntArray(Player, raiseHand,1, fileName);
 
                             string holeRaiseRange = "Hole Raise " + (x + 1).ToString() + " Range";
-                            virtualTempPlayers[i].RaiseLevels[x].Range = GetINIDoubleArray(Player, holeRaiseRange,2, fileName);
-                            virtualTempPlayers[i].RaiseLevels[x].RaisePercentage = GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " Percentage", 50, fileName);
+                            virtualTempPlayers[i].RaiseLevels[x].Range = utils.GetINIDoubleArray(Player, holeRaiseRange,2, fileName);
+                            virtualTempPlayers[i].RaiseLevels[x].RaisePercentage = utils.GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " Percentage", 50, fileName);
 
                             string holeReRaiseRange = "Hole Raise " + (x + 1).ToString() + " ReRaise Range";
-                            virtualTempPlayers[i].RaiseLevels[x].ReRaiseRange = GetINIDoubleArray(Player, holeReRaiseRange, 2, fileName);
+                            virtualTempPlayers[i].RaiseLevels[x].ReRaiseRange = utils.GetINIDoubleArray(Player, holeReRaiseRange, 2, fileName);
                             
-                            virtualTempPlayers[i].RaiseLevels[x].ReRaisePercentage = GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " ReRaise Percentage", 50, fileName);
+                            virtualTempPlayers[i].RaiseLevels[x].ReRaisePercentage = utils.GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " ReRaise Percentage", 50, fileName);
 
                         }
                         
@@ -1245,20 +990,20 @@ const int    HA = 51;
                         {
                             test = x;
                             string holeFoldHands = "Hole Fold " + (x + 1).ToString() + " Hand Array";
-                            virtualTempPlayers[i].FoldLevels[x].FoldHands = GetINIIntArray(Player, holeFoldHands, 1, fileName);
-                            virtualTempPlayers[i].FoldLevels[x].Range = GetINIDoubleArray(Player, "Hole Fold " + (x + 1).ToString() + " Range", 2, fileName);
+                            virtualTempPlayers[i].FoldLevels[x].FoldHands = utils.GetINIIntArray(Player, holeFoldHands, 1, fileName);
+                            virtualTempPlayers[i].FoldLevels[x].Range = utils.GetINIDoubleArray(Player, "Hole Fold " + (x + 1).ToString() + " Range", 2, fileName);
                         }
 
-                        virtualTempPlayers[i].BluffHands = GetINIIntArray(Player, "Bluff Hands", 1, fileName);
-                        virtualTempPlayers[i].SlowPlayHands = GetINIIntArray(Player, "Slow Play Hands", 1, fileName);
-                        virtualTempPlayers[i].AllInHands = GetINIIntArray(Player, "Hole All In Hands", 1, fileName);
-                        virtualTempPlayers[i].BluffPercentage = GetIniInt(Player, "Bluff Percentage", 0, fileName);
-                        virtualTempPlayers[i].BluffCallRaisePercentage = GetIniInt(Player, "Bluff Call Raise Percentage", 50, fileName);
+                        virtualTempPlayers[i].BluffHands = utils.GetINIIntArray(Player, "Bluff Hands", 1, fileName);
+                        virtualTempPlayers[i].SlowPlayHands = utils.GetINIIntArray(Player, "Slow Play Hands", 1, fileName);
+                        virtualTempPlayers[i].AllInHands = utils.GetINIIntArray(Player, "Hole All In Hands", 1, fileName);
+                        virtualTempPlayers[i].BluffPercentage = utils.GetIniInt(Player, "Bluff Percentage", 0, fileName);
+                        virtualTempPlayers[i].BluffCallRaisePercentage = utils.GetIniInt(Player, "Bluff Call Raise Percentage", 50, fileName);
                         virtualTempPlayers[i].Folded = false;
 
-                        virtualTempPlayers[i].FlopNoRaiseBetPercentages = GetINIIntArray(Player, "Flop No Raise Bet Percentages", 21, fileName);
-                        virtualTempPlayers[i].TurnNoRaiseBetPercentages = GetINIIntArray(Player, "Turn No Raise Bet Percentages", 21, fileName);
-                        virtualTempPlayers[i].RiverNoRaiseBetPercentages = GetINIIntArray(Player, "River No Raise Bet Percentages", 21, fileName);
+                        virtualTempPlayers[i].FlopNoRaiseBetPercentages = utils.GetINIIntArray(Player, "Flop No Raise Bet Percentages", 21, fileName);
+                        virtualTempPlayers[i].TurnNoRaiseBetPercentages = utils.GetINIIntArray(Player, "Turn No Raise Bet Percentages", 21, fileName);
+                        virtualTempPlayers[i].RiverNoRaiseBetPercentages = utils.GetINIIntArray(Player, "River No Raise Bet Percentages", 21, fileName);
 
                     }
                     catch (FormatException e)
