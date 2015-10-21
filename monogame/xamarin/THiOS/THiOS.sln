@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THiOS", "THiOS\THiOS.csproj", "{1AD3CAA9-5F59-48C2-916F-11C6E7195D57}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TH", "..\TH\TH\TH.shproj", "{60A2BF53-5ECE-4175-85AE-D315E0A2D2B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator

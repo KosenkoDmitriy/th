@@ -8,8 +8,8 @@ using MonoMac.AppKit;
 using MonoMac.Foundation;
 
 #elif __IOS__
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 #endif
 #endregion
 
@@ -23,11 +23,11 @@ namespace THiOS
 	static class Program
 	#endif
     {
-		private static Game1 game;
+		private static TH.Game1 game;
 
 		internal static void RunGame ()
 		{
-			game = new Game1 ();
+			game = new TH.Game1 ();
 			game.Run ();
 		}
 

@@ -108,5 +108,6 @@
     <BundleResource Include="Default.png" />
     <BundleResource Include="GameThumbnail.png" />
   </ItemGroup>
+  <Import Project="..\..\TH\TH\TH.projitems" Label="Shared" Condition="Exists('..\..\TH\TH\TH.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
