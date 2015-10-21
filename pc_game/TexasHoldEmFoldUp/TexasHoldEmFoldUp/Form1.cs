@@ -903,7 +903,7 @@ const int    HA = 51;
             {
                 if (PlayerCredits < Settings.playerCreditsLimit)
                 {
-                    PlayerCredits = Settings.playerAutoPlayCredits;
+                    PlayerCredits = Settings.jurisdictionalBetLimit;
                 }
                 newGameButton_Click(sender, e);
             }

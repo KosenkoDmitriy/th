@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 namespace TexasHoldEmFoldUp
-s{
+{
     public partial class BetForm : Form
     {
         Form1 parentForm;
