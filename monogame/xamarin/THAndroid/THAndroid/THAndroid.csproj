@@ -70,5 +70,6 @@
   <ItemGroup>
     <Folder Include="Assets\Content\" />
   </ItemGroup>
+  <Import Project="..\..\TH\TH\TH.projitems" Label="Shared" Condition="Exists('..\..\TH\TH\TH.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
 </Project>

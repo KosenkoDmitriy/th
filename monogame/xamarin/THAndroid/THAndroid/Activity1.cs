@@ -36,7 +36,7 @@ namespace THAndroid
 		{
 			base.OnCreate (bundle);
 
-			var g = new Game1 ();
+			var g = new TH.Game1 ();
 			SetContentView (g.Services.GetService<View> ());
 			g.Run ();
 		}
