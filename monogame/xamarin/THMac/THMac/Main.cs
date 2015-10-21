@@ -28,7 +28,7 @@ namespace THMac
 
 	class AppDelegate : NSApplicationDelegate
 	{
-		private static Game1 game;
+		private static TH.Game1 game;
 
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
@@ -39,7 +39,7 @@ namespace THMac
 				}
 				return null;
 			};
-			game = new Game1 ();
+			game = new TH.Game1 ();
 			game.Run ();
 		}
 

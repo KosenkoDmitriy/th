@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THMac", "THMac\THMac.csproj", "{EBAEBD08-40A5-4F41-98C3-6B43A03DC5BC}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TH", "..\TH\TH\TH.shproj", "{60A2BF53-5ECE-4175-85AE-D315E0A2D2B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

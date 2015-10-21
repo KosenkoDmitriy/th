@@ -84,5 +84,6 @@
     <None Include="Content\Content.mgcb" />
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\..\TH\TH\TH.projitems" Label="Shared" Condition="Exists('..\..\TH\TH\TH.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
