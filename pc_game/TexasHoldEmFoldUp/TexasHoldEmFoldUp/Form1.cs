@@ -3430,21 +3430,24 @@ const int    HA = 51;
                         }
                         if (BetType == BetTypes.checking)//lets see if we are going all in 
                         {
-                           
-                            for (int i = 0; i < virtualPlayers[player].AllInHands.Count(); i++)
-                            {
-                                if (rank == virtualPlayers[player].AllInHands[i])
+                            if (player < virtualPlayers.Count() && virtualPlayers[player].AllInHands != null)
+                                for (int i = 0; i < virtualPlayers[player].AllInHands.Count(); i++)
                                 {
-                                    if (ThisPlayersCall > 0)
+                                    if (rank == virtualPlayers[player].AllInHands[i])
                                     {
-                                        BetType = BetTypes.allIn;
-                                    }
-                                    else
-                                    {
-                                        BetType = BetTypes.raising;
-                                        raise = PotAmount;
+                                        if (ThisPlayersCall > 0)
+                                        {
+                                            BetType = BetTypes.allIn;
+                                        }
+                                        else
+                                        {
+                                            BetType = BetTypes.raising;
+                                            raise = PotAmount;
+                                        }
                                     }
                                 }
+                            else {
+                                MessageBox.Show("error in BetTypes.checking ( lets see if we are going all in )");
                             }
 
                         }
@@ -3733,7 +3736,10 @@ const int    HA = 51;
                         {
                             tempRank--; ;
                         }
-                        tempRaise = virtualPlayers[player].TurnNoRaiseBetPercentages[21 - tempRank] * .01;
+                        if (virtualPlayers[player].TurnNoRaiseBetPercentages != null && player < virtualPlayers.Count())
+                            tempRaise = virtualPlayers[player].TurnNoRaiseBetPercentages[21 - tempRank] * .01;
+                        else
+                            tempRaise = 0;
 
                         if (tempRaise > 0)
                         {
@@ -6219,6 +6225,7 @@ const int    HA = 51;
             }
             addCreditButton.Visible = false;
         }
+
     }
     
 }
