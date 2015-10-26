@@ -203,5 +203,8 @@
     <Content Include="Content\cards\Q_hearts.jpg" />
     <Content Include="Content\cards\Q_spades.bmp" />
     <Content Include="Content\cards\Q_spades.jpg" />
+    <Content Include="Content\cursor.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

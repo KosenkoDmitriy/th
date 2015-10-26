@@ -91,6 +91,7 @@ namespace TH
 				IsEnabled = true;
 			}
 		}
+
 		public void Reset()
 		{
 			IsPressed = false;

@@ -18,12 +18,18 @@ namespace TH
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		Button btn;
+		Vector2 pos;
+		Texture2D mouseTexture;
+
+		public Vector2 playerPosition;
+		public Texture2D playerTexture;
 
 		public Game1 ()
 		{
 			graphics = new GraphicsDeviceManager (this);
 			Content.RootDirectory = "Content";
 			graphics.IsFullScreen = false;
+
 		}
 
 		/// <summary>
@@ -34,10 +40,9 @@ namespace TH
 		/// </summary>
 		protected override void Initialize ()
 		{
-
 			// TODO: Add your initialization logic here
 			base.Initialize ();
-				
+			pos = new Vector2 (graphics.GraphicsDevice.Viewport.Width/2, graphics.GraphicsDevice.Viewport.Height/2);	
 		}
 
 		/// <summary>
@@ -57,7 +62,7 @@ namespace TH
 			var btnTextureLight = Content.Load<Texture2D> ("cards\\3_dia.jpg");
 			btn = new Button (btnTexture, btnTextureLight);
 
-
+			mouseTexture = this.Content.Load<Texture2D> ("cursor.png");
 		}
 
 		/// <summary>
@@ -67,6 +72,15 @@ namespace TH
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update (GameTime gameTime)
 		{
+
+			MouseState state = Mouse.GetState ();
+			// Update our sprites position to the current cursor location
+			pos.X = state.X;
+			pos.Y = state.Y;
+			// Check if Right Mouse Button pressed, if so, exit
+			if (state.RightButton == ButtonState.Pressed)
+				Exit ();
+
 			// For Mobile devices, this logic will close the Game when the Back button is pressed
 			// Exit() is obsolete on iOS
 			#if !__IOS__
@@ -76,7 +90,9 @@ namespace TH
 			}
 			#endif
 			// TODO: Add your update logic here		
+
 			btn.Update (10, 10);
+
 			base.Update (gameTime);
 		}
 
@@ -93,12 +109,10 @@ namespace TH
 			spriteBatch.Draw(playerTexture, playerPosition, null, Color.White, 0f, Vector2.Zero, 1f,SpriteEffects.None, 0f);
 
 			btn.Process (spriteBatch);
+			spriteBatch.Draw(mouseTexture, pos, origin:new Vector2(16, 164));
 			spriteBatch.End ();
 			base.Draw (gameTime);
 		}
-		public Vector2 playerPosition;
-		public Texture2D playerTexture;
-
 
 	}
 }
