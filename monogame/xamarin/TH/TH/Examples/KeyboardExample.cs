@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Text;
 using System;
 
-public class Game3 : Game
+public class KeyboardExample : Game
 {
 	GraphicsDeviceManager graphics;
 	SpriteBatch spriteBatch;
@@ -12,7 +12,7 @@ public class Game3 : Game
 	Texture2D texture;
 	KeyboardState previousState;
 
-	public Game3()
+	public KeyboardExample()
 	{
 		graphics = new GraphicsDeviceManager(this);
 		Content.RootDirectory = "Content";

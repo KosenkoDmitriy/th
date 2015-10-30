@@ -12,7 +12,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScreenManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GamePad.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Keyboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Examples\GamePadExample.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Examples\KeyboardExample.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Examples\MouseExample.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Examples\" />
   </ItemGroup>
 </Project>

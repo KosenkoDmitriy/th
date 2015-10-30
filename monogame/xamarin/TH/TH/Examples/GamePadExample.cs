@@ -6,14 +6,14 @@ using System;
 
 namespace TH
 {
-	public class Game2 : Game
+	public class GamePadExample : Game
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		Vector2 position;
 		Texture2D texture;
 
-		public Game2()
+		public GamePadExample()
 		{
 			graphics = new GraphicsDeviceManager (this);
 			Content.RootDirectory = "Content";
