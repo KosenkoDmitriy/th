@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace TH
 {
@@ -47,10 +48,25 @@ namespace TH
 
 		public void Update(int xLeft, int yUp)
 		{
+			var state = Mouse.GetState ();
+//			var Y1 = state.Position.Y;
+//			var X1 = state.Position.X;
+			var X = state.X;
+			var Y = state.Y;
+
+
 			XRight = XLeft+TextureButton.Width;
 			XLeft = xLeft;
 			YUp = yUp;
 			YDown = yUp + TextureButton.Height;
+			//Console.WriteLine (string.Format("xLeft {0} Yup {1} xRight {2} yDown {3}", xLeft, yUp, XRight, YDown ));
+
+			if (state.LeftButton == ButtonState.Pressed) {
+				if (X < XRight && X > XLeft && Y > YUp && Y < YDown)
+					Console.WriteLine ("Pressed on button " + X.ToString() + "/" + Y.ToString() );
+				else
+					Console.WriteLine ("Pressed " + X.ToString() + "/" + Y.ToString() );
+			}
 		}
 
 		public void Process(SpriteBatch spriteBatch)

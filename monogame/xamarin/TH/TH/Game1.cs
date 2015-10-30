@@ -24,12 +24,13 @@ namespace TH
 		public Vector2 playerPosition;
 		public Texture2D playerTexture;
 
+		int dY = 96;
+
 		public Game1 ()
 		{
 			graphics = new GraphicsDeviceManager (this);
 			Content.RootDirectory = "Content";
 			graphics.IsFullScreen = false;
-
 		}
 
 		/// <summary>
@@ -72,14 +73,25 @@ namespace TH
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update (GameTime gameTime)
 		{
-
 			MouseState state = Mouse.GetState ();
 			// Update our sprites position to the current cursor location
 			pos.X = state.X;
-			pos.Y = state.Y;
+			pos.Y = state.Y;// - mouseTexture.Height - dY;
+			//Console.WriteLine (string.Format("pos.X: {0} pos.Y {1}", pos.X, pos.Y));
 			// Check if Right Mouse Button pressed, if so, exit
-			if (state.RightButton == ButtonState.Pressed)
-				Exit ();
+//			if (state.RightButton == ButtonState.Pressed)
+//				Exit ();
+
+			if(state.MiddleButton == ButtonState.Pressed)
+				Mouse.SetPosition(graphics.GraphicsDevice.Viewport.
+					Width / 2,
+					graphics.GraphicsDevice.Viewport.Height / 2);
+
+			if (state.LeftButton == ButtonState.Pressed) {
+				Console.WriteLine ("Pressed " + pos.X.ToString() + "/" + pos.Y.ToString() );
+			}
+
+			IsMouseVisible = true;
 
 			// For Mobile devices, this logic will close the Game when the Back button is pressed
 			// Exit() is obsolete on iOS
@@ -109,7 +121,8 @@ namespace TH
 			spriteBatch.Draw(playerTexture, playerPosition, null, Color.White, 0f, Vector2.Zero, 1f,SpriteEffects.None, 0f);
 
 			btn.Process (spriteBatch);
-			spriteBatch.Draw(mouseTexture, pos, origin:new Vector2(16, 164));
+
+			spriteBatch.Draw(mouseTexture, pos, origin:new Vector2(12, 5));
 			spriteBatch.End ();
 			base.Draw (gameTime);
 		}
