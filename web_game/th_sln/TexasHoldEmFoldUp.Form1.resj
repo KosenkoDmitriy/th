@@ -1,0 +1,14 @@
+{
+    "buttonImageList.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "buttonImage1.BackgroundImage": "System.Drawing.Bitmap",
+    "smallWideButtonImageList.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "smallSquareImageList.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "bigButtonImageList.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "cardImages.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "dealerButtonImageList.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "buttonImage4.BackgroundImage": "System.Drawing.Bitmap",
+    "buttonImage3.BackgroundImage": "System.Drawing.Bitmap",
+    "buttonImage5.BackgroundImage": "System.Drawing.Bitmap",
+    "chipImageList.ImageStream": "System.Windows.Forms.ImageListStreamer",
+    "buttonImage0.BackgroundImage": "System.Drawing.Bitmap"
+}
