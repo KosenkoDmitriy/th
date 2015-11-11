@@ -2,6 +2,7 @@
 {
     static class Settings
     {
+        public static readonly int pockerHandPossibleSize = 5;
         public static readonly int playerSize = 6;
         public static readonly int kickerSize = 6;
         public static int playerCredits = 1000;

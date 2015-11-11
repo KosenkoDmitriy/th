@@ -2495,7 +2495,7 @@ const int    HA = 51;
 
             //int CardTotal = 0; // for five card hands
 
-            for (int x = 0; x < 5; x++)
+            for (int x = 0; x < Settings.pockerHandPossibleSize; x++)
             {
                 FinalSuit[x] = GetCardSuit(FinalHand[x]);
                 FinalValue[x] = GetCardValue(FinalHand[x]);
@@ -2512,17 +2512,17 @@ const int    HA = 51;
             //lets get the flush count
             FlushCount = GetFlushCount(FinalSuit);
 
-            if (FlushCount == 5)
+            if (FlushCount == Settings.pockerHandPossibleSize)
             {
                 flush = true;
                 PayType = FLUSH;
             }
 
-            for (int x = 0; x < 5; x++)//do preliminary check
+            for (int x = 0; x < Settings.pockerHandPossibleSize; x++)//do preliminary check
             {
                 XofaKind = 1;
                 CardValue = FinalValue[x];
-                for (int a = x + 1; a < 5; a++)
+                for (int a = x + 1; a < Settings.pockerHandPossibleSize; a++)
                 {
                     if (FinalValue[a] == CardValue)
                     {
@@ -2590,10 +2590,10 @@ const int    HA = 51;
             if (threeOfaKind || twoOfaKind)//look for two pair or Full house
             {
                 XofaKind = 1;
-                for (int x = 0; x < 5; x++)//do a secondary check
+                for (int x = 0; x < Settings.pockerHandPossibleSize; x++)//do a secondary check
                 {
                     CardValue = FinalValue[x];
-                    for (int a = x + 1; a < 5; a++)
+                    for (int a = x + 1; a < Settings.pockerHandPossibleSize; a++)
                     {
                         if (CardValue != SaveValue)   //don't use orig find value
                         {
@@ -2634,8 +2634,8 @@ const int    HA = 51;
             int connectRank = GetConnectedStraightRank(FinalValue, SaveValue);
             if (AceFound == true)
             {
-                int[] FinalValueAces = new int[5];
-                for (int x = 0; x < 5; x++)
+                int[] FinalValueAces = new int[Settings.pockerHandPossibleSize];
+                for (int x = 0; x < Settings.pockerHandPossibleSize; x++)
                 {
                     FinalValueAces[x] = FinalValue[x];
                     if (FinalValue[x] == 1)
@@ -2654,8 +2654,8 @@ const int    HA = 51;
             int straightRank = GetInsideStraightRank(FinalValue);
             if (AceFound == true)
             {
-                int[] FinalValueAces = new int[5];
-                for (int x = 0; x < 5; x++)
+                int[] FinalValueAces = new int[Settings.pockerHandPossibleSize];
+                for (int x = 0; x < Settings.pockerHandPossibleSize; x++)
                 {
                     FinalValueAces[x] = FinalValue[x];
                     if (FinalValue[x] == 1)
@@ -2673,14 +2673,14 @@ const int    HA = 51;
 
             if (oneOfaKind)//check for straight
             {
-                for (int x = 0; x < 5; x++)//let's get the high card
+                for (int x = 0; x < Settings.pockerHandPossibleSize; x++)//let's get the high card
                 {
                     if (FinalValue[x] > HighCard)
                         HighCard = FinalValue[x];
                 }
                 if (KingFound && AceFound)
                 {
-                    for (int x = 0; x < 5; x++)
+                    for (int x = 0; x < Settings.pockerHandPossibleSize; x++)
                     {
                         if (FinalValue[x] == 1)
                         {
@@ -2690,7 +2690,7 @@ const int    HA = 51;
                         }
                     }
                 }
-                for (int x = 1; x <= 5; x++)
+                for (int x = 1; x <= Settings.pockerHandPossibleSize; x++)
                 {
                     if (FinalValue[x - 1] == (HighCard - 1))
                     {
@@ -2699,7 +2699,7 @@ const int    HA = 51;
                         x = 0;
                     }
                 }
-                if (MembersOfStraight == 5)
+                if (MembersOfStraight == Settings.pockerHandPossibleSize)
                 {
                     PayType = STRAIGHT;// 4;//straight 
                     if (flush)
@@ -2773,7 +2773,7 @@ const int    HA = 51;
                     PayType += 2;
                 }
                 else
-                    if (SaveValue > 5)
+                    if (SaveValue > Settings.pockerHandPossibleSize)
                     {
                         PayType++;
                     }
