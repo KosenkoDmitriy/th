@@ -1,6 +1,0 @@
-<system.webServer>
-         <staticContent>
-             <mimeMap fileExtension=".mem" mimeType="text/html" />
-             <mimeMap fileExtension=".data" mimeType="text/html" />
-         </staticContent>
-     </system.webServer>
