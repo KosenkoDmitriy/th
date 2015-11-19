@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.IO;
 using System.Reflection;
+using System.Globalization;
 
 public class LoadOnClick : MonoBehaviour
 {
@@ -6354,9 +6355,12 @@ public class LoadOnClick : MonoBehaviour
 
 
 
+    public string GetBetAndCurrency(double value) {
+        //string.Format(CultureInfo.CurrentCulture, "{0}{1:C}", Settings.dollar, value);
+        return string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
+    }
 
 
-    
     public void LoadScene(int level)
     {
         Application.LoadLevel(level);
@@ -6365,7 +6369,9 @@ public class LoadOnClick : MonoBehaviour
     public void btnStartGameClick()
     {
         string betAmountString = inputBetField.text;
-        if (betAmountString == "$0.00")
+        string betNull = GetBetAndCurrency(Settings.betNull);
+
+        if (betAmountString == betNull)
         {
             panelInitBet.SetActive(false);
             return;
@@ -6400,7 +6406,7 @@ public class LoadOnClick : MonoBehaviour
     public void btnMaxBetClick()
     {
         Settings.betCurrent = Settings.betMax;
-        inputBetField.text = Settings.dollar + Settings.betCurrent.ToString();
+        inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
     public void btnMinBetClick()
@@ -6408,13 +6414,13 @@ public class LoadOnClick : MonoBehaviour
         Settings.betCurrent += Settings.betDx;
         if (Settings.betCurrent > Settings.betMax)
             Settings.betCurrent = Settings.betMax;
-        inputBetField.text = Settings.dollar + Settings.betCurrent.ToString();
+        inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
     public void btnClearBetClick()
     {
         Settings.betCurrent = Settings.betNull;
-        inputBetField.text = Settings.dollar + Settings.betCurrent.ToString();
+        inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
 
