@@ -7,7 +7,7 @@
     public int XofaKindValue;
     public int XofaKindKicker;
     public int TwoPairSecondValue;
-    public Form1.cardValues[] FHcards = new Form1.cardValues[2];//Full house card values
+    //public Form1.cardValues[] FHcards = new Form1.cardValues[2];//Full house card values
     public int[] cardHand = new int[7];//the complete set of cards available
 }
 
