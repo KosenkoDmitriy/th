@@ -516,9 +516,9 @@ public class LoadOnClick : MonoBehaviour
             playerCredits = value;
             string dollarAmount = String.Format("{0:C}", playerCredits);
 
-            lblCredit.GetComponent<Text>().text = dollarAmount;
-            //lblCredit.Invalidate();
-            //lblCredit.Update();
+            if (playerAllCredits != null) playerAllCredits.GetComponent<Text>().text = dollarAmount;
+            //playerAllCredits.Invalidate();
+            //playerAllCredits.Update();
 
         }
         get
@@ -726,10 +726,12 @@ public class LoadOnClick : MonoBehaviour
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string iniFile = Directory.GetCurrentDirectory() + "\\TexasHoldem.ini";
-        string logFile = Directory.GetCurrentDirectory() + "\\TexasHoldem.log";
-        string dataFile = Directory.GetCurrentDirectory() + "\\TexasHoldem.dat";
+        
+        //TODO:
+        /*string currentDirectory = Directory.GetCurrentDirectory();
+        string iniFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.ini";
+        string logFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.log";
+        string dataFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.dat";
         GetLogFileVars();
         if (File.Exists(iniFile) == false)
         {
@@ -789,13 +791,13 @@ public class LoadOnClick : MonoBehaviour
         surrenderBoxString = utils.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
         realPlayerName = utils.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
         jurisdictionalLimit = (double)utils.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
-
+        */
         for (int x = 1; x < 11; x++)
         {
             string instString = "Instruction " + x.ToString();
-            instrucionStrings[x] = utils.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
+            /*TODO: instrucionStrings[x] = utils.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
             if (instrucionStrings[x].Length == 0)
-                break;
+                break;*/
             //TODO: make table using GridLayoutGroup dataGridView;
             /*dataGridView1.Rows.Add();
             dataGridView1.Rows[x - 1].Cells[0].Value = x.ToString();
@@ -850,7 +852,7 @@ public class LoadOnClick : MonoBehaviour
             }
         }
 
-        bonusPokerPanel.SetActive(true);
+       // bonusPokerPanel.SetActive(true);
 
         if (gameOverPtr == 1 && winnerDeclared == false)
             gameOverPtr++;
@@ -3578,7 +3580,7 @@ public class LoadOnClick : MonoBehaviour
                                     BetType = BetTypes.raising;
                                     raise = ThisPlayersCall * 0.30;
                                 }
-                                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " is BLUFFING with " + String.Format("{0:C}", raise);
+                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " is BLUFFING with " + String.Format("{0:C}", raise);
                             }
                         }
                     }
@@ -3799,7 +3801,7 @@ public class LoadOnClick : MonoBehaviour
                     BetType = BetTypes.raising;
                     raise = RoundUp(PotAmount / 2);
                 }
-                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Flop Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
+                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Flop Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
             }
 
             //TURN
@@ -4003,8 +4005,8 @@ public class LoadOnClick : MonoBehaviour
                     BetType = BetTypes.raising;
                     raise = RoundUp(PotAmount / 2);
                 }
-                //textBox1.AppendText(virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine);
-                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
+                //lblWinInfo.AppendText(virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine);
+                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
             }
 
             //RIVER
@@ -4204,7 +4206,7 @@ public class LoadOnClick : MonoBehaviour
                     BetType = BetTypes.raising;
                     raise = RoundUp(PotAmount / 2);
                 }
-                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " River Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
+                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " River Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
             }
 
             //END RIVER 
@@ -4259,7 +4261,7 @@ public class LoadOnClick : MonoBehaviour
             if (virtualPlayers[player].AllIn == true)
             {
                 AllInPlayer(player);
-                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " IS ALL IN" + Environment.NewLine;
+                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " IS ALL IN" + Environment.NewLine;
             }
             else
             {
@@ -4270,13 +4272,13 @@ public class LoadOnClick : MonoBehaviour
                             //// betLabels[player].GetComponent<Text>().text = "";
                             //// betLabels[player].Invalidate();
                             FoldPlayer(player);
-                            textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " FOLDED" + Environment.NewLine;
+                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " FOLDED" + Environment.NewLine;
                         }
                         break;
                     case BetTypes.checking:
                         {
                             CheckPlayer(player);
-                            textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CHECKED" + Environment.NewLine;
+                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CHECKED" + Environment.NewLine;
                         }
                         break;
                     case BetTypes.calling:
@@ -4292,7 +4294,7 @@ public class LoadOnClick : MonoBehaviour
                                 AllInPlayer(player);
                                 //PotAmount += ThisRoundBet;
                                 virtualPlayers[player].Credits -= ThisRoundBet;
-                                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
+                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
                             }
                             else
                             {
@@ -4300,7 +4302,7 @@ public class LoadOnClick : MonoBehaviour
                                 virtualPlayers[player].Credits -= ThisRoundBet;
                                 virtualPlayers[player].RoundCallAmount += ThisPlayersCall;
                                 CallPlayer(player);
-                                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CALLED" + Environment.NewLine;
+                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CALLED" + Environment.NewLine;
                             }
                         }
                         break;
@@ -4336,7 +4338,7 @@ public class LoadOnClick : MonoBehaviour
                                 ThisRoundBet = raise + ThisPlayersCall;// CallAmount;
                                                                        //PotAmount += ThisRoundBet;
                                 virtualPlayers[player].Credits -= ThisRoundBet;
-                                textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
+                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
                                 break;
                             }
 
@@ -4345,7 +4347,7 @@ public class LoadOnClick : MonoBehaviour
                             //CallAmount += raise;
                             RaisePlayer(player, raise);
                             virtualPlayers[player].RoundCallAmount += ThisPlayersCall;
-                            textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " RAISED" + Environment.NewLine;
+                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " RAISED" + Environment.NewLine;
                             GamePlayers[player].RoundRaiseCount++;
                             ThisRoundRaisePercentage += GetPotRaisePercentage(raise);// (int)(100 / (PotAmount / raise));
                         }
@@ -4359,7 +4361,7 @@ public class LoadOnClick : MonoBehaviour
                             ThisRoundBet = virtualPlayers[player].Credits;
                             //PotAmount += ThisRoundBet;
                             virtualPlayers[player].Credits -= ThisRoundBet;
-                            textBox1.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
+                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
                         }
                         break;
                 }
@@ -4431,7 +4433,7 @@ public class LoadOnClick : MonoBehaviour
         }
         //if(player != 0)
         PotAmount += ThisRoundBet;// virtualPlayers[player].FlopBet;
-                                  //textBox1.AppendText("Player " + player.ToString() + roundStr + ThisRoundBet.ToString() + Environment.NewLine);
+                                  //lblWinInfo.AppendText("Player " + player.ToString() + roundStr + ThisRoundBet.ToString() + Environment.NewLine);
         if (player == 0 && AutoPlay == true)
         {
             creditsPlayed += ThisRoundBet;
@@ -4561,10 +4563,11 @@ public class LoadOnClick : MonoBehaviour
         {
             ShuffleVirtualPlayers();
         }
+
         // testDataRetrieved = false;           
         for (int x = 1; x < Settings.playerSize; x++)
         {
-            textBox1.GetComponent<Text>().text += " Player " + x.ToString() + " =" + virtualPlayers[x].Name + Environment.NewLine;
+            lblWinInfo.GetComponentInChildren<Text>().text += " Player " + x.ToString() + " =" + virtualPlayers[x].Name + Environment.NewLine;
         }
 
         GameState = GameStates.Ante;
@@ -5355,7 +5358,7 @@ public class LoadOnClick : MonoBehaviour
         startGameOverTimer(true);
         bettingGroupBox.SetActive(false);
 
-        bonusPokerPanel.SetActive(true);
+        //bonusPokerPanel.SetActive(true);
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
@@ -5820,7 +5823,7 @@ public class LoadOnClick : MonoBehaviour
         startGameOverTimer(false);
     }
 
-    private void lblCredit_MouseDoubleClick()//object sender, MouseEventArgs e)
+    private void playerAllCredits_MouseDoubleClick()//object sender, MouseEventArgs e)
     {
         PlayerCredits += Settings.jurisdictionalBetLimit;// 1000.00;
     }
@@ -6250,7 +6253,7 @@ public class LoadOnClick : MonoBehaviour
         writestring = "#" + gameNumber.ToString() + " CP= " + CreditsPlayed + " CW= " + CreditsWon + " GP = " + GamePercentage;
         try
         {
-            textBox1.GetComponent<Text>().text += writestring + Environment.NewLine;
+            lblWinInfo.GetComponent<Text>().text += writestring + Environment.NewLine;
             logWriter.WriteLine(writestring);
         }
         catch
@@ -6377,6 +6380,10 @@ public class LoadOnClick : MonoBehaviour
             return;
         }
 
+        //StartNewGame(); // start new game
+
+        btnStartGame.GetComponentInChildren<Text>().text = "Bet";
+
         GameObject btnRepeatBet = GameObject.Find("btnRepeatBet");
         if (btnRepeatBet != null) btnRepeatBet.SetActive(false);
         GameObject lblPanelBet = GameObject.Find("lblPanelBet");
@@ -6397,9 +6404,8 @@ public class LoadOnClick : MonoBehaviour
 
     public void btnBetNowClick()
     {
-        
         panelInitBet.SetActive(true);
-        btnStartGame.GetComponent<Text>().text = "Start Game";
+        btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
         //StartNewGame();
     }
 
@@ -6423,6 +6429,9 @@ public class LoadOnClick : MonoBehaviour
         inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
+    public void btnRepeatBetClick() {
+
+    }
 
     void Update()
     {
@@ -6432,9 +6441,19 @@ public class LoadOnClick : MonoBehaviour
     // Init game
     public void Start()
     {
+        //panel surrender
+        panelSurrender = GameObject.Find("PanelSurrender");
+        lblSurrender = GameObject.Find("lblSurrender");
+
+
         panelInitBet = GameObject.FindGameObjectWithTag("PanelInitBet");
+        btnStartGame = GameObject.Find("btnStartGame");
+        //btnStartGame.GetComponent<Button>().GetComponent<Text>().text = "Start Game";
         inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>();
 
+        lblWinInfo = GameObject.Find("lblWinInfo");
+
+    
         // player game panel
         btnCheck = GameObject.Find("btnCheck");
         btnCall = GameObject.Find("btnCall");
@@ -6454,32 +6473,67 @@ public class LoadOnClick : MonoBehaviour
         panelGame = GameObject.Find("PanelGame");
         panelGame.SetActive(false);
 
+        // bet panel
+        btnRepeatBet = GameObject.Find("btnRepeatBet");
+
+
         //left panel
         btnBetNow = GameObject.Find("btnBetNow");
         btnRepeatLastBet = GameObject.Find("btnRepeatLastBet");
         btnRepeatLastBet.SetActive(false);
         btnLSurrender = GameObject.Find("btnLSurrender");
+        playerAllCredits = GameObject.Find("playerAllCredits");
+
         btnLSurrender.SetActive(false);
 
-        panelInitBet.SetActive(false);
+        //XYZ panel
+        panelXYZ = GameObject.Find("PanelXYZ");
+        bettingGroupBox = GameObject.Find("bettingGroupBox");
+        btnCredit = GameObject.Find("btnCredit");
+        btnRepeatBet = GameObject.Find("btnRepeatBet");
+        btnAutoPlay = GameObject.Find("btnAutoPlay");
+        btnNewGame = GameObject.Find("btnNewGame");
+        btnAllIn = GameObject.Find("btnAllIn");
+        lblPot = GameObject.Find("lblPot");
+        lblRaise = GameObject.Find("lblRaise");
+        lblBet = GameObject.Find("lblBet");
+        
+        lblCall = GameObject.Find("lblCall");
+        lblWin = GameObject.Find("lblWin");
+        lblBettingGroup = GameObject.Find("lblBettingGroup");
 
+        panelInitBet.SetActive(false);
         //TODO:
         //panelSurrender = GameObject.Find("PanelSurrender");
         //panelSurrender.SetActive(false);
         //surrenderFlashTimer_Tick();
+
+        //cards
+        playerhold1 = GameObject.Find("playerhold1");
+        playerhold2 = GameObject.Find("playerhold2");
+        player1hold1 = GameObject.Find("player1hold1");
+        player1hold2 = GameObject.Find("player1hold2");
+        player2hold1 = GameObject.Find("player2hold1");
+        player2hold2 = GameObject.Find("player2hold2");
+        player3hold1 = GameObject.Find("player3hold1");
+        player3hold2 = GameObject.Find("player3hold2");
+        player4hold1 = GameObject.Find("player4hold1");
+        player4hold2 = GameObject.Find("player4hold2");
+        player5hold1 = GameObject.Find("player5hold1");
+        player5hold2 = GameObject.Find("player5hold2");
     }
 
 
-    GameObject panelInitBet, panelGame, panelSurrender, bonusPokerPanel;
+    GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame; // panelInitBet
-    GameObject btnBetNow, btnLSurrender, btnRepeatLastBet; // left panel (start/restart the game)
+    GameObject btnBetNow, btnLSurrender, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
     GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
         bettingGroupBox, btnAllIn,
-        lblPot, lblRaise, lblBet, lblSurrender, lblCredit, lblCall, lblWin,
+        lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
     GameObject[] betLabels, creditLabels;
-    GameObject txtSurrender, textBox1;
-    GameObject player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
+    GameObject txtSurrender, lblSurrender, lblWinInfo;//panel surrender
+    GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
     int betAmount;
     double dollarAmount;
     InputField inputBetField;
