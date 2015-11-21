@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO;
 using System.Reflection;
 using System.Globalization;
+using System.Collections.Generic;
 
 public class LoadOnClick : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class LoadOnClick : MonoBehaviour
     //Image[] //TODO: cardPoints = new Image[12];
     //Text[] betLabels = new Text[Settings.playerSize];
     //Text[] creditLabels = new Text[Settings.playerSize];
-    
+
 
     bool showdown = false;
     bool videoBonusWinOnly = false;
@@ -141,14 +142,12 @@ public class LoadOnClick : MonoBehaviour
 
     public enum GameStates
     {
-
         Ante,
         HoldCardBet,
         FlopBet,
         TurnBet,
         RiverBet,
         Idle,
-
         EndGame,
         PlayerWin,
         PlayerLose,
@@ -605,7 +604,7 @@ public class LoadOnClick : MonoBehaviour
             //}
             //else
             //{
-                videoMultiplier = value;
+            videoMultiplier = value;
             //}
         }
         get
@@ -726,7 +725,7 @@ public class LoadOnClick : MonoBehaviour
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
-        
+
         //TODO:
         /*string currentDirectory = Directory.GetCurrentDirectory();
         string iniFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.ini";
@@ -804,7 +803,7 @@ public class LoadOnClick : MonoBehaviour
             dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
             dataGridView1.Rows[x - 1].Height = 45;
             */
-            
+
         }
 
         BuildVideoBonusPaytable();
@@ -846,13 +845,13 @@ public class LoadOnClick : MonoBehaviour
             if (gameEnable == false)
             {
                 //gameOverTimer.Stop();
-                
+
                 //MessageBox.Show("Correct the INI file error", "INI File Error");
                 //Close();
             }
         }
 
-       // bonusPokerPanel.SetActive(true);
+        // bonusPokerPanel.SetActive(true);
 
         if (gameOverPtr == 1 && winnerDeclared == false)
             gameOverPtr++;
@@ -891,7 +890,7 @@ public class LoadOnClick : MonoBehaviour
             string dollarAmount = String.Format("{0:C}", videoPokerWin);
             gameOverStrings[4] += dollarAmount;
         }
-        //else//2 or 3
+        else//2 or 3
         {
             lblWin.GetComponent<Text>().text = gameOverStrings[gameOverPtr];
         }
@@ -1994,6 +1993,7 @@ public class LoadOnClick : MonoBehaviour
     private void ClearPlayerCards(int player)
     {
         //TODO : clear player cards
+        
         //Rectangle cardRec = new Rectangle(//TODO: cardPoints[player * 2], new Size(150, 110));
         //Invalidate(cardRec);
         Update();
@@ -3229,14 +3229,14 @@ public class LoadOnClick : MonoBehaviour
         CallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
         updateBettingButtonTitle();
         bettingGroupBox.SetActive(true); // Visible = true;//show the betting buttons
-        
+
         //btnRaise.Enabled = true;//we can always raise
         //btnAllIn.Enabled = true;//we can alway go all in
         //btnFold.Enabled = true;//we can always fold
         if (btnRaise != null) btnRaise.SetActive(true);
         if (btnAllIn != null) btnAllIn.SetActive(true);
         if (btnFold != null) btnFold.SetActive(true);
-        
+
         if (CallAmount == 0)
         {
             //btnCheck.Enabled = true;
@@ -3362,22 +3362,22 @@ public class LoadOnClick : MonoBehaviour
             teststring += checkString + Environment.NewLine;
         }
         if (btnCall != null && btnCall.GetComponent<Button>().IsInteractable())
-            //if (btnCall.Enabled == true)
+        //if (btnCall.Enabled == true)
         {
             teststring += callString + Environment.NewLine;
         }
         if (btnRaise != null && btnRaise.GetComponent<Button>().IsInteractable())
-            //if (btnRaise.Enabled == true)
+        //if (btnRaise.Enabled == true)
         {
             teststring += raiseString + Environment.NewLine;
         }
         if (btnAllIn != null && btnAllIn.GetComponent<Button>().IsInteractable())
-            //if (btnAllIn.Enabled == true)
+        //if (btnAllIn.Enabled == true)
         {
             teststring += allInString + Environment.NewLine;
         }
         if (btnSurrender != null && btnAllIn.GetComponent<Button>().IsActive())
-            //if (btnSurrender.Visible == true)
+        //if (btnSurrender.Visible == true)
         {
             teststring += surrenderString;
         }
@@ -4620,8 +4620,7 @@ public class LoadOnClick : MonoBehaviour
 
         }
         //TODO:
-        /*
-        else if (DialogResult.OK == panelInitBet.ShowDialog())//ANTE
+        else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
         {
             if (AutoPlay == true)
             {
@@ -4668,9 +4667,7 @@ public class LoadOnClick : MonoBehaviour
             selectedColumn = denomUnits;
             SetPaytableSelectedColumn(selectedColumn);
             //gameOverTimer.Stop();
-
         }
-        */
 
         raiseLimit = anteBet * raiseLimitMultiplier;
 
@@ -4690,7 +4687,6 @@ public class LoadOnClick : MonoBehaviour
 
         restoreCardDefaults(false);
         DisableBettingButtons();
-
 
         cardsDealt = 0;
         deckPtr = 0;
@@ -4791,7 +4787,7 @@ public class LoadOnClick : MonoBehaviour
 
         for (int x = 0; x < Settings.playerSize; x++)//
         {
-            //ClearPlayerCards(x);
+            ClearPlayerCards(x);
             //virtualPlayers[x].TwoCardBet = 0;
             virtualPlayers[x].CurrentBetAmount = 0;
             virtualPlayers[x].Credits = PlayerCredits;
@@ -4955,21 +4951,21 @@ public class LoadOnClick : MonoBehaviour
 
         //if (DialogResult.OK == panelInitBet.ShowDialog())//RAISE 
         //{
-            playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
-            if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
-                return;
-            raiseValue = betAmount;//the value the player entered
+        playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
+        if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
+            return;
+        raiseValue = betAmount;//the value the player entered
 
-            //PotAmount += playerCallAmount + raiseValue;
-            playerCurrentBet += playerCallAmount + raiseValue;
+        //PotAmount += playerCallAmount + raiseValue;
+        playerCurrentBet += playerCallAmount + raiseValue;
 
-            PlayerCredits -= (raiseValue + playerCallAmount);
-            creditsPlayed += (raiseValue + playerCallAmount);
-            virtualPlayers[0].RoundRaiseAmount += raiseValue;
-            PlayerBet += playerCallAmount;
-            PlayerRaise += raiseValue;//update the players raise status label
-            virtualPlayerRaised = 0;
-            ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
+        PlayerCredits -= (raiseValue + playerCallAmount);
+        creditsPlayed += (raiseValue + playerCallAmount);
+        virtualPlayers[0].RoundRaiseAmount += raiseValue;
+        PlayerBet += playerCallAmount;
+        PlayerRaise += raiseValue;//update the players raise status label
+        virtualPlayerRaised = 0;
+        ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
         //}
         BetPlayer(CurrentBetPosition);
     }
@@ -5817,7 +5813,7 @@ public class LoadOnClick : MonoBehaviour
             if (btnRepeatBet != null) btnRepeatBet.SetActive(true);
         }
         btnNewGame.SetActive(true);//.SetActive(true);
-        
+
         ///btnStartGame.SetActive(true);
         ///btnStartGame.Enabled = false;
         startGameOverTimer(false);
@@ -5905,26 +5901,26 @@ public class LoadOnClick : MonoBehaviour
     private void SetPaytableSelectedColumn(int column)
     {
         //TODO: grid/table
-/*
-        for (int row = 0; row < paytableGrid.RowCount; row++)
-        {
-            for (int col = 0; col < paytableGrid.ColumnCount; col++)
-            {
-                if (col == column)
+        /*
+                for (int row = 0; row < paytableGrid.RowCount; row++)
                 {
-                    paytableGrid[col, row].Selected = true;
+                    for (int col = 0; col < paytableGrid.ColumnCount; col++)
+                    {
+                        if (col == column)
+                        {
+                            paytableGrid[col, row].Selected = true;
+                        }
+                        else
+                        {
+                            paytableGrid[col, row].Selected = false;
+                        }
+                    }
                 }
-                else
+                if (column > paytableGrid.ColumnCount)
                 {
-                    paytableGrid[col, row].Selected = false;
-                }
-            }
-        }
-        if (column > paytableGrid.ColumnCount)
-        {
 
-        }
-        */
+                }
+                */
     }
     private void BuildVideoBonusPaytable()
     {
@@ -6041,11 +6037,11 @@ public class LoadOnClick : MonoBehaviour
 
     }
 
-   /* private void Form1_DoubleClick(object sender, EventArgs e)
-    {
-        Close();
-    }
-    */
+    /* private void Form1_DoubleClick(object sender, EventArgs e)
+     {
+         Close();
+     }
+     */
     private void waitButton_Click(object sender, EventArgs e)
     {
         nextPlayerWait = !nextPlayerWait;
@@ -6358,7 +6354,8 @@ public class LoadOnClick : MonoBehaviour
 
 
 
-    public string GetBetAndCurrency(double value) {
+    public string GetBetAndCurrency(double value)
+    {
         //string.Format(CultureInfo.CurrentCulture, "{0}{1:C}", Settings.dollar, value);
         return string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
     }
@@ -6429,7 +6426,8 @@ public class LoadOnClick : MonoBehaviour
         inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
-    public void btnRepeatBetClick() {
+    public void btnRepeatBetClick()
+    {
 
     }
 
@@ -6453,7 +6451,7 @@ public class LoadOnClick : MonoBehaviour
 
         lblWinInfo = GameObject.Find("lblWinInfo");
 
-    
+
         // player game panel
         btnCheck = GameObject.Find("btnCheck");
         btnCall = GameObject.Find("btnCall");
@@ -6497,7 +6495,7 @@ public class LoadOnClick : MonoBehaviour
         lblPot = GameObject.Find("lblPot");
         lblRaise = GameObject.Find("lblRaise");
         lblBet = GameObject.Find("lblBet");
-        
+
         lblCall = GameObject.Find("lblCall");
         lblWin = GameObject.Find("lblWin");
         lblBettingGroup = GameObject.Find("lblBettingGroup");
@@ -6521,7 +6519,27 @@ public class LoadOnClick : MonoBehaviour
         player4hold2 = GameObject.Find("player4hold2");
         player5hold1 = GameObject.Find("player5hold1");
         player5hold2 = GameObject.Find("player5hold2");
+
+
+        // init cards with images/sprites
+        //Sprite sprite = Resources.Load("2_dia", typeof(Sprite)) as Sprite;
+        //playerhold1.GetComponent<Image>().sprite = sprite;
+        cardImages = new List<Sprite>();
+        List<string> masti = new List<string>() { "clubs", "dia", "hearts", "spades" };
+        string separator = "_";
+        string path = "";
+        Sprite cardSprite;
+        List<string> cards = new List<string>() { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
+        foreach (string card in cards)
+        foreach (string mast in masti)
+        {
+            path = card + separator + mast;
+            cardSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
+            cardImages.Add(cardSprite);
+        }
     }
+
+
 
 
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
@@ -6537,4 +6555,5 @@ public class LoadOnClick : MonoBehaviour
     int betAmount;
     double dollarAmount;
     InputField inputBetField;
+    List<Sprite> cardImages;
 }
