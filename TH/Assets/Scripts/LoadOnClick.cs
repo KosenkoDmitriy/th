@@ -21,7 +21,7 @@ public class LoadOnClick : MonoBehaviour
 
     //Image[] //TODO: cardsOfPlayer = new Image[12];
     //Text[] betLabels = new Text[Settings.playerSize];
-    //Text[] creditLabels = new Text[Settings.playerSize];
+    //Text[] // TODO: creditLabels = new Text[Settings.playerSize];
 
 
     bool showdown = false;
@@ -1225,8 +1225,8 @@ public class LoadOnClick : MonoBehaviour
         {
             //betLabels[player].ForeColor = System.Drawing.Color.White;
         }
-        betLabels[player].GetComponent<Text>().text = text;
-        betLabels[player].SetActive(true);
+        //betLabels[player].GetComponent<Text>().text = text;
+        //betLabels[player].SetActive(true);
         //betLabels[player].Invalidate();
         //betLabels[player].Update();
     }
@@ -1243,13 +1243,13 @@ public class LoadOnClick : MonoBehaviour
     public void UpdateCreditLabel(int player)
     {
         if (player == 0) return;
-        creditLabels[player].GetComponent<Text>().text = "";
+        // TODO: creditLabels[player].GetComponent<Text>().text = "";
         double amount = virtualPlayers[player].Credits;
         string dollarAmount = String.Format("{0:C}", amount);
-        creditLabels[player].GetComponent<Text>().text = dollarAmount;
-        creditLabels[player].SetActive(true);
-        //creditLabels[player].Invalidate();
-        //creditLabels[player].Update();
+        // TODO: creditLabels[player].GetComponent<Text>().text = dollarAmount;
+        // TODO: creditLabels[player].SetActive(true);
+        //// TODO: creditLabels[player].Invalidate();
+        //// TODO: creditLabels[player].Update();
     }
 
     public void clearBetLabel(int player)
@@ -1260,7 +1260,7 @@ public class LoadOnClick : MonoBehaviour
         //Invalidate(labelRec);
         //OnPaint(e);
         //formHwnd.DrawString("          ", betLabels[player].Font, Brushes.White, betLabels[player].Location);
-        betLabels[player].GetComponent<Text>().text = "";
+        //betLabels[player].GetComponent<Text>().text = "";
         //betLabels[player].Invalidate();
         //betLabels[player].Update();//refresh
 
@@ -1271,8 +1271,8 @@ public class LoadOnClick : MonoBehaviour
         for (int x = 0; x < Settings.playerSize; x++)
         {
             //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
-            betLabels[x].GetComponent<Text>().text = "";
-            betLabels[x].SetActive(false);
+            //betLabels[x].GetComponent<Text>().text = "";
+            //betLabels[x].SetActive(false);
             //betLabels[x].Invalidate();
             //betLabels[x].Update();
         }
@@ -1283,10 +1283,10 @@ public class LoadOnClick : MonoBehaviour
         for (int x = 1; x < Settings.playerSize; x++)
         {
             //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
-            creditLabels[x].GetComponent<Text>().text = "";
-            creditLabels[x].SetActive(false);
-            //creditLabels[x].Invalidate();
-            //creditLabels[x].Update();
+            // TODO: creditLabels[x].GetComponent<Text>().text = "";
+            // TODO: creditLabels[x].SetActive(false);
+            //// TODO: creditLabels[x].Invalidate();
+            //// TODO: creditLabels[x].Update();
         }
         clearChips();
     }
@@ -1352,17 +1352,17 @@ public class LoadOnClick : MonoBehaviour
 
         for (int x = 1; x < Settings.playerSize; x++)
         {
-            //this.Controls.Remove(creditLabels[x]);
-            //creditLabels[x] = null;
-            //creditLabels[x] = new Label();
-           // creditLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X - 25, //TODO: cardsOfPlayer[x * 2].Y + 90);
-            //creditLabels[x].Name = "creditLabel" + x;
-            creditLabels[x].GetComponent<Text>().text = "";
-            creditLabels[x].SetActive(true);
-            //creditLabels[x].Font = label1.Font;
-            //creditLabels[x].BackColor = label1.BackColor;
-            //creditLabels[x].AutoSize = true;
-            //this.Controls.Add(creditLabels[x]);
+            //this.Controls.Remove(// TODO: creditLabels[x]);
+            //// TODO: creditLabels[x] = null;
+            //// TODO: creditLabels[x] = new Label();
+           // // TODO: creditLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X - 25, //TODO: cardsOfPlayer[x * 2].Y + 90);
+            //// TODO: creditLabels[x].Name = "creditLabel" + x;
+            // TODO: creditLabels[x].GetComponent<Text>().text = "";
+            // TODO: creditLabels[x].SetActive(true);
+            //// TODO: creditLabels[x].Font = label1.Font;
+            //// TODO: creditLabels[x].BackColor = label1.BackColor;
+            //// TODO: creditLabels[x].AutoSize = true;
+            //this.Controls.Add(// TODO: creditLabels[x]);
         }
         */
     }
@@ -1519,7 +1519,6 @@ public class LoadOnClick : MonoBehaviour
                         cardsOfPlayer[3].sprite = cardsAll[52];
                         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], 52);
                     }
-
                 }
                 else
                 {
@@ -1633,13 +1632,11 @@ public class LoadOnClick : MonoBehaviour
                         {
                             cardsOfPlayer[4].sprite = cardsAll[52];
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[4], 52);
-                            cardsOfPlayer[4].sprite = cardsAll[52];
                         }
                         else
                         {
                             cardsOfPlayer[4].sprite = cardsAll[playerHands[target, 0]];
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[4], playerHands[target, 0]);
-                            cardsOfPlayer[4].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
                         //  player2hold1.Image.Image =//  cardsAll.Images[playerHands[target, 0]];
@@ -1705,10 +1702,12 @@ public class LoadOnClick : MonoBehaviour
                             if (Settings.testGame == true)
                             {
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], playerHands[target, 1]);
+                                cardsOfPlayer[7].sprite = cardsAll[playerHands[target, 1]];
                             }
                             else
                             {
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], 52);
+                                cardsOfPlayer[7].sprite = cardsAll[52];
                             }
                         }
                         else
@@ -1716,6 +1715,7 @@ public class LoadOnClick : MonoBehaviour
                             //TODO: cardsOfPlayer[7].X += offsetX;
                             //TODO: cardsOfPlayer[7].Y -= offsetY;
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], playerHands[target, 1]);
+                            cardsOfPlayer[7].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
                         //player3hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
@@ -1731,10 +1731,12 @@ public class LoadOnClick : MonoBehaviour
                         if (cardback && Settings.testGame == false)
                         {
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[8], 52);
+                            cardsOfPlayer[8].sprite = cardsAll[52];
                         }
                         else
                         {
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[8], playerHands[target, 0]);
+                            cardsOfPlayer[8].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
                         //player4hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
@@ -1749,10 +1751,12 @@ public class LoadOnClick : MonoBehaviour
                             if (Settings.testGame == true)
                             {
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], playerHands[target, 1]);
+                                cardsOfPlayer[9].sprite = cardsAll[playerHands[target, 1]];
                             }
                             else
                             {
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], 52);
+                                cardsOfPlayer[9].sprite = cardsAll[52];
                             }
                         }
                         else
@@ -1760,6 +1764,7 @@ public class LoadOnClick : MonoBehaviour
                             //TODO: cardsOfPlayer[9].X += offsetX;
                             //TODO: cardsOfPlayer[9].Y -= offsetY;
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], playerHands[target, 1]);
+                            cardsOfPlayer[9].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
                         //player4hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
@@ -1775,17 +1780,18 @@ public class LoadOnClick : MonoBehaviour
                         if (cardback && Settings.testGame == false)
                         {
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[10], 52);
+                            cardsOfPlayer[10].sprite = cardsAll[52];
                         }
                         else
                         {
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[10], playerHands[target, 0]);
+                            cardsOfPlayer[10].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
                         //player5hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
                     }
                     else
                     {
-
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
@@ -1794,10 +1800,12 @@ public class LoadOnClick : MonoBehaviour
                             if (Settings.testGame == true)
                             {
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], playerHands[target, 1]);
+                                cardsOfPlayer[11].sprite = cardsAll[playerHands[target, 1]];
                             }
                             else
                             {
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], 52);
+                                cardsOfPlayer[11].sprite = cardsAll[52];
                             }
                         }
                         else
@@ -1805,6 +1813,7 @@ public class LoadOnClick : MonoBehaviour
                             //TODO: cardsOfPlayer[11].X += offsetX;
                             //TODO: cardsOfPlayer[11].Y -= offsetY;
                             //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], playerHands[target, 1]);
+                            cardsOfPlayer[11].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
                         //player5hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
@@ -1814,7 +1823,6 @@ public class LoadOnClick : MonoBehaviour
         }
         deckPtr++;
         //dealSound.Play();
-
     }
 
     public void InitializeNewGame()
@@ -1880,16 +1888,22 @@ public class LoadOnClick : MonoBehaviour
     {
         communityCards[0] = deck[deckPtr++];
         //cardsAll.Draw(formHwnd, new Point(flop1.Left, flop1.Top), communityCards[0]);
+        cardsPublic[0].sprite = cardsAll[communityCards[0]];
+
         Thread.Sleep(dealDelay);
         //dealSound.Play();
 
         communityCards[1] = deck[deckPtr++];
         //cardsAll.Draw(formHwnd, new Point(flop2.Left, flop2.Top), communityCards[1]);
+        cardsPublic[1].sprite = cardsAll[communityCards[1]];
+
         Thread.Sleep(dealDelay);
         //dealSound.Play();
 
         communityCards[2] = deck[deckPtr++];
         //cardsAll.Draw(formHwnd, new Point(flop3.Left, flop3.Top), communityCards[2]);
+        cardsPublic[2].sprite = cardsAll[communityCards[2]];
+
         //dealSound.Play();
         cardsDealt = 5;
         for (int x = 0; x < Settings.playerSize; x++)
@@ -1913,6 +1927,8 @@ public class LoadOnClick : MonoBehaviour
         //turn.Image =//  cardsAll.Images[deck[deckPtr]];
         this.communityCards[3] = deck[deckPtr++];
         //cardsAll.Draw(formHwnd, new Point(turn.Left, turn.Top), communityCards[3]);
+        cardsPublic[3].sprite = cardsAll[communityCards[3]];
+
         //dealSound.Play();
 
         for (int x = 0; x < Settings.playerSize; x++)
@@ -1936,6 +1952,8 @@ public class LoadOnClick : MonoBehaviour
         //river.Image =//  cardsAll.Images[deck[deckPtr]];
         this.communityCards[4] = deck[deckPtr++];
         //cardsAll.Draw(formHwnd, new Point(river.Left, river.Top), communityCards[4]);
+        cardsPublic[4].sprite = cardsAll[communityCards[4]];
+
         //dealSound.Play();
         for (int x = 0; x < Settings.playerSize; x++)
         {
@@ -1977,6 +1995,7 @@ public class LoadOnClick : MonoBehaviour
         // betLabels[player].Text = "RAISE " + amount.ToString();
         //[player].SetActive(true);
         //formHwnd.DrawString("RAISE " + amount.ToString(), betLabels[player].Font, Brushes.White, betLabels[player].Location);
+
         string dollarAmount = String.Format("{0:C}", amount);
         UpdateBetLabel("RAISE " + dollarAmount, player, true);
         UpdateCreditLabel(player);
@@ -2010,7 +2029,7 @@ public class LoadOnClick : MonoBehaviour
     {
         if (player == 0)
         {
-            betLabels[player].GetComponent<Text>().text = "FOLD";
+            //betLabels[player].GetComponent<Text>().text = "FOLD";
             //betLabels[player].SetActive(false);
             //betLabels[player].Update();
             //betLabels[player].Invalidate();
@@ -2028,12 +2047,16 @@ public class LoadOnClick : MonoBehaviour
             return;
         }
         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
+        cardsOfPlayer[(player * 2)+1].sprite = cardsAll[52];
         ClearPlayerCards(player);
         //
         //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
         //TODO: cardsOfPlayer[(player * 2) + 1].Y -= offsetY;
         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[player * 2], playerHands[player, 0]);
         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], playerHands[player, 1]);
+        cardsOfPlayer[player * 2].sprite = cardsAll[playerHands[player, 0]];
+        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 1]];
+
         virtualPlayers[player].Folded = true;
     }
 
@@ -2048,6 +2071,8 @@ public class LoadOnClick : MonoBehaviour
         ////TODO: cardsOfPlayer[(player * 2) + 1].Y -= offsetY;
         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[player * 2], playerHands[player, 0]);
         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], playerHands[player, 1]);
+        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 0]];
+        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 1]];
     }
 
     private void ClearPlayerCards(int player)
@@ -2057,6 +2082,8 @@ public class LoadOnClick : MonoBehaviour
         cardsOfPlayer[(player * 2) + 1].sprite = cardBg;
 
         //Rectangle cardRec = new Rectangle(//TODO: cardsOfPlayer[player * 2], new Size(150, 110));
+        cardsOfPlayer[player * 2].sprite = cardsAll[52];
+
         //Invalidate(cardRec);
         Update();
     }
@@ -4601,7 +4628,8 @@ public class LoadOnClick : MonoBehaviour
 
     private void StartNewGame()
     {
-        Debug.Log("StartNewGame()");
+        if (Settings.isDebug) Debug.Log("StartNewGame()");
+
         virtualPlayerRaised = 0;
         flopTurnRiverRaised = false;
         if (GameState != GameStates.Ante)
@@ -4680,32 +4708,31 @@ public class LoadOnClick : MonoBehaviour
             selectedColumn = denomUnits;
             SetPaytableSelectedColumn(selectedColumn);
             //gameOverTimer.Stop();
-
         }
         //TODO:
         else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
         {
+            if (Settings.isDebug) Debug.Log("ANTE 4715 code line");
+
             if (AutoPlay == true)
             {
                 betAmount = 5;
             }
+            if (Settings.isDebug) Debug.Log("betAmount:"+betAmount+" playerCredits" + PlayerCredits);
 
+            // if bet amount between 0 and max player credits then continue game
             if (betAmount == 0 || betAmount > PlayerCredits)
                 return;
+            if (Settings.isDebug) Debug.Log("0");
+
             //Invalidate();
-            Update();
+            //Update();
             anteBet = betAmount;
-            //double thisAnteBet = anteBet;
             PotAmount = 0;
             for (int x = 0; x < Settings.playerSize; x++)//
             {
-                //
-                //virtualPlayers[x].Credits += anteBet;//adjust the credits
-                //virtualPlayers[x].Credits -= thisAnteBet;//adjust the credits
                 PotAmount += anteBet;
-                ////ClearPlayerCards(x);
             }
-
 
             PlayerBet = anteBet;
             PlayerRaise = 0;
@@ -4761,15 +4788,16 @@ public class LoadOnClick : MonoBehaviour
             GameWinners[x] = false;
         }
         PlayerCredits -= playerBet;
+
         btnStartGame.SetActive(true);
-        btnStartGame.GetComponent<Text>().text = "Bet";
+        btnStartGame.GetComponentInChildren<Text>().text = "Bet";
 
         Settings.creditsPlayed += playerBet;
         if (AutoPlay == true || autoStart == true)
         {
             startGame();
         }
-
+        if (Settings.isDebug) Debug.Log("end startnewgame()");
     }
 
     private void btnNewGame_Click()//object sender, EventArgs e)//Ante Button
@@ -4777,64 +4805,9 @@ public class LoadOnClick : MonoBehaviour
         StartNewGame();
     }
 
-    public void btnStartGame_Click(object sender, EventArgs e)
-    {
-        btnCredit.SetActive(false);
-        autoStart = false;
-        lastBet = anteBet;
-        //buttonSound.Play();
-        clearBetLabels();//clear all the labels
-        AntePotAmount = PotAmount;
-        FlopPotAmount = 0;
-        TurnPotAmount = 0;
-        RiverPotAmount = 0;
-
-        //CumulativeRaises = 0;
-        //CumulativeCalls = 0;
-        //CumulativeCallsOfReRaise = 0;
-        //CumulativeReRaises = 0;
-        playerCurrentBet = 0;
-
-        for (int x = 0; x < Settings.playerSize; x++)//
-        {
-            //ClearPlayerCards(x);
-            //virtualPlayers[x].TwoCardBet = 0;
-            virtualPlayers[x].CurrentBetAmount = 0;
-            virtualPlayers[x].Credits = PlayerCredits;
-            virtualPlayers[x].Ante = anteBet;
-            ///UpdateCreditLabel(x);
-
-        }
-        // bonusPokerPanel.Enabled = false;
-        //paytableGrid.Enabled = false;
-
-        PlayerRaise = 0;
-        ////playerBet = 0;
-        anteBet = 0;
-
-        PlayerSurrender = false;
-        stopGameOverTimer();
-
-        btnStartGame.SetActive(false);
-        btnNewGame.SetActive(false);
-        btnRepeatBet.SetActive(false);
-        GameState = GameStates.HoldCardBet;
-        RenewVirtualPlayerProfiles();
-        ThisRoundRaisePercentage = 0;
-
-        CurrentBetPosition = buttonPosition;
-        DealNextRound();
-        EvalPlayerHands(true, false, false, false);
-
-        NextPlayer();
-
-    }
-
     public void startGame()
     {
-        Debug.Log("StartGame()");
-        //cardsOfPlayer[4].sprite = cardBg;
-        //cardsOfPlayer[5].sprite = cardBg;
+        if (Settings.isDebug) Debug.Log("StartGame()");
 
         btnCredit.SetActive(false);
         autoStart = false;
@@ -4860,7 +4833,6 @@ public class LoadOnClick : MonoBehaviour
             virtualPlayers[x].Credits = PlayerCredits;
             virtualPlayers[x].Ante = anteBet;
             ///UpdateCreditLabel(x);
-
         }
         // bonusPokerPanel.Enabled = false;
         //paytableGrid.Enabled = false;
@@ -4883,7 +4855,6 @@ public class LoadOnClick : MonoBehaviour
         EvalPlayerHands(true, false, false, false);
 
         NextPlayer();
-
     }
 
     private void RenewVirtualPlayerProfiles()
@@ -6360,7 +6331,15 @@ public class LoadOnClick : MonoBehaviour
             panelInitBet.SetActive(false);
             return;
         }
+        Debug.Log("betAmountString " + betAmountString);
 
+        betAmountString = betAmountString.Replace("$", "");
+        Debug.Log("betAmountString " + betAmountString);
+
+        //betAmount = Convert.ToInt32(betAmountString.Replace("$",""));
+        Double.TryParse(betAmountString, out betAmount);
+        Debug.Log("bet from form input: " + betAmount );
+        //betAmount = 10; //TODO: assign bet amount getted from form input
         StartNewGame(); // start new game
 
         btnStartGame.GetComponentInChildren<Text>().text = "Bet";
@@ -6374,7 +6353,7 @@ public class LoadOnClick : MonoBehaviour
         panelInitBet.SetActive(false);
         panelGame.SetActive(true);
 
-        //Debug.Log("btn start game" + panelInitBet.name);
+        //if (Settings.isDebug) Debug.Log("btn start game" + panelInitBet.name);
     }
 
     public void btnRaiseClick()
@@ -6387,7 +6366,6 @@ public class LoadOnClick : MonoBehaviour
     {
         panelInitBet.SetActive(true);
         btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
-        //StartNewGame();
     }
 
     public void btnMaxBetClick()
@@ -6427,14 +6405,11 @@ public class LoadOnClick : MonoBehaviour
         panelSurrender = GameObject.Find("PanelSurrender");
         lblSurrender = GameObject.Find("lblSurrender");
 
-
         panelInitBet = GameObject.FindGameObjectWithTag("PanelInitBet");
         btnStartGame = GameObject.Find("btnStartGame");
-        //btnStartGame.GetComponent<Button>().GetComponent<Text>().text = "Start Game";
         inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
-
 
         // player game panel
         btnCheck = GameObject.Find("btnCheck");
@@ -6539,6 +6514,15 @@ public class LoadOnClick : MonoBehaviour
         //cardsOfPlayer[0].sprite = cardsAll[0];
         //cardsOfPlayer[1].sprite = cardsAll[1];
 
+        //cards flop, turn, river
+        cardsPublic = new List<Image>()
+        {
+            GameObject.Find("flop1").GetComponent<Image>(),
+            GameObject.Find("flop2").GetComponent<Image>(),
+            GameObject.Find("flop3").GetComponent<Image>(),
+            GameObject.Find("turn").GetComponent<Image>(),
+            GameObject.Find("river").GetComponent<Image>(),
+        };
     }
 
 
@@ -6551,14 +6535,14 @@ public class LoadOnClick : MonoBehaviour
         bettingGroupBox, btnAllIn,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
-    GameObject[] betLabels, creditLabels;
+    //GameObject[] betLabels, // TODO: creditLabels; // for each player
     GameObject txtSurrender, lblSurrender, lblWinInfo;//panel surrender
     GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
-    int betAmount;
+    double betAmount;
     double dollarAmount;
     InputField inputBetField;
     List<Sprite> cardsAll;
-    List<Image> cardsOfPlayer;
+    List<Image> cardsOfPlayer, cardsPublic;
     Sprite cardBg;
     // panel XYZ
     Text lblTemp;
