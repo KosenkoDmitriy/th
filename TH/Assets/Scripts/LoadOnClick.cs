@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
+
 //using IniParser;
 //using IniParser.Model;
 
@@ -698,8 +699,8 @@ public class LoadOnClick : MonoBehaviour
     int year;
     bool gameEnable;
 
-    //FileIniDataParser parser;
-    //IniData iniData;
+    IniParser.FileIniDataParser parser;
+    IniParser.Model.IniData iniData;
 
     public LoadOnClick()
     {
@@ -730,10 +731,6 @@ public class LoadOnClick : MonoBehaviour
         string dataFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.dat";
         IniFileHandler.PrepareIniFile(iniFile);
 
-        if (Settings.logging) {
-            var logger = new Assets.Scripts.Logger();
-            logger.GetLogFileVars();
-        }
 
         //iniData = parser.ReadFile("TexasHoldem.ini");
 
@@ -755,6 +752,12 @@ public class LoadOnClick : MonoBehaviour
         gameDenomination /= 100;
         gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
         raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
+
+        if (Settings.logging)
+        {
+            var logger = new Assets.Scripts.Logger();
+            logger.GetLogFileVars();
+        }
 
         if (gameDenomMultiplier < 9999)
         {
