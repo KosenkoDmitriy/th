@@ -3,15 +3,71 @@ using System.IO;
 
 namespace Assets.Scripts
 {
-    class Logger
+    static class Logger
     {
-        FileHandler file;
-        public Logger()
+        static StreamWriter logWriter;
+        static StreamReader logReader;
+        static StreamWriter dataWriter;
+        static FileHandler file = new FileHandler();
+
+        public static void LogResults()
         {
-            file = new FileHandler();
+            if (Settings.logging == false)
+            {
+                return;
+            }
+            double tp = 999;
+            string writestring;
+            FileStream fs = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.log", FileMode.OpenOrCreate);
+            logWriter = new StreamWriter(fs);
+            //logReader = new StreamReader(fs);
+            //string file = logReader.ReadToEnd();
+            fs.Seek(0, SeekOrigin.End);
+
+            if (Settings.creditsWon > 0)
+            {
+                tp = 1 / (Settings.creditsPlayed / Settings.creditsWon);
+                //   //tp *= -1;
+            }
+
+            string CreditsPlayed = String.Format("{0:0.0}", Settings.creditsPlayed);
+            string CreditsWon = String.Format("{0:0.0}", Settings.creditsWon);
+            string GamePercentage = String.Format("{0:0%}", tp);
+
+            writestring = "#" + Settings.gameNumber.ToString() + " CP= " + CreditsPlayed + " CW= " + CreditsWon + " GP = " + GamePercentage;
+            try
+            {
+                //lblWinInfo.GetComponent<Text>().text += writestring + Environment.NewLine;// TODO: Where this displaying?
+                logWriter.WriteLine(writestring);
+            }
+            catch
+            {
+
+            }
+            Settings.gameNumber++;
+
+            logWriter.Close();
+            fs.Dispose();
+            logWriter.Dispose();
+
+            try
+            {
+                FileStream fds = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.dat", FileMode.OpenOrCreate);
+                dataWriter = new StreamWriter(fds);
+                fds.Seek(0, SeekOrigin.Begin);
+                dataWriter.WriteLine(Settings.gameNumber.ToString() + " " + Settings.creditsPlayed.ToString() + " " + Settings.creditsWon.ToString());
+
+                dataWriter.Close();
+                dataWriter.Dispose();
+                fds.Dispose();
+            }
+            catch
+            {
+
+            }
         }
 
-        public void GetLogFileVars()
+        public static void GetLogFileVars()
         {
             if (Settings.logging == false)
             {

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.Threading;
-using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 
@@ -649,9 +648,6 @@ public class LoadOnClick : MonoBehaviour
     //Label lblSurrender;
     //Panel panelSurrender;
 
-    StreamWriter logWriter;
-    StreamReader logReader;
-    StreamWriter dataWriter;
 
     //TODO: Add Audio/Music Support
     /*
@@ -742,8 +738,7 @@ public class LoadOnClick : MonoBehaviour
 
         if (Settings.logging)
         {
-            var logger = new Assets.Scripts.Logger();
-            logger.GetLogFileVars();
+            Assets.Scripts.Logger.GetLogFileVars();
         }
 
         if (gameDenomMultiplier < 9999)
@@ -899,7 +894,6 @@ public class LoadOnClick : MonoBehaviour
             }
             btnNewGame_Click();// sender, e);
         }
-
     }
 
     void nextPlayerTimer_Tick()//object sender, EventArgs e)
@@ -2038,11 +2032,11 @@ public class LoadOnClick : MonoBehaviour
             int rank = playerHoleCardsRankings[0] + 1;
             if ((GameState == GameStates.HoldCardBet) && (rank > surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < surrenderMinimumPair))
             {
-                btnFold_Click(btnSurrender, EventArgs.Empty);
+                btnSurrenderClick(); // _Click(btnSurrender, EventArgs.Empty);
             }
             else
             {
-                btnFold_Click(btnFold, EventArgs.Empty);
+                btnFoldClick(); // _Click(btnFold, EventArgs.Empty);
             }
             return;
         }
@@ -4723,7 +4717,6 @@ public class LoadOnClick : MonoBehaviour
             // if bet amount between 0 and max player credits then continue game
             if (betAmount == 0 || betAmount > PlayerCredits)
                 return;
-            if (Settings.isDebug) Debug.Log("0");
 
             //Invalidate();
             //Update();
@@ -4948,7 +4941,7 @@ public class LoadOnClick : MonoBehaviour
         if (btnStartGame != null) btnStartGame.GetComponent<Button>().interactable = false;
     }
 
-    private void btnAllIn_Click(object sender, EventArgs e)
+    public void btnAllInClick() //_Click((object sender, EventArgs e)
     {
         double playerCallAmount;
         double raiseValue;
@@ -4978,38 +4971,8 @@ public class LoadOnClick : MonoBehaviour
 
     }
 
-    private void btnRaise_Click(object sender, EventArgs e)
-    {
-        double raiseValue = 0;
-        double playerCallAmount;
-        betStringPtr = _raise;
 
-        panelGame.SetActive(false);
-        panelInitBet.SetActive(true);
-
-        //if (DialogResult.OK == panelInitBet.ShowDialog())//RAISE 
-        //{
-        playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
-        if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
-            return;
-        raiseValue = betAmount;//the value the player entered
-
-        //PotAmount += playerCallAmount + raiseValue;
-        playerCurrentBet += playerCallAmount + raiseValue;
-
-        PlayerCredits -= (raiseValue + playerCallAmount);
-        Settings.creditsPlayed += (raiseValue + playerCallAmount);
-        virtualPlayers[0].RoundRaiseAmount += raiseValue;
-        PlayerBet += playerCallAmount;
-        PlayerRaise += raiseValue;//update the players raise status label
-        virtualPlayerRaised = 0;
-        ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
-        //}
-        BetPlayer(CurrentBetPosition);
-    }
-
-
-    private void btnCall_Click(object sender, EventArgs e)
+    public void btnCallClick()//_Click(object sender, EventArgs e)
     {
         double pBet = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
 
@@ -5022,7 +4985,7 @@ public class LoadOnClick : MonoBehaviour
         BetPlayer(CurrentBetPosition);//do the accounting
     }
 
-    private void btnCheck_Click(object sender, EventArgs e)
+    public void btnCheckClick() //_Click(object sender, EventArgs e)
     {
         playerCurrentBet = 0;
         virtualPlayers[0].RoundChecked = true;
@@ -5198,7 +5161,7 @@ public class LoadOnClick : MonoBehaviour
         ///btnStartGame.Enabled = false;
         try
         {
-            LogResults();
+            Assets.Scripts.Logger.LogResults();
         }
         catch
         {
@@ -5383,7 +5346,7 @@ public class LoadOnClick : MonoBehaviour
         }
         try
         {
-            LogResults();
+            Assets.Scripts.Logger.LogResults();
         }
         catch
         {
@@ -5773,9 +5736,6 @@ public class LoadOnClick : MonoBehaviour
         //GetPairType(new int[] { H2, H7, S6, S7, D9 });
         //GetPairType(new int[] { H2, H6, S6, S7, D9 });
         //GetPairType(new int[] { H2, H9, S6, S7, D9 });
-
-
-
     }
 
     /*private void button_mouse_down(object sender, MouseEventArgs e)
@@ -5790,28 +5750,22 @@ public class LoadOnClick : MonoBehaviour
         button.ImageIndex = 0;
     }*/
 
-    public void btnFold_Click(object sender, EventArgs e)
+    public void btnSurrenderClick() {
+        PlayerCredits += PlayerBet / 2;//return half the bet
+        Settings.creditsWon += PlayerBet / 2;
+        WinAmount = PlayerBet / 2;
+        PlayerSurrender = true;
+        buttonPosition = 0;//reset the button position to 5
+        IncrementButtonPosition(false);
+
+        btnFoldClick();
+    }
+
+    public void btnFoldClick() //_Click(object sender, EventArgs e)
     {
-        object test;
         //buttonSound.Play();
-        if (sender != btnFold && sender != btnSurrender)
-        {
-            test = btnSurrender;
-            sender = test;
-        }
-        Button button = (Button)sender;
-        if (button == btnSurrender)
-        {
-            PlayerCredits += PlayerBet / 2;//return half the bet
-            Settings.creditsWon += PlayerBet / 2;
-            WinAmount = PlayerBet / 2;
-            PlayerSurrender = true;
-            buttonPosition = 0;//reset the button position to 5
-            IncrementButtonPosition(false);
-        }
         if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
-
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
             if (AdjustWinRank(playerWinRank) >= videoPokerLowRank)
             {
@@ -5834,7 +5788,7 @@ public class LoadOnClick : MonoBehaviour
         clearCreditLabels();
         try
         {
-            LogResults();
+            Assets.Scripts.Logger.LogResults();
         }
         catch
         {
@@ -6183,12 +6137,12 @@ public class LoadOnClick : MonoBehaviour
 
     }
 
-    private void btnAutoPlay_Click(object sender, EventArgs e)
+    public void btnAutoPlayClick()//_Click(object sender, EventArgs e)
     {
         AutoPlay = !AutoPlay;
         if (AutoPlay == true)
         {
-            btnAutoPlay.GetComponent<Text>().text = "Man. Play";
+            btnAutoPlay.GetComponentInChildren<Text>().text = "Man. Play";
             // nextPlayerTimer.Interval = 10;
             tempDelay = dealDelay;
             dealDelay = 10;
@@ -6196,7 +6150,7 @@ public class LoadOnClick : MonoBehaviour
         }
         else
         {
-            btnAutoPlay.GetComponent<Text>().text = "Auto Play";
+            btnAutoPlay.GetComponentInChildren<Text>().text = "Auto Play";
             // nextPlayerTimer.Interval = nextPlayerDelay;
             dealDelay = tempDelay;
             //gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
@@ -6211,65 +6165,6 @@ public class LoadOnClick : MonoBehaviour
         }
         return 0;
     }
-
-    private void LogResults()
-    {
-        if (Settings.logging == false)
-        {
-            return;
-        }
-        double tp = 999;
-        string writestring;
-        FileStream fs = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.log", FileMode.OpenOrCreate);
-        logWriter = new StreamWriter(fs);
-        //logReader = new StreamReader(fs);
-        //string file = logReader.ReadToEnd();
-        fs.Seek(0, SeekOrigin.End);
-
-        if (Settings.creditsWon > 0)
-        {
-            tp = 1 / (Settings.creditsPlayed / Settings.creditsWon);
-            //   //tp *= -1;
-        }
-
-        string CreditsPlayed = String.Format("{0:0.0}", Settings.creditsPlayed);
-        string CreditsWon = String.Format("{0:0.0}", Settings.creditsWon);
-        string GamePercentage = String.Format("{0:0%}", tp);
-
-        writestring = "#" + Settings.gameNumber.ToString() + " CP= " + CreditsPlayed + " CW= " + CreditsWon + " GP = " + GamePercentage;
-        try
-        {
-            lblWinInfo.GetComponent<Text>().text += writestring + Environment.NewLine;
-            logWriter.WriteLine(writestring);
-        }
-        catch
-        {
-
-        }
-        Settings.gameNumber++;
-
-        logWriter.Close();
-        fs.Dispose();
-        logWriter.Dispose();
-
-        try
-        {
-            FileStream fds = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.dat", FileMode.OpenOrCreate);
-            dataWriter = new StreamWriter(fds);
-            fds.Seek(0, SeekOrigin.Begin);
-            dataWriter.WriteLine(Settings.gameNumber.ToString() + " " + Settings.creditsPlayed.ToString() + " " + Settings.creditsWon.ToString());
-
-            dataWriter.Close();
-            dataWriter.Dispose();
-            fds.Dispose();
-        }
-        catch
-        {
-
-        }
-
-    }
-
     
     public bool isAnteBet()
     {
@@ -6278,13 +6173,13 @@ public class LoadOnClick : MonoBehaviour
         return false;
     }
 
-    private void btnRepeatBet_Click(object sender, EventArgs e)
+    public void btnRepeatBetClick()//_Click(object sender, EventArgs e)
     {
         autoStart = true;
         StartNewGame();
     }
 
-    private void addCredit_Click_1(object sender, EventArgs e)
+    private void addCredit_Click_1(object sender, EventArgs e) // TODO: ??
     {
 
         if (RealPlayerCredits < jurisdictionalLimit || jurisdictionalLimit == 0)
@@ -6297,12 +6192,11 @@ public class LoadOnClick : MonoBehaviour
         {
             // btnRepeatBet.Text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             // btnRepeatBet.SetActive(true);
-            btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             if (btnRepeatBet != null) btnRepeatBet.SetActive(true);
         }
         //btnCredit.SetActive(false);
         if (btnCredit != null) btnCredit.SetActive(false);
-
     }
 
 
@@ -6360,6 +6254,30 @@ public class LoadOnClick : MonoBehaviour
     {
         panelInitBet.SetActive(true);
         panelGame.SetActive(false);
+
+        double raiseValue = 0;
+        double playerCallAmount;
+        betStringPtr = _raise;
+
+        //if (DialogResult.OK == panelInitBet.ShowDialog())//RAISE 
+        //{
+        playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
+        if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
+            return;
+        raiseValue = betAmount;//the value the player entered
+
+        //PotAmount += playerCallAmount + raiseValue;
+        playerCurrentBet += playerCallAmount + raiseValue;
+
+        PlayerCredits -= (raiseValue + playerCallAmount);
+        Settings.creditsPlayed += (raiseValue + playerCallAmount);
+        virtualPlayers[0].RoundRaiseAmount += raiseValue;
+        PlayerBet += playerCallAmount;
+        PlayerRaise += raiseValue;//update the players raise status label
+        virtualPlayerRaised = 0;
+        ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
+        //}
+        BetPlayer(CurrentBetPosition);
     }
 
     public void btnBetNowClick()
@@ -6386,11 +6304,6 @@ public class LoadOnClick : MonoBehaviour
     {
         Settings.betCurrent = Settings.betNull;
         inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
-    }
-
-    public void btnRepeatBetClick()
-    {
-
     }
 
     void Update()
