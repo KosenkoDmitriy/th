@@ -21,7 +21,7 @@ public class LoadOnClick : MonoBehaviour
     int tempDelay = 250;
     int nextPlayerDelay = 100;
 
-    //Image[] //TODO: cardPoints = new Image[12];
+    //Image[] //TODO: cardsOfPlayer = new Image[12];
     //Text[] betLabels = new Text[Settings.playerSize];
     //Text[] creditLabels = new Text[Settings.playerSize];
 
@@ -180,7 +180,6 @@ public class LoadOnClick : MonoBehaviour
     //int _check = 4;
 
     Image[] cards = new Image[52];
-    Image cardBack;
     int[] deck = new int[52];
 
     VirtualPlayer[] virtualPlayers = new VirtualPlayer[20];
@@ -824,7 +823,6 @@ public class LoadOnClick : MonoBehaviour
         //surrenderWindow.textBox2.Text = surrenderBoxString;
 
         //formHwnd = Graphics.FromHwnd(this.Handle);
-        //cardBack =//  cardImages.Images[52];
         BuildVirtualPlayerProfiles();
         IncrementButtonPosition(false);
         GameState = GameStates.Ante;
@@ -1036,8 +1034,14 @@ public class LoadOnClick : MonoBehaviour
     }
 
 
-    public void ShuffleVirtualPlayers()
+    public void ShuffleVirtualPlayers() //TODO: fix read/write from ini file
     {
+        if (virtualPlayerCount <= 0)
+        {
+            Debug.Log("Can't ShuffleVirtualPlayers() because VirtualPlayerCount should be > 0 - NOW is: " + virtualPlayerCount.ToString());
+            return;
+        }
+
         int i;
         int[] players = new int[5];
         for (i = 0; i < 5; i++)
@@ -1058,10 +1062,7 @@ public class LoadOnClick : MonoBehaviour
                         players[i] = temp;//we have our player
                     }
                 }
-
-
             }
-
         }
         for (int x = 1; x < virtualPlayerCount; x++)
         {
@@ -1074,10 +1075,8 @@ public class LoadOnClick : MonoBehaviour
             {
                 virtualPlayers[x] = new VirtualPlayer();
                 virtualPlayers[x] = virtualTempPlayers[players[x - 1]];
-
             }
         }
-
     }
 
     public void updateBettingButtonTitle()
@@ -1279,7 +1278,7 @@ public class LoadOnClick : MonoBehaviour
     {
 
         //PaintEventArgs e = null;
-        //Rectangle labelRec = new Rectangle(//TODO: cardPoints[(player * 2) + 0].X + 61, //TODO: cardPoints[(player * 2) + 0].Y, 100, 15);
+        //Rectangle labelRec = new Rectangle(//TODO: cardsOfPlayer[(player * 2) + 0].X + 61, //TODO: cardsOfPlayer[(player * 2) + 0].Y, 100, 15);
         //Invalidate(labelRec);
         //OnPaint(e);
         //formHwnd.DrawString("          ", betLabels[player].Font, Brushes.White, betLabels[player].Location);
@@ -1329,30 +1328,30 @@ public class LoadOnClick : MonoBehaviour
     {
         //TODO:
         /*
-        //TODO: cardPoints[0].X = player0hold1.Left;
-        //TODO: cardPoints[0].Y = player0hold1.Top;
-        //TODO: cardPoints[1].X = player0hold2.Left;
-        //TODO: cardPoints[1].Y = player0hold2.Top;
-        //TODO: cardPoints[2].X = player1hold1.Left;
-        //TODO: cardPoints[2].Y = player1hold1.Top;
-        //TODO: cardPoints[3].X = player1hold2.Left;
-        //TODO: cardPoints[3].Y = player1hold2.Top;
-        //TODO: cardPoints[4].X = //  player2hold1.Image.Left;
-        //TODO: cardPoints[4].Y = //  player2hold1.Image.Top;
-        //TODO: cardPoints[5].X = player2hold2.Left;
-        //TODO: cardPoints[5].Y = player2hold2.Top;
-        //TODO: cardPoints[6].X = player3hold1.Left;
-        //TODO: cardPoints[6].Y = player3hold1.Top;
-        //TODO: cardPoints[7].X = player3hold2.Left;
-        //TODO: cardPoints[7].Y = player3hold2.Top;
-        //TODO: cardPoints[8].X = player4hold1.Left;
-        //TODO: cardPoints[8].Y = player4hold1.Top;
-        //TODO: cardPoints[9].X = player4hold2.Left;
-        //TODO: cardPoints[9].Y = player4hold2.Top;
-        //TODO: cardPoints[10].X = player5hold1.Left;
-        //TODO: cardPoints[10].Y = player5hold1.Top;
-        //TODO: cardPoints[11].X = player5hold2.Left;
-        //TODO: cardPoints[11].Y = player5hold2.Top;
+        //TODO: cardsOfPlayer[0].X = player0hold1.Left;
+        //TODO: cardsOfPlayer[0].Y = player0hold1.Top;
+        //TODO: cardsOfPlayer[1].X = player0hold2.Left;
+        //TODO: cardsOfPlayer[1].Y = player0hold2.Top;
+        //TODO: cardsOfPlayer[2].X = player1hold1.Left;
+        //TODO: cardsOfPlayer[2].Y = player1hold1.Top;
+        //TODO: cardsOfPlayer[3].X = player1hold2.Left;
+        //TODO: cardsOfPlayer[3].Y = player1hold2.Top;
+        //TODO: cardsOfPlayer[4].X = //  player2hold1.Image.Left;
+        //TODO: cardsOfPlayer[4].Y = //  player2hold1.Image.Top;
+        //TODO: cardsOfPlayer[5].X = player2hold2.Left;
+        //TODO: cardsOfPlayer[5].Y = player2hold2.Top;
+        //TODO: cardsOfPlayer[6].X = player3hold1.Left;
+        //TODO: cardsOfPlayer[6].Y = player3hold1.Top;
+        //TODO: cardsOfPlayer[7].X = player3hold2.Left;
+        //TODO: cardsOfPlayer[7].Y = player3hold2.Top;
+        //TODO: cardsOfPlayer[8].X = player4hold1.Left;
+        //TODO: cardsOfPlayer[8].Y = player4hold1.Top;
+        //TODO: cardsOfPlayer[9].X = player4hold2.Left;
+        //TODO: cardsOfPlayer[9].Y = player4hold2.Top;
+        //TODO: cardsOfPlayer[10].X = player5hold1.Left;
+        //TODO: cardsOfPlayer[10].Y = player5hold1.Top;
+        //TODO: cardsOfPlayer[11].X = player5hold2.Left;
+        //TODO: cardsOfPlayer[11].Y = player5hold2.Top;
         
         for (int x = 0; x < Settings.playerSize; x++)
         {
@@ -1360,9 +1359,9 @@ public class LoadOnClick : MonoBehaviour
             betLabels[x] = null;
             betLabels[x] = new Label();
             if (x == 0)
-                betLabels[x].Location = new Point(//TODO: cardPoints[x * 2].X + 40, //TODO: cardPoints[x * 2].Y - 20);
+                betLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X + 40, //TODO: cardsOfPlayer[x * 2].Y - 20);
             else
-                betLabels[x].Location = new Point(//TODO: cardPoints[x * 2].X + 70, //TODO: cardPoints[x * 2].Y);
+                betLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X + 70, //TODO: cardsOfPlayer[x * 2].Y);
             //betLabels[x].Name = "betLabel" + x;
             betLabels[x].GetComponent<Text>().text = "";
             betLabels[x].SetActive(false);
@@ -1378,7 +1377,7 @@ public class LoadOnClick : MonoBehaviour
             //this.Controls.Remove(creditLabels[x]);
             //creditLabels[x] = null;
             //creditLabels[x] = new Label();
-           // creditLabels[x].Location = new Point(//TODO: cardPoints[x * 2].X - 25, //TODO: cardPoints[x * 2].Y + 90);
+           // creditLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X - 25, //TODO: cardsOfPlayer[x * 2].Y + 90);
             //creditLabels[x].Name = "creditLabel" + x;
             creditLabels[x].GetComponent<Text>().text = "";
             creditLabels[x].SetActive(true);
@@ -1505,6 +1504,76 @@ public class LoadOnClick : MonoBehaviour
 
         }
     }
+    private void dealCardRefactored(int target, bool firstCard, bool cardback)
+    {
+        if (target > 0)
+        {
+            if (firstCard)
+            {
+                playerHands[target, 0] = deck[deckPtr];
+                if (cardback && testGame == false)
+                {
+                    cardsOfPlayer[target].sprite = cardsAll[52];
+                }
+                else
+                {
+                    cardsOfPlayer[target].sprite = cardsAll[playerHands[target, 0]];
+                }
+                GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
+                player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
+            }
+            else
+            {
+                playerHands[target, 1] = deck[deckPtr];
+                if (cardback)
+                {
+                    //TODO: cardsOfPlayer[3].X -= offsetX;
+                    //TODO: cardsOfPlayer[3].Y += offsetY;
+                    if (testGame == true)
+                    {
+                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
+                        cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
+
+                        //player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
+                    }
+                    else
+                    {
+                        cardsOfPlayer[3].sprite = cardsAll[52];
+                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], 52);
+                    }
+
+                }
+                else
+                {
+                    //TODO: cardsOfPlayer[3].X += offsetX;
+                    //TODO: cardsOfPlayer[3].Y -= offsetY;
+                    //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
+                    cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
+                }
+                GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
+                //  player1hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
+            }
+        }
+        else
+        { // target is 0
+            if (firstCard)
+            {
+                playerHands[target, 0] = deck[deckPtr];
+                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[0], playerHands[target, 0]);
+                cardsOfPlayer[0].sprite = cardsAll[playerHands[target, 0]];
+                GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
+            }
+            else
+            {
+                playerHands[target + 1, 1] = deck[deckPtr];
+                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[1], playerHands[target, 1]);
+                cardsOfPlayer[1].sprite = cardsAll[playerHands[target, 1]];
+                GamePlayers[target + 1].hand.cardHand[1] = playerHands[target, 1];
+            }
+        }
+
+    }
+
 
     private void dealCard(int target, bool firstCard, bool cardback)
     {
@@ -1515,13 +1584,15 @@ public class LoadOnClick : MonoBehaviour
                     if (firstCard)
                     {
                         playerHands[target, 0] = deck[deckPtr];
-                        //cardImages.Draw(formHwnd, //TODO: cardPoints[0], playerHands[target, 0]);
+                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[0], playerHands[target, 0]);
+                        cardsOfPlayer[0].sprite = cardsAll[playerHands[target, 0]];
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
-                        //cardImages.Draw(formHwnd, //TODO: cardPoints[1], playerHands[target, 1]);
+                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[1], playerHands[target, 1]);
+                        cardsOfPlayer[1].sprite = cardsAll[playerHands[target, 1]];
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
                     }
                 }
@@ -1533,42 +1604,45 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && testGame == false)
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[2], 52);
+                            cardsOfPlayer[2].sprite = cardsAll[52];
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[2], 52);
                         }
                         else
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[2], playerHands[target, 0]);
-
+                            cardsOfPlayer[2].sprite = cardsAll[playerHands[target, 0]];
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[2], playerHands[target, 0]);
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player1hold1.Image =//  cardImages.Images[playerHands[target, 0]];
+                        //player1hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
+                        player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardPoints[3].X -= offsetX;
-                            //TODO: cardPoints[3].Y += offsetY;
+                            //TODO: cardsOfPlayer[3].X -= offsetX;
+                            //TODO: cardsOfPlayer[3].Y += offsetY;
                             if (testGame == true)
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[3], playerHands[target, 1]);
+                                cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
                             }
                             else
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[3], 52);
+                                cardsOfPlayer[3].sprite = cardsAll[52];
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], 52);
                             }
-
                         }
                         else
                         {
-                            //TODO: cardPoints[3].X += offsetX;
-                            //TODO: cardPoints[3].Y -= offsetY;
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[3], playerHands[target, 1]);
-
+                            //TODO: cardsOfPlayer[3].X += offsetX;
+                            //TODO: cardsOfPlayer[3].Y -= offsetY;
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
+                            cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //  player1hold2.Image =//  cardImages.Images[playerHands[target, 1]];
+                        //  player1hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1579,14 +1653,18 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && testGame == false)
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[4], 52);
+                            cardsOfPlayer[4].sprite = cardsAll[52];
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[4], 52);
+                            cardsOfPlayer[4].sprite = cardsAll[52];
                         }
                         else
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[4], playerHands[target, 0]);
+                            cardsOfPlayer[4].sprite = cardsAll[playerHands[target, 0]];
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[4], playerHands[target, 0]);
+                            cardsOfPlayer[4].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //  player2hold1.Image.Image =//  cardImages.Images[playerHands[target, 0]];
+                        //  player2hold1.Image.Image =//  cardsAll.Images[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1594,25 +1672,28 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardPoints[5].X -= offsetX;
-                            //TODO: cardPoints[5].Y += offsetY;
+                            //TODO: cardsOfPlayer[5].X -= offsetX;
+                            //TODO: cardsOfPlayer[5].Y += offsetY;
                             if (testGame == true)
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[5], playerHands[target, 1]);
+                                cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 1]];
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], playerHands[target, 1]);
                             }
                             else
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[5], 52);
+                                cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 52]];
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], 52);
                             }
                         }
                         else
                         {
-                            //TODO: cardPoints[5].X += offsetX;
-                            //TODO: cardPoints[5].Y -= offsetY;
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[5], playerHands[target, 1]);
+                            //TODO: cardsOfPlayer[5].X += offsetX;
+                            //TODO: cardsOfPlayer[5].Y -= offsetY;
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], playerHands[target, 1]);
+                            cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player2hold2.Image =//  cardImages.Images[playerHands[target, 1]];
+                        //player2hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1624,39 +1705,42 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && testGame == false)
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[6], 52);
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[6], 52);
+                            cardsOfPlayer[6].sprite = cardsAll[52];
                         }
                         else
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[6], playerHands[target, 0]);
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[6], playerHands[target, 0]);
+                            cardsOfPlayer[6].sprite = cardsAll[playerHands[target, 1]];
+
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player3hold1.Image =//  cardImages.Images[playerHands[target, 0]];
+                        //player3hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardPoints[7].X -= offsetX;
-                            //TODO: cardPoints[7].Y += offsetY;
+                            //TODO: cardsOfPlayer[7].X -= offsetX;
+                            //TODO: cardsOfPlayer[7].Y += offsetY;
                             if (testGame == true)
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[7], playerHands[target, 1]);
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], playerHands[target, 1]);
                             }
                             else
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[7], 52);
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], 52);
                             }
                         }
                         else
                         {
-                            //TODO: cardPoints[7].X += offsetX;
-                            //TODO: cardPoints[7].Y -= offsetY;
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[7], playerHands[target, 1]);
+                            //TODO: cardsOfPlayer[7].X += offsetX;
+                            //TODO: cardsOfPlayer[7].Y -= offsetY;
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], playerHands[target, 1]);
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player3hold2.Image =//  cardImages.Images[playerHands[target, 1]];
+                        //player3hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1668,39 +1752,39 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && testGame == false)
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[8], 52);
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[8], 52);
                         }
                         else
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[8], playerHands[target, 0]);
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[8], playerHands[target, 0]);
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player4hold1.Image =//  cardImages.Images[playerHands[target, 0]];
+                        //player4hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardPoints[9].X -= offsetX;
-                            //TODO: cardPoints[9].Y += offsetY;
+                            //TODO: cardsOfPlayer[9].X -= offsetX;
+                            //TODO: cardsOfPlayer[9].Y += offsetY;
                             if (testGame == true)
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[9], playerHands[target, 1]);
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], playerHands[target, 1]);
                             }
                             else
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[9], 52);
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], 52);
                             }
                         }
                         else
                         {
-                            //TODO: cardPoints[9].X += offsetX;
-                            //TODO: cardPoints[9].Y -= offsetY;
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[9], playerHands[target, 1]);
+                            //TODO: cardsOfPlayer[9].X += offsetX;
+                            //TODO: cardsOfPlayer[9].Y -= offsetY;
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], playerHands[target, 1]);
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player4hold2.Image =//  cardImages.Images[playerHands[target, 1]];
+                        //player4hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1712,14 +1796,14 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && testGame == false)
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[10], 52);
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[10], 52);
                         }
                         else
                         {
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[10], playerHands[target, 0]);
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[10], playerHands[target, 0]);
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player5hold1.Image =//  cardImages.Images[playerHands[target, 0]];
+                        //player5hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1727,25 +1811,25 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardPoints[11].X -= offsetX;
-                            //TODO: cardPoints[11].Y += offsetY;
+                            //TODO: cardsOfPlayer[11].X -= offsetX;
+                            //TODO: cardsOfPlayer[11].Y += offsetY;
                             if (testGame == true)
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[11], playerHands[target, 1]);
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], playerHands[target, 1]);
                             }
                             else
                             {
-                                //cardImages.Draw(formHwnd, //TODO: cardPoints[11], 52);
+                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], 52);
                             }
                         }
                         else
                         {
-                            //TODO: cardPoints[11].X += offsetX;
-                            //TODO: cardPoints[11].Y -= offsetY;
-                            //cardImages.Draw(formHwnd, //TODO: cardPoints[11], playerHands[target, 1]);
+                            //TODO: cardsOfPlayer[11].X += offsetX;
+                            //TODO: cardsOfPlayer[11].Y -= offsetY;
+                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], playerHands[target, 1]);
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player5hold2.Image =//  cardImages.Images[playerHands[target, 1]];
+                        //player5hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1817,17 +1901,17 @@ public class LoadOnClick : MonoBehaviour
     private void dealFlop()
     {
         communityCards[0] = deck[deckPtr++];
-        //cardImages.Draw(formHwnd, new Point(flop1.Left, flop1.Top), communityCards[0]);
+        //cardsAll.Draw(formHwnd, new Point(flop1.Left, flop1.Top), communityCards[0]);
         Thread.Sleep(dealDelay);
         //dealSound.Play();
 
         communityCards[1] = deck[deckPtr++];
-        //cardImages.Draw(formHwnd, new Point(flop2.Left, flop2.Top), communityCards[1]);
+        //cardsAll.Draw(formHwnd, new Point(flop2.Left, flop2.Top), communityCards[1]);
         Thread.Sleep(dealDelay);
         //dealSound.Play();
 
         communityCards[2] = deck[deckPtr++];
-        //cardImages.Draw(formHwnd, new Point(flop3.Left, flop3.Top), communityCards[2]);
+        //cardsAll.Draw(formHwnd, new Point(flop3.Left, flop3.Top), communityCards[2]);
         //dealSound.Play();
         cardsDealt = 5;
         for (int x = 0; x < Settings.playerSize; x++)
@@ -1848,9 +1932,9 @@ public class LoadOnClick : MonoBehaviour
     private void dealTurn()
     {
         //turn.SetActive(true);
-        //turn.Image =//  cardImages.Images[deck[deckPtr]];
+        //turn.Image =//  cardsAll.Images[deck[deckPtr]];
         this.communityCards[3] = deck[deckPtr++];
-        //cardImages.Draw(formHwnd, new Point(turn.Left, turn.Top), communityCards[3]);
+        //cardsAll.Draw(formHwnd, new Point(turn.Left, turn.Top), communityCards[3]);
         //dealSound.Play();
 
         for (int x = 0; x < Settings.playerSize; x++)
@@ -1871,9 +1955,9 @@ public class LoadOnClick : MonoBehaviour
     private void dealRiver()
     {
         //river.SetActive(true);
-        //river.Image =//  cardImages.Images[deck[deckPtr]];
+        //river.Image =//  cardsAll.Images[deck[deckPtr]];
         this.communityCards[4] = deck[deckPtr++];
-        //cardImages.Draw(formHwnd, new Point(river.Left, river.Top), communityCards[4]);
+        //cardsAll.Draw(formHwnd, new Point(river.Left, river.Top), communityCards[4]);
         //dealSound.Play();
         for (int x = 0; x < Settings.playerSize; x++)
         {
@@ -1965,36 +2049,36 @@ public class LoadOnClick : MonoBehaviour
             }
             return;
         }
-        //cardImages.Draw(formHwnd, //TODO: cardPoints[(player * 2) + 1], 53);
+        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
         ClearPlayerCards(player);
         //
-        //TODO: cardPoints[(player * 2) + 1].X += offsetX;
-        //TODO: cardPoints[(player * 2) + 1].Y -= offsetY;
-        //cardImages.Draw(formHwnd, //TODO: cardPoints[player * 2], playerHands[player, 0]);
-        //cardImages.Draw(formHwnd, //TODO: cardPoints[(player * 2) + 1], playerHands[player, 1]);
+        //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
+        //TODO: cardsOfPlayer[(player * 2) + 1].Y -= offsetY;
+        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[player * 2], playerHands[player, 0]);
+        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], playerHands[player, 1]);
         virtualPlayers[player].Folded = true;
     }
 
     private void ShowPlayerCards(int player, bool fold)
     {
-
-
         ClearPlayerCards(player);
-        ////cardImages.Draw(formHwnd, //TODO: cardPoints[(player * 2) + 1], 53);
+        ////cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
         if (fold == true)
         {
-            //TODO: cardPoints[(player * 2) + 1].X += offsetX;
+            //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
         }
-        ////TODO: cardPoints[(player * 2) + 1].Y -= offsetY;
-        //cardImages.Draw(formHwnd, //TODO: cardPoints[player * 2], playerHands[player, 0]);
-        //cardImages.Draw(formHwnd, //TODO: cardPoints[(player * 2) + 1], playerHands[player, 1]);
+        ////TODO: cardsOfPlayer[(player * 2) + 1].Y -= offsetY;
+        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[player * 2], playerHands[player, 0]);
+        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], playerHands[player, 1]);
     }
 
     private void ClearPlayerCards(int player)
     {
         //TODO : clear player cards
-        
-        //Rectangle cardRec = new Rectangle(//TODO: cardPoints[player * 2], new Size(150, 110));
+        cardsOfPlayer[(player * 2)].sprite = cardBg;
+        cardsOfPlayer[(player * 2) + 1].sprite = cardBg;
+
+        //Rectangle cardRec = new Rectangle(//TODO: cardsOfPlayer[player * 2], new Size(150, 110));
         //Invalidate(cardRec);
         Update();
     }
@@ -4508,7 +4592,7 @@ public class LoadOnClick : MonoBehaviour
         }
         data += playerData;
         data += "," + buttonPosition.ToString();
-        //TODO Clipboard.SetText(data);
+        lblTemp.text = data;
     }
 
     private void button3_Click(object sender, EventArgs e)
@@ -4539,6 +4623,7 @@ public class LoadOnClick : MonoBehaviour
 
     private void StartNewGame()
     {
+        Debug.Log("StartNewGame()");
         virtualPlayerRaised = 0;
         flopTurnRiverRaised = false;
         if (GameState != GameStates.Ante)
@@ -4769,6 +4854,10 @@ public class LoadOnClick : MonoBehaviour
 
     public void startGame()
     {
+        Debug.Log("StartGame()");
+        //cardsOfPlayer[4].sprite = cardBg;
+        //cardsOfPlayer[5].sprite = cardBg;
+
         btnCredit.SetActive(false);
         autoStart = false;
         lastBet = anteBet;
@@ -6160,7 +6249,7 @@ public class LoadOnClick : MonoBehaviour
     public void UseTestData()
     {
         //TODO: test data ??
-        /*string data = Clipboard.GetText();
+        string data = lblTemp.text;
         string[] dataArray = data.Split(',');
         if (dataArray.GetLength(0) != 23)
         {
@@ -6190,7 +6279,7 @@ public class LoadOnClick : MonoBehaviour
         {
             IncrementButtonPosition(false);
         } while (buttonPosition != int.Parse(dataArray[22]));
-        */
+
     }
 
     private void btnAutoPlay_Click(object sender, EventArgs e)
@@ -6377,7 +6466,7 @@ public class LoadOnClick : MonoBehaviour
             return;
         }
 
-        //StartNewGame(); // start new game
+        StartNewGame(); // start new game
 
         btnStartGame.GetComponentInChildren<Text>().text = "Bet";
 
@@ -6485,6 +6574,7 @@ public class LoadOnClick : MonoBehaviour
         btnLSurrender.SetActive(false);
 
         //XYZ panel
+        lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
         panelXYZ = GameObject.Find("PanelXYZ");
         bettingGroupBox = GameObject.Find("bettingGroupBox");
         btnCredit = GameObject.Find("btnCredit");
@@ -6520,23 +6610,40 @@ public class LoadOnClick : MonoBehaviour
         player5hold1 = GameObject.Find("player5hold1");
         player5hold2 = GameObject.Find("player5hold2");
 
+        List<GameObject> cardsOfPlayerGameObjects = new List<GameObject>()
+        {
+            playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2,
+            player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2
+        };
+
+        cardsOfPlayer = new List<Image>();
+        foreach (var obj in cardsOfPlayerGameObjects)
+        {
+            cardsOfPlayer.Add(obj.GetComponent<Image>());
+        }
 
         // init cards with images/sprites
-        //Sprite sprite = Resources.Load("2_dia", typeof(Sprite)) as Sprite;
-        //playerhold1.GetComponent<Image>().sprite = sprite;
-        cardImages = new List<Sprite>();
+        cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
+        //playerhold1.GetComponent<Image>().sprite = cardBg;
+        //cardsOfPlayer[4].sprite = cardBg;
+
+        cardsAll = new List<Sprite>();
         List<string> masti = new List<string>() { "clubs", "dia", "hearts", "spades" };
         string separator = "_";
         string path = "";
         Sprite cardSprite;
         List<string> cards = new List<string>() { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
         foreach (string card in cards)
-        foreach (string mast in masti)
-        {
-            path = card + separator + mast;
-            cardSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
-            cardImages.Add(cardSprite);
-        }
+            foreach (string mast in masti)
+            {
+                path = card + separator + mast;
+                cardSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
+                cardsAll.Add(cardSprite);
+            }
+        cardsAll.Add(cardBg);
+        //cardsOfPlayer[0].sprite = cardsAll[0];
+        //cardsOfPlayer[1].sprite = cardsAll[1];
+
     }
 
 
@@ -6555,5 +6662,9 @@ public class LoadOnClick : MonoBehaviour
     int betAmount;
     double dollarAmount;
     InputField inputBetField;
-    List<Sprite> cardImages;
+    List<Sprite> cardsAll;
+    List<Image> cardsOfPlayer;
+    Sprite cardBg;
+    // panel XYZ
+    Text lblTemp;
 }
