@@ -720,7 +720,7 @@ public class LoadOnClick : MonoBehaviour
         string iniFile = Settings.pathToAssetRes + "TexasHoldem.ini";
         string logFile = Settings.pathToAssetRes + "TexasHoldem.log";
         string dataFile = Settings.pathToAssetRes + "TexasHoldem.dat";
-        //IniFileHandler.PrepareIniFile(iniFile);
+        IniFileHandler.PrepareIniFile(iniFile);
 
         int charsTransferred = 0;
         Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
@@ -1016,7 +1016,7 @@ public class LoadOnClick : MonoBehaviour
     {
         if (virtualPlayerCount <= 0)
         {
-            Debug.Log("Can't ShuffleVirtualPlayers() because VirtualPlayerCount should be > 0 - NOW is: " + virtualPlayerCount.ToString());
+            if (Settings.isDebug) Debug.Log("Can't ShuffleVirtualPlayers() because VirtualPlayerCount should be > 0 - NOW is: " + virtualPlayerCount.ToString());
             return;
         }
 

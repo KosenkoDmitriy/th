@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 static class IniFileHandler
 {
 
     public static void EraseIniFile(string iniFile)
     {
+        if (Settings.isDebug) Debug.Log("EraseIniFile");
         FileInfo fi = new FileInfo(iniFile);
         if (File.Exists(iniFile))
         {
@@ -18,10 +20,11 @@ static class IniFileHandler
 
     public static void PrepareIniFile(string iniFile)
     {
+        Console.WriteLine("PrepareIniFile path to init file: " + iniFile);
         if (File.Exists(iniFile) == false)
         {
             Console.WriteLine("recreated ini file!");
-            CreateIniFile(iniFile);
+            CreateIniFile(iniFile); //TODO: uncommented because it deleted ini file
         }
 
         int charsTransferred;
@@ -31,12 +34,13 @@ static class IniFileHandler
             Settings.iniVersion = double.Parse(IniFileHandler.GetIniString("Version", "INI Version", "0", out charsTransferred, iniFile));
             if (Settings.iniVersion != Settings.currentIniVersion)
             {
-                EraseIniFile(iniFile);
+                EraseIniFile(iniFile); //TODO: uncommented because it deleted ini file
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine("Version error" + e.Message.ToString());
+            string msg = String.Format("Version error. Current: {0}. From ini file: {1} \n msg: {2}", Settings.currentIniVersion, Settings.iniVersion,e.Message);
+            Debug.Log(msg);
             //MessageBox.Show("Version error", e.Message.ToString());
         }
     }
