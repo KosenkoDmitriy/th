@@ -1,9 +1,80 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using UnityEngine;
 
-class Utils
+static class IniFileHandler
 {
-    public Utils() { }
-    public string GetIniString(string Section, string KeyName, string Default, out int noChars, string FileName)
+
+    public static void EraseIniFile(string iniFile)
+    {
+        if (Settings.isDebug) Debug.Log("EraseIniFile");
+        FileInfo fi = new FileInfo(iniFile);
+        if (File.Exists(iniFile))
+        {
+            fi.Delete();
+
+        }
+        CreateIniFile(iniFile);
+    }
+
+    public static void PrepareIniFile(string iniFile)
+    {
+        Console.WriteLine("PrepareIniFile path to init file: " + iniFile);
+        if (File.Exists(iniFile) == false)
+        {
+            Console.WriteLine("recreated ini file!");
+            CreateIniFile(iniFile); //TODO: uncommented because it deleted ini file
+        }
+
+        int charsTransferred;
+
+        try
+        {
+            Settings.iniVersion = double.Parse(IniFileHandler.GetIniString("Version", "INI Version", "0", out charsTransferred, iniFile));
+            if (Settings.iniVersion != Settings.currentIniVersion)
+            {
+                EraseIniFile(iniFile); //TODO: uncommented because it deleted ini file
+            }
+        }
+        catch (Exception e)
+        {
+            string msg = String.Format("Version error. Current: {0}. From ini file: {1} \n msg: {2}", Settings.currentIniVersion, Settings.iniVersion,e.Message);
+            Debug.Log(msg);
+            //MessageBox.Show("Version error", e.Message.ToString());
+        }
+    }
+
+    public static void CreateIniFile(string iniFile)
+    {
+        StreamReader reader;
+        StreamWriter writer;
+        Assembly assy = Assembly.GetExecutingAssembly();
+        string[] resourseStrings = assy.GetManifestResourceNames();
+        foreach (string i in resourseStrings)
+        {
+            if (i.Contains("TexasHoldEm.ini"))
+            {
+                reader = new StreamReader(assy.GetManifestResourceStream(i));
+                FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "\\TexasHoldEm.ini", FileMode.Create);
+                writer = new StreamWriter(fs);
+                //writer.Write(reader.ReadToEnd());
+                while (reader.EndOfStream == false)
+                {
+                    string read = reader.ReadLine();
+                    if (read.Contains("INI Version"))
+                    {
+                        read = "INI Version = " + Settings.currentIniVersion.ToString();
+                    }
+                    writer.WriteLine(read);
+                }
+                writer.Close();
+                break;
+            }
+        }
+    }
+
+    public static string GetIniString(string Section, string KeyName, string Default, out int noChars, string FileName)
     {
         StreamReader reader;
         string read;
@@ -43,7 +114,7 @@ class Utils
         return read;
     }
 
-    public int GetIniInt(string Section, string KeyName, int Default, string FileName)
+    public static int GetIniInt(string Section, string KeyName, int Default, string FileName)
     {
         StreamReader reader;
         string read;
@@ -82,7 +153,7 @@ class Utils
         return int.Parse(read);
     }
 
-    public bool GetIniBool(string Section, string KeyName, bool Default, string FileName)
+    public static bool GetIniBool(string Section, string KeyName, bool Default, string FileName)
     {
         StreamReader reader;
         string read;
@@ -124,7 +195,7 @@ class Utils
         return Default;
     }
 
-    public int[] GetINIIntArray(string Section, string KeyName, int minSize, string FileName)
+    public static int[] GetINIIntArray(string Section, string KeyName, int minSize, string FileName)
     {
         int[] retArray;// = new int[100];
         int[] tempArray = new int[200];
@@ -192,7 +263,7 @@ class Utils
     }
 
 
-    public double[] GetINIDoubleArray(string Section, string KeyName, int minSize, string FileName)
+    public static double[] GetINIDoubleArray(string Section, string KeyName, int minSize, string FileName)
     {
         double[] retArray;// = new int[100];
         double[] tempArray = new double[200];
