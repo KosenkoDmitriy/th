@@ -1,5 +1,7 @@
 ﻿static class Settings
 {
+
+
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;
     public static readonly int kickerSize = 6;
@@ -21,5 +23,15 @@
     public static string dollar = "$";// { get; internal set; }
     public static double betNull = 0.00;
     public static double betCurrent = 0.00;
+
+    // ini settings
+    public static double currentIniVersion = 2.6;
+    public static double iniVersion = 0.0;
+    public static bool testGame = false;
+    public static bool logging = false;
+
+    public static int gameNumber = 1;
+    public static double creditsPlayed = 0;
+    public static double creditsWon = 0;
 }
 
