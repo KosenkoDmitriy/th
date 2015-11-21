@@ -8,9 +8,6 @@ using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 
-//using IniParser;
-//using IniParser.Model;
-
 public class LoadOnClick : MonoBehaviour
 {
     bool AutoPlay = false;
@@ -699,9 +696,6 @@ public class LoadOnClick : MonoBehaviour
     int year;
     bool gameEnable;
 
-    IniParser.FileIniDataParser parser;
-    IniParser.Model.IniData iniData;
-
     public LoadOnClick()
     {
         //parser = new FileIniDataParser();
@@ -723,16 +717,10 @@ public class LoadOnClick : MonoBehaviour
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
-
-
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string iniFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.ini";
-        string logFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.log";
-        string dataFile = Directory.GetCurrentDirectory() + "\\Assets\\TexasHoldem.dat";
-        IniFileHandler.PrepareIniFile(iniFile);
-
-
-        iniData = parser.ReadFile("TexasHoldem.ini");
+        string iniFile = Settings.pathToAssetRes + "TexasHoldem.ini";
+        string logFile = Settings.pathToAssetRes + "TexasHoldem.log";
+        string dataFile = Settings.pathToAssetRes + "TexasHoldem.dat";
+        //IniFileHandler.PrepareIniFile(iniFile);
 
         int charsTransferred = 0;
         Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
@@ -942,14 +930,13 @@ public class LoadOnClick : MonoBehaviour
         //string name = new string(' ',20);
         string[] stringArray = new string[20];
         //virtualPlayers[0] = new VirtualPlayer();//create a virtual player for the actual player
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string fileName = Directory.GetCurrentDirectory() + "\\TexasHoldem.ini";
+        string fileName = Settings.pathToAssetRes + "TexasHoldem.ini";
         do
         {
             Player = "Player" + i.ToString();
             //test to see if there is anything in the player if not we are done. 
             int charsTransferred;// = Win32Support.GetPrivateProfileString(Player, "Hole Min Threshold", null, temp, 5, currentDirectory + "\\TexasHoldem.ini");
-            string iniTest = IniFileHandler.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, currentDirectory + "\\TexasHoldem.ini");
+            string iniTest = IniFileHandler.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, Settings.pathToAssetRes + "TexasHoldem.ini");
             if (charsTransferred == 0)
             {
                 done = true;
@@ -971,7 +958,7 @@ public class LoadOnClick : MonoBehaviour
                     }
                     int testchars;
                     virtualTempPlayers[i].Name = IniFileHandler.GetIniString(Player, "Player Name", "Player " + i.ToString(), out testchars, fileName);
-                    virtualTempPlayers[i].FoldOnAnyRaise = IniFileHandler.GetIniBool(Player, "Fold On Any Raise", false, currentDirectory + "\\TexasHoldem.ini");
+                    virtualTempPlayers[i].FoldOnAnyRaise = IniFileHandler.GetIniBool(Player, "Fold On Any Raise", false, Settings.pathToAssetRes + "TexasHoldem.ini");
                     //string value;
                     virtualTempPlayers[i].HoleMinThreshold = IniFileHandler.GetIniInt(Player, "Hole Min Threshold", 72, fileName);
                     for (int x = 0; x < Settings.playerSize; x++)//lets get the raise parameters
@@ -6262,7 +6249,7 @@ public class LoadOnClick : MonoBehaviour
         }
         double tp = 999;
         string writestring;
-        FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "\\TexasHoldEm.log", FileMode.OpenOrCreate);
+        FileStream fs = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.log", FileMode.OpenOrCreate);
         logWriter = new StreamWriter(fs);
         //logReader = new StreamReader(fs);
         //string file = logReader.ReadToEnd();
@@ -6296,7 +6283,7 @@ public class LoadOnClick : MonoBehaviour
 
         try
         {
-            FileStream fds = new FileStream(Directory.GetCurrentDirectory() + "\\TexasHoldEm.dat", FileMode.OpenOrCreate);
+            FileStream fds = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.dat", FileMode.OpenOrCreate);
             dataWriter = new StreamWriter(fds);
             fds.Seek(0, SeekOrigin.Begin);
             dataWriter.WriteLine(Settings.gameNumber.ToString() + " " + Settings.creditsPlayed.ToString() + " " + Settings.creditsWon.ToString());

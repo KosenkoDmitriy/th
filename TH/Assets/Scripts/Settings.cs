@@ -1,4 +1,7 @@
-﻿static class Settings
+﻿using System.IO;
+using UnityEngine;
+
+static class Settings
 {
 
 
@@ -25,6 +28,10 @@
     public static double betCurrent = 0.00;
 
     // ini settings
+    public static string pathToAppData = Application.dataPath;// + "/Resources/";
+    public static string pathToCurDir = Directory.GetCurrentDirectory();
+    public static string pathToAssetRes = Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
+
     public static double currentIniVersion = 2.6;
     public static double iniVersion = 0.0;
     public static bool testGame = false;

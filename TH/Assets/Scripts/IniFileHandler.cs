@@ -20,6 +20,7 @@ static class IniFileHandler
     {
         if (File.Exists(iniFile) == false)
         {
+            Console.WriteLine("recreated ini file!");
             CreateIniFile(iniFile);
         }
 
