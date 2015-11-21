@@ -732,10 +732,9 @@ public class LoadOnClick : MonoBehaviour
         IniFileHandler.PrepareIniFile(iniFile);
 
 
-        //iniData = parser.ReadFile("TexasHoldem.ini");
+        iniData = parser.ReadFile("TexasHoldem.ini");
 
         int charsTransferred = 0;
-        //EraseFile(logFile);
         Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
         Settings.logging = IniFileHandler.GetIniBool("Game Parameters", "Logging", false, iniFile);
         //TODO: TestingGroupBox.Visible = Settings.testGame;
