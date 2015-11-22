@@ -11,6 +11,7 @@ public class LoadOnClick : MonoBehaviour
 {
     #region init vars
 
+    Assets.Scripts.PayTable payTable;
     bool AutoPlay = false;
 
     int offsetX = 25;//40;
@@ -28,7 +29,6 @@ public class LoadOnClick : MonoBehaviour
 
     int virtualPlayerCount = 0;
 
-    public double gameDenomination = Settings.betDx;
     public int gameDenomMultiplier = Settings.gameDenomMultiplier;
     public int raiseLimitMultiplier = Settings.raiseLimitMultiplier;
     int denomUnits;
@@ -183,7 +183,6 @@ public class LoadOnClick : MonoBehaviour
 
 
 
-    int[] PayTableAmounts = new int[] { 250, 50, 25, 9, 6, 4, 3, 2, 1 };
 
 
     public int betStringPtr;
@@ -381,7 +380,6 @@ public class LoadOnClick : MonoBehaviour
     int surrenderReturnRank = 0;
     int surrenderMinimumPair = 0;
     int highCardThreshhold = 0;
-    int paytableEntries = 9;
 
     int selectedColumn;
 
@@ -633,7 +631,7 @@ public class LoadOnClick : MonoBehaviour
     public LoadOnClick()
     {
         if (Settings.isDebug) Debug.Log("LoadOnClick()");
-        
+        payTable = new Assets.Scripts.PayTable();
     }
 
 
@@ -2817,56 +2815,44 @@ public class LoadOnClick : MonoBehaviour
 
             UpdateDynamicHelp();
             updateBettingButtonTitle();
-            //panelBettings.SetActive(true);//show the betting buttons/labels??
-            if (panelBettings != null) panelBettings.SetActive(true);
+
+            if (panelBettings != null) panelBettings.SetActive(true);  // show the betting buttons
             return;
         }
 
         btnAllIn.GetComponent<Text>().text = "ALL IN";
         CallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
         updateBettingButtonTitle();
-        panelBettings.SetActive(true); // Visible = true;//show the betting buttons
+        panelBettings.SetActive(true);  //show the betting buttons
 
-        //btnRaise.Enabled = true;//we can always raise
-        //btnAllIn.Enabled = true;//we can alway go all in
-        //btnFold.Enabled = true;//we can always fold
-        if (btnRaise != null) btnRaise.SetActive(true);
-        if (btnAllIn != null) btnAllIn.SetActive(true);
-        if (btnFold != null) btnFold.SetActive(true);
+        if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = true;  //we can always raise
+        if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = true;  //we can alway go all in
+        if (btnFold != null) btnFold.GetComponent<Button>().interactable = true;    //we can always fold
 
         if (CallAmount == 0)
         {
-            //btnCheck.Enabled = true;
-            //btnCall.Enabled = false;
-            if (btnCheck != null) btnCheck.SetActive(true);
-            if (btnCall != null) btnCall.SetActive(false);
+            if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = true;
+            if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
         }
         else
         {
-            //btnCheck.Enabled = false;
-            if (btnCheck != null) btnCheck.SetActive(false);
+            if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
 
             if (CallAmount > PlayerCredits)
             {
-                //btnCall.Enabled = false;
-                //btnRaise.Enabled = false;
-                if (btnCall != null) btnCall.SetActive(false);
-                if (btnRaise != null) btnRaise.SetActive(false);
+                if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
+                if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
             }
             else
             {
-                //btnCall.Enabled = true;
-                if (btnCall != null) btnCall.SetActive(true);
+                if (btnCall != null) btnCall.GetComponent<Button>().interactable = true;
             }
         }
         if (PlayerCredits == 0)
         {
-            //btnRaise.Enabled = false;
-            //btnCall.Enabled = false;
-            //btnAllIn.Enabled = false;
-            if (btnRaise != null) btnRaise.SetActive(false);
-            if (btnCall != null) btnCall.SetActive(false);
-            if (btnAllIn != null) btnAllIn.SetActive(false);
+            if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
+            if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
+            if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         }
 
         if (GameState == GameStates.HoldCardBet)
@@ -4112,8 +4098,8 @@ public class LoadOnClick : MonoBehaviour
             }
             PlayerBet = anteBet;
             PlayerRaise = 0;
-            int value = (int)(PlayerBet / gameDenomination);
-            denomUnits = (int)(PlayerBet / gameDenomination);
+            int value = (int)(PlayerBet / Settings.gameDenomination);
+            denomUnits = (int)(PlayerBet / Settings.gameDenomination);
             VideoMultiplier = value;
 
             if (value > 5)
@@ -4122,26 +4108,27 @@ public class LoadOnClick : MonoBehaviour
             }
             if (value < 5)
             {
-                UpdateVideoBonusMaxMultiplier(5);
+                payTable.UpdateVideoBonusMaxMultiplier(5);
             }
             else
             {
-                UpdateVideoBonusMaxMultiplier((int)playerBet);
+                payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
             }
             selectedColumn = value;
             selectedColumn = denomUnits;
-            SetPaytableSelectedColumn(selectedColumn);
+            payTable.SetPaytableSelectedColumn(selectedColumn);
             //gameOverTimer.Stop();
         }
         //TODO:
         else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
         {
-            if (Settings.isDebug) Debug.Log("ANTE 4715 code line");
+            if (Settings.isDebug) Debug.Log("ANTE 4139 code line if (btnStartGame.GetComponent<Button>().IsActive())");
 
             if (AutoPlay == true)
             {
                 betAmount = 5;
             }
+
             if (Settings.isDebug) Debug.Log("betAmount:" + betAmount + " playerCredits" + PlayerCredits);
 
             // if bet amount between 0 and max player credits then continue game
@@ -4158,8 +4145,8 @@ public class LoadOnClick : MonoBehaviour
             PlayerBet = anteBet;
             PlayerRaise = 0;
 
-            int value = (int)(PlayerBet / gameDenomination);
-            denomUnits = (int)(PlayerBet / gameDenomination);
+            int value = (int)(PlayerBet / Settings.gameDenomination);
+            denomUnits = (int)(PlayerBet / Settings.gameDenomination);
             VideoMultiplier = value;
 
             if (value > 5)
@@ -4168,15 +4155,15 @@ public class LoadOnClick : MonoBehaviour
             }
             if (value < 5)
             {
-                UpdateVideoBonusMaxMultiplier(5);
+                payTable.UpdateVideoBonusMaxMultiplier(5);
             }
             else
             {
-                UpdateVideoBonusMaxMultiplier((int)playerBet);
+                payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
             }
             selectedColumn = value;
             selectedColumn = denomUnits;
-            SetPaytableSelectedColumn(selectedColumn);
+            payTable.SetPaytableSelectedColumn(selectedColumn);
             //gameOverTimer.Stop();
         }
 
@@ -4594,9 +4581,9 @@ public class LoadOnClick : MonoBehaviour
         int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
         if (playerWinRank >= videoPokerLowRank)
         {
-            videoBonus = GetVideoPokerBonus(playerWinRank);
+            videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
             videoBonus *= videoMultiplier;
-            SetPaytableSelectedWin(playerWinRank);
+            payTable.SetPaytableSelectedWin(playerWinRank);
             if (videoBonus > 0)
             {
                 videoBonus /= split;
@@ -4654,9 +4641,9 @@ public class LoadOnClick : MonoBehaviour
                 videoBonus = 0;
                 if (playerWinRank >= videoPokerLowRank)
                 {
-                    videoBonus = GetVideoPokerBonus(playerWinRank);
+                    videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
                     videoBonus *= videoMultiplier;
-                    SetPaytableSelectedWin(playerWinRank);
+                    payTable.SetPaytableSelectedWin(playerWinRank);
                     if (videoBonus > 0)
                     {
                         videoBonus /= split;
@@ -4676,11 +4663,10 @@ public class LoadOnClick : MonoBehaviour
         if (winner == 0)
         {
             videoBonus = 0;
-
             if (playerWinRank >= videoPokerLowRank)
             {
-                videoBonus = GetVideoPokerBonus(playerWinRank);
-                SetPaytableSelectedWin(playerWinRank);
+                videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
+                payTable.SetPaytableSelectedWin(playerWinRank);
                 videoBonus *= videoMultiplier;
             }
             PlayerCredits += PotAmount;
@@ -4696,7 +4682,7 @@ public class LoadOnClick : MonoBehaviour
             string winString;
             lblWin.SetActive(true);
             int winRank = GetFiveCardRanking(winner);
-            winRank = AdjustWinRank(winRank);
+            winRank = payTable.AdjustWinRank(winRank);
             winString = PayTableStrings[ROYAL_FLUSH - winRank];
             if (winner != 0)
             {
@@ -4724,7 +4710,7 @@ public class LoadOnClick : MonoBehaviour
                 if (GameWinners[x] == true)
                 {
                     int winRank = GetFiveCardRanking(x);
-                    winRank = AdjustWinRank(winRank);
+                    winRank = payTable.AdjustWinRank(winRank);
                     string winString = PayTableStrings[ROYAL_FLUSH - winRank];
                     if (winRank == 8)
                     {
@@ -4743,9 +4729,9 @@ public class LoadOnClick : MonoBehaviour
         {
             if (playerWinRank >= videoPokerLowRank)
             {
-                videoBonus = GetVideoPokerBonus(playerWinRank);
+                videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
                 videoBonus *= videoMultiplier;
-                SetPaytableSelectedWin(playerWinRank);
+                payTable.SetPaytableSelectedWin(playerWinRank);
                 PlayerCredits += videoBonus;
                 Settings.creditsWon += videoBonus;
                 WinAmount += videoBonus;
@@ -5110,7 +5096,7 @@ public class LoadOnClick : MonoBehaviour
 
         //paytableGrid[1, 1].Selected = true;
         //paytableGrid[1, 2].Selected = true;
-        //SetPaytableSelectedColumn(9);
+        //payTable.SetPaytableSelectedColumn(9);
         //ShowPlayerCards(3);
         //SetPaytableSelectedWin(MID_THREE_OF_A_KIND);
         //RoundUp(21.6);
@@ -5145,10 +5131,10 @@ public class LoadOnClick : MonoBehaviour
         if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
-            if (AdjustWinRank(playerWinRank) >= videoPokerLowRank)
+            if (payTable.AdjustWinRank(playerWinRank) >= videoPokerLowRank)
             {
-                double videoBonus = GetVideoPokerBonus(playerWinRank);
-                SetPaytableSelectedWin(playerWinRank);
+                double videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
+                payTable.SetPaytableSelectedWin(playerWinRank);
                 videoBonus *= videoMultiplier;
                 PlayerCredits += videoBonus;
                 Settings.creditsWon += videoBonus;
@@ -5235,6 +5221,7 @@ public class LoadOnClick : MonoBehaviour
             gameOverPtr = 0;
         }
     }
+
     private void stopGameOverTimer()
     {
         //gameOverTimer.Stop();
@@ -5247,139 +5234,14 @@ public class LoadOnClick : MonoBehaviour
         //TestingGroupBox.Visible = Settings.testGame;// TODO: ??
     }
 
-    private void SetPaytableSelectedWin(int rank)
-    {
-        //TODO: grid/table
-        /*
-        SetPaytableSelectedColumn(9);//clear the grid
-        int tempRank = AdjustWinRank(rank);
-        tempRank = ROYAL_FLUSH - tempRank;
-        if (selectedColumn > paytableGrid.ColumnCount - 1)
-        {
-            selectedColumn = paytableGrid.ColumnCount - 1;
-        }
-        if (rank >= videoPokerLowRank)
-        {
-            paytableGrid[selectedColumn, tempRank].Selected = true;
-            paytableGrid[0, tempRank].Selected = true;
-        }
-        */
-    }
-
-    private void SetPaytableSelectedColumn(int column)
-    {
-        //TODO: grid/table
-        /*
-                for (int row = 0; row < paytableGrid.RowCount; row++)
-                {
-                    for (int col = 0; col < paytableGrid.ColumnCount; col++)
-                    {
-                        if (col == column)
-                        {
-                            paytableGrid[col, row].Selected = true;
-                        }
-                        else
-                        {
-                            paytableGrid[col, row].Selected = false;
-                        }
-                    }
-                }
-                if (column > paytableGrid.ColumnCount)
-                {
-
-                }
-                */
-    }
-    private void BuildVideoBonusPaytable()
-    {
-        //TODO:
-        /*
-        paytableGrid.Width = 3;
-        paytableGrid.Height = 3;
-        for (int w = 0; w < paytableGrid.ColumnCount; w++)
-        {
-            paytableGrid.Width += paytableGrid.Columns[w].Width;
-            if (w == 0)
-            {
-                paytableGrid.Columns[w].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            }
-
-        }
-
-        for (int x = 0; x < paytableEntries; x++)
-        {
-            paytableGrid.Rows.Add();
-            paytableGrid[0, x].Value = PayTableStrings[x];
-            paytableGrid[0, x].Selected = false;
-            paytableGrid.Height += paytableGrid.Rows[x].Height;
-            for (int w = 1; w < paytableGrid.ColumnCount; w++)
-            {
-                paytableGrid[w, x].Value = (PayTableAmounts[x] * w).ToString();
-
-            }
-        }
-        UpdateVideoBonusMaxMultiplier(5);
-        SetPaytableSelectedColumn(1);
-        */
-    }
-
-    private void UpdateVideoBonusMaxMultiplier(int multiplier)
-    {
-        multiplier = 5;
-        for (int x = 0; x < paytableEntries; x++)
-        {
-            if (x == 0)
-            {
-                PayTableAmounts[x] = 800;
-            }
-            //paytableGrid[paytableGrid.ColumnCount - 1, x].Value = (PayTableAmounts[x] * multiplier).ToString();
-        }
-    }
-
-    private double GetVideoPokerBonus(int rank)
-    {
-        rank = AdjustWinRank(rank);
-
-        int newRank = ROYAL_FLUSH - rank;
-        if (newRank < paytableEntries)
-        {
-            return (double)PayTableAmounts[newRank] * gameDenomination;
-        }
-        else
-        {
-            return 0;
-        }
-    }
+    
 
     private void waitButton_Click(object sender, EventArgs e)
     {
         nextPlayerWait = !nextPlayerWait;
     }
 
-    private int AdjustWinRank(int rank)
-    {
-        int retRank = 0;
-        switch (rank)
-        {
-            case ROYAL_FLUSH: retRank = ROYAL_FLUSH; break;
-            case STRAIGHT_FLUSH: retRank = ROYAL_FLUSH - 1; break;
-            case HIGH_FOUR_OF_A_KIND:
-            case MID_FOUR_OF_A_KIND:
-            case FOUR_OF_A_KIND: retRank = ROYAL_FLUSH - 2; break;
-            case FULL_HOUSE: retRank = ROYAL_FLUSH - 3; break;
-            case FLUSH: retRank = ROYAL_FLUSH - 4; break;
-            case STRAIGHT: retRank = ROYAL_FLUSH - 5; break;
-            case HIGH_THREE_OF_A_KIND:
-            case MID_THREE_OF_A_KIND:
-            case THREE_OF_A_KIND: retRank = ROYAL_FLUSH - 6; break;
-            case TWO_PAIR: retRank = ROYAL_FLUSH - 7; break;
-            case HIGH_PAIR:
-            case MID_PAIR:
-            case PAIR: retRank = ROYAL_FLUSH - 8; break;
-            default: retRank = ROYAL_FLUSH - 9; break;
-        }
-        return retRank;
-    }
+    
 
     private double RoundDown(double Amount)
     {
@@ -5452,7 +5314,6 @@ public class LoadOnClick : MonoBehaviour
             {
                 lowCard = GetCardValue(hand[x]);
             }
-
         }
         if (highHoldCard == highCard || lowHoldCard == highCard)
         {
@@ -5588,12 +5449,15 @@ public class LoadOnClick : MonoBehaviour
             panelInitBet.SetActive(false);
             return;
         }
+
+        // start assigning the betamount (getted from form input field)
         if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
         betAmountString = betAmountString.Replace("$", "");
         if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
-
-        Double.TryParse(betAmountString, out betAmount); // assign bet amount getted from form input
+        Double.TryParse(betAmountString, out betAmount);
         if (Settings.isDebug) Debug.Log("bet from form input: " + betAmount);
+        // end assigning the betamount (getted from form input field)
+
         StartNewGame(); // start new game
 
         btnStartGame.GetComponentInChildren<Text>().text = "Bet";
@@ -5642,7 +5506,7 @@ public class LoadOnClick : MonoBehaviour
     public void btnBetNowClick()
     {
         panelInitBet.SetActive(true);
-        btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
+        btnStartGame.GetComponent<Button>().GetComponentInChildren<Text>().text = "Start Game";
     }
 
     public void btnMaxBetClick()
@@ -5707,8 +5571,8 @@ public class LoadOnClick : MonoBehaviour
         // nextPlayerTimer.Interval = nextPlayerDelay = IniFileHandler.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
         virtualPlayerRaiseLimit = IniFileHandler.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
         gameEnable = IniFileHandler.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
-        gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
-        gameDenomination /= 100;
+        Settings.gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
+        Settings.gameDenomination /= Settings.GameDenominationDivider;
         gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
         raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
 
@@ -5720,13 +5584,13 @@ public class LoadOnClick : MonoBehaviour
         if (gameDenomMultiplier < 9999)
         {
             if (btnAllIn != null) btnAllIn.SetActive(false);
-            betLimit = gameDenomination * gameDenomMultiplier;
+            betLimit = Settings.gameDenomination * gameDenomMultiplier;
         }
 
-        paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+        payTable.paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
         for (int x = 0; x < 9; x++)
         {
-            PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], PayTableAmounts[x], iniFile);
+            payTable.PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], payTable.PayTableAmounts[x], iniFile);
         }
 
         foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
@@ -5755,7 +5619,7 @@ public class LoadOnClick : MonoBehaviour
             */
         }
 
-        BuildVideoBonusPaytable();
+        payTable.BuildVideoBonusPaytable();
 
         /*creditLimitWindow = new AmountWindow("PLAY CREDITS", 163, 420);
         if (jurisdictionalLimit == 0)
@@ -5774,16 +5638,17 @@ public class LoadOnClick : MonoBehaviour
         restoreCardDefaults(true);
 
         DisableBettingButtons();
-        SetPaytableSelectedColumn(9);
-        videoPokerLowRank = AdjustWinRank(ROYAL_FLUSH - (paytableEntries - 1));
-        videoPokerLowRank = adjustedRanks[paytableEntries - 1];
+        payTable.SetPaytableSelectedColumn(9);
+        videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableEntries - 1));
+        videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
     }
+
     public void Start()
     {
         if (Settings.isDebug) Debug.Log("Start()");
 
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
-        inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>();
+        inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>(); //.GetComponentInChildren<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
 
@@ -5795,6 +5660,7 @@ public class LoadOnClick : MonoBehaviour
         btnSurrender = GameObject.Find("btnSurrender");
         playerAllCredits = GameObject.Find("playerAllCredits");
 
+        /*
         if (btnCheck != null)
         {
             btnCheck.GetComponent<Button>().interactable = false;
@@ -5803,6 +5669,7 @@ public class LoadOnClick : MonoBehaviour
         if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
         if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
         if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
+        */
 
         panelGame = GameObject.Find("PanelGame");
         panelGame.SetActive(false);

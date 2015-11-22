@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\IniFileHandler.cs" />
      <Compile Include="Assets\Scripts\LoadOnClick.cs" />
      <Compile Include="Assets\Scripts\Logger.cs" />
+     <Compile Include="Assets\Scripts\PayTable.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
      <Compile Include="Assets\Scripts\VirtualPlayer.cs" />
      <Compile Include="Assets\Scripts\Win32Support.cs" />
