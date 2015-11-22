@@ -33,9 +33,6 @@ public class LoadOnClick : MonoBehaviour
     public int raiseLimitMultiplier = Settings.raiseLimitMultiplier;
     int denomUnits;
 
-    //public BetForm panelInitBet;
-    //public SurrenderForm surrenderWindow;
-
     //System.Windows.Forms.Timer gameStartTimer = new System.Windows.Forms.Timer();
     //Timer gameOverTimer = new Timer();
     //Timer nextPlayerTimer = new Timer();
@@ -595,10 +592,6 @@ public class LoadOnClick : MonoBehaviour
 
     Color pixelColor;
 
-    //Label lblSurrender;
-    //Panel panelSurrender;
-
-
     //TODO: Add Audio/Music Support
     /*
     System.Media.SoundPlayer dealSound = new System.Media.SoundPlayer(SoundResource.highlight);
@@ -702,6 +695,7 @@ public class LoadOnClick : MonoBehaviour
         {
             PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], PayTableAmounts[x], iniFile);
         }
+
         foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
         checkString = IniFileHandler.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
         callString = IniFileHandler.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
@@ -750,7 +744,7 @@ public class LoadOnClick : MonoBehaviour
         IncrementButtonPosition(false);
         GameState = GameStates.Ante;
         restoreCardDefaults(true);
-        CreateSurrenderBox();
+
         DisableBettingButtons();
         SetPaytableSelectedColumn(9);
         videoPokerLowRank = AdjustWinRank(ROYAL_FLUSH - (paytableEntries - 1));
@@ -1575,7 +1569,7 @@ public class LoadOnClick : MonoBehaviour
                             }
                             else
                             {
-                                cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 52]];
+                                cardsOfPlayer[5].sprite = cardsAll[52];
                                 //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], 52);
                             }
                         }
@@ -1978,8 +1972,6 @@ public class LoadOnClick : MonoBehaviour
     private void ShowPlayerCards(int player, bool fold)
     {
         ClearPlayerCards(player);
-        ////cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
-        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[53];
         if (fold == true)
         {
             //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
@@ -3198,26 +3190,18 @@ public class LoadOnClick : MonoBehaviour
     {
         if (virtualPlayers[0].AllIn == true)
         {
-            // btnRaise.Enabled = false;
-            // btnAllIn.Enabled = true;
-            // btnFold.Enabled = false;
             if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
             if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = true;
             if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
 
             btnAllIn.GetComponent<Text>().text = "CONTINUE";
-            // btnCheck.Enabled = false;
             if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
-
-            // btnCall.Enabled = false;
             if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
-
-            // btnSurrender.SetActive(false);
             if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
 
             UpdateDynamicHelp();
             updateBettingButtonTitle();
-            //bettingGroupBox.SetActive(true);//show the betting buttons
+            //bettingGroupBox.SetActive(true);//show the betting buttons/labels??
             if (bettingGroupBox != null) bettingGroupBox.SetActive(true);
             return;
         }
@@ -3274,74 +3258,11 @@ public class LoadOnClick : MonoBehaviour
             int rank = playerHoleCardsRankings[0] + 1;
             if (rank > surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < surrenderMinimumPair)
             {
-                //btnSurrender.SetActive(true);
-                //panelSurrender.SetActive(true);
                 if (btnSurrender != null) btnSurrender.SetActive(true);
                 if (panelSurrender != null) panelSurrender.SetActive(true);
             }
         }
         UpdateDynamicHelp();
-    }
-
-
-    public void CreateSurrenderBox()
-    {
-        //GroupBox 
-        //TODO: Handle Surrender Form
-        /*
-        panelSurrender = new Panel();
-        panelSurrender.Top = 580;
-        panelSurrender.Left = 25;
-        //panelSurrender.BackColor = Color.Red;
-        panelSurrender.Click += new EventHandler(btnFold_Click);
-
-        //this.Controls.Add(panelSurrender);
-
-        //TextBox txtSurrender = new TextBox();
-        //txtSurrender.WordWrap = true;
-        txtSurrender.GetComponent<Text>().text = surrenderBoxString;
-        //txtSurrender.Multiline = true;
-        //txtSurrender.Parent = panelSurrender;
-        //txtSurrender.BackColor = Color.Red;
-        //txtSurrender.Width = 195;
-        //txtSurrender.Height = 57;
-        //txtSurrender.Top = 10;
-        //txtSurrender.Left = 3;
-        //txtSurrender.BorderStyle = BorderStyle.None;
-        //txtSurrender.TextAlign = HorizontalAlignment.Center;
-        //txtSurrender.Click += new EventHandler(btnFold_Click);
-
-        //Label 
-        //lblSurrender = new Label();
-        //lblSurrender.Parent = panelSurrender;
-        lblSurrender.GetComponent<Text>().text = "SURRENDER";
-        //lblSurrender.Top = 67;
-        //lblSurrender.Left = 5;
-        //lblSurrender.Width = 192;
-        //lblSurrender.Font = new Font(lblSurrender.Font.FontFamily, 15, FontStyle.Bold);
-        //lblSurrender.AutoSize = true;
-        //lblSurrender.ForeColor = Color.Black;
-        //lblSurrender.Click += new EventHandler(btnFold_Click);
-
-        //lblSurrender.TextAlign = ContentAlignment.MiddleCenter;
-        //System.Windows.Forms.Timer surrenderFlashTimer = new System.Windows.Forms.Timer();
-       // surrenderFlashTimer.Interval = 500;
-       // surrenderFlashTimer.Tick += new EventHandler(surrenderFlashTimer_Tick);
-        //surrenderFlashTimer.Start();
-        */
-    }
-    bool show = false;
-    void surrenderFlashTimer_Tick()//object sender, EventArgs e)
-    {
-        show = !show;
-        if (show)
-        {
-            lblSurrender.GetComponent<Text>().text = " SURRENDER?";
-        }
-        else
-        {
-            lblSurrender.GetComponent<Text>().text = "";
-        }
     }
 
     public void UpdateDynamicHelp()
@@ -3385,27 +3306,16 @@ public class LoadOnClick : MonoBehaviour
     {
         //surrenderGroupBox = null;
 
-        //panelSurrender.SetActive(false);
-        //bettingGroupBox.SetActive(false);
-        //btnRaise.Enabled = false;
-        //btnCall.Enabled = false;
-        //btnCheck.Enabled = false;
-        //btnFold.Enabled = false;
-        //btnAllIn.Enabled = false;
-        //btnSurrender.SetActive(false);
+        //TODO: if (panelSurrender != null) panelSurrender.GetComponent<Button>().interactable = false;
+        //TODO: if (bettingGroupBox != null) bettingGroupBox.GetComponent<Button>().interactable = false;
 
-        if (panelSurrender != null) panelSurrender.GetComponent<Button>().interactable = false;
-        if (bettingGroupBox != null) bettingGroupBox.GetComponent<Button>().interactable = false;
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
         if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
         if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
         if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
         if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
-
-        ////surrenderWindow.TopMost = false;
-        ////surrenderWindow.Hide();
-
+        if (panelSurrender != null) panelSurrender.SetActive(false);
     }
 
 
@@ -6164,12 +6074,7 @@ public class LoadOnClick : MonoBehaviour
     // Init game
     public void Start()
     {
-        //panel surrender
-        panelSurrender = GameObject.Find("PanelSurrender");
-        lblSurrender = GameObject.Find("lblSurrender");
-
         panelInitBet = GameObject.FindGameObjectWithTag("PanelInitBet");
-        btnStartGame = GameObject.Find("btnStartGame");
         inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
@@ -6180,6 +6085,7 @@ public class LoadOnClick : MonoBehaviour
         btnRaise = GameObject.Find("btnRaise");
         btnFold = GameObject.Find("btnFold");
         btnSurrender = GameObject.Find("btnSurrender");
+        playerAllCredits = GameObject.Find("playerAllCredits");
 
         if (btnCheck != null)
         {
@@ -6195,14 +6101,14 @@ public class LoadOnClick : MonoBehaviour
 
         // bet panel
         btnRepeatBet = GameObject.Find("btnRepeatBet");
+        btnStartGame = GameObject.Find("btnStartGame");
 
         //left panel
         btnBetNow = GameObject.Find("btnBetNow");
         btnRepeatLastBet = GameObject.Find("btnRepeatLastBet");
         btnRepeatLastBet.SetActive(false);
-        btnLSurrender = GameObject.Find("btnLSurrender");
-        playerAllCredits = GameObject.Find("playerAllCredits");
 
+        btnLSurrender = GameObject.Find("btnLSurrender");
         btnLSurrender.SetActive(false);
 
         //XYZ panel
@@ -6223,10 +6129,12 @@ public class LoadOnClick : MonoBehaviour
         lblBettingGroup = GameObject.Find("lblBettingGroup");
 
         panelInitBet.SetActive(false);
+
         //TODO:
-        //panelSurrender = GameObject.Find("PanelSurrender");
-        //panelSurrender.SetActive(false);
-        //surrenderFlashTimer_Tick();
+        //panel surrender
+        panelSurrender = GameObject.Find("PanelSurrender");
+        lblSurrender = GameObject.Find("lblSurrender");
+        panelSurrender.SetActive(false);
 
         //cards
         playerhold1 = GameObject.Find("playerhold1");
@@ -6271,7 +6179,7 @@ public class LoadOnClick : MonoBehaviour
         cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
         cardBack = Resources.Load("card_back", typeof(Sprite)) as Sprite;
         cardsAll.Add(cardBack);
-        cardsAll.Add(cardBg);
+        cardsAll.Add(cardBg); //card with the background color
 
         //cards flop, turn, river
         cardsPublic = new List<Image>()
@@ -6281,6 +6189,22 @@ public class LoadOnClick : MonoBehaviour
             GameObject.Find("flop3").GetComponent<Image>(),
             GameObject.Find("turn").GetComponent<Image>(),
             GameObject.Find("river").GetComponent<Image>(),
+        };
+
+        //init labels for credits and bets of each player
+        betLabels = new List<Text>() {
+            GameObject.Find("lblBetPlayer1").GetComponent<Text>(),
+            GameObject.Find("lblBetPlayer2").GetComponent<Text>(),
+            GameObject.Find("lblBetPlayer3").GetComponent<Text>(),
+            GameObject.Find("lblBetPlayer4").GetComponent<Text>(),
+            GameObject.Find("lblBetPlayer5").GetComponent<Text>(),
+        };
+        creditLabels = new List<Text>() {
+            GameObject.Find("lblCreditPlayer1").GetComponent<Text>(),
+            GameObject.Find("lblCreditPlayer2").GetComponent<Text>(),
+            GameObject.Find("lblCreditPlayer3").GetComponent<Text>(),
+            GameObject.Find("lblCreditPlayer4").GetComponent<Text>(),
+            GameObject.Find("lblCreditPlayer5").GetComponent<Text>(),
         };
     }
 
@@ -6292,7 +6216,7 @@ public class LoadOnClick : MonoBehaviour
         bettingGroupBox, btnAllIn,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
-    //GameObject[] betLabels, // TODO: creditLabels; // for each player
+    List<Text> betLabels, creditLabels; // for each player
     GameObject txtSurrender, lblSurrender, lblWinInfo;//panel surrender
     GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
     double betAmount;
