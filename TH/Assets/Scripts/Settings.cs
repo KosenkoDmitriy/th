@@ -4,6 +4,7 @@ using UnityEngine;
 static class Settings
 {
     public static bool isDebug = true;
+    public static int cardsSize = 52;
 
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;

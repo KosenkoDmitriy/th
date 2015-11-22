@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 public class LoadOnClick : MonoBehaviour
 {
+    #region init vars
+
     bool AutoPlay = false;
 
     int offsetX = 25;//40;
@@ -17,11 +19,6 @@ public class LoadOnClick : MonoBehaviour
     int dealDelay = 250;
     int tempDelay = 250;
     int nextPlayerDelay = 100;
-
-    //Image[] //TODO: cardsOfPlayer = new Image[12];
-    //Text[] betLabels = new Text[Settings.playerSize];
-    //Text[] // TODO: creditLabels = new Text[Settings.playerSize];
-
 
     bool showdown = false;
     bool videoBonusWinOnly = false;
@@ -36,16 +33,12 @@ public class LoadOnClick : MonoBehaviour
     public int raiseLimitMultiplier = Settings.raiseLimitMultiplier;
     int denomUnits;
 
-
     //public BetForm panelInitBet;
     //public SurrenderForm surrenderWindow;
 
     //System.Windows.Forms.Timer gameStartTimer = new System.Windows.Forms.Timer();
     //Timer gameOverTimer = new Timer();
     //Timer nextPlayerTimer = new Timer();
-
-    //UserControl1.ControlAccessibleObject uc;
-
     int[] loop = new int[] { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5 };
     public enum cardValues
     {
@@ -159,17 +152,6 @@ public class LoadOnClick : MonoBehaviour
         Pocket
     }
 
-    //int Spade = 1;
-    //int Diamond = 2;
-    //int Club = 3;
-    //int Heart = 4;
-
-    //int CardBack = 5;
-    //int J = 11;
-    //int Q = 12;
-    //int K = 13;
-    //int A = 14;
-
     int _ante = 0;
     //int _bet = 1;
     int _raise = 2;
@@ -239,24 +221,6 @@ public class LoadOnClick : MonoBehaviour
                                                 {47, 39, 30, 51, 1, 42, 7, 34, 3, 19, 31, 43, 9, 17, 29, 37, 5},
                                             };
 
-
-
-    //const int ROYAL_FLUSH    = 15;
-    //const int STRAIGHT_FLUSH = 14;
-    //const int FOUR_OF_A_KIND   = 13;
-    //const int FULL_HOUSE = 12;
-    //const int FLUSH = 11;
-    //const int STRAIGHT = 10;
-    //const int THREE_OF_A_KIND = 9;
-    //const int TWO_PAIR = 8;
-    //const int PAIR = 7;
-    //const int FOUR_TO_A_FLUSH = 6;
-    //const int THREE_TO_A_FLUSH = 5;
-    //const int FOUR_TO_A_STRAIGHT_INSIDE = 4;
-    //const int THREE_TO_A_STRAIGHT_INSIDE = 3;
-    //const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
-    //const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
-
     public int[] adjustedRanks = new int[] {ROYAL_FLUSH,
                                                 STRAIGHT_FLUSH,
                                                 FOUR_OF_A_KIND,
@@ -289,10 +253,6 @@ public class LoadOnClick : MonoBehaviour
     const int THREE_TO_A_STRAIGHT_INSIDE = 3;
     const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
     const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
-
-
-
-
 
     cardValues[,] Group = new cardValues[,] {
                                                     {cardValues.A,  cardValues.A,  cardValues.US},//1
@@ -413,8 +373,6 @@ public class LoadOnClick : MonoBehaviour
                                                     {cardValues.A,  cardValues._4, cardValues.US},//104
                                                     {cardValues._3, cardValues._2, cardValues.S}};//105
 
-
-
     int[] communityCards = new int[5];
 
     int x = 0;
@@ -513,7 +471,6 @@ public class LoadOnClick : MonoBehaviour
             if (playerAllCredits != null) playerAllCredits.GetComponent<Text>().text = dollarAmount;
             //playerAllCredits.Invalidate();
             //playerAllCredits.Update();
-
         }
         get
         {
@@ -692,10 +649,10 @@ public class LoadOnClick : MonoBehaviour
     int year;
     bool gameEnable;
 
+    #endregion
+
     public LoadOnClick()
     {
-        //parser = new FileIniDataParser();
-
         //InitializeComponent();
         now = DateTime.Now;
         year = now.Year;
@@ -762,7 +719,7 @@ public class LoadOnClick : MonoBehaviour
         surrenderBoxString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
         realPlayerName = IniFileHandler.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
         jurisdictionalLimit = (double)IniFileHandler.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
-        
+
 
         for (int x = 1; x < 11; x++)
         {
@@ -776,7 +733,6 @@ public class LoadOnClick : MonoBehaviour
             dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
             dataGridView1.Rows[x - 1].Height = 45;
             */
-
         }
 
         BuildVideoBonusPaytable();
@@ -1101,28 +1057,23 @@ public class LoadOnClick : MonoBehaviour
             {
                 case 1:
                     player1hold1.SetActive(visible);
-                    //player1hold1.Visible = visible;
-                    //player1hold1.Invalidate(); player1hold1.Update();
                     player1hold2.SetActive(visible);
-                    //player1hold2.Visible = visible; 
-                    //player1hold2.Invalidate(); player1hold2.Update();
                     break;
                 case 2:
-                    //  player2hold1.Image.Visible = visible; ////  player2hold1.Image.Invalidate(); //  player2hold1.Image.Update();
-                    //player2hold2.Visible = visible; //player2hold2.Invalidate(); player2hold2.Update();
+                    player2hold1.SetActive(visible);
                     player2hold2.SetActive(visible);
                     break;
                 case 3:
-                    player3hold1.SetActive(visible);//.Visible = visible; //player3hold1.Invalidate(); player3hold1.Update();
-                    player3hold2.SetActive(visible);//.Visible = visible; //player3hold2.Invalidate(); player3hold2.Update();
+                    player3hold1.SetActive(visible);
+                    player3hold2.SetActive(visible);
                     break;
                 case 4:
-                    player4hold1.SetActive(visible);//Visible = visible; //player4hold1.Invalidate(); player4hold1.Update();
-                    player4hold2.SetActive(visible);//Visible = visible; //player4hold2.Invalidate(); player4hold2.Update();
+                    player4hold1.SetActive(visible);
+                    player4hold2.SetActive(visible);
                     break;
                 case 5:
-                    player5hold1.SetActive(visible);//Visible = visible; //player5hold1.Invalidate(); player5hold1.Update();
-                    player5hold2.SetActive(visible);//Visible = visible; //player5hold2.Invalidate(); player5hold2.Update();
+                    player5hold1.SetActive(visible);
+                    player5hold2.SetActive(visible);
                     break;
             }
         }
@@ -1158,8 +1109,6 @@ public class LoadOnClick : MonoBehaviour
                 UpdateCreditLabel(x);
                 //TODO:chipImageList.Draw(formHwnd, chipBoxes[x - 1].Location, getWeightedIntResult(50));
             }
-
-
         }
         if (GameState == GameStates.FlopBet)
         {
@@ -1221,8 +1170,6 @@ public class LoadOnClick : MonoBehaviour
         }
         //betLabels[player].GetComponent<Text>().text = text;
         //betLabels[player].SetActive(true);
-        //betLabels[player].Invalidate();
-        //betLabels[player].Update();
     }
 
     /*public void UpdateBetLabel(string text, int player, System.Drawing.Color color)
@@ -1230,8 +1177,6 @@ public class LoadOnClick : MonoBehaviour
         //betLabels[player].ForeColor = color;
         betLabels[player].GetComponent<Text>().text = text; //Text = text;
         betLabels[player].SetActive(true); // Visible = true;
-        //betLabels[player].Invalidate();
-        //betLabels[player].Update();
     }*/
 
     public void UpdateCreditLabel(int player)
@@ -1242,8 +1187,6 @@ public class LoadOnClick : MonoBehaviour
         string dollarAmount = String.Format("{0:C}", amount);
         // TODO: creditLabels[player].GetComponent<Text>().text = dollarAmount;
         // TODO: creditLabels[player].SetActive(true);
-        //// TODO: creditLabels[player].Invalidate();
-        //// TODO: creditLabels[player].Update();
     }
 
     public void clearBetLabel(int player)
@@ -1255,9 +1198,6 @@ public class LoadOnClick : MonoBehaviour
         //OnPaint(e);
         //formHwnd.DrawString("          ", betLabels[player].Font, Brushes.White, betLabels[player].Location);
         //betLabels[player].GetComponent<Text>().text = "";
-        //betLabels[player].Invalidate();
-        //betLabels[player].Update();//refresh
-
     }
 
     public void clearBetLabels()
@@ -1267,8 +1207,6 @@ public class LoadOnClick : MonoBehaviour
             //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
             //betLabels[x].GetComponent<Text>().text = "";
             //betLabels[x].SetActive(false);
-            //betLabels[x].Invalidate();
-            //betLabels[x].Update();
         }
     }
 
@@ -1279,8 +1217,6 @@ public class LoadOnClick : MonoBehaviour
             //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
             // TODO: creditLabels[x].GetComponent<Text>().text = "";
             // TODO: creditLabels[x].SetActive(false);
-            //// TODO: creditLabels[x].Invalidate();
-            //// TODO: creditLabels[x].Update();
         }
         clearChips();
     }
@@ -1447,16 +1383,16 @@ public class LoadOnClick : MonoBehaviour
     private void shuffleDeck()
     {
 
-        for (deckPtr = 0; deckPtr < 52; deckPtr++)
+        for (deckPtr = 0; deckPtr < Settings.cardsSize; deckPtr++)
         {
             deck[deckPtr] = 0xFF;
         }
         deckPtr = 0;
         int i;
-        for (i = 0; i < 52; i++)
+        for (i = 0; i < Settings.cardsSize; i++)
         {
             int a = 0;
-            int temp = rand.Next(52);
+            int temp = rand.Next(Settings.cardsSize);
             for (a = 0; a <= i; a++)
             {
                 if (temp == deck[a])//dupe?
@@ -1471,9 +1407,7 @@ public class LoadOnClick : MonoBehaviour
                         deck[i] = temp;//we have our card
                     }
                 }
-
             }
-
         }
     }
     private void dealCardRefactored(int target, bool firstCard, bool cardback)
@@ -1962,7 +1896,6 @@ public class LoadOnClick : MonoBehaviour
         }
         cardsDealt = 7;
         playerWithBestHand = GetPlayerWithBestHand();
-
     }
 
     private void AllInPlayer(int player)
@@ -1981,7 +1914,6 @@ public class LoadOnClick : MonoBehaviour
         virtualPlayers[player].AllIn = true;
         //ShowPlayerCards(player,false);
         UpdateCreditLabel(player);
-
     }
 
     private void RaisePlayer(int player, double amount)
@@ -2025,8 +1957,6 @@ public class LoadOnClick : MonoBehaviour
         {
             //betLabels[player].GetComponent<Text>().text = "FOLD";
             //betLabels[player].SetActive(false);
-            //betLabels[player].Update();
-            //betLabels[player].Invalidate();
             virtualPlayers[player].Folded = true;
 
             int rank = playerHoleCardsRankings[0] + 1;
@@ -2041,7 +1971,7 @@ public class LoadOnClick : MonoBehaviour
             return;
         }
         //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
-        cardsOfPlayer[(player * 2)+1].sprite = cardsAll[52];
+        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[53];
         ClearPlayerCards(player);
         //
         //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
@@ -2058,6 +1988,7 @@ public class LoadOnClick : MonoBehaviour
     {
         ClearPlayerCards(player);
         ////cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
+        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[53];
         if (fold == true)
         {
             //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
@@ -2071,17 +2002,9 @@ public class LoadOnClick : MonoBehaviour
 
     private void ClearPlayerCards(int player)
     {
-        //TODO : clear player cards
         cardsOfPlayer[(player * 2)].sprite = cardBg;
         cardsOfPlayer[(player * 2) + 1].sprite = cardBg;
-
-        //Rectangle cardRec = new Rectangle(//TODO: cardsOfPlayer[player * 2], new Size(150, 110));
-        cardsOfPlayer[player * 2].sprite = cardsAll[52];
-
-        //Invalidate(cardRec);
-        Update();
     }
-
 
     public void EvalPlayerHands(bool hole, bool flop, bool turn, bool river)
     {
@@ -4712,7 +4635,7 @@ public class LoadOnClick : MonoBehaviour
             {
                 betAmount = 5;
             }
-            if (Settings.isDebug) Debug.Log("betAmount:"+betAmount+" playerCredits" + PlayerCredits);
+            if (Settings.isDebug) Debug.Log("betAmount:" + betAmount + " playerCredits" + PlayerCredits);
 
             // if bet amount between 0 and max player credits then continue game
             if (betAmount == 0 || betAmount > PlayerCredits)
@@ -4875,12 +4798,10 @@ public class LoadOnClick : MonoBehaviour
         for (int x = 0; x < Settings.playerSize; x++)
         {
             virtualPlayers[x].CurrentBetAmount = 0;
-            ///virtualPlayers[x].Folded = false;
             virtualPlayers[x].RoundRaiseAmount = 0;
             virtualPlayers[x].RoundChecked = false;
             virtualPlayers[x].FinalHandRank = 0;
             GamePlayers[x].RoundRaiseCount = 0;
-
         }
     }
 
@@ -4896,7 +4817,6 @@ public class LoadOnClick : MonoBehaviour
             }
         }
         while (CurrentBetPosition != 0);
-
     }
 
 
@@ -4923,12 +4843,6 @@ public class LoadOnClick : MonoBehaviour
         if (GameState == GameStates.RiverBet)
         {
             GameState = GameStates.EndGame;
-        }
-        else
-        if (GameState == GameStates.EndGame)
-        {
-            //EndGame();
-            //return;
         }
         CallAmount = 0;
         ThisRoundRaisePercentage = 0;
@@ -5210,13 +5124,7 @@ public class LoadOnClick : MonoBehaviour
             }
             else
             {
-                //if (showdown)
-                //{
-                //  if (virtualPlayers[x].Folded == false)
-                //  {
                 ShowPlayerCards(x, true);
-                // }
-                //}
             }
         }
 
@@ -5352,6 +5260,7 @@ public class LoadOnClick : MonoBehaviour
         {
 
         }
+
         startGameOverTimer(true);
         bettingGroupBox.SetActive(false);
 
@@ -5396,22 +5305,11 @@ public class LoadOnClick : MonoBehaviour
                 }
                 if (tempRank > highHand || (tempRank == highHand && tempTotal > highTotal) || (tempRank == highHand && tempTotal == highTotal && tempKicker > highKicker))
                 {
-
                     highHand = tempRank;//the rank
                     highTotal = tempTotal;
                     highKicker = tempKicker;
                     winner = player;
                 }
-                //////////else
-                //////////{
-                //////////    highKicker = 0;
-                //////////    highTotal = 0;
-                //////////}
-                //if (tempKicker > highKicker)
-                //{
-                //    highKicker = tempKicker;
-                //}
-
                 virtualPlayers[player].FinalHandRank = tempRank;
                 //GamePlayers[player].hand.HandRank = temp;
             }
@@ -5506,7 +5404,6 @@ public class LoadOnClick : MonoBehaviour
                     winner = TempWinner;
                 }
             }
-
         }
         if (WinnerCount == 1)
         {
@@ -5524,8 +5421,6 @@ public class LoadOnClick : MonoBehaviour
             return 10;
         }
         return winner;
-
-
     }
 
     public int GetKickerOld(int[] sevenCardHand, int[] cardsUsed)
@@ -5549,7 +5444,6 @@ public class LoadOnClick : MonoBehaviour
                 {
                     highCard = card;
                 }
-
             }
         }
         return highCard;
@@ -5581,7 +5475,6 @@ public class LoadOnClick : MonoBehaviour
                         highHoldCard = card;
                     }
                 }
-
             }
         }
         if (highHoldCard > 0)
@@ -5660,7 +5553,6 @@ public class LoadOnClick : MonoBehaviour
             }
         }
 
-
         if (CheckForBetFinish() == true)
         {
             if (checkForPlayerWin() == true)
@@ -5680,7 +5572,6 @@ public class LoadOnClick : MonoBehaviour
             }
         }
 
-
         if (CurrentBetPosition != 0)
         {
             DisableBettingButtons();
@@ -5688,7 +5579,6 @@ public class LoadOnClick : MonoBehaviour
         }
         else
         {
-
             if (checkForPlayerWin() == true)
             {
                 AwardPlayerWin();
@@ -5709,7 +5599,6 @@ public class LoadOnClick : MonoBehaviour
                     EnableBettingButtons();
                 }
             }
-
         }
     }
 
@@ -5738,19 +5627,8 @@ public class LoadOnClick : MonoBehaviour
         //GetPairType(new int[] { H2, H9, S6, S7, D9 });
     }
 
-    /*private void button_mouse_down(object sender, MouseEventArgs e)
+    public void btnSurrenderClick()
     {
-        Button button = (Button)sender;
-        button.ImageIndex = 1;
-    }
-
-    private void button_mouse_up(object sender, MouseEventArgs e)
-    {
-        Button button = (Button)sender;
-        button.ImageIndex = 0;
-    }*/
-
-    public void btnSurrenderClick() {
         PlayerCredits += PlayerBet / 2;//return half the bet
         Settings.creditsWon += PlayerBet / 2;
         WinAmount = PlayerBet / 2;
@@ -5844,10 +5722,8 @@ public class LoadOnClick : MonoBehaviour
                 //btnRepeatBet.SetActive(true);
                 btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
                 if (btnRepeatBet != null) btnRepeatBet.SetActive(true);
-
             }
         }
-
 
         //gameOverTimer.Start();
         if (win)
@@ -5962,7 +5838,6 @@ public class LoadOnClick : MonoBehaviour
 
     private double GetVideoPokerBonus(int rank)
     {
-
         rank = AdjustWinRank(rank);
 
         int newRank = ROYAL_FLUSH - rank;
@@ -5976,16 +5851,6 @@ public class LoadOnClick : MonoBehaviour
         }
     }
 
-
-
-
-    
-
-    /* private void Form1_DoubleClick(object sender, EventArgs e)
-     {
-         Close();
-     }
-     */
     private void waitButton_Click(object sender, EventArgs e)
     {
         nextPlayerWait = !nextPlayerWait;
@@ -6165,7 +6030,7 @@ public class LoadOnClick : MonoBehaviour
         }
         return 0;
     }
-    
+
     public bool isAnteBet()
     {
         if (GameState == GameStates.Ante)
@@ -6181,7 +6046,6 @@ public class LoadOnClick : MonoBehaviour
 
     private void addCredit_Click_1(object sender, EventArgs e) // TODO: ??
     {
-
         if (RealPlayerCredits < jurisdictionalLimit || jurisdictionalLimit == 0)
         {
             RealPlayerCredits += Settings.jurisdictionalBetLimit; //1000
@@ -6209,7 +6073,6 @@ public class LoadOnClick : MonoBehaviour
         return string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
     }
 
-
     public void LoadScene(int level)
     {
         Application.LoadLevel(level);
@@ -6232,7 +6095,7 @@ public class LoadOnClick : MonoBehaviour
 
         //betAmount = Convert.ToInt32(betAmountString.Replace("$",""));
         Double.TryParse(betAmountString, out betAmount);
-        Debug.Log("bet from form input: " + betAmount );
+        Debug.Log("bet from form input: " + betAmount);
         //betAmount = 10; //TODO: assign bet amount getted from form input
         StartNewGame(); // start new game
 
@@ -6346,7 +6209,6 @@ public class LoadOnClick : MonoBehaviour
         // bet panel
         btnRepeatBet = GameObject.Find("btnRepeatBet");
 
-
         //left panel
         btnBetNow = GameObject.Find("btnBetNow");
         btnRepeatLastBet = GameObject.Find("btnRepeatLastBet");
@@ -6406,10 +6268,6 @@ public class LoadOnClick : MonoBehaviour
         }
 
         // init cards with images/sprites
-        cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
-        //playerhold1.GetComponent<Image>().sprite = cardBg;
-        //cardsOfPlayer[4].sprite = cardBg;
-
         cardsAll = new List<Sprite>();
         List<string> masti = new List<string>() { "clubs", "dia", "hearts", "spades" };
         string separator = "_";
@@ -6423,9 +6281,10 @@ public class LoadOnClick : MonoBehaviour
                 cardSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
                 cardsAll.Add(cardSprite);
             }
+        cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
+        cardBack = Resources.Load("card_back", typeof(Sprite)) as Sprite;
+        cardsAll.Add(cardBack);
         cardsAll.Add(cardBg);
-        //cardsOfPlayer[0].sprite = cardsAll[0];
-        //cardsOfPlayer[1].sprite = cardsAll[1];
 
         //cards flop, turn, river
         cardsPublic = new List<Image>()
@@ -6437,8 +6296,6 @@ public class LoadOnClick : MonoBehaviour
             GameObject.Find("river").GetComponent<Image>(),
         };
     }
-
-
 
 
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
@@ -6456,7 +6313,12 @@ public class LoadOnClick : MonoBehaviour
     InputField inputBetField;
     List<Sprite> cardsAll;
     List<Image> cardsOfPlayer, cardsPublic;
-    Sprite cardBg;
+    Sprite cardBg; // background of the desk
+    Sprite cardBack; // back card side
     // panel XYZ
     Text lblTemp;
+
+    //TODO:
+    //Text[] betLabels = new Text[Settings.playerSize];
+    //Text[] creditLabels = new Text[Settings.playerSize];
 }
