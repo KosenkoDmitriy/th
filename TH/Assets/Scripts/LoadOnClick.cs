@@ -568,9 +568,6 @@ public class LoadOnClick : MonoBehaviour
     public bool[] GameWinners = new bool[Settings.playerSize];
     public int PotSplit = 1;
 
-    Graphics formHwnd;
-
-
     bool PlayerSurrender = false;
 
     int gameOverPtr = 0;
@@ -605,10 +602,6 @@ public class LoadOnClick : MonoBehaviour
     double FlopPotAmount = 0;
     double TurnPotAmount = 0;
     double RiverPotAmount = 0;
-    //double CumulativeRaises = 0;
-    //double CumulativeCalls = 0;
-    //double CumulativeCallsOfReRaise = 0;
-    //double CumulativeReRaises = 0;
     double PlayerRaiseFoldThreshold = 0;
 
     int virtualPlayerRaised = 0;
@@ -639,116 +632,8 @@ public class LoadOnClick : MonoBehaviour
 
     public LoadOnClick()
     {
-        //InitializeComponent();
-        now = DateTime.Now;
-        year = now.Year;
-
-        //TODO:Image instructionBitmap = new Image(bonusPokerPanel.BackgroundImage);
-        //TODO:pixelColor = instructionBitmap.GetPixel(100, 100);
-
-        //dataGridView1.DefaultCellStyle.BackColor = Color.FromArgb(pixelColor.R, pixelColor.G, pixelColor.B);
-
-        //gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
-        //gameOverTimer.Tick += new EventHandler(gameOverTimer_Tick);
-
-        //TODO://chipBoxes = new Image[] { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
-
-        //nextPlayerTimer.Interval = 100;
-        //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
-
-        string iniFile = Settings.pathToAssetRes + "TexasHoldem.ini";
-        string logFile = Settings.pathToAssetRes + "TexasHoldem.log";
-        string dataFile = Settings.pathToAssetRes + "TexasHoldem.dat";
-        IniFileHandler.PrepareIniFile(iniFile);
-
-        int charsTransferred = 0;
-        Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
-        Settings.logging = IniFileHandler.GetIniBool("Game Parameters", "Logging", false, iniFile);
-        //TODO: TestingGroupBox.Visible = Settings.testGame;
-        videoBonusWinOnly = IniFileHandler.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
-        surrenderReturnRank = IniFileHandler.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
-        PlayerRaiseFoldThreshold = double.Parse(IniFileHandler.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
-        surrenderMinimumPair = IniFileHandler.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
-        highCardThreshhold = IniFileHandler.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
-        dealDelay = tempDelay = IniFileHandler.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
-        // nextPlayerTimer.Interval = nextPlayerDelay = IniFileHandler.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
-        virtualPlayerRaiseLimit = IniFileHandler.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
-        gameEnable = IniFileHandler.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
-        gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
-        gameDenomination /= 100;
-        gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
-        raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
-
-        if (Settings.logging)
-        {
-            Assets.Scripts.Logger.GetLogFileVars();
-        }
-
-        if (gameDenomMultiplier < 9999)
-        {
-            if (btnAllIn != null) btnAllIn.SetActive(false);
-            betLimit = gameDenomination * gameDenomMultiplier;
-        }
-
-        paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
-        for (int x = 0; x < 9; x++)
-        {
-            PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], PayTableAmounts[x], iniFile);
-        }
-
-        foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
-        checkString = IniFileHandler.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
-        callString = IniFileHandler.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
-        raiseString = IniFileHandler.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
-        allInString = IniFileHandler.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
-        surrenderString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
-        continueString = IniFileHandler.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
-        surrenderBoxString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
-        realPlayerName = IniFileHandler.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
-        jurisdictionalLimit = (double)IniFileHandler.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
-
-
-        for (int x = 1; x < 11; x++)
-        {
-            string instString = "Instruction " + x.ToString();
-            /*TODO: instrucionStrings[x] = IniFileHandler.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
-            if (instrucionStrings[x].Length == 0)
-                break;*/
-            //TODO: make table using GridLayoutGroup dataGridView;
-            /*dataGridView1.Rows.Add();
-            dataGridView1.Rows[x - 1].Cells[0].Value = x.ToString();
-            dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
-            dataGridView1.Rows[x - 1].Height = 45;
-            */
-        }
-
-        BuildVideoBonusPaytable();
-        //panelInitBet = new BetForm(this);
-
-        /*creditLimitWindow = new AmountWindow("PLAY CREDITS", 163, 420);
-        if (jurisdictionalLimit == 0)
-        {
-            creditLimitWindow.SetActive(false);
-        }
-
-        this.Controls.Add(creditLimitWindow);
-        */
-        PlayerCredits = Settings.playerCredits;
-        startGameOverTimer(false);
-
-        //surrenderWindow = new SurrenderForm(this);
-        //surrenderWindow.textBox2.Text = surrenderBoxString;
-
-        //formHwnd = Graphics.FromHwnd(this.Handle);
-        BuildVirtualPlayerProfiles();
-        IncrementButtonPosition(false);
-        GameState = GameStates.Ante;
-        restoreCardDefaults(true);
-
-        DisableBettingButtons();
-        SetPaytableSelectedColumn(9);
-        videoPokerLowRank = AdjustWinRank(ROYAL_FLUSH - (paytableEntries - 1));
-        videoPokerLowRank = adjustedRanks[paytableEntries - 1];
+        if (Settings.isDebug) Debug.Log("LoadOnClick()");
+        
     }
 
 
@@ -1145,8 +1030,6 @@ public class LoadOnClick : MonoBehaviour
 
     public void UpdateBetLabel(string text, int player, bool yellow)
     {
-        //clearBetLabel(player);
-        //formHwnd.DrawString(text, betLabels[player].Font, Brushes.White, betLabels[player].Location);
         if (yellow)
         {
             //betLabels[player].ForeColor = System.Drawing.Color.Yellow;
@@ -1155,43 +1038,31 @@ public class LoadOnClick : MonoBehaviour
         {
             //betLabels[player].ForeColor = System.Drawing.Color.White;
         }
-        //betLabels[player].GetComponent<Text>().text = text;
-        //betLabels[player].SetActive(true);
+        betLabels[player].GetComponent<Text>().text = text;
+        betLabels[player].SetActive(true);
     }
-
-    /*public void UpdateBetLabel(string text, int player, System.Drawing.Color color)
-    {
-        //betLabels[player].ForeColor = color;
-        betLabels[player].GetComponent<Text>().text = text; //Text = text;
-        betLabels[player].SetActive(true); // Visible = true;
-    }*/
 
     public void UpdateCreditLabel(int player)
     {
         if (player == 0) return;
-        // TODO: creditLabels[player].GetComponent<Text>().text = "";
+        creditLabels[player].GetComponent<Text>().text = "";
         double amount = virtualPlayers[player].Credits;
         string dollarAmount = String.Format("{0:C}", amount);
-        // TODO: creditLabels[player].GetComponent<Text>().text = dollarAmount;
-        // TODO: creditLabels[player].SetActive(true);
+        creditLabels[player].GetComponent<Text>().text = dollarAmount;
+        creditLabels[player].SetActive(true);
     }
 
     public void clearBetLabel(int player)
     {
-        //PaintEventArgs e = null;
-        //Rectangle labelRec = new Rectangle(//TODO: cardsOfPlayer[(player * 2) + 0].X + 61, //TODO: cardsOfPlayer[(player * 2) + 0].Y, 100, 15);
-        //OnPaint(e);
-        //formHwnd.DrawString("          ", betLabels[player].Font, Brushes.White, betLabels[player].Location);
-        //betLabels[player].GetComponent<Text>().text = "";
+        betLabels[player].GetComponent<Text>().text = "";
     }
 
     public void clearBetLabels()
     {
         for (int x = 0; x < Settings.playerSize; x++)
         {
-            //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
-            //betLabels[x].GetComponent<Text>().text = "";
-            //betLabels[x].SetActive(false);
+            betLabels[x].GetComponent<Text>().text = "";
+            betLabels[x].SetActive(false);
         }
     }
 
@@ -1199,9 +1070,8 @@ public class LoadOnClick : MonoBehaviour
     {
         for (int x = 1; x < Settings.playerSize; x++)
         {
-            //formHwnd.DrawString("          ", betLabels[x].Font, Brushes.White, betLabels[x].Location);
-            // TODO: creditLabels[x].GetComponent<Text>().text = "";
-            // TODO: creditLabels[x].SetActive(false);
+            creditLabels[x].GetComponent<Text>().text = "";
+            creditLabels[x].SetActive(false);
         }
         clearChips();
     }
@@ -1219,67 +1089,23 @@ public class LoadOnClick : MonoBehaviour
 
     public void restoreCardDefaults(bool firstPass)
     {
-        //TODO:
-        /*
-        //TODO: cardsOfPlayer[0].X = player0hold1.Left;
-        //TODO: cardsOfPlayer[0].Y = player0hold1.Top;
-        //TODO: cardsOfPlayer[1].X = player0hold2.Left;
-        //TODO: cardsOfPlayer[1].Y = player0hold2.Top;
-        //TODO: cardsOfPlayer[2].X = player1hold1.Left;
-        //TODO: cardsOfPlayer[2].Y = player1hold1.Top;
-        //TODO: cardsOfPlayer[3].X = player1hold2.Left;
-        //TODO: cardsOfPlayer[3].Y = player1hold2.Top;
-        //TODO: cardsOfPlayer[4].X = //  player2hold1.Image.Left;
-        //TODO: cardsOfPlayer[4].Y = //  player2hold1.Image.Top;
-        //TODO: cardsOfPlayer[5].X = player2hold2.Left;
-        //TODO: cardsOfPlayer[5].Y = player2hold2.Top;
-        //TODO: cardsOfPlayer[6].X = player3hold1.Left;
-        //TODO: cardsOfPlayer[6].Y = player3hold1.Top;
-        //TODO: cardsOfPlayer[7].X = player3hold2.Left;
-        //TODO: cardsOfPlayer[7].Y = player3hold2.Top;
-        //TODO: cardsOfPlayer[8].X = player4hold1.Left;
-        //TODO: cardsOfPlayer[8].Y = player4hold1.Top;
-        //TODO: cardsOfPlayer[9].X = player4hold2.Left;
-        //TODO: cardsOfPlayer[9].Y = player4hold2.Top;
-        //TODO: cardsOfPlayer[10].X = player5hold1.Left;
-        //TODO: cardsOfPlayer[10].Y = player5hold1.Top;
-        //TODO: cardsOfPlayer[11].X = player5hold2.Left;
-        //TODO: cardsOfPlayer[11].Y = player5hold2.Top;
-        
         for (int x = 0; x < Settings.playerSize; x++)
         {
-            this.Controls.Remove(betLabels[x]);
-            betLabels[x] = null;
-            betLabels[x] = new Label();
-            if (x == 0)
-                betLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X + 40, //TODO: cardsOfPlayer[x * 2].Y - 20);
-            else
-                betLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X + 70, //TODO: cardsOfPlayer[x * 2].Y);
-            //betLabels[x].Name = "betLabel" + x;
-            betLabels[x].GetComponent<Text>().text = "";
-            betLabels[x].SetActive(false);
-            //betLabels[x].Font = label1.Font;
-            //betLabels[x].BackColor = label1.BackColor;
-
-            //betLabels[x].AutoSize = true;
-            //this.Controls.Add(betLabels[x]);
+            if (betLabels[x] != null)
+            {
+                betLabels[x].GetComponent<Text>().text = ""; //TODO: null object
+                betLabels[x].SetActive(false);
+            }
         }
 
         for (int x = 1; x < Settings.playerSize; x++)
         {
-            //this.Controls.Remove(// TODO: creditLabels[x]);
-            //// TODO: creditLabels[x] = null;
-            //// TODO: creditLabels[x] = new Label();
-           // // TODO: creditLabels[x].Location = new Point(//TODO: cardsOfPlayer[x * 2].X - 25, //TODO: cardsOfPlayer[x * 2].Y + 90);
-            //// TODO: creditLabels[x].Name = "creditLabel" + x;
-            // TODO: creditLabels[x].GetComponent<Text>().text = "";
-            // TODO: creditLabels[x].SetActive(true);
-            //// TODO: creditLabels[x].Font = label1.Font;
-            //// TODO: creditLabels[x].BackColor = label1.BackColor;
-            //// TODO: creditLabels[x].AutoSize = true;
-            //this.Controls.Add(// TODO: creditLabels[x]);
+            if (creditLabels[x] != null)
+            {
+                creditLabels[x].GetComponent<Text>().text = "";
+                creditLabels[x].SetActive(true); // GetComponentInParent<GameObject>().SetActive(true);
+            }
         }
-        */
     }
 
 
@@ -1303,66 +1129,12 @@ public class LoadOnClick : MonoBehaviour
         deck[5] = gaffHand[element, 10];// 5
         deck[11] = gaffHand[element, 11];//5
 
-
         deck[12] = gaffHand[element, 12];//flop 1
         deck[13] = gaffHand[element, 13];//flop 2//17
         deck[14] = gaffHand[element, 14];//flop 3
 
         deck[15] = gaffHand[element, 15];//turn
         deck[16] = gaffHand[element, 16];//river
-
-        //deck[0] = H6;// 0 1
-        //deck[6] = DJ;// 0 2
-
-        //deck[1] = HA;// 1
-        //deck[7] = SA;// 1 
-
-        //deck[2] = H7;// 2
-        //deck[8] = ST;// 2
-
-        //deck[3] = SQ;// 3
-        //deck[9] = CT;// 3
-
-        //deck[4] = H9;// 4
-        //deck[10] = S4;//4
-
-        //deck[5] = S9;// 5
-        //deck[11] = HJ;//5
-
-
-        //deck[12] = H2;//flop 1
-        //deck[13] = S2;//flop 2//17
-        //deck[14] = HA;//flop 3
-
-        //deck[15] = CJ;//turn
-        //deck[16] = D8;//river
-        // P 
-        //deck[0] = D5;// 0 1
-        //deck[6] = HA;// 0 2
-
-        //deck[1] = C3;// 1
-        //deck[7] = H4;// 1 
-
-        //deck[2] = S4;// 2
-        //deck[8] = H3;// 2
-
-        //deck[3] = DJ;// 3
-        //deck[9] = S5;// 3
-
-        //deck[4] = SQ;// 4
-        //deck[10] = HT;//4
-
-        //deck[5] = S2;// 5
-        //deck[11] = D3;//5
-
-
-        //deck[12] = C9;//flop 1
-        //deck[13] = D9;//flop 2//17
-        //deck[14] = S8;//flop 3
-
-        //deck[15] = DA;//turn
-        //deck[16] = ST;//river
-
     }
 
     private void shuffleDeck()
@@ -1395,75 +1167,6 @@ public class LoadOnClick : MonoBehaviour
             }
         }
     }
-    private void dealCardRefactored(int target, bool firstCard, bool cardback)
-    {
-        if (target > 0)
-        {
-            if (firstCard)
-            {
-                playerHands[target, 0] = deck[deckPtr];
-                if (cardback && Settings.testGame == false)
-                {
-                    cardsOfPlayer[target].sprite = cardsAll[52];
-                }
-                else
-                {
-                    cardsOfPlayer[target].sprite = cardsAll[playerHands[target, 0]];
-                }
-                GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
-            }
-            else
-            {
-                playerHands[target, 1] = deck[deckPtr];
-                if (cardback)
-                {
-                    //TODO: cardsOfPlayer[3].X -= offsetX;
-                    //TODO: cardsOfPlayer[3].Y += offsetY;
-                    if (Settings.testGame == true)
-                    {
-                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
-                        cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
-
-                        //player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
-                    }
-                    else
-                    {
-                        cardsOfPlayer[3].sprite = cardsAll[52];
-                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], 52);
-                    }
-                }
-                else
-                {
-                    //TODO: cardsOfPlayer[3].X += offsetX;
-                    //TODO: cardsOfPlayer[3].Y -= offsetY;
-                    //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
-                    cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
-                }
-                GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                //  player1hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
-            }
-        }
-        else
-        { // target is 0
-            if (firstCard)
-            {
-                playerHands[target, 0] = deck[deckPtr];
-                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[0], playerHands[target, 0]);
-                cardsOfPlayer[0].sprite = cardsAll[playerHands[target, 0]];
-                GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-            }
-            else
-            {
-                playerHands[target + 1, 1] = deck[deckPtr];
-                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[1], playerHands[target, 1]);
-                cardsOfPlayer[1].sprite = cardsAll[playerHands[target, 1]];
-                GamePlayers[target + 1].hand.cardHand[1] = playerHands[target, 1];
-            }
-        }
-
-    }
-
 
     private void dealCard(int target, bool firstCard, bool cardback)
     {
@@ -1474,14 +1177,12 @@ public class LoadOnClick : MonoBehaviour
                     if (firstCard)
                     {
                         playerHands[target, 0] = deck[deckPtr];
-                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[0], playerHands[target, 0]);
                         cardsOfPlayer[0].sprite = cardsAll[playerHands[target, 0]];
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
-                        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[1], playerHands[target, 1]);
                         cardsOfPlayer[1].sprite = cardsAll[playerHands[target, 1]];
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
                     }
@@ -1495,15 +1196,12 @@ public class LoadOnClick : MonoBehaviour
                         if (cardback && Settings.testGame == false)
                         {
                             cardsOfPlayer[2].sprite = cardsAll[52];
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[2], 52);
                         }
                         else
                         {
                             cardsOfPlayer[2].sprite = cardsAll[playerHands[target, 0]];
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[2], playerHands[target, 0]);
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player1hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
                         player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
@@ -1511,28 +1209,21 @@ public class LoadOnClick : MonoBehaviour
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardsOfPlayer[3].X -= offsetX;
-                            //TODO: cardsOfPlayer[3].Y += offsetY;
                             if (Settings.testGame == true)
                             {
                                 cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
                             }
                             else
                             {
                                 cardsOfPlayer[3].sprite = cardsAll[52];
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], 52);
                             }
                         }
                         else
                         {
-                            //TODO: cardsOfPlayer[3].X += offsetX;
-                            //TODO: cardsOfPlayer[3].Y -= offsetY;
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[3], playerHands[target, 1]);
                             cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //  player1hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
+                        player1hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1544,44 +1235,34 @@ public class LoadOnClick : MonoBehaviour
                         if (cardback && Settings.testGame == false)
                         {
                             cardsOfPlayer[4].sprite = cardsAll[52];
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[4], 52);
                         }
                         else
                         {
                             cardsOfPlayer[4].sprite = cardsAll[playerHands[target, 0]];
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[4], playerHands[target, 0]);
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //  player2hold1.Image.Image =//  cardsAll.Images[playerHands[target, 0]];
+                        player2hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
-
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardsOfPlayer[5].X -= offsetX;
-                            //TODO: cardsOfPlayer[5].Y += offsetY;
                             if (Settings.testGame == true)
                             {
                                 cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 1]];
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], playerHands[target, 1]);
                             }
                             else
                             {
                                 cardsOfPlayer[5].sprite = cardsAll[52];
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], 52);
                             }
                         }
                         else
                         {
-                            //TODO: cardsOfPlayer[5].X += offsetX;
-                            //TODO: cardsOfPlayer[5].Y -= offsetY;
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[5], playerHands[target, 1]);
                             cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player2hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
+                        player2hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1589,49 +1270,38 @@ public class LoadOnClick : MonoBehaviour
                 {
                     if (firstCard)
                     {
-
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && Settings.testGame == false)
                         {
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[6], 52);
                             cardsOfPlayer[6].sprite = cardsAll[52];
                         }
                         else
                         {
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[6], playerHands[target, 0]);
-                            cardsOfPlayer[6].sprite = cardsAll[playerHands[target, 1]];
-
+                            cardsOfPlayer[6].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player3hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
+                        player3hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardsOfPlayer[7].X -= offsetX;
-                            //TODO: cardsOfPlayer[7].Y += offsetY;
                             if (Settings.testGame == true)
                             {
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], playerHands[target, 1]);
                                 cardsOfPlayer[7].sprite = cardsAll[playerHands[target, 1]];
                             }
                             else
                             {
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], 52);
                                 cardsOfPlayer[7].sprite = cardsAll[52];
                             }
                         }
                         else
                         {
-                            //TODO: cardsOfPlayer[7].X += offsetX;
-                            //TODO: cardsOfPlayer[7].Y -= offsetY;
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[7], playerHands[target, 1]);
                             cardsOfPlayer[7].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player3hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
+                        player3hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1639,48 +1309,38 @@ public class LoadOnClick : MonoBehaviour
                 {
                     if (firstCard)
                     {
-
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && Settings.testGame == false)
                         {
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[8], 52);
                             cardsOfPlayer[8].sprite = cardsAll[52];
                         }
                         else
                         {
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[8], playerHands[target, 0]);
                             cardsOfPlayer[8].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player4hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
+                        player4hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardsOfPlayer[9].X -= offsetX;
-                            //TODO: cardsOfPlayer[9].Y += offsetY;
                             if (Settings.testGame == true)
                             {
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], playerHands[target, 1]);
                                 cardsOfPlayer[9].sprite = cardsAll[playerHands[target, 1]];
                             }
                             else
                             {
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], 52);
                                 cardsOfPlayer[9].sprite = cardsAll[52];
                             }
                         }
                         else
                         {
-                            //TODO: cardsOfPlayer[9].X += offsetX;
-                            //TODO: cardsOfPlayer[9].Y -= offsetY;
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[9], playerHands[target, 1]);
                             cardsOfPlayer[9].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player4hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
+                        player4hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1688,48 +1348,38 @@ public class LoadOnClick : MonoBehaviour
                 {
                     if (firstCard)
                     {
-
                         playerHands[target, 0] = deck[deckPtr];
                         if (cardback && Settings.testGame == false)
                         {
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[10], 52);
                             cardsOfPlayer[10].sprite = cardsAll[52];
                         }
                         else
                         {
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[10], playerHands[target, 0]);
                             cardsOfPlayer[10].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        //player5hold1.Image =//  cardsAll.Images[playerHands[target, 0]];
+                        player5hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
                         playerHands[target, 1] = deck[deckPtr];
                         if (cardback)
                         {
-                            //TODO: cardsOfPlayer[11].X -= offsetX;
-                            //TODO: cardsOfPlayer[11].Y += offsetY;
                             if (Settings.testGame == true)
                             {
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], playerHands[target, 1]);
                                 cardsOfPlayer[11].sprite = cardsAll[playerHands[target, 1]];
                             }
                             else
                             {
-                                //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], 52);
                                 cardsOfPlayer[11].sprite = cardsAll[52];
                             }
                         }
                         else
                         {
-                            //TODO: cardsOfPlayer[11].X += offsetX;
-                            //TODO: cardsOfPlayer[11].Y -= offsetY;
-                            //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[11], playerHands[target, 1]);
                             cardsOfPlayer[11].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        //player5hold2.Image =//  cardsAll.Images[playerHands[target, 1]];
+                        player5hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1800,21 +1450,18 @@ public class LoadOnClick : MonoBehaviour
     private void dealFlop()
     {
         communityCards[0] = deck[deckPtr++];
-        //cardsAll.Draw(formHwnd, new Point(flop1.Left, flop1.Top), communityCards[0]);
         cardsPublic[0].sprite = cardsAll[communityCards[0]];
 
         Thread.Sleep(dealDelay);
         //dealSound.Play();
 
         communityCards[1] = deck[deckPtr++];
-        //cardsAll.Draw(formHwnd, new Point(flop2.Left, flop2.Top), communityCards[1]);
         cardsPublic[1].sprite = cardsAll[communityCards[1]];
 
         Thread.Sleep(dealDelay);
         //dealSound.Play();
 
         communityCards[2] = deck[deckPtr++];
-        //cardsAll.Draw(formHwnd, new Point(flop3.Left, flop3.Top), communityCards[2]);
         cardsPublic[2].sprite = cardsAll[communityCards[2]];
 
         //dealSound.Play();
@@ -1836,10 +1483,7 @@ public class LoadOnClick : MonoBehaviour
     }
     private void dealTurn()
     {
-        //turn.SetActive(true);
-        //turn.Image =//  cardsAll.Images[deck[deckPtr]];
         this.communityCards[3] = deck[deckPtr++];
-        //cardsAll.Draw(formHwnd, new Point(turn.Left, turn.Top), communityCards[3]);
         cardsPublic[3].sprite = cardsAll[communityCards[3]];
 
         //dealSound.Play();
@@ -1861,10 +1505,7 @@ public class LoadOnClick : MonoBehaviour
 
     private void dealRiver()
     {
-        //river.SetActive(true);
-        //river.Image =//  cardsAll.Images[deck[deckPtr]];
         this.communityCards[4] = deck[deckPtr++];
-        //cardsAll.Draw(formHwnd, new Point(river.Left, river.Top), communityCards[4]);
         cardsPublic[4].sprite = cardsAll[communityCards[4]];
 
         //dealSound.Play();
@@ -1903,10 +1544,6 @@ public class LoadOnClick : MonoBehaviour
 
     private void RaisePlayer(int player, double amount)
     {
-        // betLabels[player].Text = "RAISE " + amount.ToString();
-        //[player].SetActive(true);
-        //formHwnd.DrawString("RAISE " + amount.ToString(), betLabels[player].Font, Brushes.White, betLabels[player].Location);
-
         string dollarAmount = String.Format("{0:C}", amount);
         UpdateBetLabel("RAISE " + dollarAmount, player, true);
         UpdateCreditLabel(player);
@@ -1916,23 +1553,13 @@ public class LoadOnClick : MonoBehaviour
 
     private void CallPlayer(int player)
     {
-
-        //TextRenderer.DrawText(formHwnd ,"CALL",betLabels[player].Font,betLabels[player].Location);
-        //formHwnd.DrawString("CALL", betLabels[player].Font, Brushes.White, betLabels[player].Location);
-        //betLabels[player].Text = "CALL";
-        //betLabels[player].SetActive(true);
         UpdateBetLabel("CALL", player, false);
         UpdateCreditLabel(player);
-        //callSound.Play();
-
     }
 
     private void CheckPlayer(int player)
     {
-        //betLabels[player].Text = "CHECK";
-        //betLabels[player].SetActive(true);
         UpdateBetLabel("CHECK", player, false);
-        //formHwnd.DrawString("CHECK", betLabels[player].Font, Brushes.White, betLabels[player].Location);
         virtualPlayers[player].RoundChecked = true;
     }
 
@@ -1940,29 +1567,23 @@ public class LoadOnClick : MonoBehaviour
     {
         if (player == 0)
         {
-            //betLabels[player].GetComponent<Text>().text = "FOLD";
-            //betLabels[player].SetActive(false);
+            betLabels[player].GetComponent<Text>().text = "FOLD";
             virtualPlayers[player].Folded = true;
 
             int rank = playerHoleCardsRankings[0] + 1;
             if ((GameState == GameStates.HoldCardBet) && (rank > surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < surrenderMinimumPair))
             {
-                btnSurrenderClick(); // _Click(btnSurrender, EventArgs.Empty);
+                btnSurrenderClick();
             }
             else
             {
-                btnFoldClick(); // _Click(btnFold, EventArgs.Empty);
+                btnFoldClick();
             }
             return;
         }
-        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], 53);
         cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[53];
         ClearPlayerCards(player);
-        //
-        //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
-        //TODO: cardsOfPlayer[(player * 2) + 1].Y -= offsetY;
-        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[player * 2], playerHands[player, 0]);
-        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], playerHands[player, 1]);
+
         cardsOfPlayer[player * 2].sprite = cardsAll[playerHands[player, 0]];
         cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 1]];
 
@@ -1976,9 +1597,6 @@ public class LoadOnClick : MonoBehaviour
         {
             //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
         }
-        ////TODO: cardsOfPlayer[(player * 2) + 1].Y -= offsetY;
-        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[player * 2], playerHands[player, 0]);
-        //cardsAll.Draw(formHwnd, //TODO: cardsOfPlayer[(player * 2) + 1], playerHands[player, 1]);
         cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 0]];
         cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 1]];
     }
@@ -2010,7 +1628,6 @@ public class LoadOnClick : MonoBehaviour
             if (flop == true)
             {
                 suited = false;
-
             }
             if (x < Settings.playerSize)
             {
@@ -2022,7 +1639,6 @@ public class LoadOnClick : MonoBehaviour
                 if (firstCard > secondCard)
                 {
                     virtualPlayers[x].HighCard = firstCard;
-
                 }
                 else
                 {
@@ -3201,15 +2817,15 @@ public class LoadOnClick : MonoBehaviour
 
             UpdateDynamicHelp();
             updateBettingButtonTitle();
-            //bettingGroupBox.SetActive(true);//show the betting buttons/labels??
-            if (bettingGroupBox != null) bettingGroupBox.SetActive(true);
+            //panelBettings.SetActive(true);//show the betting buttons/labels??
+            if (panelBettings != null) panelBettings.SetActive(true);
             return;
         }
 
         btnAllIn.GetComponent<Text>().text = "ALL IN";
         CallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
         updateBettingButtonTitle();
-        bettingGroupBox.SetActive(true); // Visible = true;//show the betting buttons
+        panelBettings.SetActive(true); // Visible = true;//show the betting buttons
 
         //btnRaise.Enabled = true;//we can always raise
         //btnAllIn.Enabled = true;//we can alway go all in
@@ -3307,7 +2923,7 @@ public class LoadOnClick : MonoBehaviour
         //surrenderGroupBox = null;
 
         //TODO: if (panelSurrender != null) panelSurrender.GetComponent<Button>().interactable = false;
-        //TODO: if (bettingGroupBox != null) bettingGroupBox.GetComponent<Button>().interactable = false;
+        //TODO: if (panelBettings != null) panelBettings.GetComponent<Button>().interactable = false;
 
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
         if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
@@ -3452,9 +3068,9 @@ public class LoadOnClick : MonoBehaviour
                             }
                         else
                         {
+                            if (Settings.isDebug) Debug.LogError("error in BetTypes.checking ( lets see if we are going all in )");
                             //TODO: MessageBox.Show("error in BetTypes.checking ( lets see if we are going all in )");
                         }
-
                     }
                     if (BetType == BetTypes.checking)//lets see if we are going to Slow play
                     {
@@ -3470,7 +3086,6 @@ public class LoadOnClick : MonoBehaviour
                                 }
                             }
                         }
-
                     }
                     if (bluff == true)//are we bluffing
                     {
@@ -4148,10 +3763,7 @@ public class LoadOnClick : MonoBehaviour
             {
                 BetType = BetTypes.calling;
             }
-            //CumulativeRaises = 0;
-            //CumulativeCalls = 0;
-            //CumulativeCallsOfReRaise = 0;
-            //CumulativeReRaises = 0;
+
             if (virtualPlayers[0].AllIn == true)
             {
                 if (BetType == BetTypes.folding)//this player is attempting to fold
@@ -4162,9 +3774,6 @@ public class LoadOnClick : MonoBehaviour
                     }
                 }
             }
-
-
-
             if (virtualPlayers[player].AllIn == true)
             {
                 AllInPlayer(player);
@@ -4176,7 +3785,6 @@ public class LoadOnClick : MonoBehaviour
                 {
                     case BetTypes.folding:
                         {
-                            //// betLabels[player].GetComponent<Text>().text = "";
                             FoldPlayer(player);
                             lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " FOLDED" + Environment.NewLine;
                         }
@@ -4631,11 +4239,6 @@ public class LoadOnClick : MonoBehaviour
         FlopPotAmount = 0;
         TurnPotAmount = 0;
         RiverPotAmount = 0;
-
-        //CumulativeRaises = 0;
-        //CumulativeCalls = 0;
-        //CumulativeCallsOfReRaise = 0;
-        //CumulativeReRaises = 0;
         playerCurrentBet = 0;
 
         for (int x = 0; x < Settings.playerSize; x++)//
@@ -4961,7 +4564,7 @@ public class LoadOnClick : MonoBehaviour
         WinAmount = PotAmount + videoWin;
         clearCreditLabels();
         gameOverStrings[1] = realPlayerName + " WIN THE POT";
-        bettingGroupBox.SetActive(false);
+        panelBettings.SetActive(false);
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
@@ -5159,7 +4762,7 @@ public class LoadOnClick : MonoBehaviour
         }
 
         startGameOverTimer(true);
-        bettingGroupBox.SetActive(false);
+        panelBettings.SetActive(false);
 
         //bonusPokerPanel.SetActive(true);
         if (lastBet > 0 && lastBet <= PlayerCredits)
@@ -5571,8 +5174,8 @@ public class LoadOnClick : MonoBehaviour
         }
 
         DisableBettingButtons();
-        //bettingGroupBox.SetActive(false);
-        if (bettingGroupBox != null) bettingGroupBox.SetActive(false);
+        //panelBettings.SetActive(false);
+        if (panelBettings != null) panelBettings.SetActive(false);
 
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
@@ -5985,15 +5588,12 @@ public class LoadOnClick : MonoBehaviour
             panelInitBet.SetActive(false);
             return;
         }
-        Debug.Log("betAmountString " + betAmountString);
-
+        if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
         betAmountString = betAmountString.Replace("$", "");
-        Debug.Log("betAmountString " + betAmountString);
+        if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
 
-        //betAmount = Convert.ToInt32(betAmountString.Replace("$",""));
-        Double.TryParse(betAmountString, out betAmount);
-        Debug.Log("bet from form input: " + betAmount);
-        //betAmount = 10; //TODO: assign bet amount getted from form input
+        Double.TryParse(betAmountString, out betAmount); // assign bet amount getted from form input
+        if (Settings.isDebug) Debug.Log("bet from form input: " + betAmount);
         StartNewGame(); // start new game
 
         btnStartGame.GetComponentInChildren<Text>().text = "Bet";
@@ -6003,11 +5603,10 @@ public class LoadOnClick : MonoBehaviour
         GameObject lblPanelBet = GameObject.Find("lblPanelBet");
         if (lblPanelBet != null) lblPanelBet.SetActive(false);
 
-        //panelInitBet.hideFlags = HideFlags.HideAndDontSave;
         panelInitBet.SetActive(false);
         panelGame.SetActive(true);
 
-        //if (Settings.isDebug) Debug.Log("btn start game" + panelInitBet.name);
+        if (Settings.isDebug) Debug.Log("btnStartGameClick()" + panelInitBet.name);
     }
 
     public void btnRaiseClick()
@@ -6072,9 +5671,118 @@ public class LoadOnClick : MonoBehaviour
     }
 
     // Init game
+    public void OtherInits() {
+        //InitializeComponent();
+        now = DateTime.Now;
+        year = now.Year;
+
+        //TODO:Image instructionBitmap = new Image(bonusPokerPanel.BackgroundImage);
+        //TODO:pixelColor = instructionBitmap.GetPixel(100, 100);
+
+        //dataGridView1.DefaultCellStyle.BackColor = Color.FromArgb(pixelColor.R, pixelColor.G, pixelColor.B);
+
+        //gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
+        //gameOverTimer.Tick += new EventHandler(gameOverTimer_Tick);
+
+        //TODO://chipBoxes = new Image[] { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
+
+        //nextPlayerTimer.Interval = 100;
+        //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
+
+        string iniFile = Settings.pathToAssetRes + "TexasHoldem.ini";
+        string logFile = Settings.pathToAssetRes + "TexasHoldem.log";
+        string dataFile = Settings.pathToAssetRes + "TexasHoldem.dat";
+        IniFileHandler.PrepareIniFile(iniFile);
+
+        int charsTransferred = 0;
+        Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
+        Settings.logging = IniFileHandler.GetIniBool("Game Parameters", "Logging", false, iniFile);
+        //TODO: TestingGroupBox.Visible = Settings.testGame;
+        videoBonusWinOnly = IniFileHandler.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
+        surrenderReturnRank = IniFileHandler.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
+        PlayerRaiseFoldThreshold = double.Parse(IniFileHandler.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
+        surrenderMinimumPair = IniFileHandler.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
+        highCardThreshhold = IniFileHandler.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
+        dealDelay = tempDelay = IniFileHandler.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
+        // nextPlayerTimer.Interval = nextPlayerDelay = IniFileHandler.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
+        virtualPlayerRaiseLimit = IniFileHandler.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
+        gameEnable = IniFileHandler.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
+        gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
+        gameDenomination /= 100;
+        gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
+        raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
+
+        if (Settings.logging)
+        {
+            Assets.Scripts.Logger.GetLogFileVars();
+        }
+
+        if (gameDenomMultiplier < 9999)
+        {
+            if (btnAllIn != null) btnAllIn.SetActive(false);
+            betLimit = gameDenomination * gameDenomMultiplier;
+        }
+
+        paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+        for (int x = 0; x < 9; x++)
+        {
+            PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], PayTableAmounts[x], iniFile);
+        }
+
+        foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
+        checkString = IniFileHandler.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
+        callString = IniFileHandler.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
+        raiseString = IniFileHandler.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
+        allInString = IniFileHandler.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
+        surrenderString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
+        continueString = IniFileHandler.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
+        surrenderBoxString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
+        realPlayerName = IniFileHandler.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
+        jurisdictionalLimit = (double)IniFileHandler.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
+
+
+        for (int x = 1; x < 11; x++)
+        {
+            string instString = "Instruction " + x.ToString();
+            /*TODO: instrucionStrings[x] = IniFileHandler.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
+            if (instrucionStrings[x].Length == 0)
+                break;*/
+            //TODO: make table using GridLayoutGroup dataGridView;
+            /*dataGridView1.Rows.Add();
+            dataGridView1.Rows[x - 1].Cells[0].Value = x.ToString();
+            dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
+            dataGridView1.Rows[x - 1].Height = 45;
+            */
+        }
+
+        BuildVideoBonusPaytable();
+
+        /*creditLimitWindow = new AmountWindow("PLAY CREDITS", 163, 420);
+        if (jurisdictionalLimit == 0)
+        {
+            creditLimitWindow.SetActive(false);
+        }
+
+        this.Controls.Add(creditLimitWindow);
+        */
+        PlayerCredits = Settings.playerCredits;
+        startGameOverTimer(false);
+
+        BuildVirtualPlayerProfiles();
+        IncrementButtonPosition(false);
+        GameState = GameStates.Ante;
+        restoreCardDefaults(true);
+
+        DisableBettingButtons();
+        SetPaytableSelectedColumn(9);
+        videoPokerLowRank = AdjustWinRank(ROYAL_FLUSH - (paytableEntries - 1));
+        videoPokerLowRank = adjustedRanks[paytableEntries - 1];
+    }
     public void Start()
     {
-        panelInitBet = GameObject.FindGameObjectWithTag("PanelInitBet");
+        if (Settings.isDebug) Debug.Log("Start()");
+
+        panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
         inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
@@ -6114,7 +5822,7 @@ public class LoadOnClick : MonoBehaviour
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
         panelXYZ = GameObject.Find("PanelXYZ");
-        bettingGroupBox = GameObject.Find("bettingGroupBox");
+        panelBettings = GameObject.Find("panelBettings");
         btnCredit = GameObject.Find("btnCredit");
         btnRepeatBet = GameObject.Find("btnRepeatBet");
         btnAutoPlay = GameObject.Find("btnAutoPlay");
@@ -6192,31 +5900,33 @@ public class LoadOnClick : MonoBehaviour
         };
 
         //init labels for credits and bets of each player
-        betLabels = new List<Text>() {
-            GameObject.Find("lblBetPlayer1").GetComponent<Text>(),
-            GameObject.Find("lblBetPlayer2").GetComponent<Text>(),
-            GameObject.Find("lblBetPlayer3").GetComponent<Text>(),
-            GameObject.Find("lblBetPlayer4").GetComponent<Text>(),
-            GameObject.Find("lblBetPlayer5").GetComponent<Text>(),
+        betLabels = new List<GameObject>() {
+            GameObject.Find("lblBetPlayer0"),
+            GameObject.Find("lblBetPlayer1"),
+            GameObject.Find("lblBetPlayer2"),
+            GameObject.Find("lblBetPlayer3"),
+            GameObject.Find("lblBetPlayer4"),
+            GameObject.Find("lblBetPlayer5")
         };
-        creditLabels = new List<Text>() {
-            GameObject.Find("lblCreditPlayer1").GetComponent<Text>(),
-            GameObject.Find("lblCreditPlayer2").GetComponent<Text>(),
-            GameObject.Find("lblCreditPlayer3").GetComponent<Text>(),
-            GameObject.Find("lblCreditPlayer4").GetComponent<Text>(),
-            GameObject.Find("lblCreditPlayer5").GetComponent<Text>(),
+        creditLabels = new List<GameObject>() {
+            GameObject.Find("lblCreditPlayer0"),
+            GameObject.Find("lblCreditPlayer1"),
+            GameObject.Find("lblCreditPlayer2"),
+            GameObject.Find("lblCreditPlayer3"),
+            GameObject.Find("lblCreditPlayer4"),
+            GameObject.Find("lblCreditPlayer5")
         };
+        OtherInits();
     }
-
 
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame; // panelInitBet
     GameObject btnBetNow, btnLSurrender, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
     GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
-        bettingGroupBox, btnAllIn,
+        panelBettings, btnAllIn,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
-    List<Text> betLabels, creditLabels; // for each player
+    List<GameObject> betLabels, creditLabels; // for each player
     GameObject txtSurrender, lblSurrender, lblWinInfo;//panel surrender
     GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
     double betAmount;
@@ -6228,8 +5938,4 @@ public class LoadOnClick : MonoBehaviour
     Sprite cardBack; // back card side
     // panel XYZ
     Text lblTemp;
-
-    //TODO:
-    //Text[] betLabels = new Text[Settings.playerSize];
-    //Text[] creditLabels = new Text[Settings.playerSize];
 }
