@@ -407,9 +407,6 @@ public class LoadOnClick : MonoBehaviour
             potAmount = value;
             string dollarAmount = String.Format("{0:C}", potAmount);
             lblPot.GetComponent<Text>().text = dollarAmount;
-
-            //lblPot.Invalidate();
-            //lblPot.Update();
         }
     }
 
@@ -440,8 +437,6 @@ public class LoadOnClick : MonoBehaviour
             playerRaise = value;
             string dollarAmount = String.Format("{0:C}", playerRaise);
             lblRaise.GetComponent<Text>().text = dollarAmount;
-            //lblRaise.Invalidate();
-            //lblRaise.Update();
         }
     }
 
@@ -469,8 +464,6 @@ public class LoadOnClick : MonoBehaviour
             string dollarAmount = String.Format("{0:C}", playerCredits);
 
             if (playerAllCredits != null) playerAllCredits.GetComponent<Text>().text = dollarAmount;
-            //playerAllCredits.Invalidate();
-            //playerAllCredits.Update();
         }
         get
         {
@@ -1191,10 +1184,8 @@ public class LoadOnClick : MonoBehaviour
 
     public void clearBetLabel(int player)
     {
-
         //PaintEventArgs e = null;
         //Rectangle labelRec = new Rectangle(//TODO: cardsOfPlayer[(player * 2) + 0].X + 61, //TODO: cardsOfPlayer[(player * 2) + 0].Y, 100, 15);
-        //Invalidate(labelRec);
         //OnPaint(e);
         //formHwnd.DrawString("          ", betLabels[player].Font, Brushes.White, betLabels[player].Location);
         //betLabels[player].GetComponent<Text>().text = "";
@@ -4276,7 +4267,6 @@ public class LoadOnClick : MonoBehaviour
                     case BetTypes.folding:
                         {
                             //// betLabels[player].GetComponent<Text>().text = "";
-                            //// betLabels[player].Invalidate();
                             FoldPlayer(player);
                             lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " FOLDED" + Environment.NewLine;
                         }
@@ -4587,8 +4577,7 @@ public class LoadOnClick : MonoBehaviour
 
             if (betAmount == 0 || betAmount > PlayerCredits)
                 return;
-            //Invalidate();
-            Update();
+
             if (autoStart == true)
             {
                 anteBet = lastBet;
@@ -4641,8 +4630,6 @@ public class LoadOnClick : MonoBehaviour
             if (betAmount == 0 || betAmount > PlayerCredits)
                 return;
 
-            //Invalidate();
-            //Update();
             anteBet = betAmount;
             PotAmount = 0;
             for (int x = 0; x < Settings.playerSize; x++)//
