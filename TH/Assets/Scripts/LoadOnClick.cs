@@ -1414,6 +1414,7 @@ public class LoadOnClick : MonoBehaviour
 
     public void dealPlayerCards()
     {
+        if (Settings.isDebug) Debug.Log("dealPlayerCards()");
         InitializeNewGame();
         bool firstcard = true;
         for (int card = 0; card < 2; card++)
@@ -1641,8 +1642,18 @@ public class LoadOnClick : MonoBehaviour
                 {
                     virtualPlayers[x].HighCard = secondCard;
                 }
+                try {
+                    GamePlayers[x].hand.HighCard = virtualPlayers[x].HighCard;
+                } catch(Exception e) {
+                    if (Settings.isDebug)
+                    {
+                        Debug.LogError("GamePlayers.count " + GamePlayers.Count());
+                        Debug.LogError("virtualPlayers.Count " + virtualPlayers.Count());
+                        Debug.LogError("index " + x);
 
-                GamePlayers[x].hand.HighCard = virtualPlayers[x].HighCard;
+                        Debug.LogError("EvalPlayerHands() last line" + e.Message);
+                    }
+                }
             }
         }
     }
@@ -2948,8 +2959,17 @@ public class LoadOnClick : MonoBehaviour
         double ThisPlayersCall;
         ThisPlayersCall = GetCurrentBet() - virtualPlayers[player].CurrentBetAmount;
         double realPlayerPotRaisePercentage = 0;
-        BetType = BetTypes.checking;//start out with this and modify it 
-        bool pocketPair = GamePlayers[player].hand.cardHand[0] == GamePlayers[player].hand.cardHand[1];
+        BetType = BetTypes.checking;//start out with this and modify it
+        bool pocketPair = false; //TODO
+        try
+        {
+            pocketPair = GamePlayers[player].hand.cardHand[0] == GamePlayers[player].hand.cardHand[1];
+        }
+        catch(Exception e) {
+            if (Settings.isDebug) {
+                Debug.LogError("pocketPair error" + e.Message);
+            }
+        }
 
         if (player != 0 || AutoPlay == true)//only service  the virtual players here
         {
@@ -3160,6 +3180,7 @@ public class LoadOnClick : MonoBehaviour
                     }
                     catch (Exception e)
                     {
+                        if (Settings.isDebug) Debug.LogError("tempRaise Error:" + e.Message);
                         //TODO: MessageBox.Show("tempRaise Error:" + e.Message);
                     }
 
@@ -4373,6 +4394,7 @@ public class LoadOnClick : MonoBehaviour
 
     public void btnCallClick()//_Click(object sender, EventArgs e)
     {
+        if (Settings.isDebug) Debug.Log("btnCallClick() virtualPlayers.Count = " + virtualPlayers.Count());
         double pBet = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
 
         PotAmount += pBet;
