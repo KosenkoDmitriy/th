@@ -25,8 +25,10 @@ static class Settings
     public static readonly double betDx = 2.50; // .25;
     public static double gameDenomination = betDx;
     public static readonly int GameDenominationDivider = 100;
-        
-    public static readonly double betMax = betDx*6; // 1.5;
+    public static readonly int videoBonusMaxMultiplier = 5;
+    public static readonly int betAmountAutoplay = 5;
+
+    public static readonly double betMax = betDx * 6; // 1.5;
     public static string dollar = "$";// { get; internal set; }
     public static double betNull = 0.00;
     public static double betCurrent = 0.00;
