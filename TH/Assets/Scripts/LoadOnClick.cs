@@ -5476,6 +5476,7 @@ public class LoadOnClick : MonoBehaviour
             panelInitBet.SetActive(false);
             panelGame.SetActive(true);
             autoStart = true;
+            StartNewGame();
         }
 
         /*
