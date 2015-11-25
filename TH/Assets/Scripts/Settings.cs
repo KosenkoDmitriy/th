@@ -3,7 +3,7 @@ using UnityEngine;
 
 static class Settings
 {
-    public static bool isDebug = true;
+    public static bool isDebug = false;
     public static int cardsSize = 52;
 
     public static readonly int pockerHandPossibleSize = 5;
@@ -18,6 +18,7 @@ static class Settings
     public static int jurisdictionalBetLimit = 1000;
 
     public static readonly int gameDenomMultiplier = 5;
+    public static readonly int gameMaxDenomMultiplier = 9999;
     public static readonly int raiseLimitMultiplier = 5;
 
     public static int intervalGameOver = 1000;

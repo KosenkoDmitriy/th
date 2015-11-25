@@ -1200,7 +1200,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[2].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
+                        // player1hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1221,7 +1221,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[3].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        player1hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
+                        // player1hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1239,7 +1239,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[4].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        player2hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
+                        // player2hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1260,7 +1260,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[5].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        player2hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
+                        // player2hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1278,7 +1278,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[6].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        player3hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
+                        // player3hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1299,7 +1299,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[7].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        player3hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
+                        // player3hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1317,7 +1317,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[8].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        player4hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
+                        // player4hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1338,7 +1338,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[9].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        player4hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
+                        // player4hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -1356,7 +1356,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[10].sprite = cardsAll[playerHands[target, 0]];
                         }
                         GamePlayers[target].hand.cardHand[0] = playerHands[target, 0];
-                        player5hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
+                        // player5hold1.GetComponent<Image>().sprite = cardsAll[playerHands[target, 0]];
                     }
                     else
                     {
@@ -1377,7 +1377,7 @@ public class LoadOnClick : MonoBehaviour
                             cardsOfPlayer[11].sprite = cardsAll[playerHands[target, 1]];
                         }
                         GamePlayers[target].hand.cardHand[1] = playerHands[target, 1];
-                        player5hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
+                        // player5hold2.GetComponent<Image>().sprite = cardsAll[playerHands[target, 1]];
                     }
                 }
                 break;
@@ -5623,7 +5623,7 @@ public class LoadOnClick : MonoBehaviour
             Assets.Scripts.Logger.GetLogFileVars();
         }
 
-        if (gameDenomMultiplier < 9999)
+        if (gameDenomMultiplier < Settings.gameMaxDenomMultiplier)
         {
             if (btnAllIn != null) btnAllIn.SetActive(false);
             betLimit = Settings.gameDenomination * gameDenomMultiplier;
