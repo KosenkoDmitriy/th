@@ -2920,7 +2920,8 @@ public class LoadOnClick : MonoBehaviour
 
         //TODO: if (panelSurrender != null) panelSurrender.GetComponent<Button>().interactable = false;
         //TODO: if (panelBettings != null) panelBettings.GetComponent<Button>().interactable = false;
-
+        /*
+        TODO:
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
         if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
         if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
@@ -2928,6 +2929,7 @@ public class LoadOnClick : MonoBehaviour
         if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
         if (panelSurrender != null) panelSurrender.SetActive(false);
+        */
     }
 
 
@@ -2961,15 +2963,15 @@ public class LoadOnClick : MonoBehaviour
         double realPlayerPotRaisePercentage = 0;
         BetType = BetTypes.checking;//start out with this and modify it
         bool pocketPair = false; //TODO
-        try
-        {
+        //try
+        //{
             pocketPair = GamePlayers[player].hand.cardHand[0] == GamePlayers[player].hand.cardHand[1];
-        }
-        catch(Exception e) {
-            if (Settings.isDebug) {
-                Debug.LogError("pocketPair error" + e.Message);
-            }
-        }
+        //}
+        //catch(Exception e) {
+        //    if (Settings.isDebug) {
+        //        Debug.LogError("pocketPair error" + e.Message);
+        //    }
+        //}
 
         if (player != 0 || AutoPlay == true)//only service  the virtual players here
         {
@@ -5559,7 +5561,19 @@ public class LoadOnClick : MonoBehaviour
 
     void Update()
     {
-
+        if (nextPlayerWait == false)
+        {
+            NextPlayer();
+        }
+        else
+        {
+            //TODO:
+            //nextPlayerTimer.Stop();
+            //if (MessageBox.Show("Next Player Wait", "Waiting", MessageBoxButtons.OK) == DialogResult.OK)
+            //{
+            //    NextPlayer();
+            //}
+        }
     }
 
     // Init game

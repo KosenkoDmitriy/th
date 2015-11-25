@@ -4616,7 +4616,7 @@ const int    HA = 51;
 
         public void startButton_Click(object sender, EventArgs e)
         {
-            addCreditButton.Visible = false;
+            /*addCreditButton.Visible = false;
             autoStart = false;
             lastBet = anteBet;
             buttonSound.Play();
@@ -4662,7 +4662,7 @@ const int    HA = 51;
             EvalPlayerHands(true, false, false, false);
             
             NextPlayer();
-            
+            */
         }
 
         public void startGame()
