@@ -2909,7 +2909,7 @@ public class LoadOnClick : MonoBehaviour
         {
             teststring += allInString + Environment.NewLine;
         }
-        if (btnSurrender != null && btnAllIn.GetComponent<Button>().IsActive())
+        if (btnSurrender != null && btnSurrender.GetComponent<Button>().IsActive())
         {
             teststring += surrenderString;
         }
@@ -4701,14 +4701,8 @@ public class LoadOnClick : MonoBehaviour
             {
                 gameOverStrings[1] = realPlayerName + " WIN    " + winString; //correct english
             }
-            //if (winner != 0)
-            {
-                //if (showdown == false)
-                {
-                    UpdateBetLabel(winString, winner, false);//, winColor);
-                    //ShowPlayerCards(winner);//show the player the winning cards
-                }
-            }
+            UpdateBetLabel(winString, winner, false);//, winColor);
+            //ShowPlayerCards(winner);//show the player the winning cards
         }
         else
         {
@@ -4762,8 +4756,8 @@ public class LoadOnClick : MonoBehaviour
         //bonusPokerPanel.SetActive(true); //TODO:
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
-            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             btnRepeatBet.SetActive(true);
+            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
         btnNewGame.SetActive(true);
         if (videoPokerWin > 0)
