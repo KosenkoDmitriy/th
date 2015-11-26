@@ -583,7 +583,7 @@ public class LoadOnClick : MonoBehaviour
     double videoPokerWin = 0;
     int videoPokerLowRank = 15;
 
-    bool nextPlayerWait = false;
+    bool isNextPlayer = false;
 
     Color pixelColor;
 
@@ -643,6 +643,7 @@ public class LoadOnClick : MonoBehaviour
             if (gameEnable == false)
             {
                 //gameOverTimer.Stop();
+                isNextPlayer = false;
 
                 //MessageBox.Show("Correct the INI file error", "INI File Error");
                 //Close();
@@ -724,12 +725,13 @@ public class LoadOnClick : MonoBehaviour
 
     void nextPlayerTimer_Tick()//object sender, EventArgs e)
     {
-        if (nextPlayerWait == false)
+        if (isNextPlayer)
         {
             NextPlayer();
         }
         else
         {
+            isNextPlayer = false;
             // nextPlayerTimer.Stop();
             //if (MessageBox.Show("Next Player Wait", "Waiting", MessageBoxButtons.OK) == DialogResult.OK)
             //{
@@ -2812,6 +2814,8 @@ public class LoadOnClick : MonoBehaviour
 
     public void EnableBettingButtons()
     {
+        panelBettings.SetActive(true);  //show the betting buttons
+
         if (virtualPlayers[0].AllIn == true)
         {
             if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
@@ -2821,19 +2825,17 @@ public class LoadOnClick : MonoBehaviour
             btnAllIn.GetComponent<Text>().text = "CONTINUE";
             if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
             if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
-            if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
+            if (btnSurrender != null) btnSurrender.SetActive(false);
 
             UpdateDynamicHelp();
             updateBettingButtonTitle();
 
-            if (panelBettings != null) panelBettings.SetActive(true);  // show the betting buttons
             return;
         }
 
-        btnAllIn.GetComponent<Text>().text = "ALL IN";
+        btnAllIn.GetComponentInChildren<Text>().text = "ALL IN";
         CallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
         updateBettingButtonTitle();
-        panelBettings.SetActive(true);  //show the betting buttons
 
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = true;  //we can always raise
         if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = true;  //we can alway go all in
@@ -2842,7 +2844,8 @@ public class LoadOnClick : MonoBehaviour
         if (CallAmount == 0)
         {
             if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = true;
-            if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
+            //if (btnCall != null)
+                btnCall.GetComponent<Button>().interactable = false;
         }
         else
         {
@@ -2850,18 +2853,21 @@ public class LoadOnClick : MonoBehaviour
 
             if (CallAmount > PlayerCredits)
             {
-                if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
+                //if (btnCall != null)
+                    btnCall.GetComponent<Button>().interactable = false;
                 if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
             }
             else
             {
-                if (btnCall != null) btnCall.GetComponent<Button>().interactable = true;
+               // if (btnCall != null)
+                    btnCall.GetComponent<Button>().interactable = true;
             }
         }
         if (PlayerCredits == 0)
         {
             if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
-            if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
+            //if (btnCall != null)
+                btnCall.GetComponent<Button>().interactable = false;
             if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         }
 
@@ -2870,8 +2876,8 @@ public class LoadOnClick : MonoBehaviour
             int rank = playerHoleCardsRankings[0] + 1;
             if (rank > surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < surrenderMinimumPair)
             {
-                if (btnSurrender != null) btnSurrender.SetActive(true);
                 if (panelSurrender != null) panelSurrender.SetActive(true);
+                if (btnSurrender != null) btnSurrender.SetActive(true);
             }
         }
         UpdateDynamicHelp();
@@ -2882,7 +2888,7 @@ public class LoadOnClick : MonoBehaviour
         if (virtualPlayers[0].AllIn == true)
         {
             string contstring = continueString + Environment.NewLine;
-            //textBox2.GetComponent<Text>().text = contstring;
+            lblTemp.text = contstring;
             return;
         }
         string teststring = foldString + Environment.NewLine;
@@ -2892,44 +2898,39 @@ public class LoadOnClick : MonoBehaviour
             teststring += checkString + Environment.NewLine;
         }
         if (btnCall != null && btnCall.GetComponent<Button>().IsInteractable())
-        //if (btnCall.Enabled == true)
         {
             teststring += callString + Environment.NewLine;
         }
         if (btnRaise != null && btnRaise.GetComponent<Button>().IsInteractable())
-        //if (btnRaise.Enabled == true)
         {
             teststring += raiseString + Environment.NewLine;
         }
         if (btnAllIn != null && btnAllIn.GetComponent<Button>().IsInteractable())
-        //if (btnAllIn.Enabled == true)
         {
             teststring += allInString + Environment.NewLine;
         }
         if (btnSurrender != null && btnAllIn.GetComponent<Button>().IsActive())
-        //if (btnSurrender.Visible == true)
         {
             teststring += surrenderString;
         }
-        //textBox2.GetComponent<Text>().text = teststring;
+        lblTemp.text = teststring;
     }
 
     public void DisableBettingButtons()
     {
-        //surrenderGroupBox = null;
-
-        //TODO: if (panelSurrender != null) panelSurrender.GetComponent<Button>().interactable = false;
-        //TODO: if (panelBettings != null) panelBettings.GetComponent<Button>().interactable = false;
+        // TODO:
         /*
-        TODO:
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
-        if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
+        //if (btnCall != null)
+            btnCall.GetComponent<Button>().interactable = false;
         if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
         if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
         if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
-        if (panelSurrender != null) panelSurrender.SetActive(false);
         */
+        // hide panels
+        if (panelSurrender != null) panelSurrender.SetActive(false);
+        if (panelBettings != null) panelBettings.SetActive(false);
     }
 
 
@@ -2944,7 +2945,7 @@ public class LoadOnClick : MonoBehaviour
 
         if (virtualPlayers[player].Folded == true)
         {
-            // nextPlayerTimer.Start();
+            isNextPlayer = true; // nextPlayerTimer.Start();
             return 0;
         }
 
@@ -3961,7 +3962,7 @@ public class LoadOnClick : MonoBehaviour
             Settings.creditsPlayed += ThisRoundBet;
         }
 
-        // nextPlayerTimer.Start();
+        isNextPlayer = true; // nextPlayerTimer.Start();
         return ThisRoundBet;
     }
 
@@ -4141,7 +4142,7 @@ public class LoadOnClick : MonoBehaviour
             selectedColumn = value;
             selectedColumn = denomUnits;
             payTable.SetPaytableSelectedColumn(selectedColumn);
-            //gameOverTimer.Stop();
+            isNextPlayer = false; //gameOverTimer.Stop();
         }
         //TODO:
         else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
@@ -4190,7 +4191,7 @@ public class LoadOnClick : MonoBehaviour
             selectedColumn = value;
             selectedColumn = denomUnits;
             payTable.SetPaytableSelectedColumn(selectedColumn);
-            //gameOverTimer.Stop();
+            isNextPlayer = false; //gameOverTimer.Stop();
         }
 
         raiseLimit = anteBet * raiseLimitMultiplier;
@@ -4245,7 +4246,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("StartGame()");
 
-        //btnCredit.SetActive(false);
+        btnCredit.SetActive(false);
+
         autoStart = false;
         lastBet = anteBet;
         //buttonSound.Play();
@@ -4267,10 +4269,13 @@ public class LoadOnClick : MonoBehaviour
         anteBet = 0;
 
         PlayerSurrender = false;
+
         stopGameOverTimer();
-        //btnStartGame.SetActive(false);
-        //btnNewGame.SetActive(false);
-        //btnRepeatBet.SetActive(false);
+
+        btnStartGame.SetActive(false);
+        btnNewGame.SetActive(false);
+        btnRepeatBet.SetActive(false);
+
         GameState = GameStates.HoldCardBet;
         RenewVirtualPlayerProfiles();
         ThisRoundRaisePercentage = 0;
@@ -4360,7 +4365,6 @@ public class LoadOnClick : MonoBehaviour
         flopTurnRiverRaised = false;
         ResetVirtualPlayerVars();
         DisableBettingButtons();
-        //btnStartGame.Enabled = false;
         if (btnStartGame != null) btnStartGame.GetComponent<Button>().interactable = false;
     }
 
@@ -5038,7 +5042,7 @@ public class LoadOnClick : MonoBehaviour
 
     public void NextPlayer()
     {
-        // nextPlayerTimer.Stop();
+        isNextPlayer = false; // nextPlayerTimer.Stop();
         int bp = buttonPosition;
 
         CurrentBetPosition++;
@@ -5092,7 +5096,6 @@ public class LoadOnClick : MonoBehaviour
                         PlayerCredits = Settings.jurisdictionalBetLimit;// 1000;
                     }
                     BetPlayer(CurrentBetPosition);
-
                 }
                 else
                 {
@@ -5121,7 +5124,7 @@ public class LoadOnClick : MonoBehaviour
         //    //if (button == btnSurrender)
         //    btnFold_Click(btnSurrender, e);
         //}
-        //surrenderWindow.textBox2.Text = "TEST";
+        //lblTemp.text = "TEST";
         //GetPairType(new int[] { H2, H7, S6, S7, D9 });
         //GetPairType(new int[] { H2, H6, S6, S7, D9 });
         //GetPairType(new int[] { H2, H9, S6, S7, D9 });
@@ -5174,7 +5177,7 @@ public class LoadOnClick : MonoBehaviour
         }
 
         DisableBettingButtons();
-        //panelBettings.SetActive(false);
+
         if (panelBettings != null) panelBettings.SetActive(false);
 
         if (lastBet > 0 && lastBet <= PlayerCredits)
@@ -5223,7 +5226,7 @@ public class LoadOnClick : MonoBehaviour
             }
         }
 
-        //gameOverTimer.Start();
+        isNextPlayer = true; //gameOverTimer.Start();
         if (win)
         {
             gameOverPtr = 1;
@@ -5236,7 +5239,7 @@ public class LoadOnClick : MonoBehaviour
 
     private void stopGameOverTimer()
     {
-        //gameOverTimer.Stop();
+        isNextPlayer = false; //gameOverTimer.Stop();
         lblWin.GetComponent<Text>().text = "";
     }
 
@@ -5250,7 +5253,7 @@ public class LoadOnClick : MonoBehaviour
 
     private void waitButton_Click(object sender, EventArgs e)
     {
-        nextPlayerWait = !nextPlayerWait;
+        isNextPlayer = !isNextPlayer;
     }
 
     
@@ -5561,14 +5564,14 @@ public class LoadOnClick : MonoBehaviour
 
     void Update()
     {
-        if (nextPlayerWait == false)
+        if (isNextPlayer)
         {
             NextPlayer();
         }
         else
         {
             //TODO:
-            //nextPlayerTimer.Stop();
+            isNextPlayer = false; // nextPlayerTimer.Stop();
             //if (MessageBox.Show("Next Player Wait", "Waiting", MessageBoxButtons.OK) == DialogResult.OK)
             //{
             //    NextPlayer();
@@ -5690,7 +5693,7 @@ public class LoadOnClick : MonoBehaviour
         if (Settings.isDebug) Debug.Log("Start()");
 
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
-        inputBetField = GameObject.Find("InputBetField").GetComponent<InputField>(); //.GetComponentInChildren<InputField>();
+        inputBetField = GameObject.Find("InputBetField").GetComponentInChildren<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
         lblPanelBet = GameObject.Find("lblPanelBet");
@@ -5702,17 +5705,6 @@ public class LoadOnClick : MonoBehaviour
         btnFold = GameObject.Find("btnFold");
         btnSurrender = GameObject.Find("btnSurrender");
         playerAllCredits = GameObject.Find("playerAllCredits");
-
-        /*
-        if (btnCheck != null)
-        {
-            btnCheck.GetComponent<Button>().interactable = false;
-            //btnCheck.GetComponentInChildren<Button>().colors.disabledColor = Color.gray;
-        }
-        if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
-        if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
-        if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
-        */
 
         panelGame = GameObject.Find("PanelGame");
         panelGame.SetActive(false);
@@ -5732,7 +5724,7 @@ public class LoadOnClick : MonoBehaviour
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
         panelXYZ = GameObject.Find("PanelXYZ");
-        panelBettings = GameObject.Find("panelBettings");
+        panelBettings = GameObject.Find("PanelInitBet"); //.Find("panelBettings");//TODO: check: is panelBettings and PanelInitBet the same?
         btnCredit = GameObject.Find("btnCredit");
         btnRepeatBet = GameObject.Find("btnRepeatBet");
         btnAutoPlay = GameObject.Find("btnAutoPlay");
@@ -5847,5 +5839,5 @@ public class LoadOnClick : MonoBehaviour
     Sprite cardBg; // background of the desk
     Sprite cardBack; // back card side
     // panel XYZ
-    Text lblTemp;
+    Text lblTemp; // textBox2 for testing
 }
