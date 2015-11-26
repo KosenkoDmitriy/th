@@ -2822,7 +2822,7 @@ public class LoadOnClick : MonoBehaviour
             if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = true;
             if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
 
-            btnAllIn.GetComponent<Text>().text = "CONTINUE";
+            if (btnAllIn != null) btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
             if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
             if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
             if (btnSurrender != null) btnSurrender.SetActive(false);
@@ -2833,7 +2833,7 @@ public class LoadOnClick : MonoBehaviour
             return;
         }
 
-        btnAllIn.GetComponentInChildren<Text>().text = "ALL IN";
+        if (btnAllIn != null) btnAllIn.GetComponentInChildren<Text>().text = "ALL IN"; // TODO: null object
         CallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
         updateBettingButtonTitle();
 
@@ -5464,7 +5464,6 @@ public class LoadOnClick : MonoBehaviour
 
     public void btnStartGameClick()
     {
-        
         string betAmountString = inputBetField.text;
         string betNull = GetBetAndCurrency(Settings.betNull);
 
@@ -5478,37 +5477,22 @@ public class LoadOnClick : MonoBehaviour
         lastBet = betAmount;
 
         if (betAmount > 0) {
+            btnStartGame.GetComponentInChildren<Text>().text = "Bet";
+            if (btnRepeatBet != null) btnRepeatBet.SetActive(false);
+            if (lblPanelBet != null) lblPanelBet.SetActive(false);
+
             panelInitBet.SetActive(false);
             panelGame.SetActive(true);
             autoStart = true;
             StartNewGame();
         }
-
-        /*
-        if (betAmount <= 0)
-        {
-            panelInitBet.SetActive(false);
-            return;
-        }
-
-        btnStartGame.GetComponentInChildren<Text>().text = "Bet";
-        
-        if (btnRepeatBet != null) btnRepeatBet.SetActive(false);
-        if (lblPanelBet != null) lblPanelBet.SetActive(false);
-
-        panelInitBet.SetActive(false);
-        panelGame.SetActive(true);
-
-        if (Settings.isDebug) Debug.Log("btnStartGameClick()" + panelInitBet.name);
-        
-        //StartNewGame(); // start new game
-        */
     }
 
     public void btnRaiseClick()
     {
         panelInitBet.SetActive(true);
         panelGame.SetActive(false);
+        btnStartGame.GetComponent<Button>().interactable = true;
 
         double raiseValue = 0;
         double playerCallAmount;
