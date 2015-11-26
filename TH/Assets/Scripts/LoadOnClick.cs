@@ -2844,7 +2844,7 @@ public class LoadOnClick : MonoBehaviour
         if (CallAmount == 0)
         {
             if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = true;
-            //if (btnCall != null)
+            if (btnCall != null)
                 btnCall.GetComponent<Button>().interactable = false;
         }
         else
@@ -2853,20 +2853,20 @@ public class LoadOnClick : MonoBehaviour
 
             if (CallAmount > PlayerCredits)
             {
-                //if (btnCall != null)
+                if (btnCall != null)
                     btnCall.GetComponent<Button>().interactable = false;
                 if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
             }
             else
             {
-               // if (btnCall != null)
+               if (btnCall != null)
                     btnCall.GetComponent<Button>().interactable = true;
             }
         }
         if (PlayerCredits == 0)
         {
             if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
-            //if (btnCall != null)
+            if (btnCall != null)
                 btnCall.GetComponent<Button>().interactable = false;
             if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         }
@@ -2918,16 +2918,13 @@ public class LoadOnClick : MonoBehaviour
 
     public void DisableBettingButtons()
     {
-        // TODO:
-        /*
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = false;
-        //if (btnCall != null)
-            btnCall.GetComponent<Button>().interactable = false;
+        if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
         if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
         if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
         if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
         if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
-        */
+        
         // hide panels
         if (panelSurrender != null) panelSurrender.SetActive(false);
         if (panelBettings != null) panelBettings.SetActive(false);
@@ -4089,9 +4086,6 @@ public class LoadOnClick : MonoBehaviour
                 lblWinInfo.GetComponentInChildren<Text>().text += " Player " + x.ToString() + " =" + virtualPlayers[x].Name + Environment.NewLine;
             }
             catch (Exception e) {
-                Debug.Log("lblWinInfo:" + lblWinInfo);
-                Debug.Log("x:" + x);
-                Debug.Log("virtualPlayers count:" + virtualPlayers.Length);
                 if (Settings.isDebug) Debug.LogError("error in lblWinInfo: " + e.Message);
             }
         }
@@ -4144,11 +4138,8 @@ public class LoadOnClick : MonoBehaviour
             payTable.SetPaytableSelectedColumn(selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
-        //TODO:
         else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
         {
-            if (Settings.isDebug) Debug.Log("ANTE 4139 code line if (btnStartGame.GetComponent<Button>().IsActive())");
-
             if (AutoPlay == true)
             {
                 betAmount = Settings.betAmountAutoplay;
@@ -4225,7 +4216,6 @@ public class LoadOnClick : MonoBehaviour
         PlayerCredits -= playerBet;
 
         panelInitBet.SetActive(true);
-        //btnStartGame.GetComponent<Button>().GetComponent<Text>().text = "Bet";
         btnStartGame.GetComponentInChildren<Text>().text = "Bet";
         panelInitBet.SetActive(false);
 
@@ -4272,7 +4262,6 @@ public class LoadOnClick : MonoBehaviour
 
         stopGameOverTimer();
 
-        btnStartGame.SetActive(false);
         btnNewGame.SetActive(false);
         btnRepeatBet.SetActive(false);
 
@@ -4365,7 +4354,7 @@ public class LoadOnClick : MonoBehaviour
         flopTurnRiverRaised = false;
         ResetVirtualPlayerVars();
         DisableBettingButtons();
-        if (btnStartGame != null) btnStartGame.GetComponent<Button>().interactable = false;
+        // btnStartGame.GetComponent<Button>().interactable = false;
     }
 
     public void btnAllInClick() //_Click((object sender, EventArgs e)
@@ -4773,7 +4762,7 @@ public class LoadOnClick : MonoBehaviour
         //bonusPokerPanel.SetActive(true); //TODO:
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
-            btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             btnRepeatBet.SetActive(true);
         }
         btnNewGame.SetActive(true);
@@ -5182,8 +5171,8 @@ public class LoadOnClick : MonoBehaviour
 
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
-            btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
-            if (btnRepeatBet != null) btnRepeatBet.SetActive(true);
+            btnRepeatBet.SetActive(true);
+            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
         btnNewGame.SetActive(true);
 
@@ -5201,12 +5190,10 @@ public class LoadOnClick : MonoBehaviour
         {
             if (RealPlayerCredits < jurisdictionalLimit)
             {
-                //btnCredit.SetActive(true);
                 if (btnCredit != null) btnCredit.SetActive(true);
             }
             if (RealPlayerCredits < jurisdictionalLimit - PlayerCredits)
             {
-                //btnCredit.SetActive(true);
                 if (btnCredit != null) btnCredit.SetActive(true);
 
                 PlayerCredits += RealPlayerCredits;
@@ -5219,10 +5206,8 @@ public class LoadOnClick : MonoBehaviour
             }
             if (lastBet > 0 && lastBet <= PlayerCredits)
             {
-                //btnRepeatBet.Text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
-                //btnRepeatBet.SetActive(true);
-                btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
-                if (btnRepeatBet != null) btnRepeatBet.SetActive(true);
+                btnRepeatBet.SetActive(true);
+                btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             }
         }
 
@@ -5240,7 +5225,7 @@ public class LoadOnClick : MonoBehaviour
     private void stopGameOverTimer()
     {
         isNextPlayer = false; //gameOverTimer.Stop();
-        lblWin.GetComponent<Text>().text = "";
+        lblWin.GetComponentInChildren<Text>().text = "";
     }
 
     private void lblWin_DoubleClick(object sender, EventArgs e)
@@ -5249,14 +5234,11 @@ public class LoadOnClick : MonoBehaviour
         //TestingGroupBox.Visible = Settings.testGame;// TODO: ??
     }
 
-    
 
     private void waitButton_Click(object sender, EventArgs e)
     {
         isNextPlayer = !isNextPlayer;
     }
-
-    
 
     private double RoundDown(double Amount)
     {
@@ -5279,6 +5261,7 @@ public class LoadOnClick : MonoBehaviour
         }
     }
 
+
     public int GetPlayerPairValue(int player)
     {
         int fc = GetCardValue(GamePlayers[player].hand.cardHand[0]);
@@ -5289,6 +5272,7 @@ public class LoadOnClick : MonoBehaviour
         }
         return 0;
     }
+
 
     public int GetNotFoldedPlayerCount()
     {
@@ -5438,17 +5422,11 @@ public class LoadOnClick : MonoBehaviour
         RealPlayerCredits -= jurisdictionalLimit;
         if (lastBet > 0 && lastBet <= PlayerCredits && (GameState == GameStates.Ante || GameState == GameStates.PlayerLose))
         {
-            // btnRepeatBet.Text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
-            // btnRepeatBet.SetActive(true);
-            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             if (btnRepeatBet != null) btnRepeatBet.SetActive(true);
+            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
-        //btnCredit.SetActive(false);
         if (btnCredit != null) btnCredit.SetActive(false);
     }
-
-
-
 
 
     public string GetBetAndCurrency(double value)
@@ -5522,7 +5500,7 @@ public class LoadOnClick : MonoBehaviour
     public void btnBetNowClick()
     {
         panelInitBet.SetActive(true);
-        btnStartGame.GetComponent<Button>().GetComponentInChildren<Text>().text = "Start Game";
+        btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
         StartNewGame();
     }
 
