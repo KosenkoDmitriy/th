@@ -38,6 +38,9 @@ static class Settings
     public static string pathToAppData = Application.dataPath;
     public static string pathToCurDir = Directory.GetCurrentDirectory();
     public static string pathToAssetRes = Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
+    public static string iniFile = "TexasHoldem.ini";
+    public static string logFile = "TexasHoldem.log";
+    public static string datFile = "TexasHoldem.dat";
 
     public static double currentIniVersion = 2.5;
     public static double iniVersion = 0.0;

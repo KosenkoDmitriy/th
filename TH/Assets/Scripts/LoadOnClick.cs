@@ -708,10 +708,6 @@ public class LoadOnClick : MonoBehaviour
                 btnCredit.SetActive(false);
             }
         }
-        else
-        {
-
-        }
 
         if (AutoPlay == true)
         {
@@ -752,13 +748,13 @@ public class LoadOnClick : MonoBehaviour
         //string name = new string(' ',20);
         string[] stringArray = new string[20];
         //virtualPlayers[0] = new VirtualPlayer();//create a virtual player for the actual player
-        string fileName = Settings.pathToAssetRes + "TexasHoldem.ini";
+        string fileName = Settings.pathToAssetRes + Settings.iniFile;
         do
         {
             Player = "Player" + i.ToString();
             //test to see if there is anything in the player if not we are done. 
             int charsTransferred;// = Win32Support.GetPrivateProfileString(Player, "Hole Min Threshold", null, temp, 5, currentDirectory + "\\TexasHoldem.ini");
-            string iniTest = IniFileHandler.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, Settings.pathToAssetRes + "TexasHoldem.ini");
+            string iniTest = IniFileHandler.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, Settings.pathToAssetRes + Settings.iniFile);
             if (charsTransferred == 0)
             {
                 done = true;
@@ -780,7 +776,7 @@ public class LoadOnClick : MonoBehaviour
                     }
                     int testchars;
                     virtualTempPlayers[i].Name = IniFileHandler.GetIniString(Player, "Player Name", "Player " + i.ToString(), out testchars, fileName);
-                    virtualTempPlayers[i].FoldOnAnyRaise = IniFileHandler.GetIniBool(Player, "Fold On Any Raise", false, Settings.pathToAssetRes + "TexasHoldem.ini");
+                    virtualTempPlayers[i].FoldOnAnyRaise = IniFileHandler.GetIniBool(Player, "Fold On Any Raise", false, Settings.pathToAssetRes + Settings.iniFile);
                     //string value;
                     virtualTempPlayers[i].HoleMinThreshold = IniFileHandler.GetIniInt(Player, "Hole Min Threshold", 72, fileName);
                     for (int x = 0; x < Settings.playerSize; x++)//lets get the raise parameters
@@ -1538,7 +1534,6 @@ public class LoadOnClick : MonoBehaviour
         virtualPlayers[player].RoundRaiseAmount += virtualPlayers[player].Credits;
         //virtualPlayers[player].Credits = 0;
         virtualPlayers[player].AllIn = true;
-        //ShowPlayerCards(player,false);
         UpdateCreditLabel(player);
     }
 
@@ -4658,7 +4653,6 @@ public class LoadOnClick : MonoBehaviour
                     {
                         videoBonus /= split;
                     }
-
                 }
                 PlayerCredits += PotAmount / split;
                 Settings.creditsWon += PotAmount / split;
@@ -4702,7 +4696,6 @@ public class LoadOnClick : MonoBehaviour
                 gameOverStrings[1] = realPlayerName + " WIN    " + winString; //correct english
             }
             UpdateBetLabel(winString, winner, false);//, winColor);
-            //ShowPlayerCards(winner);//show the player the winning cards
         }
         else
         {
@@ -4799,7 +4792,6 @@ public class LoadOnClick : MonoBehaviour
                     winner = player;
                 }
                 virtualPlayers[player].FinalHandRank = tempRank;
-                //GamePlayers[player].hand.HandRank = temp;
             }
         }
         if (highHand >= PAIR)
@@ -5554,9 +5546,9 @@ public class LoadOnClick : MonoBehaviour
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
-        string iniFile = Settings.pathToAssetRes + "TexasHoldem.ini";
-        string logFile = Settings.pathToAssetRes + "TexasHoldem.log";
-        string dataFile = Settings.pathToAssetRes + "TexasHoldem.dat";
+        string iniFile = Settings.pathToAssetRes + Settings.iniFile;
+        string logFile = Settings.pathToAssetRes + Settings.logFile;
+        string dataFile = Settings.pathToAssetRes + Settings.datFile;
         IniFileHandler.PrepareIniFile(iniFile);
 
         int charsTransferred = 0;
