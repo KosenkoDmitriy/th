@@ -17,20 +17,12 @@ public class LoadOnClick : MonoBehaviour
     int offsetX = 25;//40;
     int offsetY = 20;//20;
 
-    int dealDelay = 250;
-    int tempDelay = 250;
-    int nextPlayerDelay = 100;
-
     bool showdown = false;
-    bool videoBonusWinOnly = false;
     int videoMultiplier = 0;
     public double betLimit = 9999;
     public double raiseLimit = 9999;
 
     int virtualPlayerCount = 0;
-
-    public int gameDenomMultiplier = Settings.gameDenomMultiplier;
-    public int raiseLimitMultiplier = Settings.raiseLimitMultiplier;
     int denomUnits;
 
     //System.Windows.Forms.Timer gameStartTimer = new System.Windows.Forms.Timer();
@@ -377,10 +369,6 @@ public class LoadOnClick : MonoBehaviour
 
     int buttonPosition = 0;
 
-    int surrenderReturnRank = 0;
-    int surrenderMinimumPair = 0;
-    int highCardThreshhold = 0;
-
     int selectedColumn;
 
     double playerCurrentBet = 0;//the real players current bet
@@ -600,10 +588,8 @@ public class LoadOnClick : MonoBehaviour
     double FlopPotAmount = 0;
     double TurnPotAmount = 0;
     double RiverPotAmount = 0;
-    double PlayerRaiseFoldThreshold = 0;
 
     int virtualPlayerRaised = 0;
-    int virtualPlayerRaiseLimit = 1;
     bool flopTurnRiverRaised = false;
 
     bool testDataRetrieved = false;
@@ -624,7 +610,6 @@ public class LoadOnClick : MonoBehaviour
     Image[] chipBoxes;
     DateTime now;
     int year;
-    bool gameEnable;
 
     #endregion
 
@@ -640,7 +625,7 @@ public class LoadOnClick : MonoBehaviour
     {
         if (year == Settings.year)
         {
-            if (gameEnable == false)
+            if (Settings.gameEnable == false)
             {
                 //gameOverTimer.Stop();
                 isNextPlayer = false;
@@ -736,8 +721,7 @@ public class LoadOnClick : MonoBehaviour
         }
     }
 
-
-    public void BuildVirtualPlayerProfiles()
+    public void BuildVirtualPlayerProfilesFromIniFile()
     {
         int i = 0;
         bool done = false;
@@ -827,6 +811,13 @@ public class LoadOnClick : MonoBehaviour
 
         virtualPlayers[0] = new VirtualPlayer();//create a virtual player for the actual player
         virtualPlayers[0] = virtualTempPlayers[0];//use Otto for autoplay
+    }
+
+    public void BuildVirtualPlayerProfiles()
+    {
+        virtualPlayers = Settings.GetVirtualPlayers().ToArray();
+        //virtualPlayers[0] = new VirtualPlayer();//create a virtual player for the actual player
+        //virtualPlayers[0] = virtualTempPlayers[0];//use Otto for autoplay
     }
 
 
@@ -1089,7 +1080,7 @@ public class LoadOnClick : MonoBehaviour
         {
             if (betLabels[x] != null)
             {
-                betLabels[x].GetComponent<Text>().text = ""; //TODO: null object
+                betLabels[x].GetComponent<Text>().text = "";
                 betLabels[x].SetActive(false);
             }
         }
@@ -1422,16 +1413,14 @@ public class LoadOnClick : MonoBehaviour
                 firstcard = false;
             }
 
-
             for (int player = 0; player < Settings.playerSize; player++)
             {
                 dealCard(loop[buttonPosition + player + 1], firstcard, true);
                 if (player != 5)
                 {
-                    Thread.Sleep(dealDelay);
+                    //TODO: Thread.Sleep(dealDelay);
                 }
             }
-
         }
         x++;
         if (x > 51)
@@ -1448,13 +1437,13 @@ public class LoadOnClick : MonoBehaviour
         communityCards[0] = deck[deckPtr++];
         cardsPublic[0].sprite = cardsAll[communityCards[0]];
 
-        Thread.Sleep(dealDelay);
+        Thread.Sleep(Settings.dealDelay);
         //dealSound.Play();
 
         communityCards[1] = deck[deckPtr++];
         cardsPublic[1].sprite = cardsAll[communityCards[1]];
 
-        Thread.Sleep(dealDelay);
+        Thread.Sleep(Settings.dealDelay);
         //dealSound.Play();
 
         communityCards[2] = deck[deckPtr++];
@@ -1566,7 +1555,7 @@ public class LoadOnClick : MonoBehaviour
             virtualPlayers[player].Folded = true;
 
             int rank = playerHoleCardsRankings[0] + 1;
-            if ((GameState == GameStates.HoldCardBet) && (rank > surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < surrenderMinimumPair))
+            if ((GameState == GameStates.HoldCardBet) && (rank > Settings.surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < Settings.surrenderMinimumPair))
             {
                 btnSurrenderClick();
             }
@@ -1592,7 +1581,7 @@ public class LoadOnClick : MonoBehaviour
         {
             //TODO: cardsOfPlayer[(player * 2) + 1].X += offsetX;
         }
-        cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 0]];
+        cardsOfPlayer[(player * 2)].sprite = cardsAll[playerHands[player, 0]];
         cardsOfPlayer[(player * 2) + 1].sprite = cardsAll[playerHands[player, 1]];
     }
 
@@ -2809,7 +2798,7 @@ public class LoadOnClick : MonoBehaviour
 
     public void EnableBettingButtons()
     {
-        panelBettings.SetActive(true);  //show the betting buttons
+        panelInitBet.SetActive(true);  //show the betting buttons
 
         if (virtualPlayers[0].AllIn == true)
         {
@@ -2869,7 +2858,7 @@ public class LoadOnClick : MonoBehaviour
         if (GameState == GameStates.HoldCardBet)
         {
             int rank = playerHoleCardsRankings[0] + 1;
-            if (rank > surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < surrenderMinimumPair)
+            if (rank > Settings.surrenderReturnRank && virtualPlayers[0].AllIn == false && GetPlayerPairValue(0) < Settings.surrenderMinimumPair)
             {
                 if (panelSurrender != null) panelSurrender.SetActive(true);
                 if (btnSurrender != null) btnSurrender.SetActive(true);
@@ -2922,7 +2911,7 @@ public class LoadOnClick : MonoBehaviour
         
         // hide panels
         if (panelSurrender != null) panelSurrender.SetActive(false);
-        if (panelBettings != null) panelBettings.SetActive(false);
+        if (panelInitBet != null) panelInitBet.SetActive(false);
     }
 
 
@@ -2978,7 +2967,7 @@ public class LoadOnClick : MonoBehaviour
                 }
                 int potRaisePercentage = GetPercentPotRaised(player);
                 potRaisePercentage = ThisRoundRaisePercentage;
-                if (rank <= virtualPlayers[player].HoleMinThreshold)// && (realPlayerPotRaisePercentage >= 0 && realPlayerPotRaisePercentage >= PlayerRaiseFoldThreshold))//we have to meet the minimum
+                if (rank <= virtualPlayers[player].HoleMinThreshold)// && (realPlayerPotRaisePercentage >= 0 && realPlayerPotRaisePercentage >= Settings.PlayerRaiseFoldThreshold))//we have to meet the minimum
                 {
                     if (ThisPlayersCall > 0)//only check for folds if we can't check we take freebees
                     {
@@ -3111,12 +3100,12 @@ public class LoadOnClick : MonoBehaviour
                 else//didn't meet the minimum 
                 {
 
-                    if (ThisPlayersCall > 0 && (/*realPlayerPotRaisePercentage != 0 && realPlayerPotRaisePercentage*/potRaisePercentage > PlayerRaiseFoldThreshold))
+                    if (ThisPlayersCall > 0 && (/*realPlayerPotRaisePercentage != 0 && realPlayerPotRaisePercentage*/potRaisePercentage > Settings.PlayerRaiseFoldThreshold))
                     {
                         BetType = BetTypes.folding;
                     }
                 }
-                if (virtualPlayers[player].FoldOnAnyRaise == true && GetTotalRaiseAmount() > PlayerRaiseFoldThreshold && raise == 0)
+                if (virtualPlayers[player].FoldOnAnyRaise == true && GetTotalRaiseAmount() > Settings.PlayerRaiseFoldThreshold && raise == 0)
                 {
                     BetType = BetTypes.folding;
                 }
@@ -3124,7 +3113,7 @@ public class LoadOnClick : MonoBehaviour
                 {
                     if (virtualPlayers[0].RoundRaiseAmount >= virtualPlayers[0].Ante * 2)//is he trying to steal the pot 
                     {
-                        if (virtualPlayers[player].HighCard >= highCardThreshhold)//if we have a face card
+                        if (virtualPlayers[player].HighCard >= Settings.highCardThreshhold)//if we have a face card
                         {
                             BetType = BetTypes.checking;
                         }
@@ -3148,7 +3137,7 @@ public class LoadOnClick : MonoBehaviour
                 //                  Flop No Raise Bet Percentages =   100,100,100,100,100, 75,100,100, 50, 50, 50, 40, 25, 40, 30, 20, 30,  0, 40,  0,  0,  0
                 //possibilities #1
                 if (potRaisePercentage == 0)//the pot has not been raised
-                                            //if(virtualPlayerRaised < virtualPlayerRaiseLimit)
+                                            //if(virtualPlayerRaised < Settings.virtualPlayerRaiseLimit)
                 {
                     double tempRaise = 0;
                     int tempRank = fiveCardRank;
@@ -3338,7 +3327,7 @@ public class LoadOnClick : MonoBehaviour
                 //Turn No Raise Bet Percentages =   100,100,100,100,100, 75,100,100, 50, 50, 50, 40, 25, 40, 30, 20, 30,  0, 40,  0,  0,  0
                 // Turn possibilities #1
                 if (potRaisePercentage == 0)//the pot has not been raised
-                                            //if (virtualPlayerRaised < virtualPlayerRaiseLimit)
+                                            //if (virtualPlayerRaised < Settings.virtualPlayerRaiseLimit)
                 {
                     double tempRaise = 0;
                     int tempRank = fiveCardRank;
@@ -3544,7 +3533,7 @@ public class LoadOnClick : MonoBehaviour
 
                 //River possibilities #1 the pot was not raised by anyone
                 if (potRaisePercentage == 0)//the pot has not been raised
-                                            //if (virtualPlayerRaised < virtualPlayerRaiseLimit)
+                                            //if (virtualPlayerRaised < Settings.virtualPlayerRaiseLimit)
                 {
                     double tempRaise = 0;
                     int tempRank = fiveCardRank;
@@ -3738,7 +3727,7 @@ public class LoadOnClick : MonoBehaviour
 
             if (folding == true)//The universal high card test for five card hands
             {
-                if (GamePlayers[player].hand.HighCard >= highCardThreshhold)//greater than a ....
+                if (GamePlayers[player].hand.HighCard >= Settings.highCardThreshhold)//greater than a ....
                     folding = false;//turn off the fold
             }
 
@@ -3751,7 +3740,7 @@ public class LoadOnClick : MonoBehaviour
                 BetType = BetTypes.checking;
             }
 
-            if (BetType == BetTypes.raising && virtualPlayerRaised > virtualPlayerRaiseLimit)//no betting wars. 
+            if (BetType == BetTypes.raising && virtualPlayerRaised > Settings.virtualPlayerRaiseLimit)//no betting wars. 
             {
                 BetType = BetTypes.checking;
             }
@@ -4180,7 +4169,7 @@ public class LoadOnClick : MonoBehaviour
             isNextPlayer = false; //gameOverTimer.Stop();
         }
 
-        raiseLimit = anteBet * raiseLimitMultiplier;
+        raiseLimit = anteBet * Settings.raiseLimitMultiplier;
 
         winnerDeclared = false;
         PotSplit = 1;
@@ -4225,6 +4214,17 @@ public class LoadOnClick : MonoBehaviour
     public void btnNewGame_Click()//object sender, EventArgs e)//Ante Button
     {
         StartNewGame();
+    }
+
+    public void btnTestClearCardsClick() {
+        foreach (var card in cardsOfPlayer)
+            card.sprite = cardBack;
+    }
+
+    public void btnTestShowPlayerCards() {
+        Settings.testGame = true;
+        dealPlayerCards();
+        //Settings.testGame = false;
     }
 
     public void startGame()
@@ -4558,7 +4558,7 @@ public class LoadOnClick : MonoBehaviour
         WinAmount = PotAmount + videoWin;
         clearCreditLabels();
         gameOverStrings[1] = realPlayerName + " WIN THE POT";
-        panelBettings.SetActive(false);
+        panelInitBet.SetActive(false);
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
@@ -4721,7 +4721,7 @@ public class LoadOnClick : MonoBehaviour
                 }
             }
         }
-        if (winner != 0 && videoBonusWinOnly == false)
+        if (winner != 0 && Settings.videoBonusWinOnly == false)
         {
             if (playerWinRank >= videoPokerLowRank)
             {
@@ -4744,11 +4744,11 @@ public class LoadOnClick : MonoBehaviour
         }
 
         startGameOverTimer(true);
-        panelBettings.SetActive(false);
 
         //bonusPokerPanel.SetActive(true); //TODO:
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
+            panelInitBet.SetActive(true);
             btnRepeatBet.SetActive(true);
             btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
@@ -4757,6 +4757,8 @@ public class LoadOnClick : MonoBehaviour
         {
             //videoWin.Play();
         }
+        panelInitBet.SetActive(false);
+        isNextPlayer = false;
     }
 
 
@@ -5153,7 +5155,7 @@ public class LoadOnClick : MonoBehaviour
 
         DisableBettingButtons();
 
-        if (panelBettings != null) panelBettings.SetActive(false);
+        if (panelInitBet != null) panelInitBet.SetActive(false);
 
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
@@ -5354,15 +5356,15 @@ public class LoadOnClick : MonoBehaviour
         {
             btnAutoPlay.GetComponentInChildren<Text>().text = "Man. Play";
             // nextPlayerTimer.Interval = 10;
-            tempDelay = dealDelay;
-            dealDelay = 10;
+            Settings.tempDelay = Settings.dealDelay;
+            Settings.dealDelay = 10;
             //gameOverTimer.Interval = 10;
         }
         else
         {
             btnAutoPlay.GetComponentInChildren<Text>().text = "Auto Play";
             // nextPlayerTimer.Interval = nextPlayerDelay;
-            dealDelay = tempDelay;
+            Settings.dealDelay = Settings.tempDelay;
             //gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
         }
     }
@@ -5546,70 +5548,79 @@ public class LoadOnClick : MonoBehaviour
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
+        
         string iniFile = Settings.pathToAssetRes + Settings.iniFile;
         string logFile = Settings.pathToAssetRes + Settings.logFile;
         string dataFile = Settings.pathToAssetRes + Settings.datFile;
-        IniFileHandler.PrepareIniFile(iniFile);
 
-        int charsTransferred = 0;
-        Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
-        Settings.logging = IniFileHandler.GetIniBool("Game Parameters", "Logging", false, iniFile);
-        //TODO: TestingGroupBox.Visible = Settings.testGame;
-        videoBonusWinOnly = IniFileHandler.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
-        surrenderReturnRank = IniFileHandler.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
-        PlayerRaiseFoldThreshold = double.Parse(IniFileHandler.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
-        surrenderMinimumPair = IniFileHandler.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
-        highCardThreshhold = IniFileHandler.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
-        dealDelay = tempDelay = IniFileHandler.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
-        // nextPlayerTimer.Interval = nextPlayerDelay = IniFileHandler.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
-        virtualPlayerRaiseLimit = IniFileHandler.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
-        gameEnable = IniFileHandler.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
-        Settings.gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
-        Settings.gameDenomination /= Settings.GameDenominationDivider;
-        gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
-        raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
-
-        if (Settings.logging)
+        if (IniFileHandler.isExists(iniFile))
         {
-            Assets.Scripts.Logger.GetLogFileVars();
+            IniFileHandler.PrepareIniFile(iniFile);
+
+            int charsTransferred = 0;
+            Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
+            Settings.logging = IniFileHandler.GetIniBool("Game Parameters", "Logging", false, iniFile);
+            //TODO: TestingGroupBox.Visible = Settings.testGame;
+            Settings.videoBonusWinOnly = IniFileHandler.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
+            Settings.surrenderReturnRank = IniFileHandler.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
+            Settings.PlayerRaiseFoldThreshold = double.Parse(IniFileHandler.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
+            Settings.surrenderMinimumPair = IniFileHandler.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
+            Settings.highCardThreshhold = IniFileHandler.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
+            Settings.dealDelay = Settings.tempDelay = IniFileHandler.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
+            // nextPlayerTimer.Interval = nextPlayerDelay = IniFileHandler.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
+            Settings.virtualPlayerRaiseLimit = IniFileHandler.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
+            Settings.gameEnable = IniFileHandler.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
+            Settings.gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
+            Settings.gameDenomination /= Settings.GameDenominationDivider;
+            Settings.gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
+            Settings.raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
+
+            if (Settings.logging)
+            {
+                Assets.Scripts.Logger.GetLogFileVars();
+            }
+
+            if (Settings.gameDenomMultiplier < Settings.gameMaxDenomMultiplier)
+            {
+                if (btnAllIn != null) btnAllIn.SetActive(false);
+                betLimit = Settings.gameDenomination * Settings.gameDenomMultiplier;
+            }
+
+            payTable.paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+            for (int x = 0; x < 9; x++)
+            {
+                payTable.PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], payTable.PayTableAmounts[x], iniFile);
+            }
+
+            foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
+            checkString = IniFileHandler.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
+            callString = IniFileHandler.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
+            raiseString = IniFileHandler.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
+            allInString = IniFileHandler.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
+            surrenderString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
+            continueString = IniFileHandler.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
+            surrenderBoxString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
+            realPlayerName = IniFileHandler.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
+            jurisdictionalLimit = (double)IniFileHandler.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
+
+
+            for (int x = 1; x < 11; x++)
+            {
+                string instString = "Instruction " + x.ToString();
+                /*TODO: instrucionStrings[x] = IniFileHandler.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
+                if (instrucionStrings[x].Length == 0)
+                    break;*/
+                //TODO: make table using GridLayoutGroup dataGridView;
+                /*dataGridView1.Rows.Add();
+                dataGridView1.Rows[x - 1].Cells[0].Value = x.ToString();
+                dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
+                dataGridView1.Rows[x - 1].Height = 45;
+                */
+            }
         }
-
-        if (gameDenomMultiplier < Settings.gameMaxDenomMultiplier)
+        else //ini file is not exists
         {
-            if (btnAllIn != null) btnAllIn.SetActive(false);
-            betLimit = Settings.gameDenomination * gameDenomMultiplier;
-        }
 
-        payTable.paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
-        for (int x = 0; x < 9; x++)
-        {
-            payTable.PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings[x], payTable.PayTableAmounts[x], iniFile);
-        }
-
-        foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
-        checkString = IniFileHandler.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
-        callString = IniFileHandler.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
-        raiseString = IniFileHandler.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
-        allInString = IniFileHandler.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
-        surrenderString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
-        continueString = IniFileHandler.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
-        surrenderBoxString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
-        realPlayerName = IniFileHandler.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
-        jurisdictionalLimit = (double)IniFileHandler.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
-
-
-        for (int x = 1; x < 11; x++)
-        {
-            string instString = "Instruction " + x.ToString();
-            /*TODO: instrucionStrings[x] = IniFileHandler.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
-            if (instrucionStrings[x].Length == 0)
-                break;*/
-            //TODO: make table using GridLayoutGroup dataGridView;
-            /*dataGridView1.Rows.Add();
-            dataGridView1.Rows[x - 1].Cells[0].Value = x.ToString();
-            dataGridView1.Rows[x - 1].Cells[1].Value = instrucionStrings[x];
-            dataGridView1.Rows[x - 1].Height = 45;
-            */
         }
 
         payTable.BuildVideoBonusPaytable();
@@ -5625,7 +5636,11 @@ public class LoadOnClick : MonoBehaviour
         PlayerCredits = Settings.playerCredits;
         startGameOverTimer(false);
 
-        BuildVirtualPlayerProfiles();
+        if (IniFileHandler.isExists(iniFile))
+            BuildVirtualPlayerProfilesFromIniFile();
+        else
+            BuildVirtualPlayerProfiles();
+
         IncrementButtonPosition(false);
         GameState = GameStates.Ante;
         restoreCardDefaults(true);
@@ -5672,7 +5687,7 @@ public class LoadOnClick : MonoBehaviour
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
         panelXYZ = GameObject.Find("PanelXYZ");
-        panelBettings = GameObject.Find("PanelInitBet"); //.Find("panelBettings");//TODO: check: is panelBettings and PanelInitBet the same?
+        panelInitBet = GameObject.Find("PanelInitBet"); //.Find("panelInitBet");//TODO: check: is panelInitBet and PanelInitBet the same?
         btnCredit = GameObject.Find("btnCredit");
         btnRepeatBet = GameObject.Find("btnRepeatBet");
         btnAutoPlay = GameObject.Find("btnAutoPlay");
@@ -5722,7 +5737,7 @@ public class LoadOnClick : MonoBehaviour
 
         // init cards with images/sprites
         cardsAll = new List<Sprite>();
-        List<string> masti = new List<string>() { "clubs", "dia", "hearts", "spades" };
+        List<string> masti = new List<string>() { "spades", "dia", "clubs", "hearts" };
         string separator = "_";
         string path = "";
         Sprite cardSprite;
@@ -5773,7 +5788,7 @@ public class LoadOnClick : MonoBehaviour
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
     GameObject btnBetNow, btnLSurrender, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
     GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
-        panelBettings, btnAllIn,
+        btnAllIn,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
     List<GameObject> betLabels, creditLabels; // for each player

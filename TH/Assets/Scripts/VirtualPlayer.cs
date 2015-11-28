@@ -26,8 +26,8 @@ public class RaiseLevel
     public int RaisePercentage;
     public double[] ReRaiseRange = new double[2];
     public int ReRaisePercentage;
-
 }
+
 public class FoldLevel
 {
     public int[] FoldHands;// = new int[40];

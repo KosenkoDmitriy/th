@@ -18,6 +18,13 @@ static class IniFileHandler
         CreateIniFile(iniFile);
     }
 
+    public static bool isExists(string iniFile)
+    {
+        if (File.Exists(iniFile))
+            return true;
+        return false;
+    }
+
     public static void PrepareIniFile(string iniFile)
     {
         Console.WriteLine("PrepareIniFile path to init file: " + iniFile);
@@ -40,7 +47,7 @@ static class IniFileHandler
         catch (Exception e)
         {
             string msg = String.Format("Version error. Current: {0}. From ini file: {1} \n msg: {2}", Settings.currentIniVersion, Settings.iniVersion,e.Message);
-            Debug.Log(msg);
+            if (Settings.isDebug) Debug.LogError(msg);
             //MessageBox.Show("Version error", e.Message.ToString());
         }
     }
