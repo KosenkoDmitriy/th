@@ -5437,11 +5437,6 @@ public class LoadOnClick : MonoBehaviour
         return string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
     }
 
-    public void LoadScene(int level)
-    {
-        Application.LoadLevel(level);
-    }
-
     public void btnStartGameClick()
     {
         string betAmountString = inputBetField.text;
@@ -5672,7 +5667,7 @@ public class LoadOnClick : MonoBehaviour
         InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval);
 
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
-        inputBetField = GameObject.Find("InputBetField").GetComponentInChildren<InputField>();
+        inputBetField = panelInitBet.GetComponentInChildren<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
         lblPanelBet = GameObject.Find("lblPanelBet");
