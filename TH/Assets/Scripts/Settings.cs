@@ -201,7 +201,7 @@ static class Settings
                 },
                 new RaiseLevel() { //2
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0, },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
@@ -299,7 +299,7 @@ static class Settings
                 },
                 new RaiseLevel() { //2
                     RaiseHands = IntRange(5, 10),
-                    Range = new double[] { 0, },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 65,
                     ReRaiseRange = new double[] { 50, 9999 },
                     ReRaisePercentage = 100
