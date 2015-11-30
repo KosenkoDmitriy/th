@@ -7,6 +7,8 @@ static class Settings
     public static bool isDebug = false;
     public static int cardsSize = 52;
 
+    public static float updateInterval = 0.1f;
+
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;
     public static readonly int kickerSize = 6;
@@ -97,7 +99,7 @@ static class Settings
                     RaiseHands = new int[] { 7, 8, 9, 10, 12 }, // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
                     RaisePercentage = 34,                           // the percentage of the pot  to raise with the above hands.
-                    ReRaiseRange = new double[] {0, 0 },             // the percentage of the pot any of the players must raise after after this player has raised
+                    ReRaiseRange = new double[] { 0, 0 },             // the percentage of the pot any of the players must raise after after this player has raised
                     ReRaisePercentage = 0                           // the percentage of the pot we re raise if reraise level is met
                 },
                 new RaiseLevel() { //2
@@ -116,21 +118,21 @@ static class Settings
                 },
                 new RaiseLevel() { //4
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //5
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //6
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
@@ -206,28 +208,28 @@ static class Settings
                 },
                 new RaiseLevel() { //3
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //4
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //5
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //6
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
@@ -306,7 +308,7 @@ static class Settings
                     RaiseHands = IntRange(1, 4, new int[] { 11 }),
                     Range = new double[] { 0, 0 },
                     RaisePercentage = 75,
-                    ReRaiseRange = new double[] { 0 },
+                    ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //4
@@ -318,14 +320,14 @@ static class Settings
                 },
                 new RaiseLevel() { //5
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //6
                     RaiseHands = new int[] { 0 },
-                    Range = new double[] { 0 },
+                    Range = new double[] { 0, 0 },
                     RaisePercentage = 0,
                     ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
@@ -495,7 +497,7 @@ static class Settings
                     RaiseHands = new int[] { 3, 5, 6, 11 },
                     Range = new double[] { 0, 0 },
                     RaisePercentage = 53,
-                    ReRaiseRange = new double[] { 0, 0},
+                    ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 0
                 },
                 new RaiseLevel() { //3
@@ -593,7 +595,7 @@ static class Settings
                     RaiseHands = new int[] { 3, 5, 6, 11 },
                     Range = new double[] { 0, 0 },
                     RaisePercentage = 63,
-                    ReRaiseRange = new double[] { 0, 0},
+                    ReRaiseRange = new double[] { 0, 0 },
                     ReRaisePercentage = 25
                 },
                 new RaiseLevel() { //3

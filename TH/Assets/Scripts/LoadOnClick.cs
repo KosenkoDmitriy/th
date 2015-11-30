@@ -2945,15 +2945,15 @@ public class LoadOnClick : MonoBehaviour
         double realPlayerPotRaisePercentage = 0;
         BetType = BetTypes.checking;//start out with this and modify it
         bool pocketPair = false; //TODO
-        //try
-        //{
+        try
+        {
             pocketPair = GamePlayers[player].hand.cardHand[0] == GamePlayers[player].hand.cardHand[1];
-        //}
-        //catch(Exception e) {
-        //    if (Settings.isDebug) {
-        //        Debug.LogError("pocketPair error" + e.Message);
-        //    }
-        //}
+        }
+        catch(Exception e) {
+            Debug.LogError("pocketPair error" + e.Message);
+            isNextPlayer = false;
+            return 0;
+        }
 
         if (player != 0 || AutoPlay == true)//only service  the virtual players here
         {
@@ -4384,23 +4384,37 @@ public class LoadOnClick : MonoBehaviour
 
     public void btnCallClick()//_Click(object sender, EventArgs e)
     {
-        if (Settings.isDebug) Debug.Log("btnCallClick() virtualPlayers.Count = " + virtualPlayers.Count());
-        double pBet = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
+        if (virtualPlayers.Length > 0 && virtualPlayers[0] != null)
+        {
+            if (Settings.isDebug) Debug.Log("btnCallClick() virtualPlayers.Count = " + virtualPlayers.Count());
+            double pBet = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
 
-        PotAmount += pBet;
-        PlayerCredits -= pBet;
-        Settings.creditsPlayed += pBet;
-        playerCurrentBet = pBet;
-        PlayerBet += pBet;
+            PotAmount += pBet;
+            PlayerCredits -= pBet;
+            Settings.creditsPlayed += pBet;
+            playerCurrentBet = pBet;
+            PlayerBet += pBet;
 
-        BetPlayer(CurrentBetPosition);//do the accounting
+            BetPlayer(CurrentBetPosition);//do the accounting
+        }
+        else
+        {
+            isNextPlayer = false;
+        }
     }
 
     public void btnCheckClick() //_Click(object sender, EventArgs e)
     {
-        playerCurrentBet = 0;
-        virtualPlayers[0].RoundChecked = true;
-        BetPlayer(CurrentBetPosition);
+        if (virtualPlayers.Length > 0 && virtualPlayers[0] != null)
+        {
+            playerCurrentBet = 0;
+            virtualPlayers[0].RoundChecked = true;
+            BetPlayer(CurrentBetPosition);
+        }
+        else
+        {
+            isNextPlayer = false;
+        }
     }
 
     private bool checkForPlayerWin()
@@ -5512,7 +5526,7 @@ public class LoadOnClick : MonoBehaviour
         inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
-    void Update()
+    void UpdateInterval()
     {
         if (isNextPlayer)
         {
@@ -5654,6 +5668,8 @@ public class LoadOnClick : MonoBehaviour
     public void Start()
     {
         if (Settings.isDebug) Debug.Log("Start()");
+
+        InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval);
 
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
         inputBetField = GameObject.Find("InputBetField").GetComponentInChildren<InputField>();
