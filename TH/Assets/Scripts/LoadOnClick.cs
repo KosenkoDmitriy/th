@@ -4202,7 +4202,6 @@ public class LoadOnClick : MonoBehaviour
         panelInitBet.SetActive(true);
         btnStartGame.GetComponentInChildren<Text>().text = "Bet";
         panelInitBet.SetActive(false);
-
         Settings.creditsPlayed += playerBet;
         if (AutoPlay == true || autoStart == true)
         {
@@ -4572,12 +4571,14 @@ public class LoadOnClick : MonoBehaviour
         WinAmount = PotAmount + videoWin;
         clearCreditLabels();
         gameOverStrings[1] = realPlayerName + " WIN THE POT";
-        panelInitBet.SetActive(false);
+        
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             btnRepeatBet.SetActive(true);
         }
+
+        panelInitBet.SetActive(false);
         btnNewGame.SetActive(true);
         try
         {
@@ -5169,8 +5170,6 @@ public class LoadOnClick : MonoBehaviour
 
         DisableBettingButtons();
 
-        if (panelInitBet != null) panelInitBet.SetActive(false);
-
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatBet.SetActive(true);
@@ -5458,8 +5457,38 @@ public class LoadOnClick : MonoBehaviour
 
             panelInitBet.SetActive(false);
             panelGame.SetActive(true);
-            autoStart = true;
-            StartNewGame();
+
+            if (isRaiseClick) {
+                double raiseValue = 0;
+                double playerCallAmount;
+                betStringPtr = _raise;
+
+                //if (btnStartGame.GetComponent<Button>().IsInvoking())
+                //if (DialogResult.OK == panelInitBet.ShowDialog())//RAISE 
+                //{
+                    playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
+                    if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
+                        return;
+                    raiseValue = betAmount;//the value the player entered
+
+                    //PotAmount += playerCallAmount + raiseValue;
+                    playerCurrentBet += playerCallAmount + raiseValue;
+
+                    PlayerCredits -= (raiseValue + playerCallAmount);
+                    Settings.creditsPlayed += (raiseValue + playerCallAmount);
+                    virtualPlayers[0].RoundRaiseAmount += raiseValue;
+                    PlayerBet += playerCallAmount;
+                    PlayerRaise += raiseValue;//update the players raise status label
+                    virtualPlayerRaised = 0;
+                    ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
+                //}
+                BetPlayer(CurrentBetPosition);
+                isRaiseClick = false;
+            }
+            else {
+                autoStart = true;
+                StartNewGame();
+            }
         }
     }
 
@@ -5467,31 +5496,8 @@ public class LoadOnClick : MonoBehaviour
     {
         panelInitBet.SetActive(true);
         panelGame.SetActive(false);
-        btnStartGame.GetComponent<Button>().interactable = true;
-
-        double raiseValue = 0;
-        double playerCallAmount;
-        betStringPtr = _raise;
-
-        //if (DialogResult.OK == panelInitBet.ShowDialog())//RAISE 
-        //{
-        playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
-        if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
-            return;
-        raiseValue = betAmount;//the value the player entered
-
-        //PotAmount += playerCallAmount + raiseValue;
-        playerCurrentBet += playerCallAmount + raiseValue;
-
-        PlayerCredits -= (raiseValue + playerCallAmount);
-        Settings.creditsPlayed += (raiseValue + playerCallAmount);
-        virtualPlayers[0].RoundRaiseAmount += raiseValue;
-        PlayerBet += playerCallAmount;
-        PlayerRaise += raiseValue;//update the players raise status label
-        virtualPlayerRaised = 0;
-        ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
-        //}
-        BetPlayer(CurrentBetPosition);
+        //btnStartGame.GetComponent<Button>().interactable = true;
+        isRaiseClick = true;
     }
 
     public void btnBetNowClick()
@@ -5511,7 +5517,7 @@ public class LoadOnClick : MonoBehaviour
     {
         Settings.betCurrent += Settings.betDx;
         if (Settings.betCurrent > Settings.betMax)
-            Settings.betCurrent = Settings.betMax;
+            Settings.betCurrent = 0f;
         inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
     }
 
@@ -5627,7 +5633,7 @@ public class LoadOnClick : MonoBehaviour
                 */
             }
         }
-        else //ini file is not exists
+        else //TODO: ini file is not exists
         {
 
         }
@@ -5663,10 +5669,15 @@ public class LoadOnClick : MonoBehaviour
     public void Start()
     {
         if (Settings.isDebug) Debug.Log("Start()");
+        Settings.betCurrent = 0f;
 
-        InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval);
-
+        panelGame = GameObject.Find("PanelGame");
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
+        //panelBet = GameObject.Find("PanelBet");
+        panelSurrender = GameObject.Find("PanelSurrender");
+        panelXYZ = GameObject.Find("PanelXYZ");
+
+        // bet panel
         inputBetField = panelInitBet.GetComponentInChildren<InputField>();
 
         lblWinInfo = GameObject.Find("lblWinInfo");
@@ -5680,8 +5691,6 @@ public class LoadOnClick : MonoBehaviour
         btnSurrender = GameObject.Find("btnSurrender");
         playerAllCredits = GameObject.Find("playerAllCredits");
 
-        panelGame = GameObject.Find("PanelGame");
-        panelGame.SetActive(false);
 
         // bet panel
         btnRepeatBet = GameObject.Find("btnRepeatBet");
@@ -5697,8 +5706,6 @@ public class LoadOnClick : MonoBehaviour
 
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
-        panelXYZ = GameObject.Find("PanelXYZ");
-        panelInitBet = GameObject.Find("PanelInitBet"); //.Find("panelInitBet");//TODO: check: is panelInitBet and PanelInitBet the same?
         btnCredit = GameObject.Find("btnCredit");
         btnRepeatBet = GameObject.Find("btnRepeatBet");
         btnAutoPlay = GameObject.Find("btnAutoPlay");
@@ -5712,14 +5719,89 @@ public class LoadOnClick : MonoBehaviour
         lblWin = GameObject.Find("lblWin");
         lblBettingGroup = GameObject.Find("lblBettingGroup");
 
-        panelInitBet.SetActive(false);
-
         //TODO:
         //panel surrender
-        panelSurrender = GameObject.Find("PanelSurrender");
         lblSurrender = GameObject.Find("lblSurrender");
-        panelSurrender.SetActive(false);
 
+        btnBetNow.GetComponent<Button>().onClick.AddListener(() => btnBetNowClickListener());
+
+        btnStartGame.GetComponent<Button>().onClick.AddListener(() => btnStartGameClickListener());
+        btnRaise.GetComponent<Button>().onClick.AddListener(() => btnRaiseClickListener());
+        btnCall.GetComponent<Button>().onClick.AddListener(() => btnCallClickListener());
+        btnCheck.GetComponent<Button>().onClick.AddListener(() => btnCheckClickListener());
+        btnSurrender.GetComponent<Button>().onClick.AddListener(() => btnSurrenderClickListener());
+        btnAllIn.GetComponent<Button>().onClick.AddListener(() => btnAllInClickListener());
+
+        HideDynamicPanels();
+        InitCards();
+        OtherInits();
+
+        InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
+    }
+
+    private void HideDynamicPanels() {
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(false);
+        panelSurrender.SetActive(false);
+        //panelBet.SetActive(false);
+
+        if (Settings.isDebug)
+            panelXYZ.SetActive(false);
+    }
+
+    private void btnBetNowClickListener()
+    {
+        HideDynamicPanels();
+        panelInitBet.SetActive(true);
+    }
+
+    private void btnStartGameClickListener()
+    {
+        if (Settings.betCurrent <= 0) return;
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        panelSurrender.SetActive(true);
+        
+    }
+
+    private void btnCheckClickListener()
+    {
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        panelSurrender.SetActive(true);
+    }
+
+    private void btnCallClickListener()
+    {
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        panelSurrender.SetActive(true);
+    }
+
+    private void btnRaiseClickListener()
+    {
+        //panelInitBet.SetActive(true);
+        //panelGame.SetActive(false);
+        //panelSurrender.SetActive(true);
+    }
+
+    private void btnSurrenderClickListener()
+    {
+
+    }
+
+    private void btnFoldClickListener()
+    {
+
+    }
+
+    private void btnAllInClickListener()
+    {
+
+    }
+
+
+    private void InitCards() {
         //cards
         playerhold1 = GameObject.Find("playerhold1");
         playerhold2 = GameObject.Find("playerhold2");
@@ -5784,6 +5866,7 @@ public class LoadOnClick : MonoBehaviour
             GameObject.Find("lblBetPlayer4"),
             GameObject.Find("lblBetPlayer5")
         };
+
         creditLabels = new List<GameObject>() {
             GameObject.Find("lblCreditPlayer0"),
             GameObject.Find("lblCreditPlayer1"),
@@ -5792,7 +5875,6 @@ public class LoadOnClick : MonoBehaviour
             GameObject.Find("lblCreditPlayer4"),
             GameObject.Find("lblCreditPlayer5")
         };
-        OtherInits();
     }
 
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
@@ -5814,4 +5896,5 @@ public class LoadOnClick : MonoBehaviour
     Sprite cardBack; // back card side
     // panel XYZ
     Text lblTemp; // textBox2 for testing
+    bool isRaiseClick = false;
 }
