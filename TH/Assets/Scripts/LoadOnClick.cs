@@ -4125,8 +4125,10 @@ public class LoadOnClick : MonoBehaviour
             payTable.SetPaytableSelectedColumn(selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
-        else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
+        else if (isFromBetOkBtn)
+        //else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
         {
+            isFromBetOkBtn = false;
             if (AutoPlay == true)
             {
                 betAmount = Settings.betAmountAutoplay;
@@ -5125,8 +5127,6 @@ public class LoadOnClick : MonoBehaviour
         //GetPairType(new int[] { H2, H9, S6, S7, D9 });
     }
 
-
-    bool isFromFoldBtn = false;
     public void btnSurrenderClick()
     {
         if (isFromFoldBtn) {
@@ -5479,6 +5479,7 @@ public class LoadOnClick : MonoBehaviour
         lastBet = betAmount;
 
         if (betAmount > 0) {
+            isFromBetOkBtn = true;
             btnStartGame.GetComponentInChildren<Text>().text = "Bet";
             if (btnRepeatBet != null) btnRepeatBet.SetActive(false);
             if (lblPanelBet != null) lblPanelBet.SetActive(false);
@@ -5789,7 +5790,6 @@ public class LoadOnClick : MonoBehaviour
         panelInitBet.SetActive(false);
         panelGame.SetActive(true);
         panelSurrender.SetActive(true);
-        
     }
 
     private void btnCheckClickListener()
@@ -5924,5 +5924,8 @@ public class LoadOnClick : MonoBehaviour
     Sprite cardBack; // back card side
     // panel XYZ
     Text lblTemp; // textBox2 for testing
+
     bool isFromRaiseBtn = false;
+    bool isFromBetOkBtn = false;
+    bool isFromFoldBtn = false;
 }
