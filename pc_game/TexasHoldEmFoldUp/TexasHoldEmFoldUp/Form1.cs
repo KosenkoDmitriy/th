@@ -3302,16 +3302,17 @@ const int    HA = 51;
         {
             //surrenderGroupBox = null;
             surrenderPanel.Visible = false;
+            playerSurrenderButton.Visible = false;
             bettingGroupBox.Visible = false;
+
             playerRaiseButton.Enabled = false;
             playerCallButton.Enabled = false;
             playerCheckButton.Enabled = false;
             playerFoldButton.Enabled = false;
             playerAllInButton.Enabled = false;
-            playerSurrenderButton.Visible = false;
             ////surrenderWindow.TopMost = false;
             ////surrenderWindow.Hide();
-            
+
         }
 
 

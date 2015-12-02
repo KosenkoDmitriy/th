@@ -906,6 +906,7 @@ public class LoadOnClick : MonoBehaviour
 
     public void updateFoldedPlayersImages(bool visible)
     {
+        if (virtualPlayers.Count() < Settings.playerSize) return;
         for (int x = 1; x < Settings.playerSize; x++)
         {
             if (virtualPlayers[x].Folded == false)
@@ -2809,7 +2810,8 @@ public class LoadOnClick : MonoBehaviour
             if (btnAllIn != null) btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
             if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
             if (btnCall != null) btnCall.GetComponent<Button>().interactable = false;
-            if (btnSurrender != null) btnSurrender.SetActive(false);
+            //TODO: replace disabled state on invisible if (btnSurrender != null) btnSurrender.SetActive(false);
+            if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
 
             UpdateDynamicHelp();
             updateBettingButtonTitle();
@@ -2872,7 +2874,7 @@ public class LoadOnClick : MonoBehaviour
         if (virtualPlayers[0].AllIn == true)
         {
             string contstring = continueString + Environment.NewLine;
-            lblTemp.text = contstring;
+            if(lblTemp != null) lblTemp.text = contstring;
             return;
         }
         string teststring = foldString + Environment.NewLine;
@@ -2897,7 +2899,7 @@ public class LoadOnClick : MonoBehaviour
         {
             teststring += surrenderString;
         }
-        lblTemp.text = teststring;
+        if (lblTemp != null) lblTemp.text = teststring;
     }
 
     public void DisableBettingButtons()
@@ -2907,9 +2909,10 @@ public class LoadOnClick : MonoBehaviour
         if (btnCheck != null) btnCheck.GetComponent<Button>().interactable = false;
         if (btnFold != null) btnFold.GetComponent<Button>().interactable = false;
         if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = false;
+
+        // hide buttons and panels
+        //TODO: change state to invisible instead disabled if (btnSurrender != null) btnSurrender.SetActive(false);
         if (btnSurrender != null) btnSurrender.GetComponent<Button>().interactable = false;
-        
-        // hide panels
         if (panelSurrender != null) panelSurrender.SetActive(false);
         if (panelInitBet != null) panelInitBet.SetActive(false);
     }
@@ -4012,7 +4015,7 @@ public class LoadOnClick : MonoBehaviour
         }
         data += playerData;
         data += "," + buttonPosition.ToString();
-        lblTemp.text = data;
+        if (lblTemp.text != null) lblTemp.text = data;
     }
 
     private void button3_Click(object sender, EventArgs e)
@@ -5122,8 +5125,24 @@ public class LoadOnClick : MonoBehaviour
         //GetPairType(new int[] { H2, H9, S6, S7, D9 });
     }
 
+
+    bool isFromFoldBtn = false;
     public void btnSurrenderClick()
     {
+        if (isFromFoldBtn) {
+            isFromFoldBtn = false;
+
+            PlayerCredits += PlayerBet / 2;//return half the bet
+            Settings.creditsWon += PlayerBet / 2;
+            WinAmount = PlayerBet / 2;
+            PlayerSurrender = true;
+            buttonPosition = 0;//reset the button position to 5
+            IncrementButtonPosition(false);
+
+            FoldOrSurrender();
+           
+            return;
+        }
         PlayerCredits += PlayerBet / 2;//return half the bet
         Settings.creditsWon += PlayerBet / 2;
         WinAmount = PlayerBet / 2;
@@ -5136,7 +5155,13 @@ public class LoadOnClick : MonoBehaviour
 
     public void btnFoldClick() //_Click(object sender, EventArgs e)
     {
+        isFromFoldBtn = true;
+        FoldOrSurrender();
+    }
+
+    private void FoldOrSurrender() {
         //buttonSound.Play();
+
         if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
@@ -5165,20 +5190,22 @@ public class LoadOnClick : MonoBehaviour
         }
         catch
         {
-
+            if (Settings.isDebug) Debug.Log("error LogResults()");
         }
 
         DisableBettingButtons();
-
+        panelInitBet.SetActive(false);
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
-            btnRepeatBet.SetActive(true);
-            btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            // TODO: check right button for this case (btnRepeatLastBet and btnRepeatBet)
+            //btnRepeatBet.SetActive(true);
+            //btnRepeatBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatLastBet.SetActive(true);
+            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
         btnNewGame.SetActive(true);
-
-        startGameOverTimer(false);
     }
+
 
     private void playerAllCredits_MouseDoubleClick()//object sender, MouseEventArgs e)
     {
@@ -5329,6 +5356,7 @@ public class LoadOnClick : MonoBehaviour
 
     public void UseTestData()
     {
+        if (lblTemp == null) return;
         //TODO: test data ??
         string data = lblTemp.text;
         string[] dataArray = data.Split(',');
@@ -5458,7 +5486,7 @@ public class LoadOnClick : MonoBehaviour
             panelInitBet.SetActive(false);
             panelGame.SetActive(true);
 
-            if (isRaiseClick) {
+            if (isFromRaiseBtn) {
                 double raiseValue = 0;
                 double playerCallAmount;
                 betStringPtr = _raise;
@@ -5483,7 +5511,7 @@ public class LoadOnClick : MonoBehaviour
                     ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
                 //}
                 BetPlayer(CurrentBetPosition);
-                isRaiseClick = false;
+                isFromRaiseBtn = false;
             }
             else {
                 autoStart = true;
@@ -5497,7 +5525,7 @@ public class LoadOnClick : MonoBehaviour
         panelInitBet.SetActive(true);
         panelGame.SetActive(false);
         //btnStartGame.GetComponent<Button>().interactable = true;
-        isRaiseClick = true;
+        isFromRaiseBtn = true;
     }
 
     public void btnBetNowClick()
@@ -5745,7 +5773,7 @@ public class LoadOnClick : MonoBehaviour
         panelSurrender.SetActive(false);
         //panelBet.SetActive(false);
 
-        if (Settings.isDebug)
+        if (!Settings.isDebug || !Settings.testGame)
             panelXYZ.SetActive(false);
     }
 
@@ -5896,5 +5924,5 @@ public class LoadOnClick : MonoBehaviour
     Sprite cardBack; // back card side
     // panel XYZ
     Text lblTemp; // textBox2 for testing
-    bool isRaiseClick = false;
+    bool isFromRaiseBtn = false;
 }
