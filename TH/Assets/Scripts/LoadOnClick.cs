@@ -2950,8 +2950,8 @@ public class LoadOnClick : MonoBehaviour
         bool pocketPair = false; //TODO
 
         // fixed init error
-        //if (player >= GamePlayers.Count() || GamePlayers[player] == null)
-        //    return 0;
+        if (player >= GamePlayers.Count() || GamePlayers[player] == null)
+            return 0;
 
         try
         {
