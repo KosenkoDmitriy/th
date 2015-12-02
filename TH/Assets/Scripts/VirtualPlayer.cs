@@ -1,4 +1,6 @@
-﻿public class CardHand
+﻿using System.Collections.Generic;
+
+public class CardHand
 {
     public int HandRank;//0=Royal,1=Straight,etc 
     public int CardValueTotal;//the total value of cards included in the hand .. tie breaker
@@ -39,8 +41,8 @@ public class VirtualPlayer
     public string Name = new string(' ', Settings.playerNameSize);
     public int playerNumber;
     public bool FoldOnAnyRaise;
-    public RaiseLevel[] RaiseLevels = new RaiseLevel[6];
-    public FoldLevel[] FoldLevels = new FoldLevel[8];
+    public List<RaiseLevel> RaiseLevels = new List<RaiseLevel>();//[6];
+    public List<FoldLevel> FoldLevels = new List<FoldLevel>();//[8];
     public int HoleMinThreshold;                            //the lowest rank for play anything lower folds
     public int[] BluffHands;// = new int[40];                  //the hands that we bluff with
     public int[] SlowPlayHands;// = new int[40];               //hands that are slow played  

@@ -64,7 +64,8 @@ static class Settings
     public static double jurisdictionalLimit = 0; // TODO: jurisdictionalLimit == jurisdictionalBETLimit in ini file
     public static int jurisdictionalBetLimit = 1000;
     public static readonly int gameMaxDenomMultiplier = 9999;
-    public static int foldLevelsSize = 8;
+    public static readonly int foldLevelsSize = 8;
+    public static readonly int raiseLevelsSize = 6;
 
     public static double currentIniVersion = 2.5;
     public static double iniVersion = 0.0;
@@ -74,6 +75,7 @@ static class Settings
     public static int gameNumber = 1;
     public static double creditsPlayed = 0;
     public static double creditsWon = 0;
+    public static readonly int cardsOnDeckSize = 17;
 
     public static List<VirtualPlayer> GetVirtualPlayers()
     {
@@ -94,7 +96,7 @@ static class Settings
         vp.Name = "Mr Tight Ted";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 53;  //the lowest rank for play anything lower folds
-        vp.RaiseLevels = new RaiseLevel[] {
+        vp.RaiseLevels = new List<RaiseLevel>() {
                 new RaiseLevel() { //1
                     RaiseHands = new int[] { 7, 8, 9, 10, 12 }, // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
@@ -138,7 +140,7 @@ static class Settings
                     ReRaisePercentage = 0
                 },
             };
-        vp.FoldLevels = new FoldLevel[] {
+        vp.FoldLevels = new List<FoldLevel>() {
                 new FoldLevel() { //1
                     FoldHands = new int[] { 45, 47 },                       // the hands that are folded if in the prescribed range
                     Range = new double[] { 11, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
@@ -191,7 +193,7 @@ static class Settings
         vp.Name = "Mr Tight Ted";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 104;  //the lowest rank for play anything lower folds
-        vp.RaiseLevels = new RaiseLevel[] {
+        vp.RaiseLevels = new List<RaiseLevel>() {
                 new RaiseLevel() { //1
                     RaiseHands = new int[] { 1, 2, 3 }, // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, gameMaxDenomMultiplier },                   // the percentate range the real player must raise to use these hands
@@ -235,7 +237,7 @@ static class Settings
                     ReRaisePercentage = 0
                 },
             };
-        vp.FoldLevels = new FoldLevel[] {
+        vp.FoldLevels = new List<FoldLevel>() {
                 new FoldLevel() { //1
                     FoldHands = new int[] { 81, 84, 91, 101, 102, 104 },                       // the hands that are folded if in the prescribed range
                     Range = new double[] { 24, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
@@ -289,7 +291,7 @@ static class Settings
         vp.Name = "Solid Sam";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 53;  //the lowest rank for play anything lower folds
-        vp.RaiseLevels = new RaiseLevel[] {
+        vp.RaiseLevels = new List<RaiseLevel>() {
                 new RaiseLevel() { //1
                     RaiseHands = IntRange(12, 20), // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
@@ -333,7 +335,7 @@ static class Settings
                     ReRaisePercentage = 0
                 },
             };
-        vp.FoldLevels = new FoldLevel[] {
+        vp.FoldLevels = new List<FoldLevel>() {
                 new FoldLevel() { //1
                     FoldHands = new int[] { 39, 40, 42, 46, 48, 50, 51, 52 },                       // the hands that are folded if in the prescribed range
                     Range = new double[] { 61, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
@@ -387,7 +389,7 @@ static class Settings
         vp.Name = "Loose Lou";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 105;  //the lowest rank for play anything lower folds
-        vp.RaiseLevels = new RaiseLevel[] {
+        vp.RaiseLevels = new List<RaiseLevel>() {
                 new RaiseLevel() { //1
                     RaiseHands = IntRange(37, 52), // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
@@ -431,7 +433,7 @@ static class Settings
                     ReRaisePercentage = 0
                 },
             };
-        vp.FoldLevels = new FoldLevel[] {
+        vp.FoldLevels = new List<FoldLevel>() {
                 new FoldLevel() { //1
                     FoldHands = new int[] { 54, 57, 62, 70, 74, 77, 88, 89, 90, 94, 95, 96, 97, 98, 100, 103 },                       // the hands that are folded if in the prescribed range
                     Range = new double[] { 11, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
@@ -485,7 +487,7 @@ static class Settings
         vp.Name = "Mr Ace";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 24;  //the lowest rank for play anything lower folds
-        vp.RaiseLevels = new RaiseLevel[] {
+        vp.RaiseLevels = new List<RaiseLevel>() {
                 new RaiseLevel() { //1
                     RaiseHands = new int[] { 7, 8, 9, 10, 12 }, // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
@@ -529,7 +531,7 @@ static class Settings
                     ReRaisePercentage = 0
                 },
             };
-        vp.FoldLevels = new FoldLevel[] {
+        vp.FoldLevels = new List<FoldLevel>() {
                 new FoldLevel() { //1
                     FoldHands = new int[] { 45, 47 },                       // the hands that are folded if in the prescribed range
                     Range = new double[] { 11, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
@@ -583,7 +585,7 @@ static class Settings
         vp.Name = "Mr Super Tight";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 53;  //the lowest rank for play anything lower folds
-        vp.RaiseLevels = new RaiseLevel[] {
+        vp.RaiseLevels = new List<RaiseLevel>() {
                 new RaiseLevel() { //1
                     RaiseHands = IntRange(7, 10, new int[] { 12 }), // the hands that are raised on initial round or called in susiquent
                     Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
@@ -627,7 +629,7 @@ static class Settings
                     ReRaisePercentage = 0
                 },
             };
-        vp.FoldLevels = new FoldLevel[] {
+        vp.FoldLevels = new List<FoldLevel>() {
                 new FoldLevel() { //1
                     FoldHands = new int[] { 45, 47 },                       // the hands that are folded if in the prescribed range
                     Range = new double[] { 11, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
