@@ -4,7 +4,7 @@ using UnityEngine;
 
 static class Settings
 {
-    public static bool isDebug = false;
+    public static bool isDebug = true;
     public static int cardsSize = 52;
 
     public static float updateInterval = 0.1f;

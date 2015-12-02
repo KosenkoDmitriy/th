@@ -2933,6 +2933,9 @@ public class LoadOnClick : MonoBehaviour
             return 0;
         }
 
+        if (GamePlayers.Count() > 0 && GamePlayers[player] == null)
+            return 0;
+
         double ThisRoundBet = 0;
         double raise = 0;//local value for amount raised
 
