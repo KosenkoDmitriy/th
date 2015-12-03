@@ -818,17 +818,12 @@ public class LoadOnClick : MonoBehaviour
     }
 
 
-    public void ShuffleVirtualPlayers() //TODO: fix read/write from ini file
+    public void ShuffleVirtualPlayers()
     {
-        /*TODO: Why need shuffle players??*/
-        if (virtualPlayerCount <= 0)
-        {
-            if (Settings.isDebug) Debug.Log("Can't ShuffleVirtualPlayers() because VirtualPlayerCount should be > 0 - NOW is: " + virtualPlayerCount.ToString());
-            return;
-        }
+        return; // TODO: commented because this method will crash game
 
         int i;
-        int[] players = new int[5];
+        int[] players = new int[Settings.playerVirtualSize];
         for (i = 0; i < Settings.playerVirtualSize; i++)
         {
             int a = 0;
@@ -3103,11 +3098,9 @@ public class LoadOnClick : MonoBehaviour
                             }
                         }
                     }
-
                 }
                 else//didn't meet the minimum 
                 {
-
                     if (ThisPlayersCall > 0 && (/*realPlayerPotRaisePercentage != 0 && realPlayerPotRaisePercentage*/potRaisePercentage > Settings.PlayerRaiseFoldThreshold))
                     {
                         BetType = BetTypes.folding;
@@ -5774,6 +5767,7 @@ public class LoadOnClick : MonoBehaviour
         InitCards();
         OtherInits();
 
+        isNextPlayer = false; // don't call update when initializing game
         InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
     }
 
