@@ -618,7 +618,7 @@ public class LoadOnClick : MonoBehaviour
     #endregion
 
     //void gameOverTimer_Tick(object sender, EventArgs e)
-    void gameOberTimer()
+    void gameOverTimer()
     {
         if (year == Settings.year)
         {
@@ -697,7 +697,7 @@ public class LoadOnClick : MonoBehaviour
             {
                 PlayerCredits = Settings.jurisdictionalBetLimit;
             }
-            btnNewGame_Click();// sender, e);
+            btnNewGame_Click();
         }
     }
 
