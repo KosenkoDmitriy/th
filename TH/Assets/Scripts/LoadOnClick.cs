@@ -3099,7 +3099,7 @@ public class LoadOnClick : MonoBehaviour
                                     BetType = BetTypes.raising;
                                     raise = ThisPlayersCall * 0.30;
                                 }
-                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " is BLUFFING with " + String.Format("{0:C}", raise);
+                                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " is BLUFFING with " + String.Format("{0:C}", raise);
                             }
                         }
                     }
@@ -3321,7 +3321,7 @@ public class LoadOnClick : MonoBehaviour
                     BetType = BetTypes.raising;
                     raise = RoundUp(PotAmount / 2);
                 }
-                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Flop Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
+                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Flop Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
             }
 
             //TURN
@@ -3525,8 +3525,8 @@ public class LoadOnClick : MonoBehaviour
                     BetType = BetTypes.raising;
                     raise = RoundUp(PotAmount / 2);
                 }
-                //lblWinInfo.AppendText(virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine);
-                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
+                //if (lblWinInfo != null) lblWinInfo.AppendText(virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine);
+                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " Turn Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
             }
 
             //RIVER
@@ -3726,7 +3726,7 @@ public class LoadOnClick : MonoBehaviour
                     BetType = BetTypes.raising;
                     raise = RoundUp(PotAmount / 2);
                 }
-                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " River Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
+                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " #" + player.ToString() + " River Bet Rank = " + fiveCardRank.ToString() + Environment.NewLine;
             }
 
             //END RIVER 
@@ -3775,7 +3775,7 @@ public class LoadOnClick : MonoBehaviour
             if (virtualPlayers[player].AllIn == true)
             {
                 AllInPlayer(player);
-                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " IS ALL IN" + Environment.NewLine;
+                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " IS ALL IN" + Environment.NewLine;
             }
             else
             {
@@ -3784,13 +3784,13 @@ public class LoadOnClick : MonoBehaviour
                     case BetTypes.folding:
                         {
                             FoldPlayer(player);
-                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " FOLDED" + Environment.NewLine;
+                            if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " FOLDED" + Environment.NewLine;
                         }
                         break;
                     case BetTypes.checking:
                         {
                             CheckPlayer(player);
-                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CHECKED" + Environment.NewLine;
+                            if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CHECKED" + Environment.NewLine;
                         }
                         break;
                     case BetTypes.calling:
@@ -3806,7 +3806,7 @@ public class LoadOnClick : MonoBehaviour
                                 AllInPlayer(player);
                                 //PotAmount += ThisRoundBet;
                                 virtualPlayers[player].Credits -= ThisRoundBet;
-                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
+                                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
                             }
                             else
                             {
@@ -3814,7 +3814,7 @@ public class LoadOnClick : MonoBehaviour
                                 virtualPlayers[player].Credits -= ThisRoundBet;
                                 virtualPlayers[player].RoundCallAmount += ThisPlayersCall;
                                 CallPlayer(player);
-                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CALLED" + Environment.NewLine;
+                                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " CALLED" + Environment.NewLine;
                             }
                         }
                         break;
@@ -3850,7 +3850,7 @@ public class LoadOnClick : MonoBehaviour
                                 ThisRoundBet = raise + ThisPlayersCall;// CallAmount;
                                                                        //PotAmount += ThisRoundBet;
                                 virtualPlayers[player].Credits -= ThisRoundBet;
-                                lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
+                                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
                                 break;
                             }
 
@@ -3859,7 +3859,7 @@ public class LoadOnClick : MonoBehaviour
                             //CallAmount += raise;
                             RaisePlayer(player, raise);
                             virtualPlayers[player].RoundCallAmount += ThisPlayersCall;
-                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " RAISED" + Environment.NewLine;
+                            if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " RAISED" + Environment.NewLine;
                             GamePlayers[player].RoundRaiseCount++;
                             ThisRoundRaisePercentage += GetPotRaisePercentage(raise);// (int)(100 / (PotAmount / raise));
                         }
@@ -3873,7 +3873,7 @@ public class LoadOnClick : MonoBehaviour
                             ThisRoundBet = virtualPlayers[player].Credits;
                             //PotAmount += ThisRoundBet;
                             virtualPlayers[player].Credits -= ThisRoundBet;
-                            lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
+                            if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " " + player.ToString() + " ALL IN" + Environment.NewLine;
                         }
                         break;
                 }
@@ -3945,7 +3945,7 @@ public class LoadOnClick : MonoBehaviour
         }
         //if(player != 0)
         PotAmount += ThisRoundBet;// virtualPlayers[player].FlopBet;
-                                  //lblWinInfo.AppendText("Player " + player.ToString() + roundStr + ThisRoundBet.ToString() + Environment.NewLine);
+                                  //if (lblWinInfo != null) lblWinInfo.AppendText("Player " + player.ToString() + roundStr + ThisRoundBet.ToString() + Environment.NewLine);
         if (player == 0 && AutoPlay == true)
         {
             Settings.creditsPlayed += ThisRoundBet;
@@ -4075,7 +4075,7 @@ public class LoadOnClick : MonoBehaviour
         for (int x = 1; x < Settings.playerSize; x++)
         {
             try {
-                lblWinInfo.GetComponentInChildren<Text>().text += " Player " + x.ToString() + " =" + virtualPlayers.ElementAt(x).Name + Environment.NewLine;
+                if (lblWinInfo != null) lblWinInfo.GetComponentInChildren<Text>().text += " Player " + x.ToString() + " =" + virtualPlayers.ElementAt(x).Name + Environment.NewLine;
             }
             catch (Exception e) {
                 if (Settings.isDebug) Debug.LogError("error in lblWinInfo: " + e.Message);
