@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 
 static class Settings
 {
@@ -11,6 +10,7 @@ static class Settings
 
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;
+    public static readonly int playerVirtualSize = 5;
     public static readonly int kickerSize = 6;
     public static int playerCredits = 1000;
     public static int year = 2010;
@@ -31,9 +31,8 @@ static class Settings
     public static double betCurrent = 0.00;
 
     // ini settings
-    public static string pathToAppData = Application.dataPath;
-    public static string pathToCurDir = Directory.GetCurrentDirectory();
-    public static string pathToAssetRes = Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
+    public static string pathToCurDir = "";// Directory.GetCurrentDirectory();
+    public static string pathToAssetRes = "";// Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
     public static string iniFile = "TexasHoldem.idni";
     public static string logFile = "TexasHoldem.log";
     public static string datFile = "TexasHoldem.dat";

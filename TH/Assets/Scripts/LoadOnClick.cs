@@ -9,6 +9,10 @@ using System.Collections.Generic;
 
 public class LoadOnClick : MonoBehaviour
 {
+    public LoadOnClick()
+    {
+        if (Settings.isDebug) Debug.Log("LoadOnClick()");
+    }
     #region init vars
 
     Assets.Scripts.PayTable payTable;
@@ -613,13 +617,6 @@ public class LoadOnClick : MonoBehaviour
 
     #endregion
 
-    public LoadOnClick()
-    {
-        if (Settings.isDebug) Debug.Log("LoadOnClick()");
-        payTable = new Assets.Scripts.PayTable();
-    }
-
-
     //void gameOverTimer_Tick(object sender, EventArgs e)
     void gameOberTimer()
     {
@@ -832,7 +829,7 @@ public class LoadOnClick : MonoBehaviour
 
         int i;
         int[] players = new int[5];
-        for (i = 0; i < 5; i++)
+        for (i = 0; i < Settings.playerVirtualSize; i++)
         {
             int a = 0;
             int temp = rand.Next(1, virtualPlayerCount + 1);
@@ -5583,6 +5580,10 @@ public class LoadOnClick : MonoBehaviour
 
     // Init game
     public void OtherInits() {
+        Settings.pathToCurDir = System.IO.Directory.GetCurrentDirectory();
+        Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
+        payTable = new Assets.Scripts.PayTable();
+
         //InitializeComponent();
         now = DateTime.Now;
         year = now.Year;
