@@ -7,6 +7,7 @@ using System.Threading;
 using System.Globalization;
 using System.Collections.Generic;
 
+
 public class LoadOnClick : MonoBehaviour
 {
     #region init vars
@@ -616,9 +617,7 @@ public class LoadOnClick : MonoBehaviour
     public LoadOnClick()
     {
         if (Settings.isDebug) Debug.Log("LoadOnClick()");
-        payTable = new Assets.Scripts.PayTable();
     }
-
 
     //void gameOverTimer_Tick(object sender, EventArgs e)
     void gameOberTimer()
@@ -803,6 +802,7 @@ public class LoadOnClick : MonoBehaviour
                 catch (FormatException e)
                 {
                     //TODO: MessageBox.Show(e.Message, "INI FILE Error");
+                    if (Settings.isDebug) Debug.LogError("INI FILE Error:" + e.Message);
                     string ex = e.Message;
                 }
                 i++;
@@ -824,15 +824,15 @@ public class LoadOnClick : MonoBehaviour
     public void ShuffleVirtualPlayers() //TODO: fix read/write from ini file
     {
         /*TODO: Why need shuffle players??*/
-        if (virtualPlayerCount <= 0)
+        if (virtualPlayers.Count() <= 0)
         {
-            if (Settings.isDebug) Debug.Log("Can't ShuffleVirtualPlayers() because VirtualPlayerCount should be > 0 - NOW is: " + virtualPlayerCount.ToString());
+            if (Settings.isDebug) Debug.LogError("Can't ShuffleVirtualPlayers() because VirtualPlayerCount should be > 0 - NOW is: " + virtualPlayerCount.ToString());
             return;
         }
 
         int i;
         int[] players = new int[5];
-        for (i = 0; i < 5; i++)
+        for (i = 0; i < Settings.playerVirtualSize; i++)
         {
             int a = 0;
             int temp = rand.Next(1, virtualPlayerCount + 1);
@@ -2922,6 +2922,9 @@ public class LoadOnClick : MonoBehaviour
     //*******************************************************************************************
     public double BetPlayer(int player)
     {
+        if (GamePlayers.Count() > 0 && GamePlayers[player] == null)
+            return 0;
+
         if (CurrentBetPosition == buttonPosition)
         {
             DealButtonPassed = true;//we have serviced all the players now we can check if the betting is done
@@ -2932,9 +2935,6 @@ public class LoadOnClick : MonoBehaviour
             isNextPlayer = true; // nextPlayerTimer.Start();
             return 0;
         }
-
-        if (GamePlayers.Count() > 0 && GamePlayers[player] == null)
-            return 0;
 
         double ThisRoundBet = 0;
         double raise = 0;//local value for amount raised
@@ -4599,7 +4599,7 @@ public class LoadOnClick : MonoBehaviour
         }
         catch
         {
-
+            if (Settings.isDebug) Debug.LogError("error LogResults()");
         }
         startGameOverTimer(true);
     }
@@ -4768,7 +4768,7 @@ public class LoadOnClick : MonoBehaviour
         }
         catch
         {
-
+            if (Settings.isDebug) Debug.LogError("error LogResults()");
         }
 
         startGameOverTimer(true);
@@ -5672,7 +5672,7 @@ public class LoadOnClick : MonoBehaviour
         }
         else //TODO: ini file is not exists
         {
-
+            if (Settings.isDebug) Debug.Log("no INI file found!");
         }
 
         payTable.BuildVideoBonusPaytable();
@@ -5707,6 +5707,10 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("Start()");
         Settings.betCurrent = 0f;
+
+        Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\"; // System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
+
+        payTable = new Assets.Scripts.PayTable();
 
         panelGame = GameObject.Find("PanelGame");
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
@@ -5773,6 +5777,7 @@ public class LoadOnClick : MonoBehaviour
         InitCards();
         OtherInits();
 
+        isNextPlayer = false;
         InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
     }
 

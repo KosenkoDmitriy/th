@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Nav : MonoBehaviour {
 
@@ -7,15 +6,4 @@ public class Nav : MonoBehaviour {
     {
         Application.LoadLevel(level);
     }
-
-
-    // Use this for initialization
-    void Start () {
-	    
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
