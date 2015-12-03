@@ -1042,8 +1042,8 @@ public class LoadOnClick : MonoBehaviour
         {
             //betLabels[player].ForeColor = System.Drawing.Color.White;
         }
-        betLabels[player].GetComponent<Text>().text = text;
         betLabels[player].SetActive(true);
+        betLabels[player].GetComponent<Text>().text = text;
     }
 
     private void UpdateCreditLabel(int player)
@@ -1053,8 +1053,8 @@ public class LoadOnClick : MonoBehaviour
         creditLabels[player].GetComponent<Text>().text = "";
         double amount = virtualPlayers[player].Credits;
         string dollarAmount = String.Format("{0:C}", amount);
-        creditLabels[player].GetComponent<Text>().text = dollarAmount;
         creditLabels[player].SetActive(true);
+        creditLabels[player].GetComponent<Text>().text = dollarAmount;
     }
 
     private void clearBetLabel(int player)
@@ -1116,8 +1116,8 @@ public class LoadOnClick : MonoBehaviour
         {
             if (creditLabels.ElementAt(x) != null)
             {
-                creditLabels.ElementAt(x).GetComponent<Text>().text = "";
                 creditLabels.ElementAt(x).SetActive(true); // GetComponentInParent<GameObject>().SetActive(true);
+                creditLabels.ElementAt(x).GetComponent<Text>().text = "";
             }
         }
     }
