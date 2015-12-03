@@ -1469,13 +1469,11 @@ public class LoadOnClick : MonoBehaviour
         communityCards[0] = deck[deckPtr++];
         cardsPublic[0].sprite = cardsAll[communityCards[0]];
 
-        Thread.Sleep(Settings.dealDelay);
         //dealSound.Play();
 
         communityCards[1] = deck[deckPtr++];
         cardsPublic[1].sprite = cardsAll[communityCards[1]];
 
-        Thread.Sleep(Settings.dealDelay);
         //dealSound.Play();
 
         communityCards[2] = deck[deckPtr++];
