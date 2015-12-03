@@ -3,29 +3,31 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 
-static class IniFileHandler
+class IniFileHandler
 {
+    public IniFileHandler() {
 
-    public static void EraseIniFile(string iniFile)
+    }
+
+    public void EraseIniFile(string iniFile)
     {
         if (Settings.isDebug) Debug.Log("EraseIniFile");
         FileInfo fi = new FileInfo(iniFile);
         if (File.Exists(iniFile))
         {
-            fi.Delete();
-
+            //TODO: fi.Delete();
         }
         CreateIniFile(iniFile);
     }
 
-    public static bool isExists(string iniFile)
+    public bool isExists(string iniFile)
     {
         if (File.Exists(iniFile))
             return true;
         return false;
     }
 
-    public static void PrepareIniFile(string iniFile)
+    public void PrepareIniFile(string iniFile)
     {
         Console.WriteLine("PrepareIniFile path to init file: " + iniFile);
         if (File.Exists(iniFile) == false)
@@ -38,7 +40,7 @@ static class IniFileHandler
 
         try
         {
-            Settings.iniVersion = double.Parse(IniFileHandler.GetIniString("Version", "INI Version", "0", out charsTransferred, iniFile));
+            Settings.iniVersion = double.Parse(GetIniString("Version", "INI Version", "0", out charsTransferred, iniFile));
             if (Settings.iniVersion != Settings.currentIniVersion)
             {
                 EraseIniFile(iniFile); //TODO: uncommented because it deleted ini file
@@ -52,7 +54,7 @@ static class IniFileHandler
         }
     }
 
-    public static void CreateIniFile(string iniFile)
+    public void CreateIniFile(string iniFile)
     {
         StreamReader reader;
         StreamWriter writer;
@@ -81,7 +83,7 @@ static class IniFileHandler
         }
     }
 
-    public static string GetIniString(string Section, string KeyName, string Default, out int noChars, string FileName)
+    public string GetIniString(string Section, string KeyName, string Default, out int noChars, string FileName)
     {
         StreamReader reader;
         string read;
@@ -121,7 +123,7 @@ static class IniFileHandler
         return read;
     }
 
-    public static int GetIniInt(string Section, string KeyName, int Default, string FileName)
+    public int GetIniInt(string Section, string KeyName, int Default, string FileName)
     {
         StreamReader reader;
         string read;
@@ -160,7 +162,7 @@ static class IniFileHandler
         return int.Parse(read);
     }
 
-    public static bool GetIniBool(string Section, string KeyName, bool Default, string FileName)
+    public bool GetIniBool(string Section, string KeyName, bool Default, string FileName)
     {
         StreamReader reader;
         string read;
@@ -202,7 +204,7 @@ static class IniFileHandler
         return Default;
     }
 
-    public static int[] GetINIIntArray(string Section, string KeyName, int minSize, string FileName)
+    public int[] GetINIIntArray(string Section, string KeyName, int minSize, string FileName)
     {
         int[] retArray;// = new int[100];
         int[] tempArray = new int[200];
@@ -270,7 +272,7 @@ static class IniFileHandler
     }
 
 
-    public static double[] GetINIDoubleArray(string Section, string KeyName, int minSize, string FileName)
+    public double[] GetINIDoubleArray(string Section, string KeyName, int minSize, string FileName)
     {
         double[] retArray;// = new int[100];
         double[] tempArray = new double[200];

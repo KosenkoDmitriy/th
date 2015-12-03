@@ -7,12 +7,23 @@ using System.Threading;
 using System.Globalization;
 using System.Collections.Generic;
 
+
 public class LoadOnClick : MonoBehaviour
 {
+    IniFileHandler FileIni;
+    Assets.Scripts.Logger logger;
+
     public LoadOnClick()
     {
         if (Settings.isDebug) Debug.Log("LoadOnClick()");
+
+        if (!Settings.isIgnoreIniFile)
+            FileIni = new IniFileHandler();
+
+        if (!Settings.logging)
+            logger = new Assets.Scripts.Logger();
     }
+
     #region init vars
 
     Assets.Scripts.PayTable payTable;
@@ -735,7 +746,7 @@ public class LoadOnClick : MonoBehaviour
             Player = "Player" + i.ToString();
             //test to see if there is anything in the player if not we are done. 
             int charsTransferred;// = Win32Support.GetPrivateProfileString(Player, "Hole Min Threshold", null, temp, 5, currentDirectory + "\\TexasHoldem.ini");
-            string iniTest = IniFileHandler.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, Settings.pathToAssetRes + Settings.iniFile);
+            string iniTest = FileIni.GetIniString(Player, "Hole Min Threshold", null, out charsTransferred, Settings.pathToAssetRes + Settings.iniFile);
             if (charsTransferred == 0)
             {
                 done = true;
@@ -756,24 +767,24 @@ public class LoadOnClick : MonoBehaviour
                         virtualTempPlayers.ElementAt(i).FoldLevels.Add(new FoldLevel());
                     }
                     int testchars;
-                    virtualTempPlayers.ElementAt(i).Name = IniFileHandler.GetIniString(Player, "Player Name", "Player " + i.ToString(), out testchars, fileName);
-                    virtualTempPlayers.ElementAt(i).FoldOnAnyRaise = IniFileHandler.GetIniBool(Player, "Fold On Any Raise", false, Settings.pathToAssetRes + Settings.iniFile);
+                    virtualTempPlayers.ElementAt(i).Name = FileIni.GetIniString(Player, "Player Name", "Player " + i.ToString(), out testchars, fileName);
+                    virtualTempPlayers.ElementAt(i).FoldOnAnyRaise = FileIni.GetIniBool(Player, "Fold On Any Raise", false, Settings.pathToAssetRes + Settings.iniFile);
                     //string value;
-                    virtualTempPlayers.ElementAt(i).HoleMinThreshold = IniFileHandler.GetIniInt(Player, "Hole Min Threshold", 72, fileName);
+                    virtualTempPlayers.ElementAt(i).HoleMinThreshold = FileIni.GetIniInt(Player, "Hole Min Threshold", 72, fileName);
                     for (int x = 0; x < Settings.playerSize; x++)//lets get the raise parameters
                     {
                         test1 = x;
                         string raiseHand = "Hole Raise " + (x + 1).ToString() + " Hand Array";
-                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).RaiseHands = IniFileHandler.GetINIIntArray(Player, raiseHand, 1, fileName);
+                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).RaiseHands = FileIni.GetINIIntArray(Player, raiseHand, 1, fileName);
 
                         string holeRaiseRange = "Hole Raise " + (x + 1).ToString() + " Range";
-                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).Range = IniFileHandler.GetINIDoubleArray(Player, holeRaiseRange, 2, fileName);
-                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).RaisePercentage = IniFileHandler.GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " Percentage", 50, fileName);
+                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).Range = FileIni.GetINIDoubleArray(Player, holeRaiseRange, 2, fileName);
+                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).RaisePercentage = FileIni.GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " Percentage", 50, fileName);
 
                         string holeReRaiseRange = "Hole Raise " + (x + 1).ToString() + " ReRaise Range";
-                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).ReRaiseRange = IniFileHandler.GetINIDoubleArray(Player, holeReRaiseRange, 2, fileName);
+                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).ReRaiseRange = FileIni.GetINIDoubleArray(Player, holeReRaiseRange, 2, fileName);
 
-                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).ReRaisePercentage = IniFileHandler.GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " ReRaise Percentage", 50, fileName);
+                        virtualTempPlayers.ElementAt(i).RaiseLevels.ElementAt(x).ReRaisePercentage = FileIni.GetIniInt(Player, "Hole Raise " + (x + 1).ToString() + " ReRaise Percentage", 50, fileName);
 
                     }
 
@@ -781,20 +792,20 @@ public class LoadOnClick : MonoBehaviour
                     {
                         test = x;
                         string holeFoldHands = "Hole Fold " + (x + 1).ToString() + " Hand Array";
-                        virtualTempPlayers.ElementAt(i).FoldLevels.ElementAt(x).FoldHands = IniFileHandler.GetINIIntArray(Player, holeFoldHands, 1, fileName);
-                        virtualTempPlayers.ElementAt(i).FoldLevels.ElementAt(x).Range = IniFileHandler.GetINIDoubleArray(Player, "Hole Fold " + (x + 1).ToString() + " Range", 2, fileName);
+                        virtualTempPlayers.ElementAt(i).FoldLevels.ElementAt(x).FoldHands = FileIni.GetINIIntArray(Player, holeFoldHands, 1, fileName);
+                        virtualTempPlayers.ElementAt(i).FoldLevels.ElementAt(x).Range = FileIni.GetINIDoubleArray(Player, "Hole Fold " + (x + 1).ToString() + " Range", 2, fileName);
                     }
 
-                    virtualTempPlayers.ElementAt(i).BluffHands = IniFileHandler.GetINIIntArray(Player, "Bluff Hands", 1, fileName);
-                    virtualTempPlayers.ElementAt(i).SlowPlayHands = IniFileHandler.GetINIIntArray(Player, "Slow Play Hands", 1, fileName);
-                    virtualTempPlayers.ElementAt(i).AllInHands = IniFileHandler.GetINIIntArray(Player, "Hole All In Hands", 1, fileName);
-                    virtualTempPlayers.ElementAt(i).BluffPercentage = IniFileHandler.GetIniInt(Player, "Bluff Percentage", 0, fileName);
-                    virtualTempPlayers.ElementAt(i).BluffCallRaisePercentage = IniFileHandler.GetIniInt(Player, "Bluff Call Raise Percentage", 50, fileName);
+                    virtualTempPlayers.ElementAt(i).BluffHands = FileIni.GetINIIntArray(Player, "Bluff Hands", 1, fileName);
+                    virtualTempPlayers.ElementAt(i).SlowPlayHands = FileIni.GetINIIntArray(Player, "Slow Play Hands", 1, fileName);
+                    virtualTempPlayers.ElementAt(i).AllInHands = FileIni.GetINIIntArray(Player, "Hole All In Hands", 1, fileName);
+                    virtualTempPlayers.ElementAt(i).BluffPercentage = FileIni.GetIniInt(Player, "Bluff Percentage", 0, fileName);
+                    virtualTempPlayers.ElementAt(i).BluffCallRaisePercentage = FileIni.GetIniInt(Player, "Bluff Call Raise Percentage", 50, fileName);
                     virtualTempPlayers.ElementAt(i).Folded = false;
 
-                    virtualTempPlayers.ElementAt(i).FlopNoRaiseBetPercentages = IniFileHandler.GetINIIntArray(Player, "Flop No Raise Bet Percentages", 21, fileName);
-                    virtualTempPlayers.ElementAt(i).TurnNoRaiseBetPercentages = IniFileHandler.GetINIIntArray(Player, "Turn No Raise Bet Percentages", 21, fileName);
-                    virtualTempPlayers.ElementAt(i).RiverNoRaiseBetPercentages = IniFileHandler.GetINIIntArray(Player, "River No Raise Bet Percentages", 21, fileName);
+                    virtualTempPlayers.ElementAt(i).FlopNoRaiseBetPercentages = FileIni.GetINIIntArray(Player, "Flop No Raise Bet Percentages", 21, fileName);
+                    virtualTempPlayers.ElementAt(i).TurnNoRaiseBetPercentages = FileIni.GetINIIntArray(Player, "Turn No Raise Bet Percentages", 21, fileName);
+                    virtualTempPlayers.ElementAt(i).RiverNoRaiseBetPercentages = FileIni.GetINIIntArray(Player, "River No Raise Bet Percentages", 21, fileName);
 
                 }
                 catch (FormatException e)
@@ -4576,7 +4587,7 @@ public class LoadOnClick : MonoBehaviour
         WinAmount = PotAmount + videoWin;
         clearCreditLabels();
         gameOverStrings[1] = realPlayerName + " WIN THE POT";
-        
+
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
@@ -4585,14 +4596,18 @@ public class LoadOnClick : MonoBehaviour
 
         panelInitBet.SetActive(false);
         btnNewGame.SetActive(true);
-        try
-        {
-            Assets.Scripts.Logger.LogResults();
-        }
-        catch
-        {
 
+        if (logger != null) {
+            try
+            {
+                logger.LogResults();
+            }
+            catch
+            {
+
+            }
         }
+
         startGameOverTimer(true);
     }
 
@@ -4754,13 +4769,17 @@ public class LoadOnClick : MonoBehaviour
                 videoPokerWin = videoBonus;
             }
         }
-        try
-        {
-            Assets.Scripts.Logger.LogResults();
-        }
-        catch
-        {
 
+        if (logger != null)
+        {
+            try
+            {
+                logger.LogResults();
+            }
+            catch
+            {
+
+            }
         }
 
         startGameOverTimer(true);
@@ -5184,13 +5203,17 @@ public class LoadOnClick : MonoBehaviour
         GameState = GameStates.PlayerLose;
         PotAmount = 0;
         clearCreditLabels();
-        try
+
+        if (logger != null)
         {
-            Assets.Scripts.Logger.LogResults();
-        }
-        catch
-        {
-            if (Settings.isDebug) Debug.Log("error LogResults()");
+            try
+            {
+                logger.LogResults();
+            }
+            catch
+            {
+                if (Settings.isDebug) Debug.Log("error LogResults()");
+            }
         }
 
         DisableBettingButtons();
@@ -5601,31 +5624,31 @@ public class LoadOnClick : MonoBehaviour
         string logFile = Settings.pathToAssetRes + Settings.logFile;
         string dataFile = Settings.pathToAssetRes + Settings.datFile;
 
-        if (IniFileHandler.isExists(iniFile))
+        if (FileIni != null && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
         {
-            IniFileHandler.PrepareIniFile(iniFile);
+            FileIni.PrepareIniFile(iniFile);
 
             int charsTransferred = 0;
-            Settings.testGame = IniFileHandler.GetIniBool("Game Parameters", "Test Game", false, iniFile);
-            Settings.logging = IniFileHandler.GetIniBool("Game Parameters", "Logging", false, iniFile);
+            Settings.testGame = FileIni.GetIniBool("Game Parameters", "Test Game", false, iniFile);
+            Settings.logging = FileIni.GetIniBool("Game Parameters", "Logging", false, iniFile);
             //TODO: TestingGroupBox.Visible = Settings.testGame;
-            Settings.videoBonusWinOnly = IniFileHandler.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
-            Settings.surrenderReturnRank = IniFileHandler.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
-            Settings.PlayerRaiseFoldThreshold = double.Parse(IniFileHandler.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
-            Settings.surrenderMinimumPair = IniFileHandler.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
-            Settings.highCardThreshhold = IniFileHandler.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
-            Settings.dealDelay = Settings.tempDelay = IniFileHandler.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
-            // nextPlayerTimer.Interval = nextPlayerDelay = IniFileHandler.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
-            Settings.virtualPlayerRaiseLimit = IniFileHandler.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
-            Settings.gameEnable = IniFileHandler.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
-            Settings.gameDenomination = (double)IniFileHandler.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
+            Settings.videoBonusWinOnly = FileIni.GetIniBool("Game Parameters", "Pay Video Bonus on Win Only", false, iniFile);
+            Settings.surrenderReturnRank = FileIni.GetIniInt("Game Parameters", "Surrender Return Rank", 100, iniFile);
+            Settings.PlayerRaiseFoldThreshold = double.Parse(FileIni.GetIniString("Game Parameters", "Minimum Player Raise Threshold", "3.6", out charsTransferred, iniFile));
+            Settings.surrenderMinimumPair = FileIni.GetIniInt("Game Parameters", "Surrender Minimum Pair", 4, iniFile);
+            Settings.highCardThreshhold = FileIni.GetIniInt("Game Parameters", "High Card Threshold", 4, iniFile);
+            Settings.dealDelay = Settings.tempDelay = FileIni.GetIniInt("Game Parameters", "DealDelay", 250, iniFile);
+            // nextPlayerTimer.Interval = nextPlayerDelay = FileIni.GetIniInt("Game Parameters", "Next Player Delay", 100, iniFile);
+            Settings.virtualPlayerRaiseLimit = FileIni.GetIniInt("Game Parameters", "Virtual Player Raise Limit", 1, iniFile);
+            Settings.gameEnable = FileIni.GetIniBool("Game Parameters", "Auto Start Button", false, iniFile);
+            Settings.gameDenomination = (double)FileIni.GetIniInt("Game Parameters", "Game Denomination", 25, iniFile);
             Settings.gameDenomination /= Settings.GameDenominationDivider;
-            Settings.gameDenomMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
-            Settings.raiseLimitMultiplier = IniFileHandler.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
+            Settings.gameDenomMultiplier = FileIni.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
+            Settings.raiseLimitMultiplier = FileIni.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
 
-            if (Settings.logging)
+            if (logger != null)
             {
-                Assets.Scripts.Logger.GetLogFileVars();
+                logger.GetLogFileVars();
             }
 
             if (Settings.gameDenomMultiplier < Settings.gameMaxDenomMultiplier)
@@ -5634,28 +5657,28 @@ public class LoadOnClick : MonoBehaviour
                 betLimit = Settings.gameDenomination * Settings.gameDenomMultiplier;
             }
 
-            payTable.paytableEntries = IniFileHandler.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+            payTable.paytableEntries = FileIni.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
             for (int x = 0; x < 9; x++)
             {
-                payTable.PayTableAmounts[x] = IniFileHandler.GetIniInt("Video Poker Paytable", PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
+                payTable.PayTableAmounts[x] = FileIni.GetIniInt("Video Poker Paytable", PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
             }
 
-            foldString = IniFileHandler.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
-            checkString = IniFileHandler.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
-            callString = IniFileHandler.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
-            raiseString = IniFileHandler.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
-            allInString = IniFileHandler.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
-            surrenderString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
-            continueString = IniFileHandler.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
-            surrenderBoxString = IniFileHandler.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
-            realPlayerName = IniFileHandler.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
-            jurisdictionalLimit = (double)IniFileHandler.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
+            foldString = FileIni.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
+            checkString = FileIni.GetIniString("Dynamic Help", "CHECK", "CHECK", out charsTransferred, iniFile);
+            callString = FileIni.GetIniString("Dynamic Help", "CALL", "CALL", out charsTransferred, iniFile);
+            raiseString = FileIni.GetIniString("Dynamic Help", "RAISE", "RAISE", out charsTransferred, iniFile);
+            allInString = FileIni.GetIniString("Dynamic Help", "ALL IN", "ALL IN", out charsTransferred, iniFile);
+            surrenderString = FileIni.GetIniString("Dynamic Help", "SURRENDER", "SURRENDER", out charsTransferred, iniFile);
+            continueString = FileIni.GetIniString("Dynamic Help", "CONTINUE", "CONTINUE", out charsTransferred, iniFile);
+            surrenderBoxString = FileIni.GetIniString("Dynamic Help", "SURRENDER BOX", "SURRENDER BOX", out charsTransferred, iniFile);
+            realPlayerName = FileIni.GetIniString("Game Parameters", "Player Name", "PLAYER", out charsTransferred, iniFile);
+            jurisdictionalLimit = (double)FileIni.GetIniInt("Game Parameters", "Jurisdictional Bet Limit", Settings.jurisdictionalBetLimit, iniFile);
 
 
             for (int x = 1; x < 11; x++)
             {
                 string instString = "Instruction " + x.ToString();
-                /*TODO: instrucionStrings[x] = IniFileHandler.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
+                /*TODO: instrucionStrings[x] = FileIni.GetIniString("Instructions", instString, "", out charsTransferred, iniFile);
                 if (instrucionStrings.ElementAt(x).Length == 0)
                     break;*/
                 //TODO: make table using GridLayoutGroup dataGridView;
@@ -5684,7 +5707,7 @@ public class LoadOnClick : MonoBehaviour
         PlayerCredits = Settings.playerCredits;
         startGameOverTimer(false);
 
-        if (IniFileHandler.isExists(iniFile))
+        if (FileIni != null && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
             BuildVirtualPlayerProfilesFromIniFile();
         else
             BuildVirtualPlayerProfiles();

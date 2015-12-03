@@ -3,14 +3,14 @@ using System.IO;
 
 namespace Assets.Scripts
 {
-    static class Logger
+    class Logger
     {
-        static StreamWriter logWriter;
-        static StreamReader logReader;
-        static StreamWriter dataWriter;
-        static FileHandler file = new FileHandler();
+        StreamWriter logWriter;
+        StreamReader logReader;
+        StreamWriter dataWriter;
+        FileHandler file = new FileHandler();
 
-        public static void LogResults()
+        public void LogResults()
         {
             if (Settings.logging == false)
             {
@@ -67,17 +67,17 @@ namespace Assets.Scripts
             }
         }
 
-        public static void GetLogFileVars()
+        public void GetLogFileVars()
         {
             if (Settings.logging == false)
             {
                 return;
             }
             StreamReader dataReader;
-            string dataDirectory = Directory.GetCurrentDirectory() + "\\TexasHoldEm.dat";
+            string dataDirectory = Settings.pathToAssetRes + "TexasHoldEm.dat";
             if (File.Exists(dataDirectory) == true)
             {
-                FileStream fds = new FileStream(Directory.GetCurrentDirectory() + "\\TexasHoldEm.dat", FileMode.Open);
+                FileStream fds = new FileStream(Settings.pathToAssetRes + "TexasHoldEm.dat", FileMode.Open);
                 dataReader = new StreamReader(fds);
                 string read = dataReader.ReadToEnd();
                 string[] vars = read.Split(' ');
@@ -89,7 +89,7 @@ namespace Assets.Scripts
                 }
                 catch
                 {
-                    file.EraseFile(Directory.GetCurrentDirectory() + "\\TexasHoldEm.log");
+                    file.EraseFile(Settings.pathToAssetRes + "TexasHoldEm.log");
                     Settings.gameNumber = 1;
                     Settings.creditsPlayed = 0;
                     Settings.creditsWon = 0;
@@ -99,7 +99,7 @@ namespace Assets.Scripts
             }
             else
             {
-                file.EraseFile(Directory.GetCurrentDirectory() + "\\TexasHoldEm.log");
+                file.EraseFile(Settings.pathToAssetRes + "TexasHoldEm.log");
             }
         }
     }

@@ -4,10 +4,12 @@ using System.IO;
 static class Settings
 {
     public static bool isDebug = true;
-    public static int cardsSize = 52;
-
+    public static bool isIgnoreIniFile = true;
+    public static bool testGame = false;
+    public static bool logging = false;
     public static float updateInterval = 0.1f;
 
+    public static int cardsSize = 52;
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;
     public static readonly int playerVirtualSize = 5;
@@ -68,8 +70,6 @@ static class Settings
 
     public static double currentIniVersion = 2.5;
     public static double iniVersion = 0.0;
-    public static bool testGame = false;
-    public static bool logging = false;
 
     public static int gameNumber = 1;
     public static double creditsPlayed = 0;
