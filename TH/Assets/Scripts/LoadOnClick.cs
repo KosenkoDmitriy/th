@@ -2914,6 +2914,12 @@ public class LoadOnClick : MonoBehaviour
     //*******************************************************************************************
     public double BetPlayer(int player)
     {
+        if (GamePlayers.Count() > 0 && GamePlayers[player] == null)
+            return 0;
+
+        if (virtualPlayers.Count() <=0 )
+            return 0;
+
         if (CurrentBetPosition == buttonPosition)
         {
             DealButtonPassed = true;//we have serviced all the players now we can check if the betting is done
@@ -2924,9 +2930,6 @@ public class LoadOnClick : MonoBehaviour
             isNextPlayer = true; // nextPlayerTimer.Start();
             return 0;
         }
-
-        if (GamePlayers.Count() > 0 && GamePlayers[player] == null)
-            return 0;
 
         double ThisRoundBet = 0;
         double raise = 0;//local value for amount raised
@@ -3182,7 +3185,6 @@ public class LoadOnClick : MonoBehaviour
                     {
                         BetType = BetTypes.allIn;
                     }
-
                 }
 
                 //Flop possibilities #2 The pot was raised by anyone  
