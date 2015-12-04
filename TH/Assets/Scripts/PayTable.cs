@@ -1,23 +1,30 @@
-﻿
+﻿using System.Collections.Generic;
+using UnityEngine;
+
 namespace Assets.Scripts
 {
-    class PayTable
+    class PayTable : MonoBehaviour
     {
         #region init_vars
+        List<variableContainer> values;
+        public int paytableEntries = 9;
 
+        public readonly int ColsInRowOfTheBonusTable = 5;
+        public readonly int RowsCount = 8; // Entries - the number of entries you wish in the paytable
 
-        public int[] adjustedRanks = new int[] {ROYAL_FLUSH,
-                                                STRAIGHT_FLUSH,
-                                                FOUR_OF_A_KIND,
-                                                FULL_HOUSE,
-                                                FLUSH,
-                                                STRAIGHT,
-                                                THREE_OF_A_KIND,
-                                                TWO_PAIR,
-                                                PAIR
-                                                };
+        public List<int> PayTableAmounts;
+        public List<string> PayTableStrings;
 
+        public int selGridInt = 0;
 
+        Rect pos;
+        float screenX, screenY;
+        float width = Settings.bonusTableWidth;
+        float height = Settings.bonusTableHeight;
+        float offsetY = 50;
+        float offsetX = 0;
+        
+        //TODO: remove this duplication vars, because they already exsits in the LoadOnClick class.
         const int ROYAL_FLUSH = 21;
         const int STRAIGHT_FLUSH = 20;
         const int HIGH_FOUR_OF_A_KIND = 19;
@@ -40,12 +47,103 @@ namespace Assets.Scripts
         const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
         const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
 
-        public int[] PayTableAmounts = new int[] { 250, 50, 25, 9, 6, 4, 3, 2, 1 };
-        public int paytableEntries = 9;
+        GUIStyle smallFont;
+        GUIStyle largeFont;
 
         #endregion
-        public PayTable() {
 
+        public PayTable()
+        {
+            PayTableStrings = new List<string>() {
+                "ROYAL FLUSH",
+                "STRAIGHT FLUSH",
+                "FOUR OF A KIND",
+                "FULL HOUSE",
+                "FLUSH",
+                "STRAIGHT",
+                "THREE OF A KIND",
+                "TWO PAIR",
+                //"PAIR",
+                //"HIGH CARD"
+            };
+
+            PayTableAmounts = new List<int> {
+                250,    // ROYAL_FLUSH,
+                50,     // STRAIGHT_FLUSH,
+                25,     // FOUR_OF_A_KIND,
+                9,      // FULL_HOUSE,
+                6,      // FLUSH,
+                4,      // STRAIGHT,
+                3,      // THREE_OF_A_KIND,
+                2,      // TWO_PAIR,
+                //1,      // PAIR
+            };
+            //screenX = screenY = 0;
+        }
+
+        private void Start() {
+
+        }
+
+        public void OnGUI()
+        {
+            smallFont = new GUIStyle();
+            largeFont = new GUIStyle();
+
+            smallFont.fontSize = Settings.bonusTableFontSize;
+            largeFont.fontSize = 20;
+            smallFont.normal.textColor = Color.yellow;
+            largeFont.normal.textColor = Color.white;
+
+            screenX = ((Screen.width - offsetX) - (width));
+            screenY = offsetY;// ((Screen.height) - height);
+            //pos = new Rect(screenX, screenY, width - offsetX, height - offsetX);
+            pos = new Rect(screenX, screenY, width, height);
+
+            //GUIStyle style = new GUIStyle();
+            //style.fontSize = 10;
+
+            GUI.backgroundColor = Color.blue;
+            GUI.contentColor = Color.yellow;
+            
+            //GUI.color = Color.white;
+            
+            // var skin = new GUISkin();
+            GUILayout.BeginArea(pos);
+            GUILayout.BeginVertical("Box");
+            //var btn = new GUIContent();
+
+            values = new List<variableContainer>();
+
+            int i = 0;
+            foreach (int item in PayTableAmounts)
+            {
+                values.Add(new variableContainer(PayTableStrings[i], item, 5));
+                i++;
+            }
+
+            foreach (var item in values)
+            {
+                GUILayout.BeginHorizontal();
+                //TODO: exceed width GUILayout.SelectionGrid(-1, item.listStr.ToArray(), 6);
+                //GUILayout.Label(PayTableStrings[pos]);
+                foreach (string s in item.listStr)
+                {
+                    GUILayout.Label(s, smallFont);
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            /*
+            selGridInt = GUILayout.SelectionGrid(selGridInt, selStrings, 1);
+            
+            pos = GUILayoutUtility.GetLastRect();
+            if (GUILayout.Button("Start"))
+                Debug.Log("You chose " + selStrings[selGridInt]);
+            */
+
+            GUILayout.EndVertical();
+            GUILayout.EndArea();
         }
 
         public void SetPaytableSelectedWin(int rank)
@@ -181,5 +279,54 @@ namespace Assets.Scripts
         public int GetEntriesCount() {
             return paytableEntries;
         }
+
+        private class variableContainer : Object
+        {
+            public List<string> listStr = new List<string>();
+            public List<int> listInt = new List<int>();
+
+            public variableContainer(string title, int value, int size)
+            {
+                listStr = new List<string>();
+                listInt = new List<int>();
+
+                if (title.Length <= 7) title += "\t";
+                listStr.Add(title +"\t");
+
+                //listStr.Add(Title(title));
+                listInt.Add(-1); // Title is not used for any calculation
+
+                for (int i = 1; i <= size; i++)
+                {
+                    int result = i * value;
+                    listInt.Add(result);
+                    listStr.Add(result + "");
+                }
+            }
+
+            private string Title(string title) {
+                int titleMaxSize = Settings.bonusTableMaxTitleSize;
+                //return title.PadRight(titleMaxSize);
+                if (title.Length <= titleMaxSize)
+                {
+                    title = title.Insert(title.Length, GetEmptyString(titleMaxSize - title.Length));
+                }
+                return title;
+            }
+
+            private string GetEmptyString(int size)
+            {
+                string emptyString = "";
+                for (int i = 0; i <= size; i++)
+                    emptyString += " ";
+                return emptyString;
+            }
+
+            public int Count()
+            {
+                return listStr.Count;
+            }
+        }
+
     }
 }

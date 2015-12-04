@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 static class Settings
 {
@@ -8,6 +7,11 @@ static class Settings
     public static bool testGame = false;
     public static bool logging = false;
     public static float updateInterval = 0.1f;
+
+    public static int bonusTableMaxTitleSize = 10;  //unused
+    public static int bonusTableWidth = 220;
+    public static int bonusTableHeight = 170;
+    public static int bonusTableFontSize = 10;
 
     public static int cardsSize = 52;
     public static readonly int pockerHandPossibleSize = 5;
@@ -52,6 +56,7 @@ static class Settings
     public static int gameDenomMultiplier = 6; //5
     public static int raiseLimitMultiplier = 2; //5
     public static int holeMinThreshold = 53;
+
     // dynamic help
     public static string foldString = "Ends the game and all bets are forfeit";
     public static string checkString = "Is a pass, no bet and the bet moves to the next player";

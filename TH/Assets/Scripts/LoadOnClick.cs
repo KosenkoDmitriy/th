@@ -3,16 +3,13 @@ using UnityEngine.UI;
 
 using System;
 using System.Linq;
-using System.Threading;
 using System.Globalization;
 using System.Collections.Generic;
 
+using Assets.Scripts;
 
 public class LoadOnClick : MonoBehaviour
 {
-    IniFileHandler FileIni;
-    Assets.Scripts.Logger logger;
-
     public LoadOnClick()
     {
         if (Settings.isDebug) Debug.Log("LoadOnClick()");
@@ -21,12 +18,49 @@ public class LoadOnClick : MonoBehaviour
             FileIni = new IniFileHandler();
 
         if (!Settings.logging)
-            logger = new Assets.Scripts.Logger();
+            logger = new Logger();
     }
 
     #region init vars
 
-    Assets.Scripts.PayTable payTable;
+    IniFileHandler FileIni;
+    Logger logger;
+
+    public int[] adjustedRanks = new int[] {
+            ROYAL_FLUSH,
+            STRAIGHT_FLUSH,
+            FOUR_OF_A_KIND,
+            FULL_HOUSE,
+            FLUSH,
+            STRAIGHT,
+            THREE_OF_A_KIND,
+            TWO_PAIR,
+            PAIR
+        };
+
+    const int ROYAL_FLUSH = 21;
+    const int STRAIGHT_FLUSH = 20;
+    const int HIGH_FOUR_OF_A_KIND = 19;
+    const int MID_FOUR_OF_A_KIND = 18;
+    const int FOUR_OF_A_KIND = 17;
+    const int FULL_HOUSE = 16;
+    const int FLUSH = 15;
+    const int STRAIGHT = 14;
+    const int HIGH_THREE_OF_A_KIND = 13;
+    const int MID_THREE_OF_A_KIND = 12;
+    const int THREE_OF_A_KIND = 11;
+    const int TWO_PAIR = 10;
+    const int HIGH_PAIR = 9;
+    const int MID_PAIR = 8;
+    const int PAIR = 7;
+    const int FOUR_TO_A_FLUSH = 6;
+    const int THREE_TO_A_FLUSH = 5;
+    const int FOUR_TO_A_STRAIGHT_INSIDE = 4;
+    const int THREE_TO_A_STRAIGHT_INSIDE = 3;
+    const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
+    const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
+
+    PayTable payTable;
     bool AutoPlay = false;
 
     int offsetX = 25;//40;
@@ -177,20 +211,6 @@ public class LoadOnClick : MonoBehaviour
                                             };
     int[] playerHoleCardsRankings = new int[6];
     int[] playerFiveCardRankings = new int[6];
-    string[] PayTableStrings = new string[10]{   "ROYAL FLUSH",
-                                                    "STRAIGHT FLUSH",
-                                                    "FOUR OF A KIND",
-                                                    "FULL HOUSE",
-                                                    "FLUSH",
-                                                    "STRAIGHT",
-                                                    "THREE OF A KIND",
-                                                    "TWO PAIR",
-                                                    "PAIR",
-                                                    "HIGH CARD"};
-
-
-
-
 
     public int betStringPtr;
     public string[] betWindowTitles = new string[]{    "PLACE YOUR BET",
@@ -223,39 +243,6 @@ public class LoadOnClick : MonoBehaviour
                                                 {CK, DK, CA, DA, C3, H9, S3, D9, HA, HK, SQ, SJ, C7, D2, C4, H8, S5},
                                                 {47, 39, 30, 51, 1, 42, 7, 34, 3, 19, 31, 43, 9, 17, 29, 37, 5},
                                             };
-
-    public int[] adjustedRanks = new int[] {ROYAL_FLUSH,
-                                                STRAIGHT_FLUSH,
-                                                FOUR_OF_A_KIND,
-                                                FULL_HOUSE,
-                                                FLUSH,
-                                                STRAIGHT,
-                                                THREE_OF_A_KIND,
-                                                TWO_PAIR,
-                                                PAIR
-                                                };
-
-    const int ROYAL_FLUSH = 21;
-    const int STRAIGHT_FLUSH = 20;
-    const int HIGH_FOUR_OF_A_KIND = 19;
-    const int MID_FOUR_OF_A_KIND = 18;
-    const int FOUR_OF_A_KIND = 17;
-    const int FULL_HOUSE = 16;
-    const int FLUSH = 15;
-    const int STRAIGHT = 14;
-    const int HIGH_THREE_OF_A_KIND = 13;
-    const int MID_THREE_OF_A_KIND = 12;
-    const int THREE_OF_A_KIND = 11;
-    const int TWO_PAIR = 10;
-    const int HIGH_PAIR = 9;
-    const int MID_PAIR = 8;
-    const int PAIR = 7;
-    const int FOUR_TO_A_FLUSH = 6;
-    const int THREE_TO_A_FLUSH = 5;
-    const int FOUR_TO_A_STRAIGHT_INSIDE = 4;
-    const int THREE_TO_A_STRAIGHT_INSIDE = 3;
-    const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
-    const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
 
     cardValues[,] Group = new cardValues[,] {
                                                     {cardValues.A,  cardValues.A,  cardValues.US},//1
@@ -4835,7 +4822,7 @@ public class LoadOnClick : MonoBehaviour
             lblWin.SetActive(true);
             int winRank = GetFiveCardRanking(winner);
             winRank = payTable.AdjustWinRank(winRank);
-            winString = PayTableStrings[ROYAL_FLUSH - winRank];
+            winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
             if (winner != 0)
             {
                 gameOverStrings[1] = "PLAYER " + winner.ToString() + " WIN    " + winString;
@@ -4857,7 +4844,7 @@ public class LoadOnClick : MonoBehaviour
                     if (payTable == null) return;
                     int winRank = GetFiveCardRanking(x);
                     winRank = payTable.AdjustWinRank(winRank);
-                    string winString = PayTableStrings[ROYAL_FLUSH - winRank];
+                    string winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
                     if (winRank == 8)
                     {
                         gameOverStrings[1] = "PLAYERS SPLIT WITH " + winString; //correct english
@@ -5764,6 +5751,24 @@ public class LoadOnClick : MonoBehaviour
         }
     }
 
+    public int selGridInt = 0;
+    public string[] selStrings = new string[] { "radio1", "radio2", "radio3" };
+
+    private void OnGUI()
+    {
+
+        //if (payTable != null)
+
+        payTable.OnGUI();
+
+        /*GUILayout.BeginVertical("Box");
+        selGridInt = GUILayout.SelectionGrid(selGridInt, selStrings, 1);
+        if (GUILayout.Button("Start"))
+            Debug.Log("You chose " + selStrings[selGridInt]);
+
+       GUILayout.EndVertical();*/
+    }
+
     // Init game
     public void OtherInits() {
         if (Settings.isDebug) Debug.Log("OtherInits()");
@@ -5771,10 +5776,12 @@ public class LoadOnClick : MonoBehaviour
         if (!Settings.isIgnoreIniFile || Settings.logging)
         {
             Settings.pathToCurDir = System.IO.Directory.GetCurrentDirectory();
-            Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";
-        
-            payTable = new Assets.Scripts.PayTable();
+            Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";        
         }
+
+        //GameObject panelBonusTable = GameObject.Find("PanelBonusTable");
+        //if (panelBonusTable != null)
+            payTable = new PayTable();
 
         //InitializeComponent();
         now = DateTime.Now;
@@ -5834,7 +5841,7 @@ public class LoadOnClick : MonoBehaviour
             if (payTable != null) payTable.paytableEntries = FileIni.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
             for (int x = 0; x < 9; x++)
             {
-                if (payTable != null) payTable.PayTableAmounts[x] = FileIni.GetIniInt("Video Poker Paytable", PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
+                if (payTable != null) payTable.PayTableAmounts[x] = FileIni.GetIniInt("Video Poker Paytable", payTable.PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
             }
 
             foldString = FileIni.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
@@ -5863,9 +5870,9 @@ public class LoadOnClick : MonoBehaviour
                 */
             }
         }
-        else //TODO: ini file is not exists
+        else
         {
-
+            // if ini file does not exists then use values from Settings
         }
 
         if (payTable != null) payTable.BuildVideoBonusPaytable();
@@ -5986,58 +5993,6 @@ public class LoadOnClick : MonoBehaviour
             panelXYZ.SetActive(false);
     }
 
-    private void btnBetNowClickListener()
-    {
-        if (Settings.isDebug) Debug.Log("btnBetNowClickListener()");
-
-        HideDynamicPanels();
-        panelInitBet.SetActive(true);
-    }
-
-    private void btnStartGameClickListener()
-    {
-        if (Settings.betCurrent <= 0) return;
-        panelInitBet.SetActive(false);
-        panelGame.SetActive(true);
-        panelSurrender.SetActive(true);
-    }
-
-    private void btnCheckClickListener()
-    {
-        panelInitBet.SetActive(false);
-        panelGame.SetActive(true);
-        panelSurrender.SetActive(true);
-    }
-
-    private void btnCallClickListener()
-    {
-        panelInitBet.SetActive(false);
-        panelGame.SetActive(true);
-        panelSurrender.SetActive(true);
-    }
-
-    private void btnRaiseClickListener()
-    {
-        //panelInitBet.SetActive(true);
-        //panelGame.SetActive(false);
-        //panelSurrender.SetActive(true);
-    }
-
-    private void btnSurrenderClickListener()
-    {
-
-    }
-
-    private void btnFoldClickListener()
-    {
-
-    }
-
-    private void btnAllInClickListener()
-    {
-
-    }
-
 
     private void InitCards()
     {
@@ -6116,6 +6071,58 @@ public class LoadOnClick : MonoBehaviour
             GameObject.Find("lblCreditPlayer4"),
             GameObject.Find("lblCreditPlayer5")
         };
+    }
+
+    private void btnBetNowClickListener()
+    {
+        if (Settings.isDebug) Debug.Log("btnBetNowClickListener()");
+
+        HideDynamicPanels();
+        panelInitBet.SetActive(true);
+    }
+
+    private void btnStartGameClickListener()
+    {
+        if (Settings.betCurrent <= 0) return;
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        panelSurrender.SetActive(true);
+    }
+
+    private void btnCheckClickListener()
+    {
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        panelSurrender.SetActive(true);
+    }
+
+    private void btnCallClickListener()
+    {
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        panelSurrender.SetActive(true);
+    }
+
+    private void btnRaiseClickListener()
+    {
+        //panelInitBet.SetActive(true);
+        //panelGame.SetActive(false);
+        //panelSurrender.SetActive(true);
+    }
+
+    private void btnSurrenderClickListener()
+    {
+
+    }
+
+    private void btnFoldClickListener()
+    {
+
+    }
+
+    private void btnAllInClickListener()
+    {
+
     }
 
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
