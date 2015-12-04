@@ -5762,9 +5762,7 @@ public class LoadOnClick : MonoBehaviour
             Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";        
         }
 
-        //GameObject panelBonusTable = GameObject.Find("PanelBonusTable");
-        //if (panelBonusTable != null)
-            payTable = new PayTable();
+        payTable = new PayTable();
 
         //InitializeComponent();
         now = DateTime.Now;
@@ -5783,7 +5781,6 @@ public class LoadOnClick : MonoBehaviour
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
-        
         string iniFile = Settings.pathToAssetRes + Settings.iniFile;
         string logFile = Settings.pathToAssetRes + Settings.logFile;
         string dataFile = Settings.pathToAssetRes + Settings.datFile;
@@ -5821,7 +5818,7 @@ public class LoadOnClick : MonoBehaviour
                 betLimit = Settings.gameDenomination * Settings.gameDenomMultiplier;
             }
 
-            if (payTable != null) payTable.paytableEntries = FileIni.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+            if (payTable != null) payTable.paytableRowSize = FileIni.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
             for (int x = 0; x < 9; x++)
             {
                 if (payTable != null) payTable.PayTableAmounts[x] = FileIni.GetIniInt("Video Poker Paytable", payTable.PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
@@ -5884,7 +5881,7 @@ public class LoadOnClick : MonoBehaviour
         if (payTable != null)
         {
             payTable.SetPaytableSelectedColumn(9);
-            videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableEntries - 1));
+            videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
             videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
         }
     }

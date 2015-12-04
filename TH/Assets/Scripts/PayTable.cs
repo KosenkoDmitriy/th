@@ -7,8 +7,9 @@ namespace Assets.Scripts
     class PayTable
     {
         #region init_vars
-        List<variableContainer> values;
-        public int paytableEntries = 9;//rows
+
+        public int paytableRowSize = 9; //rows
+        public int paytableColumnSize = 6; //cols
 
         public readonly int ColsInRowOfTheBonusTable = 5;
         public readonly int RowsCount = 8; // Entries - the number of entries you wish in the paytable
@@ -52,6 +53,7 @@ namespace Assets.Scripts
         GUIStyle largeFont;
 
         Text[,] paytableGrid;
+
         #endregion
 
         public PayTable()
@@ -83,68 +85,6 @@ namespace Assets.Scripts
             //screenX = screenY = 0;
         }
 
-
-        public void OnGUI()
-        {
-            smallFont = new GUIStyle();
-            largeFont = new GUIStyle();
-
-            smallFont.fontSize = Settings.bonusTableFontSize;
-            largeFont.fontSize = 20;
-            smallFont.normal.textColor = Color.yellow;
-            largeFont.normal.textColor = Color.white;
-
-            screenX = ((Screen.width - offsetX) - (width));
-            screenY = offsetY;// ((Screen.height) - height);
-            //pos = new Rect(screenX, screenY, width - offsetX, height - offsetX);
-            pos = new Rect(screenX, screenY, width, height);
-
-            //GUIStyle style = new GUIStyle();
-            //style.fontSize = 10;
-
-            GUI.backgroundColor = Color.blue;
-            GUI.contentColor = Color.yellow;
-            
-            //GUI.color = Color.white;
-            
-            // var skin = new GUISkin();
-            GUILayout.BeginArea(pos);
-            GUILayout.BeginVertical("Box");
-            //var btn = new GUIContent();
-
-            values = new List<variableContainer>();
-
-            int i = 0;
-            foreach (int item in PayTableAmounts)
-            {
-                values.Add(new variableContainer(PayTableStrings[i], item, 5));
-                i++;
-            }
-
-            foreach (var item in values)
-            {
-                GUILayout.BeginHorizontal();
-                //TODO: exceed width GUILayout.SelectionGrid(-1, item.listStr.ToArray(), 6);
-                //GUILayout.Label(PayTableStrings[pos]);
-                foreach (string s in item.listStr)
-                {
-                    GUILayout.Label(s, smallFont);
-                }
-                GUILayout.EndHorizontal();
-            }
-
-            /*
-            selGridInt = GUILayout.SelectionGrid(selGridInt, selStrings, 1);
-            
-            pos = GUILayoutUtility.GetLastRect();
-            if (GUILayout.Button("Start"))
-                Debug.Log("You chose " + selStrings[selGridInt]);
-            */
-
-            GUILayout.EndVertical();
-            GUILayout.EndArea();
-        }
-
         public void SetPaytableSelectedWin(int rank)
         {
             //TODO: grid/table
@@ -152,9 +92,9 @@ namespace Assets.Scripts
             SetPaytableSelectedColumn(9);//clear the grid
             int tempRank = AdjustWinRank(rank);
             tempRank = ROYAL_FLUSH - tempRank;
-            if (selectedColumn > paytableGrid.ColumnCount - 1)
+            if (selectedColumn > paytableColumnSize - 1)
             {
-                selectedColumn = paytableGrid.ColumnCount - 1;
+                selectedColumn = paytableColumnSize - 1;
             }
             if (rank >= videoPokerLowRank)
             {
@@ -166,97 +106,63 @@ namespace Assets.Scripts
 
         public void SetPaytableSelectedColumn(int column)
         {
-            //TODO: grid/table
-            /*
-                    for (int row = 0; row < paytableGrid.RowCount; row++)
+            for (int row = 0; row < paytableRowSize; row++)
+            {
+                for (int col = 0; col < paytableColumnSize; col++)
+                {
+                    if (col == column)
                     {
-                        for (int col = 0; col < paytableGrid.ColumnCount; col++)
-                        {
-                            if (col == column)
-                            {
-                                paytableGrid[col, row].Selected = true;
-                            }
-                            else
-                            {
-                                paytableGrid[col, row].Selected = false;
-                            }
-                        }
+                        paytableGrid[row, col].color = Color.red; // selected = true
                     }
-                    if (column > paytableGrid.ColumnCount)
+                    else
                     {
+                        paytableGrid[row, col].color = Color.yellow; // selected = false
+                    }
+                }
+            }
+            if (column > paytableColumnSize)
+            {
 
-                    }
-                    */
+            }
         }
 
         public void BuildVideoBonusPaytable()
         {
             if (Settings.isDebug) Debug.Log("BuildVideoBonusPaytable()");
-            int colSize = 6;
-            int rowSize = paytableEntries; //9
-            paytableGrid = new Text[rowSize, colSize];
+            paytableGrid = new Text[paytableRowSize, paytableColumnSize];
 
-            for (int j = 0; j < colSize; j++)
+            for (int j = 0; j < paytableColumnSize; j++)
             {
-                for (int i = 0; i < rowSize; i++)
+                for (int i = 0; i < paytableRowSize; i++)
                 {
                     paytableGrid[i, j] = GameObject.Find("lblBonus" + i + "Col" + j).GetComponent<Text>();
                 }
             }
 
-            for (int i = 0; i < rowSize; i++)
+            for (int i = 0; i < paytableRowSize; i++)
             {
                 paytableGrid[i, 0].text = PayTableStrings[i];
-                //paytableGrid[0, x].enabled = false;
-                //paytableGrid.Height += paytableGrid.Rows[x].Height;
-                for (int j = 1; j < colSize; j++)
+                paytableGrid[i, 0].color = Color.yellow;
+                //paytableGrid[i, 0].enabled = false; //hide
+                for (int j = 1; j < paytableColumnSize; j++)
                 {
                     paytableGrid[i, j].text = (PayTableAmounts[i] * j).ToString();
                 }
             }
-            //UpdateVideoBonusMaxMultiplier(5);
-            //SetPaytableSelectedColumn(1);
-
-            //TODO:
-            /*
-            paytableGrid.Width = 3;
-            paytableGrid.Height = 3;
-            for (int w = 0; w < paytableGrid.ColumnCount; w++)
-            {
-                paytableGrid.Width += paytableGrid.Columns[w].Width;
-                if (w == 0)
-                {
-                    paytableGrid.Columns[w].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                }
-            }
-
-            for (int x = 0; x < paytableEntries; x++)
-            {
-                paytableGrid.Rows.Add();
-                paytableGrid[0, x].Value = PayTableStrings[x];
-                paytableGrid[0, x].Selected = false;
-                paytableGrid.Height += paytableGrid.Rows[x].Height;
-                for (int w = 1; w < paytableGrid.ColumnCount; w++)
-                {
-                    paytableGrid[w, x].Value = (PayTableAmounts[x] * w).ToString();
-
-                }
-            }
-            UpdateVideoBonusMaxMultiplier(5);
-            SetPaytableSelectedColumn(1);
-            */
+            //TODO: UpdateVideoBonusMaxMultiplier(5);
+            SetPaytableSelectedColumn(0);
         }
 
         public void UpdateVideoBonusMaxMultiplier(int multiplier)
         {
             multiplier = 5;
-            for (int x = 0; x < paytableEntries; x++)
+            for (int x = 0; x < paytableRowSize; x++)
             {
                 if (x == 0)
                 {
                     PayTableAmounts[x] = 800;
                 }
-                //paytableGrid[paytableGrid.ColumnCount - 1, x].Value = (PayTableAmounts[x] * multiplier).ToString();
+                //paytableGrid[paytableColumnSize - 1, x].Value = (PayTableAmounts[x] * multiplier).ToString();
             }
         }
 
@@ -265,7 +171,7 @@ namespace Assets.Scripts
             rank = AdjustWinRank(rank);
 
             int newRank = ROYAL_FLUSH - rank;
-            if (newRank < paytableEntries)
+            if (newRank < paytableRowSize)
             {
                 return (double)PayTableAmounts[newRank] * Settings.gameDenomination;
             }
@@ -301,55 +207,7 @@ namespace Assets.Scripts
         }
 
         public int GetEntriesCount() {
-            return paytableEntries;
-        }
-
-        private class variableContainer : Object
-        {
-            public List<string> listStr = new List<string>();
-            public List<int> listInt = new List<int>();
-
-            public variableContainer(string title, int value, int size)
-            {
-                listStr = new List<string>();
-                listInt = new List<int>();
-
-                if (title.Length <= 7) title += "\t";
-                listStr.Add(title +"\t");
-
-                //listStr.Add(Title(title));
-                listInt.Add(-1); // Title is not used for any calculation
-
-                for (int i = 1; i <= size; i++)
-                {
-                    int result = i * value;
-                    listInt.Add(result);
-                    listStr.Add(result + "");
-                }
-            }
-
-            private string Title(string title) {
-                int titleMaxSize = Settings.bonusTableMaxTitleSize;
-                //return title.PadRight(titleMaxSize);
-                if (title.Length <= titleMaxSize)
-                {
-                    title = title.Insert(title.Length, GetEmptyString(titleMaxSize - title.Length));
-                }
-                return title;
-            }
-
-            private string GetEmptyString(int size)
-            {
-                string emptyString = "";
-                for (int i = 0; i <= size; i++)
-                    emptyString += " ";
-                return emptyString;
-            }
-
-            public int Count()
-            {
-                return listStr.Count;
-            }
+            return paytableRowSize;
         }
 
     }
