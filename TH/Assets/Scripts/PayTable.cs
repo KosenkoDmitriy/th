@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    class PayTable : MonoBehaviour
+    class PayTable
     {
         #region init_vars
         List<variableContainer> values;
-        public int paytableEntries = 9;
+        public int paytableEntries = 9;//rows
 
         public readonly int ColsInRowOfTheBonusTable = 5;
         public readonly int RowsCount = 8; // Entries - the number of entries you wish in the paytable
@@ -50,6 +51,7 @@ namespace Assets.Scripts
         GUIStyle smallFont;
         GUIStyle largeFont;
 
+        Text[,] paytableGrid;
         #endregion
 
         public PayTable()
@@ -63,8 +65,8 @@ namespace Assets.Scripts
                 "STRAIGHT",
                 "THREE OF A KIND",
                 "TWO PAIR",
-                //"PAIR",
-                //"HIGH CARD"
+                "PAIR",
+                "HIGH CARD"
             };
 
             PayTableAmounts = new List<int> {
@@ -76,14 +78,11 @@ namespace Assets.Scripts
                 4,      // STRAIGHT,
                 3,      // THREE_OF_A_KIND,
                 2,      // TWO_PAIR,
-                //1,      // PAIR
+                1,      // PAIR
             };
             //screenX = screenY = 0;
         }
 
-        private void Start() {
-
-        }
 
         public void OnGUI()
         {
@@ -192,6 +191,32 @@ namespace Assets.Scripts
 
         public void BuildVideoBonusPaytable()
         {
+            if (Settings.isDebug) Debug.Log("BuildVideoBonusPaytable()");
+            int colSize = 6;
+            int rowSize = paytableEntries; //9
+            paytableGrid = new Text[rowSize, colSize];
+
+            for (int j = 0; j < colSize; j++)
+            {
+                for (int i = 0; i < rowSize; i++)
+                {
+                    paytableGrid[i, j] = GameObject.Find("lblBonus" + i + "Col" + j).GetComponent<Text>();
+                }
+            }
+
+            for (int i = 0; i < rowSize; i++)
+            {
+                paytableGrid[i, 0].text = PayTableStrings[i];
+                //paytableGrid[0, x].enabled = false;
+                //paytableGrid.Height += paytableGrid.Rows[x].Height;
+                for (int j = 1; j < colSize; j++)
+                {
+                    paytableGrid[i, j].text = (PayTableAmounts[i] * j).ToString();
+                }
+            }
+            //UpdateVideoBonusMaxMultiplier(5);
+            //SetPaytableSelectedColumn(1);
+
             //TODO:
             /*
             paytableGrid.Width = 3;
@@ -203,7 +228,6 @@ namespace Assets.Scripts
                 {
                     paytableGrid.Columns[w].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 }
-
             }
 
             for (int x = 0; x < paytableEntries; x++)

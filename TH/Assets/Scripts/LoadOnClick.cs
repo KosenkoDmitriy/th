@@ -5751,23 +5751,6 @@ public class LoadOnClick : MonoBehaviour
         }
     }
 
-    public int selGridInt = 0;
-    public string[] selStrings = new string[] { "radio1", "radio2", "radio3" };
-
-    private void OnGUI()
-    {
-
-        //if (payTable != null)
-
-        payTable.OnGUI();
-
-        /*GUILayout.BeginVertical("Box");
-        selGridInt = GUILayout.SelectionGrid(selGridInt, selStrings, 1);
-        if (GUILayout.Button("Start"))
-            Debug.Log("You chose " + selStrings[selGridInt]);
-
-       GUILayout.EndVertical();*/
-    }
 
     // Init game
     public void OtherInits() {
