@@ -87,21 +87,18 @@ namespace Assets.Scripts
 
         public void SetPaytableSelectedWin(int rank)
         {
-            //TODO: grid/table
-            /*
             SetPaytableSelectedColumn(9);//clear the grid
             int tempRank = AdjustWinRank(rank);
             tempRank = ROYAL_FLUSH - tempRank;
-            if (selectedColumn > paytableColumnSize - 1)
+            if (Settings.selectedColumn > paytableColumnSize - 1)
             {
-                selectedColumn = paytableColumnSize - 1;
+                Settings.selectedColumn = paytableColumnSize - 1;
             }
-            if (rank >= videoPokerLowRank)
+            if (rank >= Settings.videoPokerLowRank)
             {
-                paytableGrid[selectedColumn, tempRank].Selected = true;
-                paytableGrid[0, tempRank].Selected = true;
+                paytableGrid[tempRank, Settings.selectedColumn].color = Color.red;  //.Selected = true;
+                paytableGrid[tempRank, 0].color = Color.red;                        //.Selected = true;
             }
-            */
         }
 
         public void SetPaytableSelectedColumn(int column)
@@ -112,11 +109,11 @@ namespace Assets.Scripts
                 {
                     if (col == column)
                     {
-                        paytableGrid[row, col].color = Color.red; // selected = true
+                        paytableGrid[row, col].color = Color.red; // .Selected = true
                     }
                     else
                     {
-                        paytableGrid[row, col].color = Color.yellow; // selected = false
+                        paytableGrid[row, col].color = Color.yellow; // .Selected = false
                     }
                 }
             }

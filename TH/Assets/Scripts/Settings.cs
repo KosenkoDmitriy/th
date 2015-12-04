@@ -2,6 +2,9 @@
 
 static class Settings
 {
+    public static int videoPokerLowRank = 15;
+    public static int selectedColumn;
+
     public static bool isDebug = true;
     public static bool isIgnoreIniFile = true;
     public static bool testGame = false;

@@ -371,8 +371,6 @@ public class LoadOnClick : MonoBehaviour
 
     int buttonPosition = 0;
 
-    int selectedColumn;
-
     double playerCurrentBet = 0;//the real players current bet
     double playerCurrentRaise = 0; //the real players last raise amount
 
@@ -571,7 +569,6 @@ public class LoadOnClick : MonoBehaviour
 
     bool winnerDeclared = false;
     double videoPokerWin = 0;
-    int videoPokerLowRank = 15;
 
     bool isNextPlayer = false;
 
@@ -4202,9 +4199,9 @@ public class LoadOnClick : MonoBehaviour
             {
                 if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
             }
-            selectedColumn = value;
-            selectedColumn = denomUnits;
-            if (payTable != null) payTable.SetPaytableSelectedColumn(selectedColumn);
+            Settings.selectedColumn = value;
+            Settings.selectedColumn = denomUnits;
+            if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
         else if (isFromBetOkBtn)
@@ -4250,9 +4247,9 @@ public class LoadOnClick : MonoBehaviour
             {
                 if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
             }
-            selectedColumn = value;
-            selectedColumn = denomUnits;
-            if (payTable != null) payTable.SetPaytableSelectedColumn(selectedColumn);
+            Settings.selectedColumn = value;
+            Settings.selectedColumn = denomUnits;
+            if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
 
@@ -4715,7 +4712,7 @@ public class LoadOnClick : MonoBehaviour
         }
         double videoBonus = 0;
         int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
-        if (playerWinRank >= videoPokerLowRank)
+        if (playerWinRank >= Settings.videoPokerLowRank)
         {
             videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
             videoBonus *= videoMultiplier;
@@ -4777,7 +4774,7 @@ public class LoadOnClick : MonoBehaviour
             if (playerWin == true)
             {
                 videoBonus = 0;
-                if (playerWinRank >= videoPokerLowRank)
+                if (playerWinRank >= Settings.videoPokerLowRank)
                 {
                     if (payTable == null) return;
                     videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
@@ -4800,7 +4797,7 @@ public class LoadOnClick : MonoBehaviour
         if (winner == 0)
         {
             videoBonus = 0;
-            if (playerWinRank >= videoPokerLowRank)
+            if (playerWinRank >= Settings.videoPokerLowRank)
             {
                 if (payTable == null) return;
                 videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
@@ -4860,7 +4857,7 @@ public class LoadOnClick : MonoBehaviour
         }
         if (winner != 0 && Settings.videoBonusWinOnly == false)
         {
-            if (playerWinRank >= videoPokerLowRank)
+            if (playerWinRank >= Settings.videoPokerLowRank)
             {
                 if (payTable == null) return;
                 videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
@@ -5305,7 +5302,7 @@ public class LoadOnClick : MonoBehaviour
         {
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
             if (payTable != null)
-            if (payTable.AdjustWinRank(playerWinRank) >= videoPokerLowRank)
+            if (payTable.AdjustWinRank(playerWinRank) >= Settings.videoPokerLowRank)
             {
                 double videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
                 payTable.SetPaytableSelectedWin(playerWinRank);
@@ -5881,8 +5878,8 @@ public class LoadOnClick : MonoBehaviour
         if (payTable != null)
         {
             payTable.SetPaytableSelectedColumn(9);
-            videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
-            videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
+            Settings.videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
+            Settings.videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
         }
     }
 
