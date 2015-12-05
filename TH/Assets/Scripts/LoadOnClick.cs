@@ -5774,9 +5774,10 @@ public class LoadOnClick : MonoBehaviour
         chipBoxes = new List<Image>() { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
 
         // start init chips
-        Sprite chipRed = GameObject.Find("ChipRed").GetComponent<Image>().sprite;
-        Sprite chipBlue = GameObject.Find("ChipBlue").GetComponent<Image>().sprite;
-        chipSpriteList = new List<Sprite>() { chipBlue, chipRed };
+        chipSpriteList = new List<Sprite>() {
+            Resources.Load("chips_red", typeof(Sprite)) as Sprite,
+            Resources.Load("chips_blue", typeof(Sprite)) as Sprite
+        };
         // end init chips
 
         //nextPlayerTimer.Interval = 100;
