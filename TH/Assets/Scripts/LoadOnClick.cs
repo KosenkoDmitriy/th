@@ -606,7 +606,6 @@ public class LoadOnClick : MonoBehaviour
     // AmountWindow creditLimitWindow; //TODO: seems unused - need check it
     public double jurisdictionalLimit;
 
-    Image[] chipBoxes;
     DateTime now;
     int year;
 
@@ -965,7 +964,7 @@ public class LoadOnClick : MonoBehaviour
             for (int x = 1; x < Settings.playerSize; x++) 
             {
                 UpdateCreditLabel(x);
-                //chipImageList.Draw(formHwnd, chipBoxes[x - 1].Location, getWeightedIntResult(50)); TODO: // draw chip, counter, shtick, schtick, specialty, check
+                chipBoxes[x - 1].sprite = chipSpriteList[getWeightedIntResult(50)];
             }
         }
         if (GameState == GameStates.FlopBet)
@@ -1073,14 +1072,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("clearChips()");
 
-        //TODO:
-        /*
-        chipBox1.Image = null;
-        chipBox2.Image = null;
-        chipBox3.Image = null;
-        chipBox4.Image = null;
-        chipBox5.Image = null;
-        */
+        foreach (var chip in chipBoxes)
+            chip.sprite = cardBg;
     }
 
     private void restoreCardDefaults(bool firstPass)
@@ -5773,7 +5766,23 @@ public class LoadOnClick : MonoBehaviour
         //gameOverTimer.Interval = Settings.intervalGameOver;// 1000;
         //gameOverTimer.Tick += new EventHandler(gameOverTimer_Tick);
 
-        //TODO://chipBoxes = new Image[] { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
+        Image chipBox1 = GameObject.Find("Chip1").GetComponent<Image>();
+        Image chipBox2 = GameObject.Find("Chip2").GetComponent<Image>();
+        Image chipBox3 = GameObject.Find("Chip3").GetComponent<Image>();
+        Image chipBox4 = GameObject.Find("Chip4").GetComponent<Image>();
+        Image chipBox5 = GameObject.Find("Chip5").GetComponent<Image>();
+        chipBoxes = new List<Image>() { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
+        
+        // start init chips
+        string path = "Assets/Resources/";
+        string chipBlueName = "chips_blue.bmp";
+        string chipRedName = "chips_red.bmp";
+        UnityEditor.AssetDatabase.ImportAsset(path + chipBlueName, UnityEditor.ImportAssetOptions.Default);
+        UnityEditor.AssetDatabase.ImportAsset(path + chipRedName, UnityEditor.ImportAssetOptions.Default);
+        Sprite chip1 = UnityEditor.AssetDatabase.LoadAssetAtPath(path + chipBlueName, typeof(Sprite)) as Sprite;
+        Sprite chip2 = UnityEditor.AssetDatabase.LoadAssetAtPath(path + chipRedName, typeof(Sprite)) as Sprite;
+        chipSpriteList = new List<Sprite>() { chip1, chip2 };
+        // end init chips
 
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
@@ -6125,4 +6134,6 @@ public class LoadOnClick : MonoBehaviour
     bool isFromRaiseBtn = false;
     bool isFromBetOkBtn = false;
     bool isFromFoldBtn = false;
+    List<Image> chipBoxes;
+    List<Sprite> chipSpriteList;
 }
