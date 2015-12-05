@@ -5772,16 +5772,11 @@ public class LoadOnClick : MonoBehaviour
         Image chipBox4 = GameObject.Find("Chip4").GetComponent<Image>();
         Image chipBox5 = GameObject.Find("Chip5").GetComponent<Image>();
         chipBoxes = new List<Image>() { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
-        
+
         // start init chips
-        string path = "Assets/Resources/";
-        string chipBlueName = "chips_blue.bmp";
-        string chipRedName = "chips_red.bmp";
-        UnityEditor.AssetDatabase.ImportAsset(path + chipBlueName, UnityEditor.ImportAssetOptions.Default);
-        UnityEditor.AssetDatabase.ImportAsset(path + chipRedName, UnityEditor.ImportAssetOptions.Default);
-        Sprite chip1 = UnityEditor.AssetDatabase.LoadAssetAtPath(path + chipBlueName, typeof(Sprite)) as Sprite;
-        Sprite chip2 = UnityEditor.AssetDatabase.LoadAssetAtPath(path + chipRedName, typeof(Sprite)) as Sprite;
-        chipSpriteList = new List<Sprite>() { chip1, chip2 };
+        Sprite chipRed = GameObject.Find("ChipRed").GetComponent<Image>().sprite;
+        Sprite chipBlue = GameObject.Find("ChipBlue").GetComponent<Image>().sprite;
+        chipSpriteList = new List<Sprite>() { chipBlue, chipRed };
         // end init chips
 
         //nextPlayerTimer.Interval = 100;
