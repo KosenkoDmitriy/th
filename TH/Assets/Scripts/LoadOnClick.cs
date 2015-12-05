@@ -1622,6 +1622,14 @@ public class LoadOnClick : MonoBehaviour
         cardsOfPlayer[(player * 2) + 1].sprite = cardBg;
     }
 
+    private void ClearPublicCards() {
+        if (Settings.isDebug) Debug.Log("ClearPublicCards()");
+
+        foreach (var card in cardsPublic) {
+            card.sprite = cardBg;
+        }
+    }
+
     private void EvalPlayerHands(bool hole, bool flop, bool turn, bool river)
     {
         if (Settings.isDebug) Debug.Log("EvalPlayerHands()");
@@ -4202,8 +4210,7 @@ public class LoadOnClick : MonoBehaviour
             if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
-        else if (isFromBetOkBtn)
-        //else if (btnStartGame.GetComponent<Button>().IsActive())//ANTE
+        else if (isFromBetOkBtn)//ANTE
         {
             isFromBetOkBtn = false;
             if (AutoPlay == true)
@@ -4261,6 +4268,7 @@ public class LoadOnClick : MonoBehaviour
         {
             ClearPlayerCards(x);
         }
+        ClearPublicCards();
         clearCreditLabels();
         updateFoldedPlayersImages(false);
         WinAmount = 0;
@@ -4281,8 +4289,6 @@ public class LoadOnClick : MonoBehaviour
         }
         PlayerCredits -= playerBet;
 
-        panelInitBet.SetActive(true);
-        btnStartGame.GetComponentInChildren<Text>().text = "Bet";
         panelInitBet.SetActive(false);
         Settings.creditsPlayed += playerBet;
         if (AutoPlay == true || autoStart == true)
@@ -5655,6 +5661,7 @@ public class LoadOnClick : MonoBehaviour
                 btnStartGame.GetComponentInChildren<Text>().text = "Bet";
             }
             if (btnRepeatBet != null) btnRepeatBet.SetActive(false);
+
             if (lblPanelBet != null) lblPanelBet.SetActive(false);
 
             panelInitBet.SetActive(false);
@@ -5665,25 +5672,22 @@ public class LoadOnClick : MonoBehaviour
                 double playerCallAmount;
                 betStringPtr = _raise;
 
-                //if (btnStartGame.GetComponent<Button>().IsInvoking())
-                //if (DialogResult.OK == panelInitBet.ShowDialog())//RAISE 
-                //{
-                    playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
-                    if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
-                        return;
-                    raiseValue = betAmount;//the value the player entered
+                playerCallAmount = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
+                if (betAmount == 0 || (playerCallAmount + betAmount) > PlayerCredits)
+                    return;
+                raiseValue = betAmount;//the value the player entered
 
-                    //PotAmount += playerCallAmount + raiseValue;
-                    playerCurrentBet += playerCallAmount + raiseValue;
+                //PotAmount += playerCallAmount + raiseValue;
+                playerCurrentBet += playerCallAmount + raiseValue;
 
-                    PlayerCredits -= (raiseValue + playerCallAmount);
-                    Settings.creditsPlayed += (raiseValue + playerCallAmount);
-                    virtualPlayers[0].RoundRaiseAmount += raiseValue;
-                    PlayerBet += playerCallAmount;
-                    PlayerRaise += raiseValue;//update the players raise status label
-                    virtualPlayerRaised = 0;
-                    ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
-                //}
+                PlayerCredits -= (raiseValue + playerCallAmount);
+                Settings.creditsPlayed += (raiseValue + playerCallAmount);
+                virtualPlayers[0].RoundRaiseAmount += raiseValue;
+                PlayerBet += playerCallAmount;
+                PlayerRaise += raiseValue;//update the players raise status label
+                virtualPlayerRaised = 0;
+                ThisRoundRaisePercentage += GetPotRaisePercentage(raiseValue);//(int)(100 / (PotAmount / raiseValue));
+
                 BetPlayer(CurrentBetPosition);
                 isFromRaiseBtn = false;
             }
