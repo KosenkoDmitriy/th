@@ -11,6 +11,8 @@ static class Settings
     public static bool logging = false;
     public static float updateInterval = 0.1f;
 
+    public static string cardBackName = "logo_back_cards"; // image name of the card back side
+
     public static int bonusTableMaxTitleSize = 10;  //unused
     public static int bonusTableWidth = 220;
     public static int bonusTableHeight = 170;

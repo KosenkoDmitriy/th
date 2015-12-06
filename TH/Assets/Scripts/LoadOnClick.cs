@@ -5945,9 +5945,6 @@ public class LoadOnClick : MonoBehaviour
         btnRepeatLastBet = GameObject.Find("btnRepeatLastBet");
         btnRepeatLastBet.SetActive(false);
 
-        btnLSurrender = GameObject.Find("btnLSurrender");
-        btnLSurrender.SetActive(false);
-
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
         btnCredit = GameObject.Find("btnCredit");
@@ -6040,7 +6037,7 @@ public class LoadOnClick : MonoBehaviour
                 cardsAll.Add(cardSprite);
             }
         cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
-        cardBack = Resources.Load("card_back", typeof(Sprite)) as Sprite;
+        cardBack = Resources.Load(Settings.cardBackName, typeof(Sprite)) as Sprite;
         cardsAll.Add(cardBack);
         cardsAll.Add(cardBg); //card with the background color
 
@@ -6127,7 +6124,7 @@ public class LoadOnClick : MonoBehaviour
 
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
-    GameObject btnBetNow, btnLSurrender, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
+    GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
     GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
         btnAllIn,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
