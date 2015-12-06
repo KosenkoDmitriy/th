@@ -6029,13 +6029,14 @@ public class LoadOnClick : MonoBehaviour
         string path = "";
         Sprite cardSprite;
         List<string> cards = new List<string>() { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
-        foreach (string card in cards)
-            foreach (string mast in masti)
+        foreach (string mast in masti)
+            foreach (string card in cards)
             {
                 path = card + separator + mast;
                 cardSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
                 cardsAll.Add(cardSprite);
             }
+
         cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
         cardBack = Resources.Load(Settings.cardBackName, typeof(Sprite)) as Sprite;
         cardsAll.Add(cardBack);
