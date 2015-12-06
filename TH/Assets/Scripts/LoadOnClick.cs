@@ -525,15 +525,11 @@ public class LoadOnClick : MonoBehaviour
     {
         set
         {
-            //TODO:
-            //if (value > paytableGrid.ColumnCount - 1)
-            //{
-            //    videoMultiplier = paytableGrid.ColumnCount - 1;
-            //}
-            //else
-            //{
             videoMultiplier = value;
-            //}
+            if (payTable != null && value > payTable.paytableColumnSize - 1)
+            {
+                videoMultiplier = payTable.paytableColumnSize - 1;
+            }
         }
         get
         {
@@ -5392,6 +5388,8 @@ public class LoadOnClick : MonoBehaviour
         {
             gameOverPtr = 0;
         }
+
+        DisableBettingButtons();
     }
 
     private void stopGameOverTimer()
