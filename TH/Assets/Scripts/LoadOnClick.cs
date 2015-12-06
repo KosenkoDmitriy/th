@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using Assets.Scripts;
 
+[RequireComponent(typeof(AudioSource))]
 public class LoadOnClick : MonoBehaviour
 {
     public LoadOnClick()
@@ -5963,6 +5964,9 @@ public class LoadOnClick : MonoBehaviour
         //panel surrender
         lblSurrender = GameObject.Find("lblSurrender");
 
+        audio = gameObject.AddComponent<AudioSource>();
+
+
         btnBetNow.GetComponent<Button>().onClick.AddListener(() => btnBetNowClickListener());
         btnStartGame.GetComponent<Button>().onClick.AddListener(() => btnStartGameClickListener());
         btnRaise.GetComponent<Button>().onClick.AddListener(() => btnRaiseClickListener());
@@ -6074,6 +6078,13 @@ public class LoadOnClick : MonoBehaviour
 
     private void btnBetNowClickListener()
     {
+        //audio = gameObject.AddComponent<AudioSource>();
+
+        //audio.PlayOneShot((AudioClip)Resources.Load<AudioClip>("Sounds/pressed") as AudioClip);
+        //audio.PlayOneShot((AudioClip)Resources.Load("Sounds/pressed"));
+        impact = Resources.Load<AudioClip>("Sounds/pressed");
+        audio.PlayOneShot(impact, 0.7f);
+
         if (Settings.isDebug) Debug.Log("btnBetNowClickListener()");
         HideDynamicPanels();
         panelInitBet.SetActive(true);
@@ -6149,4 +6160,7 @@ public class LoadOnClick : MonoBehaviour
     bool isFromRepeatBetBtn = false;
     List<Image> chipBoxes;
     List<Sprite> chipSpriteList;
+
+    AudioSource audio;
+    AudioClip impact;
 }
