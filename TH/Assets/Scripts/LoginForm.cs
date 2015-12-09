@@ -56,4 +56,9 @@ public class LoginForm : MonoBehaviour
     public void VisitSignUp() {
         Application.OpenURL(Settings.urlSignUp);
     }
+
+    public void VisitRestore()
+    {
+        Application.OpenURL(Settings.urlRestore);
+    }
 }

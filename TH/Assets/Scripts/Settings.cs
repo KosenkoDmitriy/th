@@ -9,6 +9,7 @@ static class Settings
     public static readonly string host = "http://th.shopomob.ru";
     public static readonly string actionLogin = "login";
     public static readonly string urlSignUp = host+"#sign_in_up";
+    public static readonly string urlRestore = host+"/restore"; //TODO: implement on website
 
     public static int videoPokerLowRank = 15;
     public static int selectedColumn;
