@@ -2,14 +2,23 @@
 
 static class Settings
 {
-    public static string key;
+    public static string key = "";
     public static int levelGame = 1;
     public static int levelMainMenu = 0;
 
-    public static readonly string host = "http://th.shopomob.ru";
+    public static bool isLogined = false;
+    public static double playerCredits = 100;
+
+    public static readonly string http = "http://";
+    public static readonly string host = http + "th.shopomob.ru";
     public static readonly string actionLogin = "login";
-    public static readonly string urlSignUp = host+"#sign_in_up";
-    public static readonly string urlRestore = host+"/restore"; //TODO: implement on website
+    public static readonly string urlSignUp = host + "#sign_in_up";
+    public static readonly string urlRestore = host + "/restore"; //TODO: implement on website
+
+    public static readonly string actionAdd = "add";
+    public static readonly string actionSub = "sub";
+    public static readonly string actionGetBalance = "get";
+    public static readonly string actionSetBalance = "set";
 
     public static int videoPokerLowRank = 15;
     public static int selectedColumn;
@@ -32,7 +41,6 @@ static class Settings
     public static readonly int playerSize = 6;
     public static readonly int playerVirtualSize = 5;
     public static readonly int kickerSize = 6;
-    public static int playerCredits = 1000;
     public static int year = 2010;
     public static int playerNameSize = 20;
     public static int playerCreditsLimit = 100;

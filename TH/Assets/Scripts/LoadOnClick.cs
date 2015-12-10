@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Collections.Generic;
 
 using Assets.Scripts;
+using System.Collections;
 
 public class LoadOnClick : MonoBehaviour
 {
@@ -443,10 +444,10 @@ public class LoadOnClick : MonoBehaviour
     {
         set
         {
+            SetBalance(value.ToString());
             playerCredits = value;
             string dollarAmount = String.Format("{0:C}", playerCredits);
-
-            if (playerAllCredits != null) playerAllCredits.GetComponent<Text>().text = dollarAmount;
+            if (playerAllCredits != null && playerAllCredits.GetComponent<Text>().IsActive()) playerAllCredits.GetComponent<Text>().text = dollarAmount;
         }
         get
         {
@@ -4305,7 +4306,7 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("StartGame()");
 
-        btnCredit.SetActive(false);
+        //btnCredit.SetActive(false);
 
         autoStart = false;
         lastBet = anteBet;
@@ -4681,7 +4682,7 @@ public class LoadOnClick : MonoBehaviour
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponent<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
 
         panelInitBet.SetActive(false);
@@ -5347,12 +5348,6 @@ public class LoadOnClick : MonoBehaviour
         btnNewGame.SetActive(true);
     }
 
-
-    private void playerAllCredits_MouseDoubleClick()//object sender, MouseEventArgs e)
-    {
-        PlayerCredits += Settings.jurisdictionalBetLimit;// 1000.00;
-    }
-
     private void startGameOverTimer(bool win)
     {
         if (Settings.isDebug) Debug.Log("startGameOverTimer()");
@@ -5361,11 +5356,11 @@ public class LoadOnClick : MonoBehaviour
         {
             if (RealPlayerCredits < jurisdictionalLimit)
             {
-                if (btnCredit != null) btnCredit.SetActive(true);
+                //if (btnCredit != null) btnCredit.SetActive(true);
             }
             if (RealPlayerCredits < jurisdictionalLimit - PlayerCredits)
             {
-                if (btnCredit != null) btnCredit.SetActive(true);
+                //if (btnCredit != null) btnCredit.SetActive(true);
 
                 PlayerCredits += RealPlayerCredits;
                 RealPlayerCredits = 0;
@@ -5621,7 +5616,7 @@ public class LoadOnClick : MonoBehaviour
                 btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
             }
         }
-        if (btnCredit != null) btnCredit.SetActive(false);
+        //if (btnCredit != null) btnCredit.SetActive(false);
     }
 
 
@@ -5891,7 +5886,16 @@ public class LoadOnClick : MonoBehaviour
 
         this.Controls.Add(creditLimitWindow);
         */
-        PlayerCredits = Settings.playerCredits;
+        if (Settings.isLogined)
+        {
+            GetBalance();
+        }
+        else
+        {
+            PlayerCredits = Settings.playerCredits; // TODO: how much credits we will get for guests? 
+            //PlayerCredits = credits;
+        }
+
         startGameOverTimer(false);
 
         if (FileIni != null && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
@@ -5915,9 +5919,13 @@ public class LoadOnClick : MonoBehaviour
     public void Start()
     {
         if (Settings.isDebug) Debug.Log("Start()");
-
         Settings.betCurrent = 0f;
 
+        panelAddCredits = GameObject.Find("PanelAddCredits");
+        if (panelAddCredits != null) {
+            btnCreditOk = panelAddCredits.transform.FindChild("btnOk").gameObject;
+            btnCreditOk.GetComponent<Button>().onClick.AddListener(() => btnCreditOkClickListener());
+        }
         panelGame = GameObject.Find("PanelGame");
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
         //panelBet = GameObject.Find("PanelBet");
@@ -5951,6 +5959,8 @@ public class LoadOnClick : MonoBehaviour
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
         btnCredit = GameObject.Find("btnCredit");
+        btnCredit.GetComponent<Button>().onClick.AddListener(() => btnCreditAddClickListener());
+
         btnAutoPlay = GameObject.Find("btnAutoPlay");
         btnNewGame = GameObject.Find("btnNewGame");
         btnAllIn = GameObject.Find("btnAllIn");
@@ -5989,6 +5999,7 @@ public class LoadOnClick : MonoBehaviour
         panelGame.SetActive(false);
         panelSurrender.SetActive(false);
         //panelBet.SetActive(false);
+        if (panelAddCredits != null) panelAddCredits.SetActive(false);
 
         if (!Settings.isDebug || !Settings.testGame)
             panelXYZ.SetActive(false);
@@ -6075,6 +6086,18 @@ public class LoadOnClick : MonoBehaviour
         };
     }
 
+    private void btnCreditAddClickListener()
+    {
+        if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
+        if (panelAddCredits != null) panelAddCredits.SetActive(true);
+    }
+
+    private void btnCreditOkClickListener()
+    {
+        if (Settings.isDebug) Debug.Log("btnCreditOkClickListener()");
+        if (panelAddCredits != null) panelAddCredits.SetActive(false);
+    }
+
     private void btnBetNowClickListener()
     {
         if (Settings.isDebug) Debug.Log("btnBetNowClickListener()");
@@ -6126,11 +6149,98 @@ public class LoadOnClick : MonoBehaviour
 
     }
 
-    GameObject panelInitBet, panelGame, panelSurrender, panelXYZ; //, bonusPokerPanel;
+    #region api
+    public void Add(string amount)
+    {
+        string url = string.Format("{0}/{1}", Settings.host, Settings.actionAdd);
+        if (Settings.isDebug) Debug.Log(url);
+
+        WWWForm form = new WWWForm();
+        form.AddField("a", amount);
+        form.AddField("k", Settings.key);
+
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void Sub(string amount)
+    {
+        string url = string.Format("{0}/{1}", Settings.host, Settings.actionSub);
+        if (Settings.isDebug) Debug.Log(url);
+
+        WWWForm form = new WWWForm();
+        form.AddField("a", amount);
+        form.AddField("k", Settings.key);
+
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void GetBalance()
+    {
+        string url = string.Format("{0}/{1}", Settings.host, Settings.actionGetBalance);
+        if (Settings.isDebug) Debug.Log(url);
+
+        WWWForm form = new WWWForm();
+        form.AddField("k", Settings.key);
+
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForGetBalanceRequest(www));
+    }
+
+    public void SetBalance(string amount)
+    {
+        string url = string.Format("{0}/{1}", Settings.host, Settings.actionSetBalance);
+        if (Settings.isDebug) Debug.Log(url);
+
+        WWWForm form = new WWWForm();
+        form.AddField("a", amount);
+        form.AddField("k", Settings.key);
+
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    IEnumerator WaitForRequest(WWW www)
+    {
+        yield return www;
+        // check for errors
+        if (www.error == null)
+        {
+            if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
+        }
+        else
+        {
+            string msg = "error api: " + www.error;
+            if (Settings.isDebug) Debug.Log(msg);
+        }
+    }
+
+    IEnumerator WaitForGetBalanceRequest(WWW www)
+    {
+        yield return www;
+        // check for errors
+        if (www.error == null)
+        {
+            double credits = 0;
+            Double.TryParse(www.text, out credits);
+            PlayerCredits = Settings.playerCredits = credits;
+            if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
+        }
+        else
+        {
+            string msg = "error api: " + www.error;
+            if (Settings.isDebug) Debug.Log(msg);
+        }
+    }
+
+    #endregion
+    GameObject panelInitBet, panelGame, panelSurrender, panelXYZ, panelAddCredits; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
     GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
     GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
         btnAllIn,
+        btnCreditOk,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
     List<GameObject> betLabels, creditLabels; // for each player

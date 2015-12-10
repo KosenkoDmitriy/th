@@ -42,11 +42,13 @@ public class LoginForm : MonoBehaviour
         {
             // TODO: check
             Settings.key = www.text;
+            Settings.isLogined = true;
             if (Settings.isDebug) Debug.Log("WWW Ok!: " + www.data);
             Application.LoadLevel(Settings.levelGame);
         }
         else
         {
+            Settings.isLogined = false;
             string msg = "error login";// "WWW Error: " + www.error;
             if (Settings.isDebug) Debug.Log(msg);
             GameObject.Find("textInfo").GetComponent<Text>().text = msg;
