@@ -4333,6 +4333,7 @@ public class LoadOnClick : MonoBehaviour
 
         btnNewGame.SetActive(false);
         btnRepeatLastBet.SetActive(false);
+        btnBetNow.GetComponent<Button>().interactable = false;
 
         GameState = GameStates.HoldCardBet;
         RenewVirtualPlayerProfiles();
@@ -4897,6 +4898,7 @@ public class LoadOnClick : MonoBehaviour
             //videoWin.Play();
         }
         panelInitBet.SetActive(false);
+        btnBetNow.GetComponent<Button>().interactable = true;
         isNextPlayer = false;
     }
 
@@ -5341,6 +5343,7 @@ public class LoadOnClick : MonoBehaviour
             btnRepeatLastBet.SetActive(true);
             btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
         }
+        btnBetNow.GetComponent<Button>().interactable = true;
         btnNewGame.SetActive(true);
     }
 
