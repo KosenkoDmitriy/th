@@ -6247,6 +6247,15 @@ public class LoadOnClick : MonoBehaviour
         Application.OpenURL(Settings.urlLogin);
     }
 
+    public void urlInviteFriend()
+    {
+        Application.OpenURL(Settings.urlInviteFriend);
+    }
+
+    public void urlFortuneWheel()
+    {
+        Application.OpenURL(Settings.urlFortuneWheel);
+    }
     #endregion
     GameObject panelInitBet, panelGame, panelSurrender, panelXYZ, panelAddCredits; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet

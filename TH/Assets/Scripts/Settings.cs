@@ -16,6 +16,8 @@ static class Settings
     public static readonly string urlRestore = host + "/restore"; //TODO: implement on website
     public static readonly string urlLogin = urlSignUp;
     public static readonly string urlBuy = host + "/buy"; //TODO: implement on website
+    public static readonly string urlInviteFriend = host + "/invite_friend"; //TODO: implement on website
+    public static readonly string urlFortuneWheel = host + "/fortune_wheel"; //TODO: implement on website
 
     public static readonly string actionLogin = "login";
     public static readonly string actionAdd = "add";
