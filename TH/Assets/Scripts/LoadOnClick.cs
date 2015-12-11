@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 using System;
 using System.Linq;
-using System.Globalization;
 using System.Collections.Generic;
 
 using Assets.Scripts;
@@ -5613,14 +5612,18 @@ public class LoadOnClick : MonoBehaviour
     public void btnStartGameClick()
     {
         if (Settings.isDebug) Debug.Log("btnStartGameClick()");
+
         if (isFromRepeatBetBtn)
         {
             isFromRepeatBetBtn = false;
+            panelInitBet.SetActive(false);
+
             if (Settings.isDebug) Debug.Log("from btnRepeatLastClick()");
             autoStart = true;
             StartNewGame();
+            return;
         };
-
+        
         // start assigning the betamount (getted from form input field)
         string betAmountString = inputBetField.text;
         if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
@@ -5631,14 +5634,14 @@ public class LoadOnClick : MonoBehaviour
 
         if (betAmount > 0) {
             isFromBetOkBtn = true;
+            lblPanelBet.GetComponent<Text>().text = "RAISE AMOUNT";
+
             if (btnStartGame != null)
             {
                 panelInitBet.SetActive(true);
                 btnStartGame.GetComponentInChildren<Text>().text = "Bet";
             }
             if (btnRepeatBet != null) btnRepeatBet.SetActive(false);
-
-            if (lblPanelBet != null) lblPanelBet.SetActive(false);
 
             panelInitBet.SetActive(false);
             panelGame.SetActive(true);
@@ -5679,6 +5682,8 @@ public class LoadOnClick : MonoBehaviour
         if (Settings.isDebug) Debug.Log("btnRaiseClick()");
 
         panelInitBet.SetActive(true);
+        lblPanelBet.GetComponent<Text>().text = "RAISE AMOUNT";
+
         panelGame.SetActive(false);
         //btnStartGame.GetComponent<Button>().interactable = true;
         isFromRaiseBtn = true;
@@ -5692,6 +5697,9 @@ public class LoadOnClick : MonoBehaviour
         btnRepeatBet.SetActive(true);
         btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
         //btnStartGame.GetComponent<Button>().onClick.Invoke();
+        lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
+
+        betAmount = 0;
         StartNewGame();
     }
 
@@ -5982,6 +5990,7 @@ public class LoadOnClick : MonoBehaviour
         btnCheck.GetComponent<Button>().onClick.AddListener(() => btnCheckClickListener());
         btnSurrender.GetComponent<Button>().onClick.AddListener(() => btnSurrenderClickListener());
         btnAllIn.GetComponent<Button>().onClick.AddListener(() => btnAllInClickListener());
+        btnRepeatBet.GetComponent<Button>().onClick.AddListener(() => btnRepeatBetOfBetFormClickListener());
 
         HideDynamicPanels();
         InitCards();
@@ -6109,6 +6118,15 @@ public class LoadOnClick : MonoBehaviour
         if (Settings.betCurrent <= 0) return;
         panelInitBet.SetActive(false);
         panelGame.SetActive(true);
+        //panelSurrender.SetActive(true);
+    }
+
+    private void btnRepeatBetOfBetFormClickListener()
+    {
+        if (Settings.betCurrent <= 0) return;
+        panelInitBet.SetActive(false);
+        panelGame.SetActive(true);
+        btnRepeatBet.SetActive(false);
         //panelSurrender.SetActive(true);
     }
 
