@@ -389,7 +389,7 @@ public class LoadOnClick : MonoBehaviour
         set
         {
             potAmount = value;
-            string dollarAmount = String.Format("{0:C}", potAmount);
+            string dollarAmount = FormatCreditsOrDollars(potAmount);
             lblPot.GetComponent<Text>().text = dollarAmount;
         }
     }
@@ -404,7 +404,7 @@ public class LoadOnClick : MonoBehaviour
         set
         {
             playerBet = value;
-            string dollarAmount = String.Format("{0:C}", playerBet);
+            string dollarAmount = FormatCreditsOrDollars(playerBet);
             lblBet.GetComponent<Text>().text = dollarAmount;
         }
     }
@@ -419,7 +419,7 @@ public class LoadOnClick : MonoBehaviour
         set
         {
             playerRaise = value;
-            string dollarAmount = String.Format("{0:C}", playerRaise);
+            string dollarAmount = FormatCreditsOrDollars(playerRaise);
             lblRaise.GetComponent<Text>().text = dollarAmount;
         }
     }
@@ -434,7 +434,7 @@ public class LoadOnClick : MonoBehaviour
         set
         {
             callAmount = value;
-            string dollarAmount = String.Format("{0:C}", callAmount);
+            string dollarAmount = FormatCreditsOrDollars(callAmount);
             lblCall.GetComponent<Text>().text = dollarAmount;
         }
     }
@@ -446,7 +446,7 @@ public class LoadOnClick : MonoBehaviour
         {
             SetBalance(value.ToString());
             playerCredits = value;
-            string dollarAmount = String.Format("{0:C}", playerCredits);
+            string dollarAmount = FormatCreditsOrDollars(playerCredits);
             if (playerAllCredits != null && playerAllCredits.GetComponent<Text>().IsActive()) playerAllCredits.GetComponent<Text>().text = dollarAmount;
         }
         get
@@ -492,7 +492,7 @@ public class LoadOnClick : MonoBehaviour
         set
         {
             win = value;
-            string dollarAmount = String.Format("{0:C}", win);
+            string dollarAmount = FormatCreditsOrDollars(win);
             lblWin.GetComponent<Text>().text = dollarAmount;
             if (win > 0)
             {
@@ -643,7 +643,7 @@ public class LoadOnClick : MonoBehaviour
 
             if (WinAmount > 0)//the player won something
             {
-                string dollarAmount = String.Format("{0:C}", WinAmount);
+                string dollarAmount = FormatCreditsOrDollars(WinAmount);
                 lblWin.GetComponent<Text>().text = gameOverStrings[gameOverPtr] + dollarAmount;
             }
             else
@@ -660,7 +660,7 @@ public class LoadOnClick : MonoBehaviour
         if (gameOverPtr == 4)
         {
             gameOverStrings[4] = "TEXAS HOLD'EM FOLDUP BONUS ";
-            string dollarAmount = String.Format("{0:C}", videoPokerWin);
+            string dollarAmount = FormatCreditsOrDollars(videoPokerWin);
             gameOverStrings[4] += dollarAmount;
         }
         else//2 or 3
@@ -1037,7 +1037,7 @@ public class LoadOnClick : MonoBehaviour
         if (player == 0) return;
         creditLabels[player].GetComponent<Text>().text = "";
         double amount = virtualPlayers[player].Credits;
-        string dollarAmount = String.Format("{0:C}", amount);
+        string dollarAmount = FormatCreditsOrDollars(amount);
         creditLabels[player].SetActive(true);
         creditLabels[player].GetComponent<Text>().text = dollarAmount;
     }
@@ -1527,7 +1527,7 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("AllInPlayer()");
 
-        string dollarAmount = String.Format("{0:C}", virtualPlayers[player].Credits);
+        string dollarAmount = FormatCreditsOrDollars(virtualPlayers[player].Credits);
         if (virtualPlayers[player].Credits > 0)
         {
             UpdateBetLabel("ALL IN " + dollarAmount, player, true); //, System.Drawing.Color.Yellow);
@@ -1546,7 +1546,7 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("RaisePlayer()");
 
-        string dollarAmount = String.Format("{0:C}", amount);
+        string dollarAmount = FormatCreditsOrDollars(amount);
         UpdateBetLabel("RAISE " + dollarAmount, player, true);
         UpdateCreditLabel(player);
         virtualPlayers[player].RoundRaiseAmount += amount;
@@ -3166,7 +3166,7 @@ public class LoadOnClick : MonoBehaviour
                                     BetType = BetTypes.raising;
                                     raise = ThisPlayersCall * 0.30;
                                 }
-                                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " is BLUFFING with " + String.Format("{0:C}", raise);
+                                if (lblWinInfo != null) lblWinInfo.GetComponent<Text>().text += virtualPlayers[player].Name + " is BLUFFING with " + FormatCreditsOrDollars(raise);
                             }
                         }
                     }
@@ -4686,7 +4686,7 @@ public class LoadOnClick : MonoBehaviour
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
         }
 
         panelInitBet.SetActive(false);
@@ -4895,7 +4895,7 @@ public class LoadOnClick : MonoBehaviour
         {
             panelInitBet.SetActive(true);
             btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
         }
         btnNewGame.SetActive(true);
         if (videoPokerWin > 0)
@@ -5346,7 +5346,7 @@ public class LoadOnClick : MonoBehaviour
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
         }
         btnBetNow.GetComponent<Button>().interactable = true;
         btnNewGame.SetActive(true);
@@ -5377,7 +5377,7 @@ public class LoadOnClick : MonoBehaviour
             if (lastBet > 0 && lastBet <= PlayerCredits)
             {
                 btnRepeatLastBet.SetActive(true);
-                btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+                btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
             }
         }
 
@@ -5617,17 +5617,10 @@ public class LoadOnClick : MonoBehaviour
             if (btnRepeatLastBet != null)
             {
                 btnRepeatLastBet.SetActive(true);
-                btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + String.Format("{0:C}", lastBet);
+                btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
             }
         }
         //if (btnCredit != null) btnCredit.SetActive(false);
-    }
-
-
-    private string GetBetAndCurrency(double value)
-    {
-        //string.Format(CultureInfo.CurrentCulture, "{0}{1:C}", Settings.dollar, value);
-        return string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
     }
 
     public void btnStartGameClick()
@@ -5641,12 +5634,8 @@ public class LoadOnClick : MonoBehaviour
             StartNewGame();
         };
 
-        string betAmountString = inputBetField.text;
-        string betNull = GetBetAndCurrency(Settings.betNull);
-
         // start assigning the betamount (getted from form input field)
-        if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
-        betAmountString = betAmountString.Replace("$", "");
+        string betAmountString = inputBetField.text;
         if (Settings.isDebug) Debug.Log("betAmountString: " + betAmountString);
         Double.TryParse(betAmountString, out betAmount);
         if (Settings.isDebug) Debug.Log("bet from form input: " + betAmount);
@@ -5724,7 +5713,14 @@ public class LoadOnClick : MonoBehaviour
         if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
 
         Settings.betCurrent = Settings.betMax;
-        inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
+        
+            string b = FormatCreditsOrDollars(Settings.betCurrent);
+        inputBetField.text = b;
+        panelInitBet.GetComponentInChildren<InputField>().text = b;
+        //GameObject.Find("InputField").GetComponent<InputField>().text = b;
+
+        //var obj = GameObject.Find("BetInputField");
+        //obj.GetComponent<InputField>().text = b;
     }
 
     public void btnMinBetClick()
@@ -5734,7 +5730,7 @@ public class LoadOnClick : MonoBehaviour
         Settings.betCurrent += Settings.betDx;
         if (Settings.betCurrent > Settings.betMax)
             Settings.betCurrent = 0f;
-        inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
+        inputBetField.text = FormatCreditsOrDollars(Settings.betCurrent);
     }
 
     public void btnClearBetClick()
@@ -5742,7 +5738,7 @@ public class LoadOnClick : MonoBehaviour
         if (Settings.isDebug) Debug.Log("btnClearBetClick()");
 
         Settings.betCurrent = Settings.betNull;
-        inputBetField.text = GetBetAndCurrency(Settings.betCurrent);
+        inputBetField.text = FormatCreditsOrDollars(Settings.betCurrent);
     }
 
     void UpdateInterval()
@@ -5929,6 +5925,7 @@ public class LoadOnClick : MonoBehaviour
         if (panelAddCredits != null) {
             btnCreditOk = panelAddCredits.transform.FindChild("btnOk").gameObject;
             btnCreditOk.GetComponent<Button>().onClick.AddListener(() => btnCreditOkClickListener());
+            panelAddCredits.SetActive(false);
         }
         panelGame = GameObject.Find("PanelGame");
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
@@ -5937,7 +5934,8 @@ public class LoadOnClick : MonoBehaviour
         panelXYZ = GameObject.Find("PanelXYZ");
 
         // bet panel
-        inputBetField = panelInitBet.GetComponentInChildren<InputField>();
+        inputBetField = panelInitBet.GetComponentInChildren<InputField>(); //GameObject.Find("InputBetField").GetComponent<InputField>(); // 
+        inputBetField.text = FormatCreditsOrDollars(Settings.betNull);
 
         lblWinInfo = GameObject.Find("lblWinInfo");
         lblPanelBet = GameObject.Find("lblPanelBet");
@@ -6239,6 +6237,12 @@ public class LoadOnClick : MonoBehaviour
             string msg = "error getting balance: " + www.error;
             if (Settings.isDebug) Debug.Log(msg);
         }
+    }
+
+    private string FormatCreditsOrDollars(double amount) {
+        //string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
+        string creditAmount = amount.ToString();
+        return creditAmount;
     }
 
     public void urlBuy()
