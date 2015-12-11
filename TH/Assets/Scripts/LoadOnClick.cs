@@ -2875,7 +2875,11 @@ public class LoadOnClick : MonoBehaviour
         updateBettingButtonTitle();
 
         if (btnRaise != null) btnRaise.GetComponent<Button>().interactable = true;  //we can always raise
-        if (btnAllIn != null) btnAllIn.GetComponent<Button>().interactable = true;  //we can alway go all in
+        if (btnAllIn != null && btnAllIn.GetComponent<Button>().IsActive())
+        {
+            btnAllIn.GetComponentInChildren<Text>().text = "ALL IN";
+            btnAllIn.GetComponent<Button>().interactable = true;  //we can alway go all in
+        }
         if (btnFold != null) btnFold.GetComponent<Button>().interactable = true;    //we can always fold
 
         if (CallAmount == 0)
