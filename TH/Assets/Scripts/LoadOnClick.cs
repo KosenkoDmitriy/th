@@ -985,33 +985,53 @@ public class LoadOnClick : MonoBehaviour
 
     private int IncrementButtonPosition(bool getposition)
     {
-        //TODO: fix button position ??
-        /*
         if (getposition == false)
         {
-            buttonImage0.SetActive(false);
-            buttonImage1.SetActive(false);
-            buttonImage2.SetActive(false);
-            buttonImage3.SetActive(false);
-            buttonImage4.SetActive(false);
-            buttonImage5.SetActive(false);
-
+            foreach (var dealer in dealers) {
+               dealer.SetActive(false);
+            }
+            
             buttonPosition--;
             if (buttonPosition < 0)
             {
                 buttonPosition = 5;
             }
-            switch (buttonPosition)
-            {
-                case 0: buttonImage0.SetActive(true); buttonImage0.Image = dealerButtonImageList.Images[0]; break;
-                case 1: buttonImage1.SetActive(true); buttonImage1.Image = dealerButtonImageList.Images[0]; break;
-                case 2: buttonImage2.SetActive(true); buttonImage2.Image = dealerButtonImageList.Images[0]; break;
-                case 3: buttonImage3.SetActive(true); buttonImage3.Image = dealerButtonImageList.Images[0]; break;
-                case 4: buttonImage4.SetActive(true); buttonImage4.Image = dealerButtonImageList.Images[0]; break;
-                case 5: buttonImage5.SetActive(true); buttonImage5.Image = dealerButtonImageList.Images[0]; break;
-            }
+            //dealers.ElementAt(0).SetActive(true);
+            //dealers.ElementAt(1).SetActive(true);
+            dealers.ElementAt(buttonPosition).SetActive(true);
+            /* dealers[0].SetActive(false);
+            dealers[1].SetActive(false);
+            dealers[2].SetActive(false);
+            dealers[3].SetActive(false);
+            dealers[4].SetActive(false);
+            /*
 
-        }*/
+            //System.Threading.Thread.Sleep(400);
+            //var go  = GameObject.Find("Dealer0");
+            //go = GameObject.Find("Dealer1");
+            //if (go != null) go.SetActive(true);
+
+            // doesn't works but in foreach loop - works
+            //dealers[buttonPosition].SetActive(true); 
+            //GameObject dealerActive = dealers.ElementAt(buttonPosition);
+            //dealerActive.SetActive(true);
+            //dealers.Last<GameObject>().SetActive(true);
+            //dealers.ElementAt(buttonPosition).SetActive(true);
+
+            //foreach (var dealer in dealers)
+            //{
+            //    dealer.SetActive(true);
+            // }
+
+            /*int i = 0;
+            foreach (GameObject dealer2 in dealers)
+            {
+                if (i == 0)
+                    dealer2.SetActive(true);
+                i++;
+            }*/
+
+        }
         return buttonPosition;
     }
 
@@ -5799,6 +5819,31 @@ public class LoadOnClick : MonoBehaviour
         };
         // end init chips
 
+        // start dealer icons
+        dealers = new List<GameObject>();
+        var transform = GameObject.Find("Dealers").GetComponentsInChildren<Transform>();
+        foreach (Transform child in transform)
+        {
+            if (child != transform[0])
+                dealers.Add(child.gameObject);
+        }
+        //dealers = GameObject.Find("Dealers").GetComponents<GameObject>().ToList();
+        //dealers = GameObject.Find("Dealers").transform.GetComponents<GameObject>().ToList();
+
+        /*Image dealer0 = GameObject.Find("Dealer0");//.GetComponent<Image>();
+        Image dealer1 = GameObject.Find("Dealer1");//.GetComponent<Image>();
+        Image dealer2 = GameObject.Find("Dealer2");//.GetComponent<Image>();
+        Image dealer3 = GameObject.Find("Dealer3");//.GetComponent<Image>();
+        Image dealer4 = GameObject.Find("Dealer4");//.GetComponent<Image>();
+        Image dealer5 = GameObject.Find("Dealer5");//.GetComponent<Image>();
+        dealers = new List<Game>() { dealer0, dealer1, dealer2, dealer3, dealer4, dealer5 };
+        dealerSpriteList = new List<Sprite>() {
+            Resources.Load("ic_dealer", typeof(Sprite)) as Sprite,
+            Resources.Load("ic_dealer_old", typeof(Sprite)) as Sprite
+        };
+        // end dealer icons
+        */
+
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
 
@@ -6291,5 +6336,6 @@ public class LoadOnClick : MonoBehaviour
     bool isFromFoldBtn = false;
     bool isFromRepeatBetBtn = false;
     List<Image> chipBoxes;
-    List<Sprite> chipSpriteList;
+    List<GameObject> dealers;
+    List<Sprite> chipSpriteList, dealerSpriteList;
 }
