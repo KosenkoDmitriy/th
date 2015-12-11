@@ -7,7 +7,7 @@ static class Settings
     public static int levelMainMenu = 0;
 
     public static bool isLogined = false;
-    public static double playerCredits = 100;
+    public static double playerCredits = 500;
 
     public static readonly string http = "http://";
     public static readonly string host = http + "th.shopomob.ru";

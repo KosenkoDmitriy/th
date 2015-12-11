@@ -987,50 +987,17 @@ public class LoadOnClick : MonoBehaviour
     {
         if (getposition == false)
         {
-            foreach (var dealer in dealers) {
+            foreach (var dealer in dealers)
                dealer.SetActive(false);
-            }
-            
+
             buttonPosition--;
             if (buttonPosition < 0)
             {
                 buttonPosition = 5;
             }
-            //dealers.ElementAt(0).SetActive(true);
-            //dealers.ElementAt(1).SetActive(true);
-            dealers.ElementAt(buttonPosition).SetActive(true);
-            /* dealers[0].SetActive(false);
-            dealers[1].SetActive(false);
-            dealers[2].SetActive(false);
-            dealers[3].SetActive(false);
-            dealers[4].SetActive(false);
-            /*
 
-            //System.Threading.Thread.Sleep(400);
-            //var go  = GameObject.Find("Dealer0");
-            //go = GameObject.Find("Dealer1");
-            //if (go != null) go.SetActive(true);
-
-            // doesn't works but in foreach loop - works
-            //dealers[buttonPosition].SetActive(true); 
-            //GameObject dealerActive = dealers.ElementAt(buttonPosition);
-            //dealerActive.SetActive(true);
-            //dealers.Last<GameObject>().SetActive(true);
-            //dealers.ElementAt(buttonPosition).SetActive(true);
-
-            //foreach (var dealer in dealers)
-            //{
-            //    dealer.SetActive(true);
-            // }
-
-            /*int i = 0;
-            foreach (GameObject dealer2 in dealers)
-            {
-                if (i == 0)
-                    dealer2.SetActive(true);
-                i++;
-            }*/
-
+            if (buttonPosition < dealers.Count())
+                dealers.ElementAt(buttonPosition).SetActive(true);
         }
         return buttonPosition;
     }
@@ -5827,22 +5794,7 @@ public class LoadOnClick : MonoBehaviour
             if (child != transform[0])
                 dealers.Add(child.gameObject);
         }
-        //dealers = GameObject.Find("Dealers").GetComponents<GameObject>().ToList();
-        //dealers = GameObject.Find("Dealers").transform.GetComponents<GameObject>().ToList();
-
-        /*Image dealer0 = GameObject.Find("Dealer0");//.GetComponent<Image>();
-        Image dealer1 = GameObject.Find("Dealer1");//.GetComponent<Image>();
-        Image dealer2 = GameObject.Find("Dealer2");//.GetComponent<Image>();
-        Image dealer3 = GameObject.Find("Dealer3");//.GetComponent<Image>();
-        Image dealer4 = GameObject.Find("Dealer4");//.GetComponent<Image>();
-        Image dealer5 = GameObject.Find("Dealer5");//.GetComponent<Image>();
-        dealers = new List<Game>() { dealer0, dealer1, dealer2, dealer3, dealer4, dealer5 };
-        dealerSpriteList = new List<Sprite>() {
-            Resources.Load("ic_dealer", typeof(Sprite)) as Sprite,
-            Resources.Load("ic_dealer_old", typeof(Sprite)) as Sprite
-        };
         // end dealer icons
-        */
 
         //nextPlayerTimer.Interval = 100;
         //nextPlayerTimer.Tick += new EventHandler(nextPlayerTimer_Tick);
@@ -6337,5 +6289,5 @@ public class LoadOnClick : MonoBehaviour
     bool isFromRepeatBetBtn = false;
     List<Image> chipBoxes;
     List<GameObject> dealers;
-    List<Sprite> chipSpriteList, dealerSpriteList;
+    List<Sprite> chipSpriteList;
 }
