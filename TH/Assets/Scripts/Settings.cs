@@ -11,14 +11,18 @@ static class Settings
 
     public static readonly string http = "http://";
     public static readonly string host = http + "th.shopomob.ru";
-    public static readonly string actionLogin = "login";
+
     public static readonly string urlSignUp = host + "#sign_in_up";
     public static readonly string urlRestore = host + "/restore"; //TODO: implement on website
+    public static readonly string urlLogin = urlSignUp;
+    public static readonly string urlBuy = host + "/buy"; //TODO: implement on website
 
+    public static readonly string actionLogin = "login";
     public static readonly string actionAdd = "add";
     public static readonly string actionSub = "sub";
     public static readonly string actionGetBalance = "get";
     public static readonly string actionSetBalance = "set";
+
 
     public static int videoPokerLowRank = 15;
     public static int selectedColumn;

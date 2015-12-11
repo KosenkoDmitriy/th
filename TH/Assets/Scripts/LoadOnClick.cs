@@ -5604,7 +5604,7 @@ public class LoadOnClick : MonoBehaviour
 
         if (RealPlayerCredits < jurisdictionalLimit || jurisdictionalLimit == 0)
         {
-            RealPlayerCredits += Settings.jurisdictionalBetLimit; //1000
+            //RealPlayerCredits += Settings.jurisdictionalBetLimit; //1000
         }
         PlayerCredits += jurisdictionalLimit;
         RealPlayerCredits -= jurisdictionalLimit;
@@ -6219,19 +6219,32 @@ public class LoadOnClick : MonoBehaviour
     IEnumerator WaitForGetBalanceRequest(WWW www)
     {
         yield return www;
+        var lblMyCreditsTitle = GameObject.Find("lblMyCredits") ;
         // check for errors
         if (www.error == null)
         {
             double credits = 0;
+            if (lblMyCreditsTitle != null) lblMyCreditsTitle.GetComponent<Text>().text = www.text;
             Double.TryParse(www.text, out credits);
             PlayerCredits = Settings.playerCredits = credits;
             if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
         }
         else
         {
-            string msg = "error api: " + www.error;
+            if (lblMyCreditsTitle != null) lblMyCreditsTitle.GetComponent<Text>().text = "pls relogin and try again";
+            string msg = "error getting balance: " + www.error;
             if (Settings.isDebug) Debug.Log(msg);
         }
+    }
+
+    public void urlBuy()
+    {
+        Application.OpenURL(Settings.urlBuy);
+    }
+
+    public void urlLogin()
+    {
+        Application.OpenURL(Settings.urlLogin);
     }
 
     #endregion
