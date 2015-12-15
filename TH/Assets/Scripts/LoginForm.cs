@@ -63,4 +63,8 @@ public class LoginForm : MonoBehaviour
     {
         Application.OpenURL(Settings.urlRestore);
     }
+    public void VisitCredits()
+    {
+        Application.OpenURL(Settings.urlCredits);
+    }
 }

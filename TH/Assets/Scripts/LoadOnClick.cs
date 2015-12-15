@@ -6265,6 +6265,11 @@ public class LoadOnClick : MonoBehaviour
         Application.OpenURL(Settings.urlBuy);
     }
 
+    public void urlCredits()
+    {
+        Application.OpenURL(Settings.urlCredits);
+    }
+
     public void urlLogin()
     {
         Application.OpenURL(Settings.urlLogin);
