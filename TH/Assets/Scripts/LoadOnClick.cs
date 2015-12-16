@@ -1358,7 +1358,7 @@ public class LoadOnClick : MonoBehaviour
                 break;
         }
         deckPtr++;
-        audio.PlayOneShot(dealSound);
+        //audio.PlayOneShot(dealSound);
     }
 
     private void InitializeNewGame()
