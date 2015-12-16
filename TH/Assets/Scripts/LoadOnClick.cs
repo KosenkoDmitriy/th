@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Assets.Scripts;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class LoadOnClick : MonoBehaviour
 {
     public LoadOnClick()
@@ -495,7 +496,7 @@ public class LoadOnClick : MonoBehaviour
             lblWin.GetComponent<Text>().text = dollarAmount;
             if (win > 0)
             {
-                //videoWin.Play();
+                audio.PlayOneShot(videoWin);
             }
         }
         get
@@ -569,15 +570,6 @@ public class LoadOnClick : MonoBehaviour
     bool isNextPlayer = false;
 
     Color pixelColor;
-
-    //TODO: Add Audio/Music Support
-    /*
-    System.Media.SoundPlayer dealSound = new System.Media.SoundPlayer(SoundResource.highlight);
-    public System.Media.SoundPlayer buttonSound = new System.Media.SoundPlayer(SoundResource.push3);
-    System.Media.SoundPlayer raiseSound = new System.Media.SoundPlayer(SoundResource.timerbeep);
-    System.Media.SoundPlayer callSound = new System.Media.SoundPlayer(SoundResource.s_bang);
-    System.Media.SoundPlayer videoWin = new System.Media.SoundPlayer(SoundResource.VideoWin);
-    */
 
     double AntePotAmount = 0;
     double FlopPotAmount = 0;
@@ -1366,7 +1358,7 @@ public class LoadOnClick : MonoBehaviour
                 break;
         }
         deckPtr++;
-        //dealSound.Play();
+        audio.PlayOneShot(dealSound);
     }
 
     private void InitializeNewGame()
@@ -1434,17 +1426,18 @@ public class LoadOnClick : MonoBehaviour
         communityCards[0] = deck[deckPtr++];
         cardsPublic[0].sprite = cardsAll[communityCards[0]];
 
-        //dealSound.Play();
+        audio.PlayOneShot(dealSound);
 
         communityCards[1] = deck[deckPtr++];
         cardsPublic[1].sprite = cardsAll[communityCards[1]];
 
-        //dealSound.Play();
+        audio.PlayOneShot(dealSound);
 
         communityCards[2] = deck[deckPtr++];
         cardsPublic[2].sprite = cardsAll[communityCards[2]];
 
-        //dealSound.Play();
+        audio.PlayOneShot(dealSound);
+
         cardsDealt = 5;
         for (int x = 0; x < Settings.playerSize; x++)
         {
@@ -1469,7 +1462,7 @@ public class LoadOnClick : MonoBehaviour
         this.communityCards[3] = deck[deckPtr++];
         cardsPublic[3].sprite = cardsAll[communityCards[3]];
 
-        //dealSound.Play();
+        audio.PlayOneShot(dealSound);
 
         for (int x = 0; x < Settings.playerSize; x++)
         {
@@ -1493,7 +1486,8 @@ public class LoadOnClick : MonoBehaviour
         this.communityCards[4] = deck[deckPtr++];
         cardsPublic[4].sprite = cardsAll[communityCards[4]];
 
-        //dealSound.Play();
+        audio.PlayOneShot(dealSound);
+
         for (int x = 0; x < Settings.playerSize; x++)
         {
             GamePlayers.ElementAt(x).hand.cardHand[Settings.playerSize] = communityCards[4];
@@ -1536,7 +1530,8 @@ public class LoadOnClick : MonoBehaviour
         UpdateBetLabel("RAISE " + dollarAmount, player, true);
         UpdateCreditLabel(player);
         virtualPlayers[player].RoundRaiseAmount += amount;
-        //raiseSound.Play(); //TODO
+
+        audio.PlayOneShot(raiseSound);
     }
 
     private void CallPlayer(int player)
@@ -4288,6 +4283,7 @@ public class LoadOnClick : MonoBehaviour
     public void btnNewGame_Click()//object sender, EventArgs e)//Ante Button
     {
         if (Settings.isDebug) Debug.Log("btnNewGame_Click()");
+        audio.PlayOneShot(pressedSound);
 
         StartNewGame();
     }
@@ -4300,7 +4296,9 @@ public class LoadOnClick : MonoBehaviour
 
         autoStart = false;
         lastBet = anteBet;
-        //buttonSound.Play();
+
+        //TODO: audio.PlayOneShot(buttonSound);
+
         clearBetLabels();//clear all the labels
         AntePotAmount = PotAmount;
         FlopPotAmount = 0;
@@ -4430,6 +4428,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("btnAllInClick()");
 
+        audio.PlayOneShot(pressedSound);
+
         double playerCallAmount;
         double raiseValue;
         if (virtualPlayers[0].AllIn == false)
@@ -4461,6 +4461,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("btnCallClick()");
 
+        audio.PlayOneShot(pressedSound);
+
         if (virtualPlayers.Count() > 0 && virtualPlayers[0] != null)
         {
             if (Settings.isDebug) Debug.Log("btnCallClick() virtualPlayers.Count = " + virtualPlayers.Count());
@@ -4483,6 +4485,8 @@ public class LoadOnClick : MonoBehaviour
     public void btnCheckClick() //_Click(object sender, EventArgs e)
     {
         if (Settings.isDebug) Debug.Log("btnCheckClick()");
+
+        audio.PlayOneShot(pressedSound);
 
         if (virtualPlayers.Count() > 0 && virtualPlayers[0] != null)
         {
@@ -4717,7 +4721,7 @@ public class LoadOnClick : MonoBehaviour
         }
         if (videoBonus > 0)
         {
-            //videoWin.Play();
+            audio.PlayOneShot(videoWin);
         }
 
         return videoBonus;
@@ -4886,7 +4890,7 @@ public class LoadOnClick : MonoBehaviour
         btnNewGame.SetActive(true);
         if (videoPokerWin > 0)
         {
-            //videoWin.Play();
+            audio.PlayOneShot(videoWin);
         }
         panelInitBet.SetActive(false);
         btnBetNow.GetComponent<Button>().interactable = true;
@@ -5289,7 +5293,7 @@ public class LoadOnClick : MonoBehaviour
     private void FoldOrSurrender() {
         if (Settings.isDebug) Debug.Log("FoldOrSurrender()");
 
-        //buttonSound.Play();
+        audio.PlayOneShot(buttonSound);
 
         if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
@@ -5308,7 +5312,7 @@ public class LoadOnClick : MonoBehaviour
         }
         if (videoPokerWin > 0)
         {
-            //videoWin.Play(); //TODO: play sound/music when player is win
+            audio.PlayOneShot(videoWin);
         }
 
         GameState = GameStates.PlayerLose;
@@ -5592,6 +5596,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("btnCreditAddClick()");
 
+        audio.PlayOneShot(pressedSound);
+
         if (RealPlayerCredits < jurisdictionalLimit || jurisdictionalLimit == 0)
         {
             //RealPlayerCredits += Settings.jurisdictionalBetLimit; //1000
@@ -5612,6 +5618,8 @@ public class LoadOnClick : MonoBehaviour
     public void btnStartGameClick()
     {
         if (Settings.isDebug) Debug.Log("btnStartGameClick()");
+
+        audio.PlayOneShot(pressedSound);
 
         if (isFromRepeatBetBtn)
         {
@@ -5681,6 +5689,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("btnRaiseClick()");
 
+        audio.PlayOneShot(pressedSound);
+
         panelInitBet.SetActive(true);
         lblPanelBet.GetComponent<Text>().text = "RAISE AMOUNT";
 
@@ -5692,6 +5702,8 @@ public class LoadOnClick : MonoBehaviour
     public void btnBetNowClick()
     {
         if (Settings.isDebug) Debug.Log("btnBetNowClick()");
+
+        audio.PlayOneShot(pressedSound);
 
         panelInitBet.SetActive(true);
         btnRepeatBet.SetActive(true);
@@ -5706,6 +5718,8 @@ public class LoadOnClick : MonoBehaviour
     public void btnMaxBetClick()
     {
         if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
+
+        audio.PlayOneShot(pressedSound);
 
         Settings.betCurrent = Settings.betMax;
         
@@ -5722,6 +5736,8 @@ public class LoadOnClick : MonoBehaviour
     {
         if (Settings.isDebug) Debug.Log("btnMinBetClick()");
 
+        audio.PlayOneShot(pressedSound);
+
         Settings.betCurrent += Settings.betDx;
         if (Settings.betCurrent > Settings.betMax)
             Settings.betCurrent = 0f;
@@ -5731,6 +5747,8 @@ public class LoadOnClick : MonoBehaviour
     public void btnClearBetClick()
     {
         if (Settings.isDebug) Debug.Log("btnClearBetClick()");
+
+        audio.PlayOneShot(pressedSound);
 
         Settings.betCurrent = Settings.betNull;
         inputBetField.text = FormatCreditsOrDollars(Settings.betCurrent);
@@ -5982,6 +6000,17 @@ public class LoadOnClick : MonoBehaviour
         //TODO:
         //panel surrender
         lblSurrender = GameObject.Find("lblSurrender");
+
+        // start sounds
+        audio = gameObject.AddComponent<AudioSource>();
+        pressedSound = Resources.Load<AudioClip>("Sounds/pressed");
+        //audio.PlayOneShot(Resources.Load<AudioClip>("Sounds/pressed");
+        dealSound = Resources.Load<AudioClip>("Sounds/highlight");
+        buttonSound = Resources.Load<AudioClip>("Sounds/push3"); //push2
+        raiseSound = Resources.Load<AudioClip>("Sounds/timerbeep");
+        callSound = Resources.Load<AudioClip>("Sounds/s_bang");
+        videoWin = Resources.Load<AudioClip>("Sounds/VideoWin");
+        // end sounds
 
         btnBetNow.GetComponent<Button>().onClick.AddListener(() => btnBetNowClickListener());
         btnStartGame.GetComponent<Button>().onClick.AddListener(() => btnStartGameClickListener());
@@ -6313,4 +6342,7 @@ public class LoadOnClick : MonoBehaviour
     List<Image> chipBoxes;
     List<GameObject> dealers;
     List<Sprite> chipSpriteList;
+
+    AudioSource audio;
+    AudioClip pressedSound, dealSound, buttonSound, raiseSound, callSound, videoWin;
 }
