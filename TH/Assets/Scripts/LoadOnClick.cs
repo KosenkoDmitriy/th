@@ -6024,7 +6024,7 @@ public class LoadOnClick : MonoBehaviour
         HideDynamicPanels();
         InitCards();
         OtherInits();
-
+        panelInitBet.SetActive(true);
         isNextPlayer = false; // don't call update when initializing game
         InvokeRepeating("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
     }
