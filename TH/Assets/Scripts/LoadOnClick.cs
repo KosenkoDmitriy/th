@@ -6083,12 +6083,12 @@ public class LoadOnClick : MonoBehaviour
         foreach (string mast in masti)
             foreach (string card in cards)
             {
-                path = card + separator + mast;
+                path = Settings.cardsPrefix + card + separator + mast;
                 cardSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
                 cardsAll.Add(cardSprite);
             }
 
-        cardBg = Resources.Load("card_background", typeof(Sprite)) as Sprite;
+        cardBg = Resources.Load(Settings.cardBg, typeof(Sprite)) as Sprite;
         cardBack = Resources.Load(Settings.cardBackName, typeof(Sprite)) as Sprite;
         cardsAll.Add(cardBack);
         cardsAll.Add(cardBg); //card with the background color

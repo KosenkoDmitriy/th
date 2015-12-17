@@ -26,6 +26,13 @@ static class Settings
     public static readonly string actionGetBalance = "get";
     public static readonly string actionSetBalance = "set";
 
+    // cards
+    public static string cardsPrefix = "cards_new/"; //"cards";
+    //public static string cardBackName = cardsPrefix + "logo_back_cards"; // image name of the card back side
+    public static string cardBackName = cardsPrefix + "card_back_black_with_logo";
+    //"card_back_black_with_logo", "card_back_black_with_logo1", "card_back_black", "card_back_red" "card_back_red_with_logo"
+    public static string cardBg = "card_background"; // the same color as in table
+    // end cards
 
     public static int videoPokerLowRank = 15;
     public static int selectedColumn;
@@ -35,8 +42,6 @@ static class Settings
     public static bool testGame = false;
     public static bool logging = false;
     public static float updateInterval = 0.1f;
-
-    public static string cardBackName = "logo_back_cards"; // image name of the card back side
 
     public static int bonusTableMaxTitleSize = 10;  //unused
     public static int bonusTableWidth = 220;
