@@ -1,9 +1,0 @@
-{
-    "bet_background1": "System.Drawing.Bitmap",
-    "button16": "System.Drawing.Bitmap",
-    "CreditWindow": "System.Drawing.Bitmap",
-    "BonusBackgroundNew": "System.Drawing.Bitmap",
-    "BonusBackground1": "System.Drawing.Bitmap",
-    "button": "System.Drawing.Bitmap",
-    "BonusBackground": "System.Drawing.Bitmap"
-}

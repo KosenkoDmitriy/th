@@ -1,9 +1,0 @@
-{
-    "timerbeep": "System.IO.PinnedBufferMemoryStream",
-    "highlight": "System.IO.PinnedBufferMemoryStream",
-    "push3": "System.IO.PinnedBufferMemoryStream",
-    "push2": "System.IO.PinnedBufferMemoryStream",
-    "VideoWin": "System.IO.PinnedBufferMemoryStream",
-    "pressed": "System.IO.PinnedBufferMemoryStream",
-    "s_bang": "System.IO.PinnedBufferMemoryStream"
-}
