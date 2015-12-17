@@ -1,5 +1,6 @@
 *.meta
 *.info
+[Tt]emp/
 [Dd]ebug/
 [Rr]elease/
 [Oo]bj/
