@@ -5290,6 +5290,29 @@ public class LoadOnClick : MonoBehaviour
         FoldOrSurrender();
     }
 
+
+	public void btnInstructionClick()
+	{
+		if (Settings.isDebug) Debug.Log("btnInstructionClick()");
+		if (panelInstructions != null) panelInstructions.SetActive (true);
+	}
+
+	public void btnInstructionCloseClick() {
+		if (Settings.isDebug) Debug.Log("btnInstructionCloseClick()");
+		if (panelInstructions != null) panelInstructions.SetActive (false);
+	}
+
+	public void btnHelpClick()
+	{
+		if (Settings.isDebug) Debug.Log("btnHelpClick()");
+		if (panelHelp != null) panelHelp.SetActive (true);
+	}
+
+	public void btnHelpCloseClick() {
+		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
+		if (panelHelp != null) panelHelp.SetActive (false);
+	}
+
     private void FoldOrSurrender() {
         if (Settings.isDebug) Debug.Log("FoldOrSurrender()");
 
@@ -5950,11 +5973,12 @@ public class LoadOnClick : MonoBehaviour
             btnCreditOk.GetComponent<Button>().onClick.AddListener(() => btnCreditOkClickListener());
             panelAddCredits.SetActive(false);
         }
+		
         panelGame = GameObject.Find("PanelGame");
         panelInitBet = GameObject.Find("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
         //panelBet = GameObject.Find("PanelBet");
         panelSurrender = GameObject.Find("PanelSurrender");
-        panelXYZ = GameObject.Find("PanelXYZ");
+		panelXYZ = GameObject.Find("PanelXYZ");
 
         // bet panel
         inputBetField = panelInitBet.GetComponentInChildren<InputField>(); //GameObject.Find("InputBetField").GetComponent<InputField>(); // 
@@ -6020,6 +6044,15 @@ public class LoadOnClick : MonoBehaviour
         btnSurrender.GetComponent<Button>().onClick.AddListener(() => btnSurrenderClickListener());
         btnAllIn.GetComponent<Button>().onClick.AddListener(() => btnAllInClickListener());
         btnRepeatBet.GetComponent<Button>().onClick.AddListener(() => btnRepeatBetOfBetFormClickListener());
+
+
+		
+		panelHelp = GameObject.Find("PanelHelp");
+		if (panelHelp != null) panelHelp.SetActive (false);
+		
+		panelInstructions = GameObject.Find("PanelInstructions");
+		if (panelInstructions != null) panelInstructions.SetActive (false);
+
 
         HideDynamicPanels();
         InitCards();
@@ -6314,7 +6347,7 @@ public class LoadOnClick : MonoBehaviour
         Application.OpenURL(Settings.urlFortuneWheel);
     }
     #endregion
-    GameObject panelInitBet, panelGame, panelSurrender, panelXYZ, panelAddCredits; //, bonusPokerPanel;
+    GameObject panelInitBet, panelGame, panelSurrender, panelXYZ, panelAddCredits, panelHelp, panelInstructions; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
     GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
     GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
