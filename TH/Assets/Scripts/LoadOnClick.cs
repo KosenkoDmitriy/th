@@ -5949,6 +5949,13 @@ public class LoadOnClick : MonoBehaviour
         else
             BuildVirtualPlayerProfiles();
 
+
+		int i = 0;
+		foreach (var playerName in playerNamesLabels) {
+			playerName.GetComponent<Text>().text = virtualPlayers.ElementAt(i).Name;;
+			i++;
+		}
+
         IncrementButtonPosition(false);
         GameState = GameStates.Ante;
         restoreCardDefaults(true);
@@ -6145,6 +6152,15 @@ public class LoadOnClick : MonoBehaviour
             GameObject.Find("lblBetPlayer4"),
             GameObject.Find("lblBetPlayer5")
         };
+
+		playerNamesLabels = new List<GameObject>() {
+//			GameObject.Find("lblPlayerName0"),
+			GameObject.Find("lblPlayerName1"),
+			GameObject.Find("lblPlayerName2"),
+			GameObject.Find("lblPlayerName3"),
+			GameObject.Find("lblPlayerName4"),
+			GameObject.Find("lblPlayerName5")
+		};
 
         creditLabels = new List<GameObject>() {
             GameObject.Find("lblCreditPlayer0"),
@@ -6355,7 +6371,7 @@ public class LoadOnClick : MonoBehaviour
         btnCreditOk,
         lblPot, lblRaise, lblBet, lblCall, lblWin,
         lblBettingGroup;
-    List<GameObject> betLabels, creditLabels; // for each player
+	List<GameObject> betLabels, creditLabels, playerNamesLabels; // for each player
     GameObject txtSurrender, lblSurrender, lblWinInfo;//panel surrender
     GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
     double betAmount;
