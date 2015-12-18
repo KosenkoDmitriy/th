@@ -4108,6 +4108,14 @@ public class LoadOnClick : MonoBehaviour
     private void StartNewGame()
     {
         if (Settings.isDebug) Debug.Log("StartNewGame()");
+		
+		
+		//TODO: hide win panel and bet panel
+//		btnWinPanelClose();
+		if (panelWin != null)
+			panelWin.SetActive (false);
+		if (panelInitBet != null) panelInitBet.SetActive(false);
+
 
         virtualPlayerRaised = 0;
         flopTurnRiverRaised = false;
@@ -5623,7 +5631,7 @@ public class LoadOnClick : MonoBehaviour
     public void btnRepeatLastBetClick() {
         if (Settings.isDebug) Debug.Log("btnRepeatLastBetClick()");
 
-        autoStart = true;
+		autoStart = true;
         StartNewGame();
     }
 
