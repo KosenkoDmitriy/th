@@ -67,7 +67,7 @@ static class Settings
     public static readonly int videoBonusMaxMultiplier = 5;
     public static readonly int betAmountAutoplay = 5;
 
-    public static string dollar = "$";// { get; internal set; }
+    public static string dollar = " credits ";// { get; internal set; }
     public static double betNull = 0.00;
     public static double betCurrent = 0.00;
 
@@ -102,6 +102,8 @@ static class Settings
     public static string continueString = "You have used the ALL IN and the game is pausing for you to see the betting action";
     public static string surrenderBoxString = "If you would like to SURRENDER your hand, click this surrender box. See instruction 8 for details.";
     public static string realPlayerName = "YOU"; // "PLAYER"
+//	public static string yourName = realPlayerName;
+
     public static double jurisdictionalLimit = 0; // TODO: jurisdictionalLimit == jurisdictionalBETLimit in ini file
     public static int jurisdictionalBetLimit = 1000;
     public static readonly int gameMaxDenomMultiplier = 9999;
