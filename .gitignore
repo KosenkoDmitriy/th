@@ -6,4 +6,4 @@
 [Oo]bj/
 [Bb]in/
 *.sln
-
+.log
