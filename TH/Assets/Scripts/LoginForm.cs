@@ -56,15 +56,19 @@ public class LoginForm : MonoBehaviour
     }
 
     public void VisitSignUp() {
-        Application.OpenURL(Settings.urlSignUp);
+		Application.ExternalEval("window.open('" + Settings.urlSignUp + "','_blank')");
+//        Application.OpenURL(Settings.urlSignUp);
     }
 
     public void VisitRestore()
     {
-        Application.OpenURL(Settings.urlRestore);
+		Application.ExternalEval("window.open('" + Settings.urlRestore + "','_blank')");
+//		Application.OpenURL(Settings.urlRestore);
     }
+
     public void VisitCredits()
     {
-        Application.OpenURL(Settings.urlCredits);
+		Application.ExternalEval("window.open('" + Settings.urlCredits + "','_blank')");
+//        Application.OpenURL(Settings.urlCredits);
     }
 }

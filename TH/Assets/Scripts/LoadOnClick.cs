@@ -6388,28 +6388,34 @@ public class LoadOnClick : MonoBehaviour
 
     public void urlBuy()
     {
-        Application.OpenURL(Settings.urlBuy);
+		Application.ExternalEval("window.open('" + Settings.urlBuy + "','_blank')");
+//        Application.OpenURL(Settings.urlBuy);
     }
 
     public void urlCredits()
     {
-        Application.OpenURL(Settings.urlCredits);
+		Application.ExternalEval("window.open('" + Settings.urlCredits + "','_blank')");
+//        Application.OpenURL(Settings.urlCredits);
     }
 
     public void urlLogin()
     {
-        Application.OpenURL(Settings.urlLogin);
+		Application.ExternalEval("window.open('" + Settings.urlLogin + "','_blank')");
+//        Application.OpenURL(Settings.urlLogin);
     }
 
     public void urlInviteFriend()
     {
-        Application.OpenURL(Settings.urlInviteFriend);
+		Application.ExternalEval("window.open('" + Settings.urlInviteFriend + "','_blank')");
+//        Application.OpenURL(Settings.urlInviteFriend);
     }
 
     public void urlFortuneWheel()
     {
-        Application.OpenURL(Settings.urlFortuneWheel);
+		Application.ExternalEval("window.open('" + Settings.urlFortuneWheel + "','_blank')");
+//        Application.OpenURL(Settings.urlFortuneWheel);
     }
+
     #endregion
 	GameObject panelInitBet, panelGame, panelSurrender, panelXYZ, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
