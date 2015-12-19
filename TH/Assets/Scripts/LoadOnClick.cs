@@ -5372,6 +5372,9 @@ public class LoadOnClick : MonoBehaviour
         }
         btnBetNow.GetComponent<Button>().interactable = true;
         btnNewGame.SetActive(true);
+
+		btnWinPanelClose ();
+
     }
 
     private void startGameOverTimer(bool win)
@@ -5634,6 +5637,11 @@ public class LoadOnClick : MonoBehaviour
 		autoStart = true;
         StartNewGame();
     }
+
+	public void btnBetForBonusTableClick() {
+		if (Settings.isDebug) Debug.Log("btnBetForBonusTableClick()");
+		//TODO: implement
+	}
 
     public void btnCreditAddClick() //addCredit_Click_1(object sender, EventArgs e)
     {
@@ -6072,7 +6080,7 @@ public class LoadOnClick : MonoBehaviour
         btnRaise.GetComponent<Button>().onClick.AddListener(() => btnRaiseClickListener());
         btnCall.GetComponent<Button>().onClick.AddListener(() => btnCallClickListener());
         btnCheck.GetComponent<Button>().onClick.AddListener(() => btnCheckClickListener());
-        btnSurrender.GetComponent<Button>().onClick.AddListener(() => btnSurrenderClickListener());
+		if (btnSurrender) btnSurrender.GetComponent<Button>().onClick.AddListener(() => btnSurrenderClickListener());
         btnAllIn.GetComponent<Button>().onClick.AddListener(() => btnAllInClickListener());
         btnRepeatBet.GetComponent<Button>().onClick.AddListener(() => btnRepeatBetOfBetFormClickListener());
 
@@ -6271,16 +6279,16 @@ public class LoadOnClick : MonoBehaviour
 		if (panelWin) {
 			panelWin.SetActive (false);
 			if (lblWinPlayerName) lblWinPlayerName.GetComponent<Text>().text = "";
-			
-			if (panelGame)
-				panelGame.SetActive (false);
-			
-			if (panelInitBet) {
-				panelInitBet.SetActive (true);
-				if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
-				if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
-				if (btnRepeatBet) btnRepeatBet.SetActive(true);
-			}
+		}
+
+		if (panelGame)
+			panelGame.SetActive (false);
+		
+		if (panelInitBet) {
+			panelInitBet.SetActive (true);
+			if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
+			if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
+			if (btnRepeatBet) btnRepeatBet.SetActive(true);
 		}
 	}
 
