@@ -6059,13 +6059,11 @@ public class LoadOnClick : MonoBehaviour
 
         // start sounds
         audio = gameObject.AddComponent<AudioSource>();
-        pressedSound = Resources.Load<AudioClip>("Sounds/pressed");
-        //audio.PlayOneShot(Resources.Load<AudioClip>("Sounds/pressed");
-        dealSound = Resources.Load<AudioClip>("Sounds/highlight");
-        buttonSound = Resources.Load<AudioClip>("Sounds/push3"); //push2
-        raiseSound = Resources.Load<AudioClip>("Sounds/timerbeep");
-        callSound = Resources.Load<AudioClip>("Sounds/s_bang");
-        videoWin = Resources.Load<AudioClip>("Sounds/VideoWin");
+		pressedSound = Resources.Load<AudioClip>("Sounds/cardFan1");//pressed");
+		dealSound = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
+		buttonSound = Resources.Load<AudioClip>("Sounds/cardsShove4");//push3"); //push2
+		raiseSound = Resources.Load<AudioClip>("Sounds/chipsHandle5");//timerbeep");
+		videoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
         // end sounds
 
         btnBetNow.GetComponent<Button>().onClick.AddListener(() => btnBetNowClickListener());
@@ -6444,6 +6442,6 @@ public class LoadOnClick : MonoBehaviour
     List<Sprite> chipSpriteList;
 
     AudioSource audio;
-    AudioClip pressedSound, dealSound, buttonSound, raiseSound, callSound, videoWin;
+    AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
 		GameObject lblWinPlayerName;
 }
