@@ -1140,10 +1140,8 @@ public class LoadOnClick : MonoBehaviour
         }
     }
 
-    private void dealCard(int target, bool firstCard, bool cardback)
-    {
-        if (Settings.isDebug) Debug.Log("dealCard()");
-
+	private void dealCard(int target, bool firstCard, bool cardback)
+	{
         switch (target)
         {
             case 0:
@@ -1359,7 +1357,9 @@ public class LoadOnClick : MonoBehaviour
                 break;
         }
         deckPtr++;
+		//TODO:
         //audio.PlayOneShot(dealSound);
+
     }
 
     private void InitializeNewGame()
@@ -1406,8 +1406,9 @@ public class LoadOnClick : MonoBehaviour
                 dealCard(loop[buttonPosition + player + 1], firstcard, true);
                 if (player != 5)
                 {
-                    //TODO: Thread.Sleep(dealDelay);
-                }
+					//TODO: Thread.Sleep(dealDelay);
+					//StartCoroutine(Wait());//don't work as expected
+				}
             }
         }
         x++;
@@ -1429,17 +1430,17 @@ public class LoadOnClick : MonoBehaviour
 
         audio.PlayOneShot(dealSound);
 
-        communityCards[1] = deck[deckPtr++];
+		communityCards[1] = deck[deckPtr++];
         cardsPublic[1].sprite = cardsAll[communityCards[1]];
 
         audio.PlayOneShot(dealSound);
 
-        communityCards[2] = deck[deckPtr++];
+		communityCards[2] = deck[deckPtr++];
         cardsPublic[2].sprite = cardsAll[communityCards[2]];
 
         audio.PlayOneShot(dealSound);
 
-        cardsDealt = 5;
+		cardsDealt = 5;
         for (int x = 0; x < Settings.playerSize; x++)
         {
             GamePlayers[x].hand.cardHand[2] = communityCards[0];
@@ -4108,14 +4109,6 @@ public class LoadOnClick : MonoBehaviour
     private void StartNewGame()
     {
         if (Settings.isDebug) Debug.Log("StartNewGame()");
-		
-		
-		//TODO: hide win panel and bet panel
-//		btnWinPanelClose();
-		if (panelWin)
-			panelWin.SetActive (false);
-		if (panelInitBet) panelInitBet.SetActive(false);
-
 
         virtualPlayerRaised = 0;
         flopTurnRiverRaised = false;
@@ -5810,8 +5803,8 @@ public class LoadOnClick : MonoBehaviour
         if (isNextPlayer)
         {
             if (Settings.isDebug) Debug.Log("UpdateInterval > NextPlayer()");
-
             NextPlayer();
+//			audio.PlayOneShot(dealSound);
         }
         else
         {
@@ -6411,7 +6404,16 @@ public class LoadOnClick : MonoBehaviour
 		Settings.OpenUrl (Settings.urlFortuneWheel);
     }
 
-    #endregion
+	IEnumerator Wait() {
+//		Debug.LogError ("Wait()");
+//		Debug.Log (Time.time);
+		while (true) {
+			yield return new WaitForSeconds (Settings.dealDelay);
+		}
+//		Debug.Log (Time.time);
+	}
+	
+	#endregion
 	GameObject panelInitBet, panelGame, panelSurrender, panelXYZ, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
     GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
     GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)

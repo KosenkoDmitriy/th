@@ -41,14 +41,14 @@ static class Settings
     public static bool isIgnoreIniFile = true;
     public static bool testGame = false;
     public static bool logging = false;
-    public static float updateInterval = 0.1f;
+    public static float updateInterval = 0.5f;
 
     public static int bonusTableMaxTitleSize = 10;  //unused
     public static int bonusTableWidth = 220;
     public static int bonusTableHeight = 170;
     public static int bonusTableFontSize = 10;
 
-    public static int cardsSize = 52;
+    public static int cardsSize = 52; 
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;
     public static readonly int playerVirtualSize = 5;
