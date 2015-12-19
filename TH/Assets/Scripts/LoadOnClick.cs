@@ -527,7 +527,7 @@ public class LoadOnClick : MonoBehaviour
         set
         {
             videoMultiplier = value;
-            if (payTable && value > payTable.paytableColumnSize - 1)
+            if (payTable != null && value > payTable.paytableColumnSize - 1)
             {
                 videoMultiplier = payTable.paytableColumnSize - 1;
             }
@@ -3096,7 +3096,7 @@ public class LoadOnClick : MonoBehaviour
                     }
                     if (BetType == BetTypes.checking)//lets see if we are going all in 
                     {
-                        if (player < virtualPlayers.Count() && virtualPlayers[player].AllInHands)
+                        if (player < virtualPlayers.Count() && virtualPlayers[player].AllInHands != null)
                             for (int i = 0; i < virtualPlayers[player].AllInHands.Count(); i++)
                             {
                                 if (rank == virtualPlayers[player].AllInHands.ElementAt(i))
@@ -3401,7 +3401,7 @@ public class LoadOnClick : MonoBehaviour
                     {
                         tempRank--; ;
                     }
-                    if (virtualPlayers[player].TurnNoRaiseBetPercentages && player < virtualPlayers.Count())
+                    if (virtualPlayers[player].TurnNoRaiseBetPercentages != null && player < virtualPlayers.Count())
                         tempRaise = virtualPlayers[player].TurnNoRaiseBetPercentages[21 - tempRank] * .01;
                     else
                         tempRaise = 0;
@@ -4065,7 +4065,7 @@ public class LoadOnClick : MonoBehaviour
         }
         data += playerData;
         data += "," + buttonPosition.ToString();
-        if (lblTemp.text) lblTemp.text = data;
+        if (!string.IsNullOrEmpty(lblTemp.text)) lblTemp.text = data;
     }
 
     private void button3_Click(object sender, EventArgs e)
@@ -4190,15 +4190,15 @@ public class LoadOnClick : MonoBehaviour
             }
             if (value < Settings.videoBonusMaxMultiplier)
             {
-                if (payTable) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
+                if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
             }
             else
             {
-                if (payTable) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
+				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
             }
             Settings.selectedColumn = value;
             Settings.selectedColumn = denomUnits;
-            if (payTable) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
+			if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
         else if (isFromBetOkBtn)//ANTE
@@ -4237,15 +4237,15 @@ public class LoadOnClick : MonoBehaviour
             }
             if (value < Settings.videoBonusMaxMultiplier)
             {
-                if (payTable) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
+				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
             }
             else
             {
-                if (payTable) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
+				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
             }
             Settings.selectedColumn = value;
             Settings.selectedColumn = denomUnits;
-            if (payTable) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
+			if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
             isNextPlayer = false; //gameOverTimer.Stop();
         }
 
@@ -4330,7 +4330,7 @@ public class LoadOnClick : MonoBehaviour
         stopGameOverTimer();
 
         btnNewGame.SetActive(false);
-        btnRepeatLastBet.SetActive(false);
+        if (btnRepeatLastBet) btnRepeatLastBet.SetActive(false);
         btnBetNow.GetComponent<Button>().interactable = false;
 
         GameState = GameStates.HoldCardBet;
@@ -4472,10 +4472,10 @@ public class LoadOnClick : MonoBehaviour
 
         audio.PlayOneShot(pressedSound);
 
-        if (virtualPlayers.Count() > 0 && virtualPlayers[0])
+        if (virtualPlayers.Count() > 0 && virtualPlayers.ElementAt(0) != null)
         {
             if (Settings.isDebug) Debug.Log("btnCallClick() virtualPlayers.Count = " + virtualPlayers.Count());
-            double pBet = GetCurrentBet() - virtualPlayers[0].CurrentBetAmount;
+            double pBet = GetCurrentBet() - virtualPlayers.ElementAt(0).CurrentBetAmount;
 
             PotAmount += pBet;
             PlayerCredits -= pBet;
@@ -4497,7 +4497,7 @@ public class LoadOnClick : MonoBehaviour
 
         audio.PlayOneShot(pressedSound);
 
-        if (virtualPlayers.Count() > 0 && virtualPlayers[0])
+		if (virtualPlayers.Count() > 0 && virtualPlayers[0] != null)
         {
             playerCurrentBet = 0;
             virtualPlayers[0].RoundChecked = true;
@@ -4684,14 +4684,14 @@ public class LoadOnClick : MonoBehaviour
 
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
-            btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
+            if (btnRepeatLastBet) btnRepeatLastBet.SetActive(true);
+            if (btnRepeatLastBet) btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
         }
 
         panelInitBet.SetActive(false);
         btnNewGame.SetActive(true);
 
-        if (logger) {
+		if (logger != null) {
             try
             {
                 logger.LogResults();
@@ -4875,7 +4875,7 @@ public class LoadOnClick : MonoBehaviour
             }
         }
 
-        if (logger)
+		if (logger != null)
         {
             try
             {
@@ -4893,8 +4893,8 @@ public class LoadOnClick : MonoBehaviour
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
             panelInitBet.SetActive(true);
-            btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
+            if (btnRepeatLastBet) btnRepeatLastBet.SetActive(true);
+            if (btnRepeatLastBet) btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
         }
         btnNewGame.SetActive(true);
         if (videoPokerWin > 0)
@@ -5330,7 +5330,7 @@ public class LoadOnClick : MonoBehaviour
         if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
-            if (payTable)
+			if (payTable != null)
             if (payTable.AdjustWinRank(playerWinRank) >= Settings.videoPokerLowRank)
             {
                 double videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
@@ -5351,7 +5351,7 @@ public class LoadOnClick : MonoBehaviour
         PotAmount = 0;
         clearCreditLabels();
 
-        if (logger)
+		if (logger != null)
         {
             try
             {
@@ -5367,8 +5367,8 @@ public class LoadOnClick : MonoBehaviour
 
         if (lastBet > 0 && lastBet <= PlayerCredits)
         {
-            btnRepeatLastBet.SetActive(true);
-            btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
+            if (btnRepeatLastBet) btnRepeatLastBet.SetActive(true);
+            if (btnRepeatLastBet) btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
         }
         btnBetNow.GetComponent<Button>().interactable = true;
         btnNewGame.SetActive(true);
@@ -5409,8 +5409,8 @@ public class LoadOnClick : MonoBehaviour
             }
             if (lastBet > 0 && lastBet <= PlayerCredits)
             {
-                btnRepeatLastBet.SetActive(true);
-                btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
+                if (btnRepeatLastBet) btnRepeatLastBet.SetActive(true);
+                if (btnRepeatLastBet) btnRepeatLastBet.GetComponentInChildren<Text>().text = "REPEAT LAST BET OF " + FormatCreditsOrDollars(lastBet);
             }
         }
 
@@ -5872,7 +5872,7 @@ public class LoadOnClick : MonoBehaviour
         string logFile = Settings.pathToAssetRes + Settings.logFile;
         string dataFile = Settings.pathToAssetRes + Settings.datFile;
 
-        if (FileIni && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
+		if (FileIni != null && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
         {
             FileIni.PrepareIniFile(iniFile);
 
@@ -5894,7 +5894,7 @@ public class LoadOnClick : MonoBehaviour
             Settings.gameDenomMultiplier = FileIni.GetIniInt("Game Parameters", "Bet Limit Multiplier", 5, iniFile);
             Settings.raiseLimitMultiplier = FileIni.GetIniInt("Game Parameters", "Raise Limit Multiplier", 5, iniFile);
 
-            if (logger)
+			if (logger != null)
             {
                 logger.GetLogFileVars();
             }
@@ -5905,10 +5905,10 @@ public class LoadOnClick : MonoBehaviour
                 betLimit = Settings.gameDenomination * Settings.gameDenomMultiplier;
             }
 
-            if (payTable) payTable.paytableRowSize = FileIni.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
+			if (payTable != null) payTable.paytableRowSize = FileIni.GetIniInt("Video Poker Paytable", "Entries", 8, iniFile);
             for (int x = 0; x < 9; x++)
             {
-                if (payTable) payTable.PayTableAmounts[x] = FileIni.GetIniInt("Video Poker Paytable", payTable.PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
+				if (payTable != null) payTable.PayTableAmounts[x] = FileIni.GetIniInt("Video Poker Paytable", payTable.PayTableStrings.ElementAt(x), payTable.PayTableAmounts.ElementAt(x), iniFile);
             }
 
             foldString = FileIni.GetIniString("Dynamic Help", "FOLD", "FOLD", out charsTransferred, iniFile);
@@ -5943,7 +5943,7 @@ public class LoadOnClick : MonoBehaviour
             // if ini file does not exists then use values from Settings
         }
 
-        if (payTable) payTable.BuildVideoBonusPaytable();
+		if (payTable != null) payTable.BuildVideoBonusPaytable();
 
         /*creditLimitWindow = new AmountWindow("PLAY CREDITS", 163, 420);
         if (jurisdictionalLimit == 0)
@@ -5965,7 +5965,7 @@ public class LoadOnClick : MonoBehaviour
 
         startGameOverTimer(false);
 
-        if (FileIni && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
+		if (FileIni != null && (FileIni.isExists(iniFile) || !Settings.isIgnoreIniFile))
             BuildVirtualPlayerProfilesFromIniFile();
         else
             BuildVirtualPlayerProfiles();
@@ -5981,7 +5981,7 @@ public class LoadOnClick : MonoBehaviour
         restoreCardDefaults(true);
 
         DisableBettingButtons();
-        if (payTable)
+		if (payTable != null)
         {
             payTable.SetPaytableSelectedColumn(9);
             Settings.videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
@@ -6034,7 +6034,7 @@ public class LoadOnClick : MonoBehaviour
         //left panel
         btnBetNow = GameObject.Find("btnBetNow");
         btnRepeatLastBet = GameObject.Find("btnRepeatLastBet");
-        btnRepeatLastBet.SetActive(false);
+        if (btnRepeatLastBet) btnRepeatLastBet.SetActive(false);
 
         //XYZ panel
         lblTemp = GameObject.Find("lblTemp").GetComponent<Text>();
