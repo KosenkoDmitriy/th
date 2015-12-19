@@ -4820,7 +4820,9 @@ public class LoadOnClick : MonoBehaviour
             winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
             if (winner != 0)
             {
-				gameOverStrings[1] = virtualPlayers.ElementAt(winner).Name + " WIN    " + winString; //TODO: use plaery1 or real names? "PLAYER " + winner.ToString() + " WIN    " + winString;
+				//TODO: use plaery1 or real names? "PLAYER " + winner.ToString() + " WIN    " + winString;
+//				gameOverStrings[1] = virtualPlayers.ElementAt(winner).Name + " WIN    " + winString; 
+				gameOverStrings[1] = "PLAYER " + winner.ToString() + " WIN    " + winString;
             }
             else
             {
@@ -6373,7 +6375,8 @@ public class LoadOnClick : MonoBehaviour
 
     private string FormatCreditsOrDollars(double amount) {
         //string.Format(CultureInfo.CurrentCulture, "{0:C}", value);
-        string creditAmount = amount.ToString();
+		//String.Format("{0:0,0}", 12345.67);       // "12,346"
+		string creditAmount = String.Format("{0:N2}", amount);// amount.ToString("#,#", System.Globalization.CultureInfo.CurrentCulture);
         return creditAmount;
     }
 
