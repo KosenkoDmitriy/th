@@ -131,6 +131,16 @@ static class Settings
         return virtualPlayerList;
     }
 
+	public static void OpenUrl(string url) {
+		#if UNITY_WEBPLAYER
+		UnityEngine.Application.ExternalEval(string.Format("window.open('{0}', "_blank")", url));
+		#elif UNITY_WEBGL
+		UnityEngine.Application.ExternalEval(string.Format("window.open('{0}', '_blank')", url)); // open url in new tab
+		#else
+		UnityEngine.Application.OpenURL(url);
+		#endif
+	}
+
     private static VirtualPlayer GetVirtualPlayer1()
     {
         VirtualPlayer vp = new VirtualPlayer();

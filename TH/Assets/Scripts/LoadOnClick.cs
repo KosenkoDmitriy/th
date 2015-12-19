@@ -6388,32 +6388,27 @@ public class LoadOnClick : MonoBehaviour
 
     public void urlBuy()
     {
-		Application.ExternalEval("window.open('" + Settings.urlBuy + "','_blank')");
-//        Application.OpenURL(Settings.urlBuy);
-    }
+		Settings.OpenUrl (Settings.urlBuy);
+	}
 
     public void urlCredits()
     {
-		Application.ExternalEval("window.open('" + Settings.urlCredits + "','_blank')");
-//        Application.OpenURL(Settings.urlCredits);
-    }
+		Settings.OpenUrl (Settings.urlCredits);
+	}
 
     public void urlLogin()
     {
-		Application.ExternalEval("window.open('" + Settings.urlLogin + "','_blank')");
-//        Application.OpenURL(Settings.urlLogin);
+		Settings.OpenUrl (Settings.urlLogin);
     }
 
     public void urlInviteFriend()
     {
-		Application.ExternalEval("window.open('" + Settings.urlInviteFriend + "','_blank')");
-//        Application.OpenURL(Settings.urlInviteFriend);
-    }
+		Settings.OpenUrl (Settings.urlInviteFriend);
+	}
 
     public void urlFortuneWheel()
     {
-		Application.ExternalEval("window.open('" + Settings.urlFortuneWheel + "','_blank')");
-//        Application.OpenURL(Settings.urlFortuneWheel);
+		Settings.OpenUrl (Settings.urlFortuneWheel);
     }
 
     #endregion
