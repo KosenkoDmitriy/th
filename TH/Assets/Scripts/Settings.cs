@@ -2,6 +2,9 @@
 
 static class Settings
 {
+	public static bool betForBonusTable = false;
+	public static double betBonusAmount = 0;
+
 	public static bool isPlayerWithNo = false;
     public static string key = "";
     public static int levelGame = 1;
