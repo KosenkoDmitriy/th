@@ -4165,7 +4165,7 @@ public class LoadOnClick : MonoBehaviour
         if (AutoPlay == true || autoStart == true)//ANTE
         {
             if (Settings.isDebug) Debug.Log("StartNewGame() autoplay and autostart are TRUE");
-            betAmount = 5;
+            //TODO: WHy? betAmount = 5;
 
             if (betAmount == 0 || betAmount > PlayerCredits)
                 return;
@@ -4179,80 +4179,22 @@ public class LoadOnClick : MonoBehaviour
                 anteBet = betAmount;
             }
             //double thisAnteBet = anteBet;
-            PotAmount = 0;
-            for (int x = 0; x < Settings.playerSize; x++)//
-            {
-                PotAmount += anteBet;
-            }
-            PlayerBet = anteBet;
-            PlayerRaise = 0;
-            int value = (int)(PlayerBet / Settings.gameDenomination);
-            denomUnits = (int)(PlayerBet / Settings.gameDenomination);
-            VideoMultiplier = value;
-
-            if (value > Settings.videoBonusMaxMultiplier)
-            {
-                value = Settings.videoBonusMaxMultiplier;
-            }
-            if (value < Settings.videoBonusMaxMultiplier)
-            {
-                if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
-            }
-            else
-            {
-				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
-            }
-            Settings.selectedColumn = value;
-            Settings.selectedColumn = denomUnits;
-			if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
-            isNextPlayer = false; //gameOverTimer.Stop();
+			StartNewGame2();
         }
         else if (isFromBetOkBtn)//ANTE
         {
-            isFromBetOkBtn = false;
-            if (AutoPlay == true)
-            {
-                betAmount = Settings.betAmountAutoplay;
-            }
-
-            if (Settings.isDebug) Debug.Log("betAmount:" + betAmount + " playerCredits" + PlayerCredits);
-
-            // if bet amount between 0 and max player credits then continue game
-            if (betAmount == 0 || betAmount > PlayerCredits)
-                return;
-
-            if (Settings.isDebug) Debug.Log("betAmount correct:" + betAmount + " continue game ...");
-
-            anteBet = betAmount;
-            PotAmount = 0;
-            for (int x = 0; x < Settings.playerSize; x++)//
-            {
-                PotAmount += anteBet;
-            }
-
-            PlayerBet = anteBet;
-            PlayerRaise = 0;
-
-            int value = (int)(PlayerBet / Settings.gameDenomination);
-            denomUnits = (int)(PlayerBet / Settings.gameDenomination);
-            VideoMultiplier = value;
-
-            if (value > Settings.videoBonusMaxMultiplier)
-            {
-                value = Settings.videoBonusMaxMultiplier;
-            }
-            if (value < Settings.videoBonusMaxMultiplier)
-            {
-				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
-            }
-            else
-            {
-				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)playerBet);
-            }
-            Settings.selectedColumn = value;
-            Settings.selectedColumn = denomUnits;
-			if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
-            isNextPlayer = false; //gameOverTimer.Stop();
+			isFromBetOkBtn = false;
+			if (AutoPlay == true)
+			{
+				betAmount = Settings.betAmountAutoplay;
+			}
+			
+			// if bet amount between 0 and max player credits then continue game
+			if (betAmount == 0 || betAmount > PlayerCredits)
+				return;
+			
+			anteBet = betAmount;
+			StartNewGame2();
         }
 
         raiseLimit = anteBet * Settings.raiseLimitMultiplier;
@@ -4294,6 +4236,21 @@ public class LoadOnClick : MonoBehaviour
         }
         if (Settings.isDebug) Debug.Log("end startnewgame()");
     }
+
+	private void StartNewGame2() {
+		
+		PotAmount = 0;
+		for (int x = 0; x < Settings.playerSize; x++)//
+		{
+			PotAmount += anteBet;
+		}
+		
+		PlayerBet = anteBet;
+		PlayerRaise = 0;
+
+		isNextPlayer = false; //gameOverTimer.Stop();
+	}
+
 
     public void btnNewGame_Click()//object sender, EventArgs e)//Ante Button
     {
@@ -4787,14 +4744,15 @@ public class LoadOnClick : MonoBehaviour
                 videoBonus = 0;
                 if (playerWinRank >= Settings.videoPokerLowRank)
                 {
-                    if (payTable == null) return;
-                    videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
-                    videoBonus *= videoMultiplier;
-                    payTable.SetPaytableSelectedWin(playerWinRank);
-                    if (videoBonus > 0)
-                    {
-                        videoBonus /= split;
-                    }
+                    if (payTable != null && Settings.betBonusAmount > 0) {
+	                    videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
+	                    videoBonus *= videoMultiplier;
+	                    payTable.SetPaytableSelectedWin(playerWinRank);
+	                    if (videoBonus > 0)
+	                    {
+                        	videoBonus /= split;
+						}
+					}
                 }
                 PlayerCredits += PotAmount / split;
                 Settings.creditsWon += PotAmount / split;
@@ -4810,10 +4768,11 @@ public class LoadOnClick : MonoBehaviour
             videoBonus = 0;
             if (playerWinRank >= Settings.videoPokerLowRank)
             {
-                if (payTable == null) return;
-                videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
-                payTable.SetPaytableSelectedWin(playerWinRank);
-                videoBonus *= videoMultiplier;
+				if (payTable != null && Settings.betBonusAmount > 0) {
+	                videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
+	                payTable.SetPaytableSelectedWin(playerWinRank);
+	                videoBonus *= videoMultiplier;
+				}
             }
             PlayerCredits += PotAmount;
             Settings.creditsWon += PotAmount;
@@ -4825,12 +4784,13 @@ public class LoadOnClick : MonoBehaviour
         }
         if (split < 2)
         {
-            if (payTable == null) return;
-            string winString;
+            string winString = "";
             lblWin.SetActive(true);
             int winRank = GetFiveCardRanking(winner);
-            winRank = payTable.AdjustWinRank(winRank);
-            winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
+			if (payTable != null && Settings.betBonusAmount > 0) {
+            	winRank = payTable.AdjustWinRank(winRank);
+            	winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
+			}
 			if (gameOverStrings.Count() > 1)
 			if (winner != 0)
 			{
@@ -4850,24 +4810,25 @@ public class LoadOnClick : MonoBehaviour
         else
         {
             lblWin.SetActive(true);
-            lblWin.GetComponent<Text>().text = "The Pot is Split " + split.ToString() + " Ways";
+			string winString = "The Pot is Split " + split.ToString() + " Ways";
+			lblWin.GetComponent<Text>().text = winString;
             for (int x = 0; x < Settings.playerSize; x++)
             {
                 if (GameWinners.ElementAt(x) == true)
                 {
-                    if (payTable == null) return;
-                    int winRank = GetFiveCardRanking(x);
-                    winRank = payTable.AdjustWinRank(winRank);
-                    string winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
-                    if (winRank == 8)
-                    {
-                        gameOverStrings[1] = "PLAYERS SPLIT WITH " + winString; //correct english
-                    }
-                    else
-                    {
-                        gameOverStrings[1] = "PLAYERS SPLIT WITH A " + winString;
-                    }
-
+					if (payTable != null && Settings.betBonusAmount > 0) {
+						int winRank = GetFiveCardRanking(x);
+	                    winRank = payTable.AdjustWinRank(winRank);
+	                    winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
+	                    if (winRank == 8)
+	                    {
+	                        gameOverStrings[1] = "PLAYERS SPLIT WITH " + winString; //correct english
+	                    }
+	                    else
+	                    {
+	                        gameOverStrings[1] = "PLAYERS SPLIT WITH A " + winString;
+	                    }
+					}
                     UpdateBetLabel(winString, x, false);// winColor);
                 }
             }
@@ -4876,14 +4837,15 @@ public class LoadOnClick : MonoBehaviour
         {
             if (playerWinRank >= Settings.videoPokerLowRank)
             {
-                if (payTable == null) return;
-                videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
-                videoBonus *= videoMultiplier;
-                payTable.SetPaytableSelectedWin(playerWinRank);
-                PlayerCredits += videoBonus;
-                Settings.creditsWon += videoBonus;
-                WinAmount += videoBonus;
-                videoPokerWin = videoBonus;
+				if (payTable != null && Settings.betBonusAmount > 0) {
+					videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
+	                videoBonus *= videoMultiplier;
+	                payTable.SetPaytableSelectedWin(playerWinRank);
+	                PlayerCredits += videoBonus;
+	                Settings.creditsWon += videoBonus;
+	                WinAmount += videoBonus;
+	                videoPokerWin = videoBonus;
+				}
             }
         }
 
@@ -5339,11 +5301,12 @@ public class LoadOnClick : MonoBehaviour
 
         audio.PlayOneShot(buttonSound);
 
+
         if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
-			if (payTable != null)
-            if (payTable.AdjustWinRank(playerWinRank) >= Settings.videoPokerLowRank)
+			if (payTable != null && Settings.betBonusAmount > 0)
+			if (payTable.AdjustWinRank(playerWinRank) >= Settings.videoPokerLowRank)
             {
                 double videoBonus = payTable.GetVideoPokerBonus(playerWinRank);
                 payTable.SetPaytableSelectedWin(playerWinRank);
@@ -5438,8 +5401,18 @@ public class LoadOnClick : MonoBehaviour
             gameOverPtr = 0;
         }
 
+		clearBonusPanel ();
         DisableBettingButtons();
     }
+
+	private void clearBonusPanel() {
+		Settings.betBonusAmount = 0;
+		if (panelBonus) {
+			panelBonus.SetActive(true);
+			panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.ToString();
+			panelBonus.SetActive(false);
+		};
+	}
 
     private void stopGameOverTimer()
     {
@@ -5658,21 +5631,58 @@ public class LoadOnClick : MonoBehaviour
 	}
 
 	public void btnBonusPanelCloseClick() {
+		if (Settings.betBonusAmount > 0) {
+
+			if (payTable != null)
+			{
+				Settings.videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
+				Settings.videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
+			}
+
+			PotAmount += Settings.betBonusAmount;
+			PlayerCredits -= Settings.betBonusAmount;
+
+			int value = (int)(Settings.betBonusAmount / Settings.gameDenomination);
+			denomUnits = (int)(Settings.betBonusAmount / Settings.gameDenomination);
+			VideoMultiplier = value;
+			
+			if (value > Settings.videoBonusMaxMultiplier)
+			{
+				value = Settings.videoBonusMaxMultiplier;
+			}
+			if (value < Settings.videoBonusMaxMultiplier)
+			{
+				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
+			}
+			else
+			{
+				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)Settings.betBonusAmount);
+			}
+			Settings.selectedColumn = value;
+			Settings.selectedColumn = denomUnits;
+			if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
+		}
 		if (panelBonus) panelBonus.SetActive (false);
 	}
 
 	public void btnBonusBetMinClick() {
-
+		Settings.betBonusAmount += Settings.betDx;
+		if (Settings.betBonusAmount > Settings.betMaxBonusAmount)
+			Settings.betBonusAmount = 0;
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.ToString();
 	}
 
 	public void btnBonusBetMaxClick() 
 	{
-
+		Settings.betBonusAmount = Settings.betMaxBonusAmount;
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.ToString();
 	}
 
 	public void btnBonusBetClearClick() {
-
+		Settings.betBonusAmount = Settings.betNull;
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.ToString();
 	}
+
 	#endregion
 
     public void btnCreditAddClick() //addCredit_Click_1(object sender, EventArgs e)
@@ -5867,7 +5877,11 @@ public class LoadOnClick : MonoBehaviour
             Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";        
         }
 
-        payTable = new PayTable();
+		payTable = new PayTable ();
+		if (payTable != null) {
+			payTable.BuildVideoBonusPaytable();
+			payTable.SetPaytableSelectedColumn(9);
+		}
 
         //InitializeComponent();
         now = DateTime.Now;
@@ -5983,8 +5997,6 @@ public class LoadOnClick : MonoBehaviour
             // if ini file does not exists then use values from Settings
         }
 
-		if (payTable != null) payTable.BuildVideoBonusPaytable();
-
         /*creditLimitWindow = new AmountWindow("PLAY CREDITS", 163, 420);
         if (jurisdictionalLimit == 0)
         {
@@ -6021,12 +6033,6 @@ public class LoadOnClick : MonoBehaviour
         restoreCardDefaults(true);
 
         DisableBettingButtons();
-		if (payTable != null)
-        {
-            payTable.SetPaytableSelectedColumn(9);
-            Settings.videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
-            Settings.videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
-        }
     }
 
     public void Start()
@@ -6094,9 +6100,7 @@ public class LoadOnClick : MonoBehaviour
         lblWin = GameObject.Find("lblWin");
         lblGameState = GameObject.Find("lblGameState");
 
-        //TODO:
-        //panel surrender
-        lblSurrender = GameObject.Find("lblSurrender");
+		lblSurrender = GameObject.Find("lblSurrender");
 
         // start sounds
         audio = gameObject.AddComponent<AudioSource>();
