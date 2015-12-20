@@ -813,7 +813,8 @@ public class LoadOnClick : MonoBehaviour
 				i++;
 			}
 		} else {
-			virtualPlayers.ElementAt(0).Name = Settings.realPlayerName;  //override player 0 with name "you"
+			if (virtualPlayers.Count() > 0)
+				virtualPlayers.ElementAt(0).Name = Settings.realPlayerName;  //override player 0 with name "you"
 		}
     }
 
@@ -4830,17 +4831,19 @@ public class LoadOnClick : MonoBehaviour
             int winRank = GetFiveCardRanking(winner);
             winRank = payTable.AdjustWinRank(winRank);
             winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
-            if (winner != 0)
-            {
+			if (gameOverStrings.Count() > 1)
+			if (winner != 0)
+			{
 				//TODO: use player 1 or real names? "PLAYER " + winner.ToString() + " WIN    " + winString;
 				if (Settings.isPlayerWithNo)
-					gameOverStrings[1] = "PLAYER " + winner.ToString() + " WIN    " + winString;
+					gameOverStrings[1] = "PLAYER " + winner.ToString() + " WIN\n" + winString;
 				else
-					gameOverStrings[1] = virtualPlayers.ElementAt(winner).Name + " WIN    " + winString; 
+					if (virtualPlayers.Count() > winner)
+						gameOverStrings[1] = virtualPlayers.ElementAt(winner).Name + " WIN\n" + winString; 
             }
             else
             {
-                gameOverStrings[1] = realPlayerName + " WIN    " + winString; //correct english
+                gameOverStrings[1] = realPlayerName + " WIN\n" + winString; //correct english
             }
             UpdateBetLabel(winString, winner, false);//, winColor);
         }
