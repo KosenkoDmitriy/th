@@ -646,7 +646,7 @@ public class LoadOnClick : MonoBehaviour
         {
             gameOverStrings[3] = "THE POT WAS SPLIT ";
             gameOverStrings[3] += PotSplit.ToString() + " WAYS";
-            //lblWin.Text = gameOverStrings[gameOverPtr];
+            lblWin.GetComponent<Text>().text = gameOverStrings[gameOverPtr];
         }
         if (gameOverPtr == 4)
         {
