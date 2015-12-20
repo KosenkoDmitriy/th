@@ -802,7 +802,19 @@ public class LoadOnClick : MonoBehaviour
         virtualTempPlayers = Settings.GetVirtualPlayers();
         //virtualPlayers[0] = new VirtualPlayer();//create a virtual player for the actual player
         //virtualPlayers[0] = virtualTempPlayers[0];//use Otto for autoplay
-		virtualPlayers.ElementAt (0).Name = Settings.realPlayerName; //override player 0 name (you)
+
+		if (Settings.isPlayerWithNo) {
+			int i = 0;
+			foreach (var p in virtualPlayers) {
+				if (i != 0)
+					p.Name = string.Format ("PLAYER {0}", i);
+				else
+					p.Name = Settings.realPlayerName; //override player 0 with name "you"
+				i++;
+			}
+		} else {
+			virtualPlayers.ElementAt(0).Name = Settings.realPlayerName;  //override player 0 with name "you"
+		}
     }
 
 
@@ -4820,9 +4832,11 @@ public class LoadOnClick : MonoBehaviour
             winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
             if (winner != 0)
             {
-				//TODO: use plaery1 or real names? "PLAYER " + winner.ToString() + " WIN    " + winString;
-//				gameOverStrings[1] = virtualPlayers.ElementAt(winner).Name + " WIN    " + winString; 
-				gameOverStrings[1] = "PLAYER " + winner.ToString() + " WIN    " + winString;
+				//TODO: use player 1 or real names? "PLAYER " + winner.ToString() + " WIN    " + winString;
+				if (Settings.isPlayerWithNo)
+					gameOverStrings[1] = "PLAYER " + winner.ToString() + " WIN    " + winString;
+				else
+					gameOverStrings[1] = virtualPlayers.ElementAt(winner).Name + " WIN    " + winString; 
             }
             else
             {

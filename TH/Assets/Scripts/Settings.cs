@@ -2,6 +2,7 @@
 
 static class Settings
 {
+	public static bool isPlayerWithNo = false;
     public static string key = "";
     public static int levelGame = 1;
     public static int levelMainMenu = 0;
