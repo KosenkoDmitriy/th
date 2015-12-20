@@ -122,12 +122,15 @@ static class Settings
     public static List<VirtualPlayer> GetVirtualPlayers()
     {
         List<VirtualPlayer> virtualPlayerList = new List<VirtualPlayer>() {
-            GetVirtualPlayer1(),
+			GetVirtualPlayer0(),
+			GetVirtualPlayer1(),
             GetVirtualPlayer2(),
             GetVirtualPlayer3(),
             GetVirtualPlayer4(),
             GetVirtualPlayer5(),
-            GetVirtualPlayer6()
+//            GetVirtualPlayer6(),
+//			GetVirtualPlayer7(),
+//			GetVirtualPlayer8(),
         };
         return virtualPlayerList;
     }
@@ -140,6 +143,119 @@ static class Settings
 		#else
 		UnityEngine.Application.OpenURL(url);
 		#endif
+	}
+	
+	private static int[] GetFlopNoRaiseBetPercentages() {
+		return new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
+	}
+	
+	private static int[] GetTurnNoRaiseBetPercentages() {
+		return new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
+	}
+	
+	private static int[] GetRiverNoRaiseBetPercentages() {
+		return new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+	}
+
+	private static VirtualPlayer GetVirtualPlayer0()
+	{
+		VirtualPlayer vp = new VirtualPlayer();
+		vp.Name = "Otto the Auto Player";
+		vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
+		vp.HoleMinThreshold = 53;  //the lowest rank for play anything lower folds
+		vp.RaiseLevels = new List<RaiseLevel>() {
+			new RaiseLevel() { //1
+				RaiseHands = IntRange(12, 20), // the hands that are raised on initial round or called in susiquent
+				Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
+				RaisePercentage = 34,                           // the percentage of the pot  to raise with the above hands.
+				ReRaiseRange = new double[] { 0, 0 },             // the percentage of the pot any of the players must raise after after this player has raised
+				ReRaisePercentage = 0                           // the percentage of the pot we re raise if reraise level is met
+			},
+			new RaiseLevel() { //2
+				RaiseHands = IntRange(5, 10),
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 65,
+				ReRaiseRange = new double[] { 50, gameMaxDenomMultiplier },
+				ReRaisePercentage = 100
+			},
+			new RaiseLevel() { //3
+				RaiseHands = new int[] { 1, 2, 3, 4, 11 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 75,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //4
+				RaiseHands = new int[] { 1, 2, 3 },
+				Range = new double[] { 0, gameMaxDenomMultiplier },
+				RaisePercentage = 60,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //5
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //6
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+		};
+		vp.FoldLevels = new List<FoldLevel>() {
+			new FoldLevel() { //1
+				FoldHands = new int[] { 39,40,42,46,48,50,51,52 },                       // the hands that are folded if in the prescribed range
+				Range = new double[] { 61, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
+			},
+			new FoldLevel() { //2
+				FoldHands = IntRange(21, 36),
+				Range = new double[] { 101, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //3
+				FoldHands = IntRange(12, 20),
+				Range = new double[] { 151, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //4
+				FoldHands = IntRange(5, 10),
+				Range = new double[] { 201, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //5
+				FoldHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+			},
+			new FoldLevel() { //6
+				FoldHands = new int[] { 0 },
+				Range = new double[] { 0, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //7
+				FoldHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+			},
+			new FoldLevel() { //8
+				FoldHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+			},
+		};
+		// ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;| RF| SF|H4K|M4K| 4K| FH| FL| ST|H3K|M3K| 3K| 2P| PP| TP| MP| BP| 4F| 3F|4SI|3SI|4SO|3SO 
+		// RF - royal flash, etc
+		vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+		vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+		vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
+		
+		vp.BluffHands = new int[] { 3,5,6,8,10,12,16,18,27 };
+		vp.BluffPercentage = 25;
+		vp.BluffCallRaisePercentage = 0;
+
+		vp.SlowPlayHands = new int[] { 0 };
+		vp.AllInHands = new int[] { 0 };
+		vp.Folded = false;
+
+		return vp;
 	}
 
     private static VirtualPlayer GetVirtualPlayer1()
@@ -226,15 +342,17 @@ static class Settings
                     Range = new double[] { 0, 0 },
                 },
             };
-        vp.FlopNoRaiseBetPercentages = new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
-        vp.TurnNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
-        vp.RiverNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+
+		vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+		vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+		vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
 
         vp.BluffHands = new int[] { 6, 7, 12, 13, 16, 18 };
-        vp.SlowPlayHands = new int[] { 0 };
+		vp.BluffPercentage = 15;
+		vp.BluffCallRaisePercentage = 0;
+
+		vp.SlowPlayHands = new int[] { 0 };
         vp.AllInHands = new int[] { 0 };
-        vp.BluffPercentage = 15;
-        vp.BluffCallRaisePercentage = 0;
         vp.Folded = false;
         return vp;
     }
@@ -242,7 +360,7 @@ static class Settings
     private static VirtualPlayer GetVirtualPlayer2()
     {
         VirtualPlayer vp = new VirtualPlayer();
-        vp.Name = "Mr Tight Ted";
+        vp.Name = "Mr Flop";
         vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
         vp.HoleMinThreshold = 104;  //the lowest rank for play anything lower folds
         vp.RaiseLevels = new List<RaiseLevel>() {
@@ -323,17 +441,18 @@ static class Settings
                     Range = new double[] { 0, 0 },
                 },
             };
-        vp.FlopNoRaiseBetPercentages = new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
-        vp.TurnNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
-        vp.RiverNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+        vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+        vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+        vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
 
         vp.BluffHands = new int[] { 0 };
-        vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
-        vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
-        vp.BluffPercentage = 0;
-        vp.BluffCallRaisePercentage = 0;
+		vp.BluffPercentage = 0;
+		vp.BluffCallRaisePercentage = 0;
 
+		vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
+        vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
         vp.Folded = false;
+
         return vp;
     }
 
@@ -421,18 +540,19 @@ static class Settings
                     Range = new double[] { 0, 0 },
                 },
             };
-        vp.FlopNoRaiseBetPercentages = new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
-        vp.TurnNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
-        vp.RiverNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+        vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+        vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+        vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
 
         vp.BluffHands = new int[] { 3, 5, 6, 8, 10, 12, 16, 18, 27 };
-        vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
-        vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
-        vp.BluffPercentage = 25;
-        vp.BluffCallRaisePercentage = 0;
+		vp.BluffPercentage = 25;
+		vp.BluffCallRaisePercentage = 0;
 
+		vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
+        vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
         vp.Folded = false;
-        return vp;
+        
+		return vp;
     }
 
     private static VirtualPlayer GetVirtualPlayer4()
@@ -519,9 +639,9 @@ static class Settings
                     Range = new double[] { 0, 0 },
                 },
             };
-        vp.FlopNoRaiseBetPercentages = new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
-        vp.TurnNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
-        vp.RiverNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+        vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+        vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+        vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
 
         vp.BluffHands = new int[] { 3, 5, 6, 7, 8, 10, 16, 17, 21, 27, 29, 36, 46, 50 };
         vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
@@ -617,18 +737,19 @@ static class Settings
                     Range = new double[] { 121, gameMaxDenomMultiplier },
                 },
             };
-        vp.FlopNoRaiseBetPercentages = new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
-        vp.TurnNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
-        vp.RiverNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+        vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+        vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+        vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
 
         vp.BluffHands = new int[] { 12, 18, 19, 24, 27, 28, 30, 32, 33, 34, 39, 42 };
-        vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
-        vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
-        vp.BluffPercentage = 30;
-        vp.BluffCallRaisePercentage = 0;
+		vp.BluffPercentage = 30;
+		vp.BluffCallRaisePercentage = 0;
 
+		vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
+        vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
         vp.Folded = false;
-        return vp;
+        
+		return vp;
     }
 
     private static VirtualPlayer GetVirtualPlayer6()
@@ -715,9 +836,9 @@ static class Settings
                     Range = new double[] { 0, 0 },
                 },
             };
-        vp.FlopNoRaiseBetPercentages = new int[] { 100, 100, 100, 100, 100, 75, 100, 100, 50, 50, 50, 40, 25, 40, 30, 20, 30, 0, 40, 0, 0, 0 };
-        vp.TurnNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 60, 50, 40, 30, 00, 20, 10, 0, 10, 0, 0, 0, 0, 0 };
-        vp.RiverNoRaiseBetPercentages = new int[] { 999, 999, 200, 175, 150, 125, 100, 100, 75, 60, 50, 20, 00, 10, 0, 0, -1, -1, -1, -1, -1, -1 };
+        vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+        vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+        vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
 
         vp.BluffHands = new int[] { 0 };
         vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
@@ -729,14 +850,213 @@ static class Settings
         return vp;
     }
 
+	private static VirtualPlayer GetVirtualPlayer7()
+	{
+		VirtualPlayer vp = new VirtualPlayer();
+		vp.Name = "Mr Telephone";
+		vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
+		vp.HoleMinThreshold = 105;  //the lowest rank for play anything lower folds
+		vp.RaiseLevels = new List<RaiseLevel>() {
+			new RaiseLevel() { //1
+				RaiseHands = new int[] { 1, 2, 3 }, // the hands that are raised on initial round or called in susiquent
+				Range = new double[] { 0, gameMaxDenomMultiplier },                   // the percentate range the real player must raise to use these hands
+				RaisePercentage = 60,                           // the percentage of the pot  to raise with the above hands.
+				ReRaiseRange = new double[] { 0, 0 },             // the percentage of the pot any of the players must raise after after this player has raised
+				ReRaisePercentage = 0                           // the percentage of the pot we re raise if reraise level is met
+			},
+			new RaiseLevel() { //2
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //3
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //4
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //5
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //6
+				RaiseHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 0,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+		};
+		vp.FoldLevels = new List<FoldLevel>() {
+			new FoldLevel() { //1
+				FoldHands = IntRange(81, 105),                       // the hands that are folded if in the prescribed range
+				Range = new double[] { 12, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
+			},
+			new FoldLevel() { //2
+				FoldHands = IntRange(50, 80),
+				Range = new double[] { 24, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //3
+				FoldHands = IntRange(36, 49),
+				Range = new double[] { 49, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //4
+				FoldHands = IntRange(26, 35),
+				Range = new double[] { 69, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //5
+				FoldHands = IntRange(13, 25),
+				Range = new double[] { 79, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //6
+				FoldHands = IntRange(7, 10, new int[] { 12 }),
+				Range = new double[] { 89, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //7
+				FoldHands = new int[] { 5, 6, 11 },
+				Range = new double[] { 111, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //8
+				FoldHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+			},
+		};
+		vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+		vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+		vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
+		
+		vp.BluffHands = new int[] { 0 };
+		vp.BluffPercentage = 0;
+		vp.BluffCallRaisePercentage = 0;
 
-    private static int[] IntRange(int min, int max)
+		vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
+		vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
+		vp.Folded = false;
+	
+		return vp;
+	}
+    
+	private static VirtualPlayer GetVirtualPlayer8()
+	{
+		VirtualPlayer vp = new VirtualPlayer();
+		vp.Name = "Mrs. Loose Lou";
+		vp.FoldOnAnyRaise = false; //true = fold on raise false = use rules;
+		vp.HoleMinThreshold = 105;  //the lowest rank for play anything lower folds
+
+		vp.RaiseLevels = new List<RaiseLevel>() {
+			new RaiseLevel() { //1
+				RaiseHands = IntRange(37, 52), // the hands that are raised on initial round or called in susiquent
+				Range = new double[] { 0, 0 },                   // the percentate range the real player must raise to use these hands
+				RaisePercentage = 25,                           // the percentage of the pot  to raise with the above hands.
+				ReRaiseRange = new double[] { 0, 0 },             // the percentage of the pot any of the players must raise after after this player has raised
+				ReRaisePercentage = 0                           // the percentage of the pot we re raise if reraise level is met
+			},
+			new RaiseLevel() { //2
+				RaiseHands = IntRange(21, 36),
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 71,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //3
+				RaiseHands = IntRange(12, 20),
+				Range = new double[] { 86, gameMaxDenomMultiplier },
+				RaisePercentage = 74,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //4
+				RaiseHands = IntRange(5, 10),
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 65,
+				ReRaiseRange = new double[] { 111, gameMaxDenomMultiplier },
+				ReRaisePercentage = 100
+			},
+			new RaiseLevel() { //5
+				RaiseHands = new int[] { 1, 2, 3, 4, 11 },
+				Range = new double[] { 0, 0 },
+				RaisePercentage = 100,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+			new RaiseLevel() { //6
+				RaiseHands = new int[] { 1, 2, 3 },
+				Range = new double[] { 0, gameMaxDenomMultiplier },
+				RaisePercentage = 60,
+				ReRaiseRange = new double[] { 0, 0 },
+				ReRaisePercentage = 0
+			},
+		};
+		vp.FoldLevels = new List<FoldLevel>() {
+			new FoldLevel() { //1
+				FoldHands = IntRange(94, 98, new int[] { 54,57,62,70,74,77,88,89,90,100,103 }),                       // the hands that are folded if in the prescribed range
+				Range = new double[] { 11, gameMaxDenomMultiplier },    // the range all the players raised the pot to fold these hands
+			},
+			new FoldLevel() { //2
+				FoldHands = IntRange(80, 86, new int[] { 77,79,91,92,93,99,101,102,104,105 }),                       // the hands that are folded if in the prescribed range
+				Range = new double[] { 49, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //3
+				FoldHands = IntRange(63, 71, new int[] { 53, 55, 56, 58, 59, 60, 61, 72, 73, 75, 76 }),
+				Range = new double[] { 74, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //4
+				FoldHands = IntRange(37, 52),
+				Range = new double[] { 45, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //5
+				FoldHands = IntRange(21, 36),
+				Range = new double[] { 74, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //6
+				FoldHands = IntRange(12, 20),
+				Range = new double[] { 100, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //7
+				FoldHands = IntRange(5, 10),
+				Range = new double[] { 111, gameMaxDenomMultiplier },
+			},
+			new FoldLevel() { //8
+				FoldHands = new int[] { 0 },
+				Range = new double[] { 0, 0 },
+			},
+		};
+		vp.FlopNoRaiseBetPercentages = GetFlopNoRaiseBetPercentages ();
+		vp.TurnNoRaiseBetPercentages = GetTurnNoRaiseBetPercentages ();
+		vp.RiverNoRaiseBetPercentages = GetRiverNoRaiseBetPercentages ();
+		
+		vp.BluffHands = new int[] { 3,5,6,7,8,10,16,17,21,27,29,36,46,50 };
+		vp.BluffPercentage = 40;
+		vp.BluffCallRaisePercentage = 0;
+		
+		vp.SlowPlayHands = new int[] { 0 }; // hands we slow play
+		vp.AllInHands = new int[] { 0 };    // we go all in after any raise.
+		vp.Folded = false;
+		
+		return vp;
+	}
+
+	private static int[] IntRange(int min, int max)
     {
         List<int> intList = new List<int>();
         for (int i = min; i <= max; i++)
             intList.Add(i);
         return intList.ToArray();
     }
+
     private static int[] IntRange(int min, int max, int[] arr)
     {
         List<int> intList = new List<int>();
