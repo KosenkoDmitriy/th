@@ -5,7 +5,7 @@ static class Settings
 	public static double betBonusAmount = 0;
 	public static double betMaxBonusAmount = 125;
 
-	public static bool isPlayerWithNo = false;
+	public static bool isPlayerWithNo = true;
     public static string key = "";
     public static int levelGame = 1;
     public static int levelMainMenu = 0;
