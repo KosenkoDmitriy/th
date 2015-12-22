@@ -4787,7 +4787,8 @@ public class LoadOnClick : MonoBehaviour
             string winString = "";
             lblWin.SetActive(true);
             int winRank = GetFiveCardRanking(winner);
-			if (payTable != null && Settings.betBonusAmount > 0) {
+			if (payTable != null)// && Settings.betBonusAmount > 0)
+			{
             	winRank = payTable.AdjustWinRank(winRank);
             	winString = payTable.PayTableStrings[ROYAL_FLUSH - winRank];
 			}
