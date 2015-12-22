@@ -4122,8 +4122,9 @@ public class LoadOnClick : MonoBehaviour
     private void StartNewGame()
     {
         if (Settings.isDebug) Debug.Log("StartNewGame()");
+		if (btnBetBonus) btnBetBonus.GetComponent<Button>().interactable = false;
 
-        virtualPlayerRaised = 0;
+		virtualPlayerRaised = 0;
         flopTurnRiverRaised = false;
         if (GameState != GameStates.Ante)
         {
@@ -4238,7 +4239,7 @@ public class LoadOnClick : MonoBehaviour
     }
 
 	private void StartNewGame2() {
-		
+
 		PotAmount = 0;
 		for (int x = 0; x < Settings.playerSize; x++)//
 		{
@@ -5299,11 +5300,11 @@ public class LoadOnClick : MonoBehaviour
 
     private void FoldOrSurrender() {
         if (Settings.isDebug) Debug.Log("FoldOrSurrender()");
+		if (btnBetBonus) btnBetBonus.GetComponent<Button>().interactable = true;
 
-        audio.PlayOneShot(buttonSound);
-
-
-        if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
+		audio.PlayOneShot(buttonSound);
+		
+		if (GameState == GameStates.FlopBet || GameState == GameStates.TurnBet || GameState == GameStates.RiverBet)
         {
             int playerWinRank = GetFiveCardRanking(0);//what rank did the player get??
 			if (payTable != null && Settings.betBonusAmount > 0)
@@ -5364,6 +5365,7 @@ public class LoadOnClick : MonoBehaviour
 				lblWinPlayerName.GetComponent<Text> ().text += realPlayerName + " win: \n" + WinAmount + "\n" + Settings.dollar;
 			}
 		}
+		if (btnBetBonus) btnBetBonus.GetComponent<Button>().interactable = true;
 		// end display win info
 
         if (Settings.isDebug) Debug.Log("startGameOverTimer()");
@@ -6082,6 +6084,7 @@ public class LoadOnClick : MonoBehaviour
 
         //left panel
         btnBetNow = GameObject.Find("btnBetNow");
+		btnBetBonus = GameObject.Find ("btnBetBonus");
         btnRepeatLastBet = GameObject.Find("btnRepeatLastBet");
         if (btnRepeatLastBet) btnRepeatLastBet.SetActive(false);
 
@@ -6489,5 +6492,6 @@ public class LoadOnClick : MonoBehaviour
 
     AudioSource audio;
     AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
-		GameObject lblWinPlayerName;
+	GameObject lblWinPlayerName;
+	GameObject btnBetBonus;
 }
