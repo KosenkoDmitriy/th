@@ -75,14 +75,11 @@ public class LoadOnClick : MonoBehaviour
     int virtualPlayerCount = 0;
     int denomUnits;
 
-    //System.Windows.Forms.Timer gameStartTimer = new System.Windows.Forms.Timer();
-    //Timer gameOverTimer = new Timer();
-    //Timer nextPlayerTimer = new Timer();
     List<int> loop = new List<int>() { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5 };
     public enum cardValues
     {
-        US = 0,
-        S = 1,
+        US = 0, // off suit/ unsuit?
+        S = 1,  // suit
         _2 = 2,
         _3 = 3,
         _4 = 4,
@@ -1372,7 +1369,6 @@ public class LoadOnClick : MonoBehaviour
         deckPtr++;
 		//TODO:
         //audio.PlayOneShot(dealSound);
-
     }
 
     private void InitializeNewGame()
@@ -3042,7 +3038,7 @@ public class LoadOnClick : MonoBehaviour
                 {
                     if (ThisPlayersCall > 0)//only check for folds if we can't check we take freebees
                     {
-                        for (int x = 0; x < 8; x++)//iterate through the fold levels
+						for (int x = 0; x < virtualPlayers[player].FoldLevels.Count; x++)//iterate through the fold levels
                         {
                             if (potRaisePercentage >= virtualPlayers[player].FoldLevels.ElementAt(x).Range[0] && potRaisePercentage <= virtualPlayers[player].FoldLevels.ElementAt(x).Range[1])
                             {
@@ -3063,7 +3059,7 @@ public class LoadOnClick : MonoBehaviour
                     }
                     if (BetType == BetTypes.checking)//we didn't fold
                     {
-                        for (int x = 0; x < Settings.playerSize; x++)//iterate through the raise levels
+						for (int x = 0; x < virtualPlayers[player].RaiseLevels.Count; x++)//iterate through the raise levels
                         {
                             if (potRaisePercentage >= virtualPlayers[player].RaiseLevels.ElementAt(x).Range[0] && potRaisePercentage <= virtualPlayers[player].RaiseLevels.ElementAt(x).Range[1])
                             {
@@ -3523,7 +3519,6 @@ public class LoadOnClick : MonoBehaviour
                     {
                         folding = true;
                     }
-
                 }
                 //Turn possibilities #3 the pot was raised by the real player 
                 if (virtualPlayers[0].RoundRaiseAmount > 0 && flopTurnRiverRaised == false)//the real player raised
