@@ -5622,7 +5622,6 @@ public class LoadOnClick : MonoBehaviour
 
 	#region bonus table
 
-	GameObject panelBonus;
 	public void btnBetForBonusTableClick() {
 		if (Settings.isDebug) Debug.Log("btnBetForBonusTableClick()");
 		if (panelBonus) panelBonus.SetActive (true);
@@ -6489,4 +6488,5 @@ public class LoadOnClick : MonoBehaviour
     AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
 	GameObject lblWinPlayerName;
 	GameObject btnBetBonus;
+	GameObject panelBonus;
 }
