@@ -101,8 +101,9 @@ class StartGameState : IGameState
     public void StartNewGame(GameTest game)
     {
 		Console.WriteLine("StartNewGame()");
-		game.ui.panelInitBet.SetActive (false);
-		game.ui.panelGame.SetActive (true);
+		game.ui.HideDynamicPanels ();
+		game.ui.panelInitBet.SetActive (true);
+//		game.ui.panelGame.SetActive (true);
     }
 }
 

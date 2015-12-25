@@ -10,45 +10,43 @@ using System.Collections;
 
 public class GameUI : MonoBehaviour
 {
-	GameTest game;
-
+	Game game;
 	GameUI() {
-		game = new GameTest (this);
+
 	}
 
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-//		game.ui.HideDynamicPanels ();
-//		game.ui.panelInitBet.SetActive (true);
-		HideDynamicPanels ();
-		panelInitBet.SetActive (true);
+//		game.MathState.BetRound1 ();
 	}
 
 	// end win panel
 	// start game panel
 	public void btnCheckClick()
 	{
+		game.MathState.Flop (game);
 	}
 
 	public void btnCallClick()
 	{
-		
+//		game.MathState.Turn (game);
+		game.MathState.Flop (game);
 	}
 
 	public void btnRaiseClick()
 	{
-		
+//		game.MathState.BetRound2 ();
 	}
 
 	public void btnFoldClick()
 	{
-		game.EndGame ();
+//		game.MathState.BetRound1 ();
 	}
 
 	public void btnAllInClick()
 	{
-		
+//		game.MathState.River (game);
 	}
 
 	public void btnHelpClick()
@@ -64,14 +62,19 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		if (panelInitBet) panelInitBet.SetActive(true);
-		if (btnRepeatBet) btnRepeatBet.SetActive(true);
-		if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
-		//if (btnStartGame) btnStartGame.GetComponent<Button>().onClick.Invoke();
-		if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
+//		if (panelInitBet) panelInitBet.SetActive(true);
+//		if (btnRepeatBet) btnRepeatBet.SetActive(true);
+//		if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
+//		//if (btnStartGame) btnStartGame.GetComponent<Button>().onClick.Invoke();
+//		if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
 		
-		betAmount = 0;
-		game.StartNewGame ();
+//		betAmount = 0;
+		string betAmountString = "0";
+		if (inputBetField)
+			betAmountString = inputBetField.text;
+		Double.TryParse (betAmountString, out betAmount);
+		if (betAmount > 0)
+			game.MathState.Preflop (game);
 	}
 	
 	public void btnMaxBetClick()
@@ -231,7 +234,9 @@ public class GameUI : MonoBehaviour
 
 		panelInitBet.SetActive (true);
 
-		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
+
+		game = new Game (this);
+//		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 	}
 		
 	private void InitCards ()
@@ -368,7 +373,7 @@ public class GameUI : MonoBehaviour
 
 	}
 
-	private void HideDynamicPanels() {
+	public void HideDynamicPanels() {
 		if (Settings.isDebug) Debug.Log("HideDynamicPanels()");
 		
 		if(panelInitBet) panelInitBet.SetActive(false);
@@ -401,8 +406,8 @@ public class GameUI : MonoBehaviour
 	double betAmount;
 	double dollarAmount;
 	InputField inputBetField;
-	List<Sprite> cardsAll;
-	List<Image> cardsOfPlayer, cardsPublic;
+	public List<Sprite> cardsAll;
+	public List<Image> cardsOfPlayer, cardsPublic;
 	Sprite cardBg; // background of the desk
 	Sprite cardBack; // back card side
 	// panel XYZ
