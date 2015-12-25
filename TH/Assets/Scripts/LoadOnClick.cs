@@ -76,7 +76,34 @@ public class LoadOnClick : MonoBehaviour
     int denomUnits;
 
     List<int> loop = new List<int>() { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5 };
-    
+    public enum cardValues
+    {
+        US = 0, // off suit/ unsuit?
+        S = 1,  // suit
+        _2 = 2,
+        _3 = 3,
+        _4 = 4,
+        _5 = 5,
+        _6 = 6,
+        _7 = 7,
+        _8 = 8,
+        _9 = 9,
+        T = 10,
+        J = 11,
+        Q = 12,
+        K = 13,
+        A = 14,
+        G1 = 1,
+        G2 = 2,
+        G3 = 3,
+        G4 = 4,
+        G5 = 5,
+        G6 = 6,
+        G7 = 7,
+        G8 = 8,
+        ANY = 0xFF
+    }
+
     const int S2 = 0;
     const int S3 = 1;
     const int S4 = 2;
@@ -214,6 +241,125 @@ public class LoadOnClick : MonoBehaviour
                                                 {CK, DK, CA, DA, C3, H9, S3, D9, HA, HK, SQ, SJ, C7, D2, C4, H8, S5},
                                                 {47, 39, 30, 51, 1, 42, 7, 34, 3, 19, 31, 43, 9, 17, 29, 37, 5},
                                             };
+
+    cardValues[,] Group = new cardValues[,] {
+                                                    {cardValues.A,  cardValues.A,  cardValues.US},//1
+                                                    {cardValues.K,  cardValues.K,  cardValues.US},//2
+                                                    {cardValues.Q,  cardValues.Q,  cardValues.US},//3
+                                                    {cardValues.A,  cardValues.K,  cardValues.S },//4
+                                                    {cardValues.J,  cardValues.J,  cardValues.US},//5
+                                                    {cardValues.A,  cardValues.Q,  cardValues.S },//6
+
+
+                                                    {cardValues.K,  cardValues.Q,  cardValues.S },//7
+                                                    {cardValues.A,  cardValues.J,  cardValues.S },//8
+                                                    {cardValues.K,  cardValues.J,  cardValues.S },//9
+                                                    {cardValues.T,  cardValues.T,  cardValues.US},//10
+                                                    {cardValues.A,  cardValues.K,  cardValues.US},//11
+
+                                                    {cardValues.A,  cardValues.T,  cardValues.S },//12
+                                                    {cardValues.Q,  cardValues.J,  cardValues.S },//13
+                                                    {cardValues.K,  cardValues.T,  cardValues.S },//14
+                                                    {cardValues.Q,  cardValues.T,  cardValues.S },//15
+                                                    {cardValues.J,  cardValues.T,  cardValues.S },//16
+                                                    {cardValues._9, cardValues._9, cardValues.US},//17
+
+                                                    {cardValues.A,  cardValues.Q,  cardValues.US},//18
+                                                    {cardValues.A,  cardValues._9, cardValues.S },//19
+                                                    {cardValues.K,  cardValues.Q,  cardValues.US},//20
+                                                    {cardValues._8, cardValues._8, cardValues.US},//21
+                                                    {cardValues.K,  cardValues._9, cardValues.S },//22
+                                                    {cardValues.T,  cardValues._9, cardValues.S },//23
+                                                    {cardValues.A,  cardValues._8, cardValues.S },//24
+                                                    {cardValues.Q,  cardValues._9, cardValues.S },//25
+
+                                                    {cardValues.J,  cardValues._9, cardValues.S },//26
+                                                    {cardValues.A,  cardValues.J,  cardValues.US},//27
+                                                    {cardValues.A,  cardValues._5, cardValues.S },//28
+                                                    {cardValues._7, cardValues._7, cardValues.US},//29
+                                                    {cardValues.A,  cardValues._7, cardValues.S },//30
+                                                    {cardValues.K,  cardValues.J,  cardValues.US},//31
+                                                    {cardValues.A,  cardValues._4, cardValues.S },//32
+                                                    {cardValues.A,  cardValues._3, cardValues.S },//33
+                                                    {cardValues.A,  cardValues._6, cardValues.S },//34
+                                                    {cardValues.Q,  cardValues.J,  cardValues.US},//35
+                                                    {cardValues._6, cardValues._6, cardValues.US},//36
+
+                                                    {cardValues.K,  cardValues._8, cardValues.US},//37
+                                                    {cardValues.T,  cardValues._8, cardValues.S },//38
+                                                    {cardValues.A,  cardValues._2, cardValues.S },//39
+                                                    {cardValues._9, cardValues._8, cardValues.S },//40
+                                                    {cardValues.J,  cardValues._8, cardValues.S },//41
+                                                    {cardValues.A,  cardValues.T,  cardValues.US},//42
+                                                    {cardValues.Q,  cardValues._8, cardValues.S },//43
+                                                    {cardValues.K,  cardValues._7, cardValues.S },//44
+                                                    {cardValues.K,  cardValues.T,  cardValues.US},//45
+                                                    {cardValues._5, cardValues._5, cardValues.US},//46
+
+
+                                                    {cardValues.J,  cardValues.T,  cardValues.US},//47
+                                                    {cardValues._8, cardValues._7, cardValues.S },//48
+                                                    {cardValues.Q,  cardValues.T,  cardValues.US},//49
+                                                    {cardValues._4, cardValues._4, cardValues.US},//50
+                                                    {cardValues._3, cardValues._3, cardValues.US},//51
+                                                    {cardValues._2, cardValues._2, cardValues.US},//52
+                                                    {cardValues.K,  cardValues._6, cardValues.S },//53
+                                                    {cardValues._9, cardValues._7, cardValues.S },//54
+                                                    {cardValues.K,  cardValues._5, cardValues.S },//55
+                                                    {cardValues._7, cardValues._6, cardValues.S },//56
+                                                    {cardValues.T,  cardValues._7, cardValues.S },//57
+                                                    {cardValues.K,  cardValues._4, cardValues.S },//58
+
+
+                                                    {cardValues.K,  cardValues._2, cardValues.S },//59
+                                                    {cardValues.K,  cardValues._3, cardValues.S },//60
+                                                    {cardValues.Q,  cardValues._7, cardValues.S },//61
+                                                    {cardValues._8, cardValues._6, cardValues.S },//62
+                                                    {cardValues._6, cardValues._5, cardValues.S },//63
+                                                    {cardValues.J,  cardValues._7, cardValues.S },//64
+                                                    {cardValues._5, cardValues._4, cardValues.S },//65
+                                                    {cardValues.Q,  cardValues._6, cardValues.S },//66
+                                                    {cardValues._7, cardValues._5, cardValues.S },//67
+                                                    {cardValues._9, cardValues._6, cardValues.S },//68
+                                                    {cardValues.Q,  cardValues._5, cardValues.S },//69
+                                                    {cardValues._6, cardValues._4, cardValues.S },//70
+                                                    {cardValues.Q,  cardValues._4, cardValues.S },//71
+                                                    {cardValues.Q,  cardValues._3, cardValues.S },//72
+                                                    {cardValues.T,  cardValues._9, cardValues.US},//73
+
+                                                    {cardValues.T,  cardValues._6, cardValues.S },//74
+                                                    {cardValues.Q,  cardValues._2, cardValues.S },//75
+                                                    {cardValues.A,  cardValues._9, cardValues.US},//76
+                                                    {cardValues._5, cardValues._3, cardValues.S },//77
+                                                    {cardValues._8, cardValues._5, cardValues.S },//78
+                                                    {cardValues.J,  cardValues._6, cardValues.S },//79
+                                                    {cardValues.J,  cardValues._9, cardValues.US},//80
+                                                    {cardValues.K,  cardValues._9, cardValues.US},//81
+                                                    {cardValues.J,  cardValues._5, cardValues.S },//82
+                                                    {cardValues.Q,  cardValues._9, cardValues.US},//83
+                                                    {cardValues._4, cardValues._3, cardValues.S },//84
+                                                    {cardValues._7, cardValues._4, cardValues.S },//85
+
+                                                    {cardValues.J,  cardValues._4, cardValues.S },//86
+                                                    {cardValues.J,  cardValues._3, cardValues.S },//87
+                                                    {cardValues._9, cardValues._5, cardValues.S },//88
+                                                    {cardValues.J,  cardValues._2, cardValues.S },//89
+                                                    {cardValues._6, cardValues._3, cardValues.S },//90
+                                                    {cardValues.A,  cardValues._8, cardValues.US},//91
+                                                    {cardValues._5, cardValues._2, cardValues.S },//92
+                                                    {cardValues.T,  cardValues._5, cardValues.S },//93
+                                                    {cardValues._8, cardValues._4, cardValues.S },//94
+                                                    {cardValues.T,  cardValues._4, cardValues.S },//95
+                                                    {cardValues.T,  cardValues._3, cardValues.S },//96
+                                                    {cardValues._4, cardValues._2, cardValues.S },//97
+                                                    {cardValues.T,  cardValues._2, cardValues.S },//98
+                                                    {cardValues._9, cardValues._8, cardValues.US},//99
+                                                    {cardValues.T,  cardValues._8, cardValues.US},//100
+                                                    {cardValues.A,  cardValues._5, cardValues.US},//101
+                                                    {cardValues.A,  cardValues._7, cardValues.US},//102
+                                                    {cardValues._7, cardValues._3, cardValues.S },//103 
+                                                    {cardValues.A,  cardValues._4, cardValues.US},//104
+                                                    {cardValues._3, cardValues._2, cardValues.S}};//105
 
     int[] communityCards = new int[5];
 
@@ -2314,37 +2460,37 @@ public class LoadOnClick : MonoBehaviour
         return possible;
     }
 
-    private Settings.cardValues getCard(int card)
+    private cardValues getCard(int card)
     {
         if (Settings.isDebug) Debug.Log("getCard()");
 
         switch (GetCardValue(card))
         {
-            case 2: return Settings.cardValues._2;
-			case 3: return Settings.cardValues._3;
-			case 4: return Settings.cardValues._4;
-			case 5: return Settings.cardValues._5;
-			case 6: return Settings.cardValues._6;
-			case 7: return Settings.cardValues._7;
-			case 8: return Settings.cardValues._8;
-			case 9: return Settings.cardValues._9;
-			case 10: return Settings.cardValues.T;
-			case 11: return Settings.cardValues.J;
-			case 12: return Settings.cardValues.Q;
-			case 13: return Settings.cardValues.K;
-			case 14: return Settings.cardValues.A;
+            case 2: return cardValues._2;
+            case 3: return cardValues._3;
+            case 4: return cardValues._4;
+            case 5: return cardValues._5;
+            case 6: return cardValues._6;
+            case 7: return cardValues._7;
+            case 8: return cardValues._8;
+            case 9: return cardValues._9;
+            case 10: return cardValues.T;
+            case 11: return cardValues.J;
+            case 12: return cardValues.Q;
+            case 13: return cardValues.K;
+            case 14: return cardValues.A;
         }
         return 0;
     }
 
-    private int GetDealRanking(Settings.cardValues C1, Settings.cardValues C2, bool suited)
+    public int GetDealRanking(cardValues C1, cardValues C2, bool suited)
     {
         if (Settings.isDebug) Debug.Log("GetDealRanking()");
 
-        Settings.cardValues FirstCard;
-        Settings.cardValues SecondCard;
-        int rValue = Settings.Group.GetLength(0);
-        int groupLen = Settings.Group.GetLength(0) - 1;
+        cardValues FirstCard;
+        cardValues SecondCard;
+        int rValue = Group.GetLength(0);
+        int groupLen = Group.GetLength(0) - 1;
         if (C2 > C1)//sort the cards
         {
             FirstCard = C2;
@@ -2357,11 +2503,11 @@ public class LoadOnClick : MonoBehaviour
         }
         for (int x = groupLen; x >= 0; x--)
         {
-            if (FirstCard == Settings.Group[x, 0] && (SecondCard == Settings.Group[x, 1] || Settings.Group[x, 1] == Settings.cardValues.ANY))
+            if (FirstCard == Group[x, 0] && (SecondCard == Group[x, 1] || Group[x, 1] == cardValues.ANY))
             {
-                if (Settings.Group[x, 2] == Settings.cardValues.S && suited == true)
+                if (Group[x, 2] == cardValues.S && suited == true)
                     rValue = x;
-                if (Settings.Group[x, 2] == Settings.cardValues.US && suited == false)
+                if (Group[x, 2] == cardValues.US && suited == false)
                     rValue = x;
             }
         }
