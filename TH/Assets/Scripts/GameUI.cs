@@ -18,31 +18,34 @@ public class GameUI : MonoBehaviour
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-		game.GameState.InitGame (game);
-//		game.MathState.BetRound1 ();
+		HideDynamicPanels ();
+		panelInitBet.SetActive (true);
+//		game.GameState.InitGame (game);
 	}
 
 	// end win panel
 	// start game panel
 	public void btnCheckClick()
 	{
-		game.MathState.Flop (game);
+
 	}
 
 	public void btnCallClick()
 	{
-//		game.MathState.Turn (game);
-		game.MathState.Flop (game);
+
 	}
 
 	public void btnRaiseClick()
 	{
-//		game.MathState.BetRound2 ();
+		betAmount = 0;
+		HideDynamicPanels ();
+		if (panelInitBet) panelInitBet.SetActive (true);
 	}
 
 	public void btnFoldClick()
 	{
 //		game.MathState.BetRound1 ();
+		game.GameState.EndGame (game);
 	}
 
 	public void btnAllInClick()
@@ -74,8 +77,25 @@ public class GameUI : MonoBehaviour
 		if (inputBetField)
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
-		if (betAmount > 0)
-			game.MathState.Preflop (game);
+		if (betAmount > 0) {
+			if (game.GameLevel == 0) {
+				game.MathState.Preflop(game);
+			} else if (game.GameLevel == 1) {
+				game.MathState.Flop(game);
+			} else if (game.GameLevel == 2) {
+				game.MathState.Turn(game);
+			} else if (game.GameLevel == 3) {
+				game.MathState.River(game);
+			}
+			if (panelInitBet) panelInitBet.SetActive(false);
+			if (panelGame) panelGame.SetActive(true);
+//			if (game.isGameRunning) {
+//				game.MathState.BetRound (game);
+//			} else {
+//				game.GameState.StartGame (game);
+//			}
+
+		}
 	}
 	
 	public void btnMaxBetClick()
@@ -152,7 +172,7 @@ public class GameUI : MonoBehaviour
 		panelBonus = GameObject.Find ("PanelBonus");
 		if (panelBonus)
 			panelBonus.SetActive (false);
-			
+
 		// bet panel
 		inputBetField = panelInitBet.GetComponentInChildren<InputField> (); //GameObject.Find("InputBetField").GetComponent<InputField>(); // 
 		inputBetField.text = FormatCreditsOrDollars (Settings.betNull);
@@ -397,10 +417,10 @@ public class GameUI : MonoBehaviour
 		
 		Players = Settings.GetPlayers ();
 		int i = 0;
-		foreach (var playerName in playerNamesLabels) {
-			playerName.GetComponent<Text>().text = Players.ElementAt(i).name;
-			i++;
-		}
+//		foreach (var playerName in playerNamesLabels) {
+//			playerName.GetComponent<Text>().text = Players.ElementAt(i).name;
+//			i++;
+//		}
 
 	}
 
@@ -420,7 +440,11 @@ public class GameUI : MonoBehaviour
 		if (panelWin)
 			panelWin.SetActive (false);
 	}
-	
+
+	public void DebugLog(string message) {
+		if (Settings.isDebug) Debug.Log(message);
+	}
+
 	List<Player> Players;
 	PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
@@ -434,7 +458,7 @@ public class GameUI : MonoBehaviour
 	List<GameObject> betLabels, creditLabels, playerNamesLabels; // for each player
 	GameObject txtSurrender, lblSurrender;//panel surrender
 	GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
-	double betAmount;
+	public double betAmount;
 	double dollarAmount;
 	InputField inputBetField;
 	public List<Sprite> cardsAll;
@@ -455,5 +479,6 @@ public class GameUI : MonoBehaviour
 	GameObject lblWinPlayerName;
 	GameObject btnBetBonus;
 	GameObject panelBonus;
+	bool isGameStarted = false;
 }
 
