@@ -3,9 +3,11 @@
 using System.Collections.Generic;
 
 public class Game {
+
 	List<Player> players;
 	public int BetRound = 0;
 	public GameUI ui;
+
 	public Game(GameUI ui) {
 		this.ui = ui;
 		MathState = new MathStates ();
@@ -17,6 +19,7 @@ public class Game {
 	public IGameState GameState { get; private set; }
 	public IPatternState PatternState { get; private set; }
 
+
 	public interface IMathState {
 		void Preflop(Game game);
 		void Flop(Game game);
@@ -27,6 +30,7 @@ public class Game {
 		void BetRound3(Game game);
 		void BetRound4(Game game);
 	}
+
 
 	public interface IGameState {
 		void InitGame(Game game);
@@ -43,6 +47,7 @@ public class Game {
 //		void BetBonus();
 	}
 
+
 	public interface IPatternState {
 		void CheckFold_Fold(Game game); // always fold
 		void CheckCall_Call(Game game); // always call
@@ -58,7 +63,8 @@ public class Game {
 		void OpenCall1_Fold(Game game);
 		void OpenCall2_Fold(Game game);
 	}
-	
+
+
 	public class MathStates : IMathState {
 		public void Preflop(Game game) {
 			game.ui.HideDynamicPanels ();
@@ -127,6 +133,7 @@ public class Game {
 			game.ui.panelInitBet.SetActive (true);
 		}
 	}
+
 
 	public class PatternStates : IPatternState {
 		public void CheckFold_Fold(Game game) {
