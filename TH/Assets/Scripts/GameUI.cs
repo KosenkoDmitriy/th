@@ -238,8 +238,46 @@ public class GameUI : MonoBehaviour
 
 		game = new Game (this);
 //		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
+
+		updatePlayerNames ();
 	}
-		
+
+	private IEnumerator DisplayPlayerNames(List<Player> players, float repeatRate) {
+		int i = 0;
+		foreach(var player in players) {
+			var lbl = playerNamesLabels.ElementAt (i);
+			if (lbl)
+				lbl.GetComponent<Text> ().text = player.name;
+
+			yield return new WaitForSeconds(repeatRate);
+
+			i++;
+		}
+	}
+
+	private void updatePlayerNames() {
+		StartCoroutine(DisplayPlayerNames(Players, Settings.updateInterval));
+//		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
+	}
+
+	int playerNo;
+	private void UpdatePlayerName() {
+		if (playerNo < Players.Count) {
+			var player = Players.ElementAt (playerNo);
+			
+			var lbl = playerNamesLabels.ElementAt (playerNo);
+			if (lbl)
+				lbl.GetComponent<Text> ().text = player.name;
+			playerNo++;
+		} else {
+			playerNo = 0;
+		}
+	}
+	
+	private void UpdateInterval() {
+
+	}
+
 	private void InitCards ()
 	{
 		if (Settings.isDebug)
