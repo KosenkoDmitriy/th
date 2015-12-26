@@ -127,19 +127,45 @@ public class Game {
 	}
 
 	public class PatternStates : IPatternState {
-		public void CheckFold_Fold() {}
-		public void CheckCall_Call() {}
-		public void CheckCall1_Fold() {}
-		public void CheckCall2_Call() {}
-		public void CheckCall3_Call() {}
-		public void CheckRaise_Raise() {}
-		public void CheckRaise1_Raise() {}
-		public void CheckRaise2_Raise() {}
-		public void Raise_Raise() {}
-		public void RaiseCall1_Raise() {}
-		public void RaiseCall2_Raise() {}
-		public void OpenCall1_Fold() {}
-		public void OpenCall2_Fold() {}
+		public void CheckFold_Fold(Game game) {
+
+		}
+		public void CheckCall_Call(Game game) {
+
+		}
+		public void CheckCall1_Fold(Game game) {
+
+		}
+		public void CheckCall2_Call(Game game) {
+
+		}
+		public void CheckCall3_Call(Game game) {
+
+		}
+		public void CheckRaise_Raise(Game game) {
+
+		}
+		public void CheckRaise1_Raise(Game game) {
+
+		}
+		public void CheckRaise2_Raise(Game game) {
+
+		}
+		public void Raise_Raise(Game game) {
+
+		}
+		public void RaiseCall1_Raise(Game game) {
+
+		}
+		public void RaiseCall2_Raise(Game game) {
+
+		}
+		public void OpenCall1_Fold(Game game) {
+
+		}
+		public void OpenCall2_Fold(Game game) {
+
+		}
 	}
 
 }
