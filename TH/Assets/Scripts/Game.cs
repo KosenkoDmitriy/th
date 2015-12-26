@@ -8,8 +8,9 @@ public class Game {
 	public GameUI ui;
 	public Game(GameUI ui) {
 		this.ui = ui;
-		MathState = new PreflopState ();
+		MathState = new MathStates ();
 		GameState = new GameStates ();
+		PatternState = new PatternStates ();
 	}
 
 	public IMathState MathState { get; private set; }
@@ -58,7 +59,7 @@ public class Game {
 		void OpenCall2_Fold();
 	}
 	
-	public class PreflopState : IMathState {
+	public class MathStates : IMathState {
 		public void Preflop(Game game) {
 			game.ui.HideDynamicPanels ();
 			game.ui.panelGame.SetActive (true);
@@ -123,6 +124,22 @@ public class Game {
 			game.ui.HideDynamicPanels ();
 			game.ui.panelInitBet.SetActive (true);
 		}
+	}
+
+	public class PatternStates : IPatternState {
+		public void CheckFold_Fold() {}
+		public void CheckCall_Call() {}
+		public void CheckCall1_Fold() {}
+		public void CheckCall2_Call() {}
+		public void CheckCall3_Call() {}
+		public void CheckRaise_Raise() {}
+		public void CheckRaise1_Raise() {}
+		public void CheckRaise2_Raise() {}
+		public void Raise_Raise() {}
+		public void RaiseCall1_Raise() {}
+		public void RaiseCall2_Raise() {}
+		public void OpenCall1_Fold() {}
+		public void OpenCall2_Fold() {}
 	}
 
 }
