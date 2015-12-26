@@ -9,6 +9,7 @@ public class Game {
 	public Game(GameUI ui) {
 		this.ui = ui;
 		MathState = new PreflopState ();
+		GameState = new GameStates ();
 	}
 
 	public IMathState MathState { get; private set; }
@@ -27,8 +28,8 @@ public class Game {
 	}
 
 	public interface IGameState {
-//		void InitGame(Game game);
-//		void StartGame(Game game);
+		void InitGame(Game game);
+		void StartGame(Game game);
 		void EndGame(Game game);
 //
 //		void Call();
@@ -39,13 +40,6 @@ public class Game {
 //
 //		void Bet();
 //		void BetBonus();
-	}
-
-	public class GameStates : IGameState {
-		public void EndGame(Game game) {
-			game.ui.HideDynamicPanels ();
-			game.ui.panelWin.SetActive (true);
-		}
 	}
 
 	public interface IPatternState {
@@ -111,8 +105,23 @@ public class Game {
 		public void River(Game game) {
 			game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 //			game.MathState.BetRound4(game);
-			game.MathState.River(game);
-//			game.GameState.EndGame (game);
+			game.GameState.EndGame (game);
+		}
+	}
+
+	
+	public class GameStates : IGameState {
+		public void EndGame(Game game) {
+			game.ui.HideDynamicPanels ();
+			game.ui.panelWin.SetActive (true);
+		}
+		public void StartGame(Game game) {
+			game.ui.HideDynamicPanels ();
+			game.ui.panelGame.SetActive (true);
+		}
+		public void InitGame(Game game) {
+			game.ui.HideDynamicPanels ();
+			game.ui.panelInitBet.SetActive (true);
 		}
 	}
 

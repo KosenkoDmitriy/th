@@ -18,6 +18,7 @@ public class GameUI : MonoBehaviour
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
+		game.GameState.InitGame (game);
 //		game.MathState.BetRound1 ();
 	}
 
