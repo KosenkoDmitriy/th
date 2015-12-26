@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 
 public class Player {
-	string name;
+	public string name;
 	List<string> winCards;
 
 	public void dealCards() {

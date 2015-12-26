@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Assets.Scripts;
 using System.Collections;
 
+namespace Assets.Scripts.Orig {
 [RequireComponent(typeof(AudioSource))]
 public class LoadOnClick : MonoBehaviour
 {
@@ -6489,4 +6490,5 @@ public class LoadOnClick : MonoBehaviour
 	GameObject lblWinPlayerName;
 	GameObject btnBetBonus;
 	GameObject panelBonus;
+}
 }

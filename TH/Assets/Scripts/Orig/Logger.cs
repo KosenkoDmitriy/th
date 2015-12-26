@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Orig
 {
     class Logger
     {

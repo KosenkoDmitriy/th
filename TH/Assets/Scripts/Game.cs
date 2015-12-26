@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Game {
 	List<Player> players;
-
+	public int BetRound = 0;
 	public GameUI ui;
 	public Game(GameUI ui) {
 		this.ui = ui;
@@ -44,19 +44,19 @@ public class Game {
 	}
 
 	public interface IPatternState {
-		void CheckFold_Fold(); // always fold
-		void CheckCall_Call(); // always call
-		void CheckCall1_Fold();
-		void CheckCall2_Call();
-		void CheckCall3_Call();
-		void CheckRaise_Raise();
-		void CheckRaise1_Raise();
-		void CheckRaise2_Raise();
-		void Raise_Raise(); // always raise
-		void RaiseCall1_Raise();
-		void RaiseCall2_Raise();
-		void OpenCall1_Fold();
-		void OpenCall2_Fold();
+		void CheckFold_Fold(Game game); // always fold
+		void CheckCall_Call(Game game); // always call
+		void CheckCall1_Fold(Game game);
+		void CheckCall2_Call(Game game);
+		void CheckCall3_Call(Game game);
+		void CheckRaise_Raise(Game game);
+		void CheckRaise1_Raise(Game game);
+		void CheckRaise2_Raise(Game game);
+		void Raise_Raise(Game game); // always raise
+		void RaiseCall1_Raise(Game game);
+		void RaiseCall2_Raise(Game game);
+		void OpenCall1_Fold(Game game);
+		void OpenCall2_Fold(Game game);
 	}
 	
 	public class MathStates : IMathState {
@@ -97,6 +97,8 @@ public class Game {
 			game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
 //			game.MathState.BetRound2(game);
 			game.MathState.Turn(game);
+
+			game.BetRound++;
 		}
 		public void Turn(Game game) {
 			game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];

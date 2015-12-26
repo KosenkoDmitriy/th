@@ -326,14 +326,6 @@ public class GameUI : MonoBehaviour
 				GameObject.Find("lblCreditPlayer4"),
 				GameObject.Find("lblCreditPlayer5")
 			};
-
-		if (Settings.isDebug) Debug.Log("OtherInits()");
-		
-		if (!Settings.isIgnoreIniFile || Settings.logging)
-		{
-			Settings.pathToCurDir = System.IO.Directory.GetCurrentDirectory();
-			Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";        
-		}
 		
 		payTable = new PayTable ();
 		if (payTable != null) {
@@ -365,10 +357,10 @@ public class GameUI : MonoBehaviour
 		}
 		// end dealer icons
 		
-		virtualPlayers = Settings.GetVirtualPlayers ();
+		Players = Settings.GetPlayers ();
 		int i = 0;
 		foreach (var playerName in playerNamesLabels) {
-			playerName.GetComponent<Text>().text = virtualPlayers.ElementAt(i).Name;;
+			playerName.GetComponent<Text>().text = Players.ElementAt(i).name;
 			i++;
 		}
 
@@ -391,7 +383,7 @@ public class GameUI : MonoBehaviour
 			panelWin.SetActive (false);
 	}
 	
-	List<VirtualPlayer> virtualPlayers;
+	List<Player> Players;
 	PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
 	GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+namespace Assets.Scripts.Orig {
 public class CardHand
 {
     public int HandRank;//0=Royal,1=Straight,etc 
@@ -82,3 +83,5 @@ public class VirtualPlayer
     public int FinalHandRank;
     public bool AllIn = false;
 }
+}
+

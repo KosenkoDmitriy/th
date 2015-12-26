@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 
+namespace Assets.Scripts.Orig {
 class IniFileHandler
 {
     public IniFileHandler() {
@@ -340,4 +341,5 @@ class IniFileHandler
         return retArray;
 
     }
+}
 }
