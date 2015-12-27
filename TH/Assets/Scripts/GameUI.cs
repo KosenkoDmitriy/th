@@ -15,16 +15,27 @@ public class GameUI : MonoBehaviour
 
 	}
 
+	public void ClearAll() {
+		ClearPlayerCards ();
+		ClearPublicCards ();
+	}
+
 	public void ClearPlayerCards() {
-		foreach (var player in cardsOfPlayer) {
-			player.sprite = cardsAll.LastOrDefault();
+		foreach (var item in cardsOfPlayer) {
+			item.sprite = cardsAll.LastOrDefault();
 		}
 	}
 
+	public void ClearPublicCards() {
+		foreach (var item in cardsPublic) {
+			item.sprite = cardsAll.LastOrDefault();
+		}
+	}
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-		ClearPlayerCards ();
+		ClearAll ();
+
 		HideDynamicPanels ();
 		panelInitBet.SetActive (true);
 
@@ -86,15 +97,7 @@ public class GameUI : MonoBehaviour
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
 		if (betAmount > 0) {
-			if (game.GameLevel == 0) {
-				game.MathState.Preflop(game);
-			} else if (game.GameLevel == 1) {
-				game.MathState.Flop(game);
-			} else if (game.GameLevel == 2) {
-				game.MathState.Turn(game);
-			} else if (game.GameLevel == 3) {
-				game.MathState.River(game);
-			}
+			game.MathState.BetRound(game);
 			if (panelInitBet) panelInitBet.SetActive(false);
 			if (panelGame) panelGame.SetActive(true);
 //			if (game.isGameRunning) {
