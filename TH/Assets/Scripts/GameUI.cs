@@ -268,7 +268,7 @@ public class GameUI : MonoBehaviour
 
 
 		game = new Game (this);
-//		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
+		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
 		updatePlayerNames ();
 	}
@@ -304,9 +304,47 @@ public class GameUI : MonoBehaviour
 			playerNo = 0;
 		}
 	}
-	
-	private void UpdateInterval() {
 
+	private void UpdateInterval() {
+//		int percentRand = GetPercentOfAllTime (20);
+//		Debug.Log (percentRand + " 20%/100%");
+
+//		TestPercentOfTime (20);
+	}
+
+	public void TestPercentOfTime(int percent) {
+		if (percent <= 0)
+			return;
+		int count1 = 0;
+		int count2 = 0;
+		int percentOfAllTime = 100;
+		for (int i = 0; i < percentOfAllTime; i++) {
+			float percentOfTime = UnityEngine.Random.value * 100;
+			
+			if (percentOfTime < percent) { 
+				DebugLog(percentOfTime + "%");
+				//				DebugLog (string.Format ("20% {0} count: {1}", percentOfTime, count1));
+				count1++;
+			} else {
+				//				DebugLog (string.Format ("80% {0} count: {1}", percentOfTime, count2));
+				count2++;
+			}
+		}
+		Debug.Log (string.Format("\n\nTotal: {0} (20%) + {1} (80%) = 100 (100%)", count1, count2));
+	}
+
+
+	public int GetPercentOfAllTime(int percent) {
+		float percentOfTime = UnityEngine.Random.value * 100;
+		int percentRandom = 0;
+
+		if (percent > 0 && percentOfTime < percent) {
+			percentRandom = (int)percentOfTime;
+		} else {
+			Debug.Log ("Percent can't be negative or null");
+		}
+
+		return percentRandom;
 	}
 
 	private void InitCards ()
