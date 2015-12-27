@@ -13,12 +13,11 @@ public class Game
 		PatternState = new PatternStates ();
 	}
 
+	public bool isFromPrev = false;
 	public int GameLevel = 0; // preflop, flop, turn, river
-	public int pftr = 0;
 	List<Player> players;
-	public int betRound = 0; // for BetRound
 	public int betCurrentRound = 0; // for gamelevel
-
+	public int betTotalRounds = 0;
 	public GameUI ui;
 	public bool isGameRunning;
 	public bool isGameEnd;
@@ -95,6 +94,7 @@ public class Game
 			// chose pattern and alternative patterns
 
 			if (game.betCurrentRound == 0) {
+
 				foreach (var player in game.ui.cardsOfPlayer) {
 					//				int rand = new Random(0, game.ui.cardsAll.Count);
 					player.sprite = game.ui.cardsAll [1];
@@ -111,23 +111,30 @@ public class Game
 			game.GameLevel = 1;
 			game.ui.DebugLog ("Flop()");
 
-			game.ui.cardsPublic [0].sprite = game.ui.cardsAll [2];
-			game.ui.cardsPublic [1].sprite = game.ui.cardsAll [3];
-			game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
+			if (game.betCurrentRound == 0) {
+				game.ui.cardsPublic [0].sprite = game.ui.cardsAll [2];
+				game.ui.cardsPublic [1].sprite = game.ui.cardsAll [3];
+				game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
+			}
 
 			if (!isBetRound (game)) {
+//				game.betCurrentRound = 0;
 				game.MathState.Turn (game);
 			}
 		}
 
-		public void Turn (Game game)
+		public void Turn (Game game)//, bool isFromPrev)
 		{
 			game.GameLevel = 2;
 			game.ui.DebugLog ("Turn()");
 
-			game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];
+			if (game.betCurrentRound == 0) {
+				game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];
+			}
 
+//			if (!isFromPrev)
 			if (!isBetRound (game)) {
+//				game.betCurrentRound = 0;
 				game.MathState.River (game);
 			}
 		}
@@ -137,17 +144,22 @@ public class Game
 			game.GameLevel = 3;
 			game.ui.DebugLog ("River()");
 
-			game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
+			if (game.betCurrentRound == 0) {
+				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
+			}
 
 			if (!isBetRound (game)) {
+//				game.betCurrentRound = 0;
+
 				game.GameState.EndGame (game);
 			}
 		}
 
 		public bool isBetRound (Game game)
 		{
+			if (Settings.isDebug) game.ui.DebugLog("isBetRound() cur_bet_round: " + game.betCurrentRound + " from " + game.betTotalRounds);
 //			game.ui.HideDynamicPanels ();
-			if (game.ui.betAmount <= 0 || game.betCurrentRound >= Settings.betRoundCount - 1) {
+			if (game.ui.betAmount <= 0 || game.betCurrentRound >= Settings.betRoundCount) {
 				game.ui.panelGame.SetActive(true);
 				game.betCurrentRound = 0;
 //				game.ui.panelGame.SetActive(true);
@@ -155,46 +167,12 @@ public class Game
 			}
 //			game.ui.panelInitBet.SetActive(true);
 			game.betCurrentRound++;
+			game.betTotalRounds++;
 			return true;
 		}
 
-		public bool isBetRound2 (Game game)
-		{
-			if (game.ui.betAmount <= 0 || game.betRound >= Settings.betRoundCount - 1) {
-				if (game.pftr == 0) {
-					game.MathState.Preflop(game);
-				} else if (game.pftr == 1) {
-					game.GameState.EndGame(game);
-//					game.MathState.Flop(game);
-				} else if (game.pftr == 2) {
-					game.MathState.Turn(game);
-				} else if (game.pftr == 3) {
-					game.MathState.River(game);
-				}
-
-				game.betRound = 0;
-				if (game.pftr >= 4) {
-					game.pftr = 0;
-				} else {
-					game.pftr++;
-				}
-				return false;
-			}
-
-			game.betRound++;
-			return true;
-		}
 
 		public void BetRound(Game game) {
-
-			if (isBetRound2 (game)) {
-				game.ui.HideDynamicPanels ();
-				game.ui.panelGame.SetActive (true);
-			}
-			else if (game.isGameEnd) {
-				game.ui.HideDynamicPanels ();
-				game.ui.panelWin.SetActive (true);
-			}
 		}
 	}
 	
@@ -203,14 +181,22 @@ public class Game
 
 		public void EndGame (Game game)
 		{
+			if (Settings.isDebug) game.ui.DebugLog ("EndGame()");
 			game.isGameRunning = false;
 			game.isGameEnd = true;
+			game.GameLevel = 0;
+
+			game.betCurrentRound = 0;
+			game.betTotalRounds = 0;
+
 			game.ui.HideDynamicPanels ();
 			game.ui.panelWin.SetActive (true);
 		}
 
 		public void StartGame (Game game)
 		{
+			if (Settings.isDebug) game.ui.DebugLog ("StartGame()");
+
 			game.isGameEnd = false;
 			game.isGameRunning = true;
 			game.betCurrentRound = 0;

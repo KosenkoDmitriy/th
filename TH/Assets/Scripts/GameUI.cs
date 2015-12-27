@@ -15,11 +15,19 @@ public class GameUI : MonoBehaviour
 
 	}
 
+	public void ClearPlayerCards() {
+		foreach (var player in cardsOfPlayer) {
+			player.sprite = cardsAll.LastOrDefault();
+		}
+	}
+
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
+		ClearPlayerCards ();
 		HideDynamicPanels ();
 		panelInitBet.SetActive (true);
+
 //		game.GameState.InitGame (game);
 	}
 
