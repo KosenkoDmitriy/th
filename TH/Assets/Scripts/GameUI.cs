@@ -46,12 +46,12 @@ public class GameUI : MonoBehaviour
 	// start game panel
 	public void btnCheckClick()
 	{
-
+		game.GameState.Check (game);
 	}
 
 	public void btnCallClick()
 	{
-
+		game.GameState.Call (game);
 	}
 
 	public void btnRaiseClick()
@@ -64,7 +64,8 @@ public class GameUI : MonoBehaviour
 	public void btnFoldClick()
 	{
 //		game.MathState.BetRound1 ();
-		game.GameState.EndGame (game);
+//		game.GameState.EndGame (game);
+		game.GameState.Fold (game);
 	}
 
 	public void btnAllInClick()
@@ -97,16 +98,15 @@ public class GameUI : MonoBehaviour
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
 		if (betAmount > 0) {
-			game.MathState.BetRound(game);
-			if (panelInitBet) panelInitBet.SetActive(false);
-			if (panelGame) panelGame.SetActive(true);
-//			if (game.isGameRunning) {
-//				game.MathState.BetRound (game);
-//			} else {
-//				game.GameState.StartGame (game);
-//			}
-
+			game.GameState.Raise (game);
+		} else if (betAmount == 0) {
+			if (isGameStarted)
+				game.GameState.Check (game);
+			else
+				return;
 		}
+		if (panelInitBet) panelInitBet.SetActive(false);
+		if (panelGame) panelGame.SetActive(true);
 	}
 	
 	public void btnMaxBetClick()

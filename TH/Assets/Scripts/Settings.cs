@@ -2,7 +2,8 @@
 
 static class Settings
 {
-	public static readonly int betMaxCountOfRounds = 4;
+	public static readonly int maxSubRoundCount = 4;
+	public static readonly int maxRoundCount = maxSubRoundCount * 4;
 
 	public static double betBonusAmount = 0;
 	public static double betMaxBonusAmount = 125;
