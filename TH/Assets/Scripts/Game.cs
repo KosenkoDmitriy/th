@@ -192,7 +192,6 @@ public class Game
 		public void River (Game game)
 		{
 			game.ui.DebugLog ("River()");
-			
 			if (subRoundCount == 0) {
 				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 			}

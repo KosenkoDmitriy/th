@@ -1,6 +1,52 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class Constants {
+	List<Pattern> patterns = new List<Pattern> ();
+
+	public List<Pattern> GetPatterns() {
+		if (patterns.Count > 0)
+			return patterns;
+		foreach (string item in c_str_pattern) {
+
+			string[] items = item.Split ('\t');
+			string arg0 = "";
+			string arg1 = "";
+			string arg2 = "";
+			if (items.Length > 0)
+				arg0 = items[0];
+			if (items.Length > 1)
+				arg1 = items[1];
+			if (items.Length > 2)
+				arg2 = items[2];
+
+			if (arg0 == "PATTERN")
+			{
+				Pattern pattern = new Pattern();
+				pattern.betRounds = new List<PatternBetRoundAndAction>();
+				pattern.name = arg1;
+				pattern.actionDefault = arg2;
+				patterns.Add (pattern);
+			} else {
+				Pattern lastPattern = patterns[patterns.Count-1];
+				PatternBetRoundAndAction betRound = new PatternBetRoundAndAction();
+
+				var betChars = arg0.ToCharArray();
+				arg0 = betChars[0].ToString();
+				arg1 = betChars[1].ToString();
+
+				betRound.name_action = arg2;
+				double costBet = 0;
+				Double.TryParse(arg0, out costBet);
+				betRound.costBet = costBet;
+				double costBetTotal = 0;
+				Double.TryParse(arg1, out costBetTotal);
+				betRound.costBetTotal = costBetTotal;
+				lastPattern.betRounds.Add(betRound);
+			}
+		}
+		return patterns;
+	}
 
 	private readonly string[] c_str_pattern = new string[]
 	{

@@ -12,7 +12,11 @@ public class GameUI : MonoBehaviour
 {
 	Game game;
 	GameUI() {
-
+		Constants source = new Constants ();
+		var list = source.GetPatterns ();
+		foreach (var item in list) {
+			DebugLog(item.name);
+		}
 	}
 
 	public void ClearAll() {

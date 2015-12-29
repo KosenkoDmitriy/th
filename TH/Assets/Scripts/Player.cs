@@ -55,18 +55,18 @@ public class River: ThPFTR {
 }
 
 public class Pattern {
-	string name;
-	string actionDefault;
+	public string name;
+	public string actionDefault;
 	string actionPreffered1;
 	string actionPreffered2;
 
-	List<PatternBetRoundAndAction> betRounds;
+	public List<PatternBetRoundAndAction> betRounds;
 
 	double percent;
 }
 
 public class PatternBetRoundAndAction {
-	string name_action;
-	double costBet; // in number of bets (1 credit = 1 bet * multiplier)
-	double costBetTotal; // in number of bets (1 credit = 1 bet * multiplier)
+	public string name_action;
+	public double costBet; // in number of bets (1 credit = 1 bet * multiplier)
+	public double costBetTotal; // in number of bets (1 credit = 1 bet * multiplier)
 }
