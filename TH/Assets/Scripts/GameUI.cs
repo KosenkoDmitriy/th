@@ -16,6 +16,9 @@ public class GameUI : MonoBehaviour
 		var list = source.GetPatterns ();
 		var preflops = source.GetPreflops ();
 		var flops = source.GetFlops ();
+		var turns = source.GetTurns ();
+		var rivers = source.GetRivers ();
+
 //		foreach (var item in list) {
 //			DebugLog(item.name);
 //		}

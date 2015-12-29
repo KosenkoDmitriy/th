@@ -5,16 +5,16 @@ using System.Linq;
 public class Constants {
 	List<Pattern> patterns;
 	List<PreFlop> preflops;
-	List<Flop> flops;
-	List<Turn> tunrns;
-	List<River> rivers;
+	List<ThFTR> flops;
+	List<ThFTR> turns;
+	List<ThFTR> rivers;
 
 	public Constants() {
 		patterns = new List<Pattern> ();
 		preflops = new List<PreFlop>();
-		flops = new List<Flop>();
-		tunrns = new List<Turn>();
-		rivers = new List<River>();
+		flops = new List<ThFTR>();
+		turns = new List<ThFTR>();
+		rivers = new List<ThFTR>();
 	}
 
 	public List<Pattern> GetPatterns() {
@@ -125,11 +125,12 @@ public class Constants {
 		return pattern;
 	}
 
+	private List<ThFTR> GetFTR(List<ThFTR> list, string[] stringList) {
+		if (list.Count > 0)
+			return list;
 
-	public List<Flop> GetFlops() {
-		if (flops.Count > 0) return flops;
-		Flop flop = null;
-		foreach (var item in c_str_flop) {
+		ThFTR flop = null;
+		foreach (var item in stringList) {
 			string[] items = item.Split ('\t');
 			string arg0, arg1, arg2, arg3;
 			arg0 = arg1 = arg2 = arg3 = "";
@@ -142,14 +143,14 @@ public class Constants {
 				arg2 = items[2];
 			if (items.Length > 3)
 				arg3 = items[3];
-
+			
 			if (arg0 == "OPPONENTS") {
-				flop = new Flop();
+				flop = new ThFTR();
 				flop.alt_patterns = new List<Pattern>();
 				int opponentsCount = 0;
 				Int32.TryParse(arg1, out opponentsCount);
 				flop.enemyCount = opponentsCount;
-				flops.Add(flop);
+				list.Add(flop);
 			} else if (arg0 == "POSITION") {
 				int position = 0;
 				Int32.TryParse(arg1, out position);
@@ -161,9 +162,9 @@ public class Constants {
 				Double.TryParse(arg2, out max);
 				flop.winPercentMin = min;
 				flop.winPercentMin = max;
-
+				
 				flop.pattern = GetPatternByName(arg3);
-
+				
 				flop.pattern.percent = 100;
 			} else if (arg0 == "ALT") {
 				var altPattern = new Pattern();
@@ -174,14 +175,26 @@ public class Constants {
 				altPattern.percent = percent;
 				flop.alt_patterns.Add (altPattern);
 			}
-
 		}
-//		"OPPONENTS	1",
-//		"POSITION	0",
-//		"RANGE	78	94	RAISE*",
-//		"ALT	CHECK/RAISE*	25",
-//		"ALT	CHECK/CALL*	35	",
-		return flops;
+		//		"OPPONENTS	1",
+		//		"POSITION	0",
+		//		"RANGE	78	94	RAISE*",
+		//		"ALT	CHECK/RAISE*	25",
+		//		"ALT	CHECK/CALL*	35	",
+
+		return list;
+	}
+
+	public List<ThFTR> GetTurns() {
+		return GetFTR (turns, c_str_turn);
+	}
+
+	public List<ThFTR> GetRivers() {
+		return GetFTR (rivers, c_str_river);
+	}
+
+	public List<ThFTR> GetFlops() {
+		return GetFTR (flops, c_str_flop);
 	}
 
 	private readonly string[] c_str_pattern = new string[]
