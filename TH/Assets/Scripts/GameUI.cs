@@ -15,6 +15,7 @@ public class GameUI : MonoBehaviour
 		Constants source = new Constants ();
 		var list = source.GetPatterns ();
 		var preflops = source.GetPreflops ();
+		var flops = source.GetFlops ();
 //		foreach (var item in list) {
 //			DebugLog(item.name);
 //		}

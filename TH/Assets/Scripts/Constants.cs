@@ -12,6 +12,9 @@ public class Constants {
 	public Constants() {
 		patterns = new List<Pattern> ();
 		preflops = new List<PreFlop>();
+		flops = new List<Flop>();
+		tunrns = new List<Turn>();
+		rivers = new List<River>();
 	}
 
 	public List<Pattern> GetPatterns() {
@@ -120,6 +123,65 @@ public class Constants {
 			}
 		}
 		return pattern;
+	}
+
+
+	public List<Flop> GetFlops() {
+		if (flops.Count > 0) return flops;
+		Flop flop = null;
+		foreach (var item in c_str_flop) {
+			string[] items = item.Split ('\t');
+			string arg0, arg1, arg2, arg3;
+			arg0 = arg1 = arg2 = arg3 = "";
+			
+			if (items.Length > 0)
+				arg0 = items[0];
+			if (items.Length > 1)
+				arg1 = items[1];
+			if (items.Length > 2)
+				arg2 = items[2];
+			if (items.Length > 3)
+				arg3 = items[3];
+
+			if (arg0 == "OPPONENTS") {
+				flop = new Flop();
+				flop.alt_patterns = new List<Pattern>();
+				int opponentsCount = 0;
+				Int32.TryParse(arg1, out opponentsCount);
+				flop.enemyCount = opponentsCount;
+				flops.Add(flop);
+			} else if (arg0 == "POSITION") {
+				int position = 0;
+				Int32.TryParse(arg1, out position);
+				flop.position = position;
+			} else if (arg0 == "RANGE") {
+				double min = 0;
+				double max = 0;
+				Double.TryParse(arg1, out min);
+				Double.TryParse(arg2, out max);
+				flop.winPercentMin = min;
+				flop.winPercentMin = max;
+
+				flop.pattern = GetPatternByName(arg3);
+
+				flop.pattern.percent = 100;
+			} else if (arg0 == "ALT") {
+				var altPattern = new Pattern();
+				altPattern.name = arg1;
+				double percent = 0;
+				Double.TryParse(arg2, out percent);
+				flop.pattern.percent -= percent;
+				altPattern.percent = percent;
+				flop.alt_patterns.Add (altPattern);
+			}
+
+		}
+//		"OPPONENTS	1",
+//		"POSITION	0",
+//		"RANGE	78	94	RAISE*",
+//		"ALT	CHECK/RAISE*	25",
+//		"ALT	CHECK/CALL*	35	",
+		return flops;
 	}
 
 	private readonly string[] c_str_pattern = new string[]

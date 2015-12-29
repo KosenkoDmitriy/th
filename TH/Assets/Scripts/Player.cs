@@ -38,22 +38,22 @@ public class PreFlop: ThPFTR {
 //	public double winPercent; // hand strength in percents
 }
 
-public class Flop: ThPFTR {
+public class ThFTR: ThPFTR {
 	public int enemyCount;	// opponents count
-	double winPercentMin;
-	double winPercentMax;
+	public double winPercentMin;
+	public double winPercentMax;
 }
 
-public class Turn: ThPFTR {
-	public int enemyCount;	// opponents count
-	double winPercentMin;
-	double winPercentMax;
+public class Flop: ThFTR {
+
 }
 
-public class River: ThPFTR {
-	public int enemyCount;	// opponents count
-	double winPercentMin;
-	double winPercentMax;
+public class Turn: ThFTR {
+
+}
+
+public class River: ThFTR {
+
 }
 
 public class Pattern {
