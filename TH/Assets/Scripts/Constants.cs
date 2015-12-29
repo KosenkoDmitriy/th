@@ -1,8 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Constants {
-	List<Pattern> patterns = new List<Pattern> ();
+	List<Pattern> patterns;
+	List<PreFlop> preflops;
+	List<Flop> flops;
+	List<Turn> tunrns;
+	List<River> rivers;
+
+	public Constants() {
+		patterns = new List<Pattern> ();
+		preflops = new List<PreFlop>();
+	}
 
 	public List<Pattern> GetPatterns() {
 		if (patterns.Count > 0)
@@ -13,6 +23,7 @@ public class Constants {
 			string arg0 = "";
 			string arg1 = "";
 			string arg2 = "";
+
 			if (items.Length > 0)
 				arg0 = items[0];
 			if (items.Length > 1)
@@ -46,6 +57,69 @@ public class Constants {
 			}
 		}
 		return patterns;
+	}
+
+	public List<PreFlop> GetPreflops() {
+		if (preflops.Count > 0) return preflops;
+
+		var players = Settings.GetPlayers ();
+		int position = 0;
+		var player = players[position];
+
+		foreach(var item in c_str_preflop) {
+
+			string[] items = item.Split ('\t');
+			string arg0 = "";
+			string arg1 = "";
+			string arg2 = "";
+			
+			if (items.Length > 0)
+				arg0 = items[0];
+			if (items.Length > 1)
+				arg1 = items[1];
+			if (items.Length > 2)
+				arg2 = items[2];
+
+			if (arg0 == "POSITION") {
+				Int32.TryParse(arg1, out position);
+//				player = players[position];
+//				player.preflopBets = new List<PreFlop>();
+			} else if (arg0 == "HAND") {
+				var pf = new PreFlop();
+				pf.hand = arg1;
+				pf.position = position;
+				pf.pattern = GetPatternByName(arg2);
+				pf.pattern.percent = 100;
+				pf.alt_patterns = new List<Pattern>();
+				preflops.Add(pf);
+//				player.preflopBets.Add(pf);
+			} else if (arg0 == "ALT") {
+				var altPattern = new Pattern();
+				altPattern.name = arg1;
+				double percent = 0;
+				Double.TryParse(arg2, out percent);
+				altPattern.percent = percent;
+				preflops.Last().pattern.percent -= percent;
+				preflops.Last().alt_patterns.Add(altPattern);
+//				player.preflopBets.Last().pattern.percent -= percent;
+//				player.preflopBets.Last().alt_patterns.Add(altPattern);
+			}
+//		"POSITION	0	",
+//		"HAND	A3s	RAISE/CALL2",
+//		"ALT	CHECK/CALL2	20",
+		}
+		return preflops;
+	}
+
+	private Pattern GetPatternByName(string name) {
+		Pattern pattern = null;
+		foreach (var p in patterns) {
+			if (p.name == name) {
+				pattern = p;
+				return pattern;
+			}
+		}
+		return pattern;
 	}
 
 	private readonly string[] c_str_pattern = new string[]

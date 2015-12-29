@@ -14,9 +14,10 @@ public class GameUI : MonoBehaviour
 	GameUI() {
 		Constants source = new Constants ();
 		var list = source.GetPatterns ();
-		foreach (var item in list) {
-			DebugLog(item.name);
-		}
+		var preflops = source.GetPreflops ();
+//		foreach (var item in list) {
+//			DebugLog(item.name);
+//		}
 	}
 
 	public void ClearAll() {
@@ -469,7 +470,7 @@ public class GameUI : MonoBehaviour
 		// end dealer icons
 		
 		Players = Settings.GetPlayers ();
-		int i = 0;
+//		int i = 0;
 //		foreach (var playerName in playerNamesLabels) {
 //			playerName.GetComponent<Text>().text = Players.ElementAt(i).name;
 //			i++;

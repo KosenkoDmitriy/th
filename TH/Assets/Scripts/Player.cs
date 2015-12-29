@@ -13,10 +13,10 @@ public class Player {
 	List<Pattern> patterns;
 	List<Pattern> alt_patterns;
 
-	List<PreFlop> preflopBets;
-	List<PreFlop> flopBets;
-	List<Turn> turnBets;
-	List<River> riverBets;
+	public List<PreFlop> preflopBets;
+	public List<Flop> flopBets;
+	public List<Turn> turnBets;
+	public List<River> riverBets;
 	
 	public void dealCards() {
 	}
@@ -28,28 +28,30 @@ public class Card {
 }
 
 public abstract class ThPFTR {
-	int enemyCount;	// opponents count
-	int position;	// player no
-	Pattern pattern;
-	List<Pattern> alt_patterns;
+	public int position;	// player no
+	public Pattern pattern;
+	public List<Pattern> alt_patterns;
 }
 
 public class PreFlop: ThPFTR {
-	string hand;
-	double winPercent; // hand strength in percents
+	public string hand;
+//	public double winPercent; // hand strength in percents
 }
 
 public class Flop: ThPFTR {
+	public int enemyCount;	// opponents count
 	double winPercentMin;
 	double winPercentMax;
 }
 
 public class Turn: ThPFTR {
+	public int enemyCount;	// opponents count
 	double winPercentMin;
 	double winPercentMax;
 }
 
 public class River: ThPFTR {
+	public int enemyCount;	// opponents count
 	double winPercentMin;
 	double winPercentMax;
 }
@@ -62,7 +64,7 @@ public class Pattern {
 
 	public List<PatternBetRoundAndAction> betRounds;
 
-	double percent;
+	public double percent;
 }
 
 public class PatternBetRoundAndAction {
