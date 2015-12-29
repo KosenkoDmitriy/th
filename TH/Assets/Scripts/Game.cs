@@ -159,7 +159,7 @@ public class Game
 			// check players hand strength
 			// chose pattern and alternative patterns
 			
-			if (roundCount == 0) {
+			if (subRoundCount == 0) {
 				game.isGameRunning = true;
 				game.isGameEnd = false;
 				foreach (var player in game.ui.cardsOfPlayer) {
@@ -173,7 +173,7 @@ public class Game
 		{
 			game.ui.DebugLog ("Flop()");
 			
-			if (roundCount == 0) {
+			if (subRoundCount == 0) {
 				game.ui.cardsPublic [0].sprite = game.ui.cardsAll [2];
 				game.ui.cardsPublic [1].sprite = game.ui.cardsAll [3];
 				game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
@@ -184,7 +184,7 @@ public class Game
 		{
 			game.ui.DebugLog ("Turn()");
 			
-			if (roundCount == 0) {
+			if (subRoundCount == 0) {
 				game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];
 			}
 		}
@@ -193,7 +193,7 @@ public class Game
 		{
 			game.ui.DebugLog ("River()");
 			
-			if (roundCount == 0) {
+			if (subRoundCount == 0) {
 				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 			}
 		}
