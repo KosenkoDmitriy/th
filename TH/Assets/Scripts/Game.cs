@@ -160,7 +160,8 @@ public class Game
 			// chose pattern and alternative patterns
 			
 			if (roundCount == 0) {
-				
+				game.isGameRunning = true;
+				game.isGameEnd = false;
 				foreach (var player in game.ui.cardsOfPlayer) {
 					//				int rand = new Random(0, game.ui.cardsAll.Count);
 					player.sprite = game.ui.cardsAll [1];

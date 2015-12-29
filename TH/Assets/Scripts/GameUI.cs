@@ -100,7 +100,7 @@ public class GameUI : MonoBehaviour
 		if (betAmount > 0) {
 			game.GameState.Raise (game);
 		} else if (betAmount == 0) {
-			if (isGameStarted)
+			if (game.isGameRunning)
 				game.GameState.Check (game);
 			else
 				return;
@@ -528,6 +528,5 @@ public class GameUI : MonoBehaviour
 	GameObject lblWinPlayerName;
 	GameObject btnBetBonus;
 	GameObject panelBonus;
-	bool isGameStarted = false;
 }
 
