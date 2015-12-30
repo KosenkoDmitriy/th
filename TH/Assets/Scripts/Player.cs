@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 
 public class Player {
+	public double credits;
 	public string name;
 	public List<Card> hand;
 
@@ -19,8 +20,18 @@ public class Player {
 	public List<River> riverBets;
 	
 	public void dealCards() {
+
 	}
 
+}
+
+public class Oppontents {
+	public int count;
+	public List<Position> positions;
+}
+
+public class Position {
+	public List<ThFTR> items;
 }
 
 public class Card {

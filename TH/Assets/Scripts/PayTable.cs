@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    class PayTable
+    public class PayTable
     {
         #region init_vars
 

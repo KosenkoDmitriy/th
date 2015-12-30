@@ -503,26 +503,23 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log(message);
 	}
 
-	List<Player> Players;
-	PayTable payTable;
+	public List<Player> Players;
+	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
-	GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
-	GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
-	GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame,
-	btnAllIn,
-	btnCreditOk,
-	lblPot, lblRaise, lblBet, lblCall, lblWin,
-	lblGameState;
-	List<GameObject> betLabels, creditLabels, playerNamesLabels; // for each player
-	GameObject txtSurrender, lblSurrender;//panel surrender
-	GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
+	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
+	public GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
+	public GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame, btnAllIn, btnCreditOk;
+	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblGameState;
+	public List<GameObject> betLabels, creditLabels, playerNamesLabels; // for each player
+	public GameObject txtSurrender, lblSurrender;//panel surrender
+	public GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
 	public double betAmount;
-	double dollarAmount;
-	InputField inputBetField;
+	public double dollarAmount;
+	public InputField inputBetField;
 	public List<Sprite> cardsAll;
 	public List<Image> cardsOfPlayer, cardsPublic;
-	Sprite cardBg; // background of the desk
-	Sprite cardBack; // back card side
+	public Sprite cardBg; // background of the desk
+	public Sprite cardBack; // back card side
 	// panel XYZ
 		
 	bool isFromRaiseBtn = false;

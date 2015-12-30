@@ -93,6 +93,7 @@ static class Settings
 		for(int i = 0; i < Settings.playerSize; i++) {
 			var player = new Player();
 			player.name = "Player #" + i;
+			player.credits = Settings.playerCredits;
 			players.Add(player);
 		}
 		return players;

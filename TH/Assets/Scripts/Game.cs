@@ -2,6 +2,7 @@
 
 //using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Game
 {
@@ -12,7 +13,9 @@ public class Game
 		PatternState = new PatternStates ();
 	}
 
-	List<Player> players;
+	double potAmount;
+
+//	List<Player> players;
 	public GameUI ui;
 	public bool isGameRunning;
 	public bool isGameEnd;
@@ -135,7 +138,24 @@ public class Game
 			
 			if (Settings.isDebug)
 				game.ui.DebugLog ("NextRound() current round: " + roundCount + "/" + roundMaxCount);
-			
+
+			int i = 0;
+			foreach (var player in game.ui.Players)
+			{
+				if (player.credits <= 0 || game.ui.betAmount <= 0) {
+					game.ui.btnCheck.GetComponent<Button>().interactable = true;
+					game.ui.btnCall.GetComponent<Button>().interactable = false;
+				} else {
+					game.ui.btnCheck.GetComponent<Button>().interactable = false;
+					game.ui.btnCall.GetComponent<Button>().interactable = true;
+					player.credits -= game.ui.betAmount;
+					game.potAmount += game.ui.betAmount;
+					game.ui.creditLabels[i].GetComponent<Text>().text = player.credits.ToString();
+					game.ui.lblPot.GetComponent<Text>().text = game.potAmount.ToString();
+					i++;
+				}
+			}
+
 			if (roundCount >= 0 && roundCount < subRoundMaxCount) {
 				Preflop(game);
 			} else if (subRoundMaxCount <= roundCount && roundCount < subRoundMaxCount * 2) {
