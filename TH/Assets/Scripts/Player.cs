@@ -4,15 +4,21 @@ using System.Collections.Generic;
 
 public class Player {
 	public double credits;
+	public int no;
 	public string name;
-	public List<Card> hand;
 
-	List<string> winCards;
+	public string hand;
+
+	public List<Card> cardsTwo;
+
+//	List<string> winCards;
 //	bool isActive = true;
-	bool isFolded = false;
+	public bool isFolded = false;
 
-	List<Pattern> patterns;
-	List<Pattern> alt_patterns;
+	public Pattern patternCurrent;
+	public Pattern pattern;
+//	List<Pattern> patterns;
+	public List<Pattern> alt_patterns;
 
 	public List<PreFlop> preflopBets;
 	public List<Flop> flopBets;
@@ -21,6 +27,23 @@ public class Player {
 	
 	public void dealCards() {
 
+	}
+
+	public Pattern GetAndSetPatternRandomly() {
+		float percentOfTime = UnityEngine.Random.value * 100;
+		if (pattern != null) {
+			if (percentOfTime <= pattern.percent) {
+				patternCurrent = pattern;
+			}
+		}
+		if (alt_patterns.Count > 0) {
+			foreach(var item in alt_patterns) {
+				if (percentOfTime <= item.percent) {
+					patternCurrent = item;
+				}
+			}
+		}
+		return patternCurrent;
 	}
 
 }
@@ -70,8 +93,8 @@ public class River: ThFTR {
 public class Pattern {
 	public string name;
 	public string actionDefault;
-	string actionPreffered1;
-	string actionPreffered2;
+	public string actionPreffered1;
+	public string actionPreffered2;
 
 	public List<PatternBetRoundAndAction> betRounds;
 

@@ -170,6 +170,7 @@ public class Game
 			subRoundCount++;
 		}
 
+		Constants source;
 		public void Preflop (Game game)
 		{
 			game.ui.DebugLog ("Preflop()");
@@ -180,6 +181,34 @@ public class Game
 			// chose pattern and alternative patterns
 			
 			if (subRoundCount == 0) {
+				if (source == null) source = new Constants();
+				var deckCards = source.GetDeckCards();
+				var hand = new Hand();
+				foreach(var player in game.ui.Players) {
+//					player.hand = hand.GetHandByPlayerNo(player.no);
+					var preflops = source.GetPreflops();
+					foreach(var preflop in preflops) {
+						if (preflop.position == player.no) {
+							if (preflop.hand == player.hand) {
+								player.pattern = preflop.pattern;
+								player.alt_patterns = preflop.alt_patterns;
+								player.patternCurrent = player.GetAndSetPatternRandomly();
+								break;
+							}
+						}
+					}
+
+
+//					var alt_patterns = source.GetPreflops()[player.no].alt_patterns;
+//					var pattern = source.GetPreflops()[player.no].pattern;
+//
+//					player.current_pattern = source.GetPatternByHandStrength(player.hand);
+
+//					var v = game.ui.GetPercentOfAllTime(player.percent);
+
+
+//					player.current_pattern = 
+				}
 				game.isGameRunning = true;
 				game.isGameEnd = false;
 				foreach (var player in game.ui.cardsOfPlayer) {
@@ -212,6 +241,7 @@ public class Game
 		public void River (Game game)
 		{
 			game.ui.DebugLog ("River()");
+
 			if (subRoundCount == 0) {
 				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 			}
