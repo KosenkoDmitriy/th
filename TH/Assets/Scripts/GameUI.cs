@@ -106,13 +106,20 @@ public class GameUI : MonoBehaviour
 		if (inputBetField)
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
-		if (betAmount > 0) {
-			game.GameState.Raise (game);
-		} else if (betAmount == 0) {
-			if (game.isGameRunning)
+		var player = Players [0];
+		if (game.isGameRunning) {
+			if (player.credits - betAmount < 0) {
 				game.GameState.Check (game);
-			else
+			} else if (player.credits - betAmount >= 0) {
+				game.GameState.Raise (game);
+			} else {
 				return;
+//				game.GameState.Check (game);
+			}
+		} else if (!game.isGameRunning && betAmount > 0 && player.credits - betAmount >= 0) {
+			game.GameState.Raise(game);
+		} else {
+			return;
 		}
 		if (panelInitBet) panelInitBet.SetActive(false);
 		if (panelGame) panelGame.SetActive(true);
