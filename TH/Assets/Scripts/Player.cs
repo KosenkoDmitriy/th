@@ -11,13 +11,14 @@ public class Player {
 
 	public List<Card> cardsTwo;
 
-//	List<string> winCards;
 //	bool isActive = true;
 	public bool isFolded = false;
 
+
+	public string actionCurrent;
 	public Pattern patternCurrent;
+
 	public Pattern pattern;
-//	List<Pattern> patterns;
 	public List<Pattern> alt_patterns;
 
 	public List<PreFlop> preflopBets;
@@ -44,6 +45,19 @@ public class Player {
 			}
 		}
 		return patternCurrent;
+	}
+
+	public string GetCurrentAction(double betToStayInGame, double betTotal) {
+		string action = patternCurrent.actionDefault;
+//		action = patternCurrent.actionPreffered1;
+//		action = patternCurrent.actionPreffered2;
+		foreach (var betRound in patternCurrent.betRounds) {
+			if (betRound.costBet == betToStayInGame && betRound.costBetTotal == betTotal) {
+				action = betRound.name_action;
+				break;
+			}
+		}
+		return action;
 	}
 
 }

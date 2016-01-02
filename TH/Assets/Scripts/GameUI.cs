@@ -106,7 +106,7 @@ public class GameUI : MonoBehaviour
 		if (inputBetField)
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
-		var player = Players [0];
+		var player = game.players [0];
 		if (game.isGameRunning) {
 			if (player.credits - betAmount < 0) {
 				game.GameState.Check (game);
@@ -303,14 +303,14 @@ public class GameUI : MonoBehaviour
 	}
 
 	private void updatePlayerNames() {
-		StartCoroutine(DisplayPlayerNames(Players, Settings.updateInterval));
+		StartCoroutine(DisplayPlayerNames(game.players, Settings.updateInterval));
 //		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
 	}
 
 	int playerNo;
 	private void UpdatePlayerName() {
-		if (playerNo < Players.Count) {
-			var player = Players.ElementAt (playerNo);
+		if (playerNo < game.players.Count) {
+			var player = game.players.ElementAt (playerNo);
 			
 			var lbl = playerNamesLabels.ElementAt (playerNo);
 			if (lbl)
@@ -479,14 +479,6 @@ public class GameUI : MonoBehaviour
 				dealers.Add(child.gameObject);
 		}
 		// end dealer icons
-		
-		Players = Settings.GetPlayers ();
-//		int i = 0;
-//		foreach (var playerName in playerNamesLabels) {
-//			playerName.GetComponent<Text>().text = Players.ElementAt(i).name;
-//			i++;
-//		}
-
 	}
 
 	public void HideDynamicPanels() {
@@ -510,7 +502,6 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log(message);
 	}
 
-	public List<Player> Players;
 	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet

@@ -11,11 +11,12 @@ public class Game
 		this.ui = ui;
 		GameState = new GameStates ();
 		PatternState = new PatternStates ();
+		players = Settings.GetPlayers ();
 	}
 
 	double potAmount;
 
-//	List<Player> players;
+	public List<Player> players;
 	public GameUI ui;
 	public bool isGameRunning;
 	public bool isGameEnd;
@@ -70,10 +71,17 @@ public class Game
 
 	public class GameStates : IGameState
 	{
-		int roundCount = 0;
-		readonly int roundMaxCount = Settings.maxRoundCount;
-		int subRoundCount = 0;
-		readonly int subRoundMaxCount = Settings.maxSubRoundCount;
+		double betToStayInGame;
+		double betTotalInThisRound;
+		int roundCount;
+		readonly int roundMaxCount;
+		int subRoundCount;
+		readonly int subRoundMaxCount;
+
+		public GameStates() {
+			roundMaxCount = Settings.maxRoundCount;
+			subRoundMaxCount = Settings.maxSubRoundCount;
+		}
 
 		public void EndGame (Game game)
 		{
@@ -81,8 +89,8 @@ public class Game
 			game.isGameRunning = false;
 			game.isGameEnd = true;
 
-			roundCount = 0;
-			subRoundCount = 0;
+			roundCount = subRoundCount = 0;
+			betToStayInGame = betTotalInThisRound = 0;
 
 			game.ui.HideDynamicPanels ();
 			game.ui.panelWin.SetActive (true);
@@ -134,13 +142,14 @@ public class Game
 			
 			if (subRoundCount >= subRoundMaxCount) {
 				subRoundCount = 0;
+				betTotalInThisRound = 0;
 			}
 			
 			if (Settings.isDebug)
 				game.ui.DebugLog ("NextRound() current round: " + roundCount + "/" + roundMaxCount);
 
 			int i = 0;
-			foreach (var player in game.ui.Players)
+			foreach (var player in game.players)
 			{
 				if (player.credits <= 0 || game.ui.betAmount <= 0) {
 					game.ui.btnCheck.GetComponent<Button>().interactable = true;
@@ -184,7 +193,7 @@ public class Game
 				if (source == null) source = new Constants();
 				var deckCards = source.GetDeckCards();
 				var hand = new Hand();
-				foreach(var player in game.ui.Players) {
+				foreach(var player in game.players) {
 //					player.hand = hand.GetHandByPlayerNo(player.no);
 					var preflops = source.GetPreflops();
 					foreach(var preflop in preflops) {
@@ -193,22 +202,14 @@ public class Game
 								player.pattern = preflop.pattern;
 								player.alt_patterns = preflop.alt_patterns;
 								player.patternCurrent = player.GetAndSetPatternRandomly();
+								player.actionCurrent = player.GetCurrentAction(betToStayInGame, betTotalInThisRound);
+								
 								break;
 							}
 						}
 					}
-
-
-//					var alt_patterns = source.GetPreflops()[player.no].alt_patterns;
-//					var pattern = source.GetPreflops()[player.no].pattern;
-//
-//					player.current_pattern = source.GetPatternByHandStrength(player.hand);
-
-//					var v = game.ui.GetPercentOfAllTime(player.percent);
-
-
-//					player.current_pattern = 
 				}
+
 				game.isGameRunning = true;
 				game.isGameEnd = false;
 				foreach (var player in game.ui.cardsOfPlayer) {
