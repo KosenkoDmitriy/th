@@ -6,6 +6,7 @@ public class Player {
 
 	public Player() {
 		cards = new List<Card>();
+		alt_patterns = new List<Pattern> ();
 	}
 
 	public double credits;
@@ -73,10 +74,18 @@ public class Player {
 public class Oppontents {
 	public int count;
 	public List<Position> positions;
+
+	public Oppontents() {
+		positions = new List<Position> ();
+	}
 }
 
 public class Position {
 	public List<ThFTR> items;
+
+	public Position() {
+		items = new List<ThFTR> ();
+	}
 }
 
 public abstract class ThPFTR {
@@ -88,12 +97,20 @@ public abstract class ThPFTR {
 public class PreFlop: ThPFTR {
 	public string hand;
 //	public double winPercent; // hand strength in percents
+
+	public PreFlop() {
+		alt_patterns = new List<Pattern>();
+	}
 }
 
 public class ThFTR: ThPFTR {
 	public int enemyCount;	// opponents count
 	public double winPercentMin;
 	public double winPercentMax;
+
+	public ThFTR() {
+		alt_patterns = new List<Pattern>();
+	}
 }
 
 public class Flop: ThFTR {
@@ -117,6 +134,10 @@ public class Pattern {
 	public List<PatternBetRoundAndAction> betRounds;
 
 	public double percent;
+
+	public Pattern() {
+		betRounds = new List<PatternBetRoundAndAction>();
+	}
 }
 
 public class PatternBetRoundAndAction {
