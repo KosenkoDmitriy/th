@@ -369,8 +369,8 @@ public class GameUI : MonoBehaviour
 			Debug.Log ("InitCards()");
 			
 		//cards
-		playerhold1 = GameObject.Find ("playerhold1");
-		playerhold2 = GameObject.Find ("playerhold2");
+		playerhold1 = GameObject.Find ("player0hold1");
+		playerhold2 = GameObject.Find ("player0hold2");
 		player1hold1 = GameObject.Find ("player1hold1");
 		player1hold2 = GameObject.Find ("player1hold2");
 		player2hold1 = GameObject.Find ("player2hold1");
