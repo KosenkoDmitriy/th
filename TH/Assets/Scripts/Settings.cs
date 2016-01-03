@@ -2,6 +2,8 @@
 
 static class Settings
 {
+	public static bool isDebug = false;
+
 	public static int playerHandMaxSize = 5;
 	public static int playerHandSize = 2;
 	public static readonly int maxSubRoundCount = 4;
@@ -38,7 +40,7 @@ static class Settings
     // cards
     public static string cardsPrefix = "cards_new/"; //"cards";
     //public static string cardBackName = cardsPrefix + "logo_back_cards"; // image name of the card back side
-    public static string cardBackName = cardsPrefix + "card_back_black_with_logo";
+	public static string cardBackName = cardsPrefix + "card_back_black_with_logo";
     //"card_back_black_with_logo", "card_back_black_with_logo1", "card_back_black", "card_back_red" "card_back_red_with_logo"
     public static string cardBg = "card_background"; // the same color as in table
     // end cards
@@ -46,7 +48,6 @@ static class Settings
     public static int videoPokerLowRank = 15;
     public static int selectedColumn;
 
-    public static bool isDebug = true;
     public static bool isIgnoreIniFile = true;
     public static bool testGame = false;
     public static bool logging = false;
@@ -88,17 +89,5 @@ static class Settings
 		#else
 		UnityEngine.Application.OpenURL(url);
 		#endif
-	}
-
-	public static List<Player> GetPlayers() {
-		var players = new List<Player>();
-		for(int i = 0; i < Settings.playerSize; i++) {
-			var player = new Player();
-			player.name = "Player #" + i;
-			player.no = i;
-			player.credits = Settings.playerCredits;
-			players.Add(player);
-		}
-		return players;
 	}
 }

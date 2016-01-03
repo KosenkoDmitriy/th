@@ -109,9 +109,9 @@ public class Constants {
 	public List<PreFlop> GetPreflops() {
 		if (preflops.Count > 0) return preflops;
 
-		var players = Settings.GetPlayers ();
+//		var players = Settings.GetPlayers ();
 		int position = 0;
-		var player = players[position];
+//		var player = players[position];
 
 		foreach(var item in c_str_preflop) {
 

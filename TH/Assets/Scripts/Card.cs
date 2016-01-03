@@ -172,14 +172,13 @@ public class Card
 	{
 		if (faceUp) {
 			string path = Settings.cardsPrefix + rankToResString (rank) + "_" + suitToResString (suit);
-			var img = Resources.Load (path, typeof(Image)) as Image;
-			var img2 = Resources.Load<Image> (path);
-			var sprite = Resources.Load (path, typeof(Sprite)) as Sprite;
 			this.sprite = Resources.Load<Sprite> (path);
-			this.Image = Resources.Load (path, typeof(Image)) as Image; //new Image ("Cards\\" + suit + "-" + rank + ".png");
+			if (this.Image != null)
+				this.Image.sprite = sprite;
 		} else {
-			this.sprite = Resources.Load<Sprite> (Settings.cardBg);
-			this.Image = Resources.Load (Settings.cardBg, typeof(Image)) as Image;//new Image ("Cards\\sb.bmp");
+			this.sprite = Resources.Load<Sprite> (Settings.cardBackName);
+			if (this.Image != null)
+				this.Image.sprite = sprite;
 		}
 	}
 	//get the current image
@@ -188,6 +187,11 @@ public class Card
 		if (Image == null)
 			getImageFromFile ();
 		return this.Image;
+	}
+
+	public void setImage (Image img)
+	{
+		this.Image = img;
 	}
 
 	public Sprite getSprite ()

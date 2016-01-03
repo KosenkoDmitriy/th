@@ -3,6 +3,7 @@
 //using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class Game
 {
@@ -11,7 +12,19 @@ public class Game
 		this.ui = ui;
 		GameState = new GameStates ();
 		PatternState = new PatternStates ();
-		players = Settings.GetPlayers ();
+		players = GetPlayers ();
+	}
+
+	public List<Player> GetPlayers() {
+		var players = new List<Player>();
+		for(int i = 0; i < Settings.playerSize; i++) {
+			var player = new Player();
+			player.name = "Player #" + i;
+			player.no = i;
+			player.credits = Settings.playerCredits;
+			players.Add(player);
+		}
+		return players;
 	}
 
 	double potAmount;
@@ -208,19 +221,17 @@ public class Game
 					foreach(var preflop in preflops) {
 						if (preflop.position == player.no) {
 							if (preflop.hand == player.handString) {
-								for(int i = 0; i < Settings.playerHandSize; i++) {
+								for(int i = 1; i <= Settings.playerHandSize; i++) {
 									var card = deck.Deal();
-									player.cards.Add (card);
-									if (player.no == 0) {
-										if (player.cards.Count > 0) {
-											player.cards[0].FaceUp = true;
-											game.ui.playerhold1.GetComponent<Image>().sprite = player.cards[0].getSprite();
-										}
-										if (player.cards.Count > 1) {
-											player.cards[1].FaceUp = true;
-											game.ui.playerhold2.GetComponent<Image>().sprite = player.cards[1].getSprite();
-										}
+									var cardImg = GameObject.Find("player" + player.no + "hold" + i);
+									if (cardImg) {
+										card.setImage(cardImg.GetComponent<Image>());
+										if (player.no == 0 || Settings.isDebug)
+											card.FaceUp = true;
+										else
+											card.FaceUp = false;
 									}
+									player.cards.Add(card);
 								}
 
 								player.pattern = preflop.pattern;
