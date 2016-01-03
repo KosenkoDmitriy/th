@@ -3,13 +3,20 @@
 using System.Collections.Generic;
 
 public class Player {
+
+	public Player() {
+		cards = new List<Card>();
+	}
+
 	public double credits;
 	public int no;
 	public string name;
 
-	public string hand;
+	public string handString;
+	public Hand gand;
 
-	public List<Card> cardsTwo;
+	public List<Card> cards;
+//	public List<Card> cardsTwo;
 
 //	bool isActive = true;
 	public bool isFolded = false;
@@ -21,10 +28,10 @@ public class Player {
 	public Pattern pattern;
 	public List<Pattern> alt_patterns;
 
-	public List<PreFlop> preflopBets;
-	public List<Flop> flopBets;
-	public List<Turn> turnBets;
-	public List<River> riverBets;
+//	public List<PreFlop> preflopBets;
+//	public List<Flop> flopBets;
+//	public List<Turn> turnBets;
+//	public List<River> riverBets;
 	
 	public void dealCards() {
 
@@ -51,8 +58,9 @@ public class Player {
 		string action = patternCurrent.actionDefault;
 //		action = patternCurrent.actionPreffered1;
 //		action = patternCurrent.actionPreffered2;
+		if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
 		foreach (var betRound in patternCurrent.betRounds) {
-			if (betRound.costBet == betToStayInGame && betRound.costBetTotal == betTotal) {
+			if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
 				action = betRound.name_action;
 				break;
 			}
@@ -69,10 +77,6 @@ public class Oppontents {
 
 public class Position {
 	public List<ThFTR> items;
-}
-
-public class Card {
-
 }
 
 public abstract class ThPFTR {

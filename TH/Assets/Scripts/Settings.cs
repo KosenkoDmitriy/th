@@ -2,6 +2,8 @@
 
 static class Settings
 {
+	public static int playerHandMaxSize = 5;
+	public static int playerHandSize = 2;
 	public static readonly int maxSubRoundCount = 4;
 	public static readonly int maxRoundCount = maxSubRoundCount * 4;
 
@@ -93,6 +95,7 @@ static class Settings
 		for(int i = 0; i < Settings.playerSize; i++) {
 			var player = new Player();
 			player.name = "Player #" + i;
+			player.no = i;
 			player.credits = Settings.playerCredits;
 			players.Add(player);
 		}

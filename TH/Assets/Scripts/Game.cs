@@ -118,11 +118,17 @@ public class Game
 		}
 
 		public void Call(Game game) {
+			betToStayInGame += game.ui.betAmount;
+			betTotalInThisRound += game.ui.betAmount;
+
 			NextRound (game);
 
 		}
 
 		public void Raise(Game game) {
+			betToStayInGame += game.ui.betAmount;
+			betTotalInThisRound += game.ui.betAmount;
+
 			NextRound (game);
 
 		}
@@ -191,14 +197,32 @@ public class Game
 			
 			if (subRoundCount == 0) {
 				if (source == null) source = new Constants();
-				var deckCards = source.GetDeckCards();
-				var hand = new Hand();
+				var deck = new Deck();
+				deck.Shuffle();
+//				var deckCards = source.GetDeckCards();
+//				var hand = new Hand();
 				foreach(var player in game.players) {
 //					player.hand = hand.GetHandByPlayerNo(player.no);
+					player.handString = "22"; // TODO: 
 					var preflops = source.GetPreflops();
 					foreach(var preflop in preflops) {
 						if (preflop.position == player.no) {
-							if (preflop.hand == player.hand) {
+							if (preflop.hand == player.handString) {
+								for(int i = 0; i < Settings.playerHandSize; i++) {
+									var card = deck.Deal();
+									player.cards.Add (card);
+									if (player.no == 0) {
+										if (player.cards.Count > 0) {
+											player.cards[0].FaceUp = true;
+											game.ui.playerhold1.GetComponent<Image>().sprite = player.cards[0].getSprite();
+										}
+										if (player.cards.Count > 1) {
+											player.cards[1].FaceUp = true;
+											game.ui.playerhold2.GetComponent<Image>().sprite = player.cards[1].getSprite();
+										}
+									}
+								}
+
 								player.pattern = preflop.pattern;
 								player.alt_patterns = preflop.alt_patterns;
 								player.patternCurrent = player.GetAndSetPatternRandomly();
@@ -212,10 +236,10 @@ public class Game
 
 				game.isGameRunning = true;
 				game.isGameEnd = false;
-				foreach (var player in game.ui.cardsOfPlayer) {
-					//				int rand = new Random(0, game.ui.cardsAll.Count);
-					player.sprite = game.ui.cardsAll [1];
-				}
+//				foreach (var player in game.ui.cardsOfPlayer) {
+//					//				int rand = new Random(0, game.ui.cardsAll.Count);
+//					player.sprite = game.ui.cardsAll [1];
+//				}
 			}
 		}
 		
