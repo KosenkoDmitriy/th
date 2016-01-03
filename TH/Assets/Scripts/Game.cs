@@ -12,6 +12,7 @@ public class Game
 		this.ui = ui;
 		GameState = new GameStates ();
 		PatternState = new PatternStates ();
+		cards = new List<Card>();
 		players = GetPlayers ();
 	}
 
@@ -28,8 +29,9 @@ public class Game
 	}
 
 	double potAmount;
-
+	public Deck deck;
 	public List<Player> players;
+	public List<Card> cards;
 	public GameUI ui;
 	public bool isGameRunning;
 	public bool isGameEnd;
@@ -210,8 +212,8 @@ public class Game
 			
 			if (subRoundCount == 0) {
 				if (source == null) source = new Constants();
-				var deck = new Deck();
-				deck.Shuffle();
+				game.deck = new Deck();
+				game.deck.Shuffle();
 //				var deckCards = source.GetDeckCards();
 //				var hand = new Hand();
 				foreach(var player in game.players) {
@@ -222,14 +224,14 @@ public class Game
 						if (preflop.position == player.no) {
 							if (preflop.hand == player.handString) {
 								for(int i = 1; i <= Settings.playerHandSize; i++) {
-									var card = deck.Deal();
+									var card = game.deck.Deal();
 									var cardImg = GameObject.Find("player" + player.no + "hold" + i);
 									if (cardImg) {
 										card.setImage(cardImg.GetComponent<Image>());
 										if (player.no == 0 || Settings.isDebug)
 											card.FaceUp = true;
-										else
-											card.FaceUp = false;
+//										else
+//											card.FaceUp = false;
 									}
 									player.cards.Add(card);
 								}
@@ -259,9 +261,19 @@ public class Game
 			game.ui.DebugLog ("Flop()");
 			
 			if (subRoundCount == 0) {
-				game.ui.cardsPublic [0].sprite = game.ui.cardsAll [2];
-				game.ui.cardsPublic [1].sprite = game.ui.cardsAll [3];
-				game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
+				for(int i = 1; i <= 3; i++) {
+					var card = game.deck.Deal();
+					var image = GameObject.Find("flop"+i).GetComponent<Image>();
+					card.setImage(image);
+					if (Settings.isDebug)
+						card.FaceUp = true;
+//					else
+//						card.FaceUp = false;
+					game.cards.Add(card);
+				}
+//				game.ui.cardsPublic [0].sprite = game.ui.cardsAll [2];
+//				game.ui.cardsPublic [1].sprite = game.ui.cardsAll [3];
+//				game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
 			}
 		}
 		
@@ -270,7 +282,15 @@ public class Game
 			game.ui.DebugLog ("Turn()");
 			
 			if (subRoundCount == 0) {
-				game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];
+				var card = game.deck.Deal();
+				var image = GameObject.Find("turn").GetComponent<Image>();
+				card.setImage(image);
+				if (Settings.isDebug)
+					card.FaceUp = true;
+				//					else
+				//						card.FaceUp = false;
+				game.cards.Add(card);
+//				game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];
 			}
 		}
 		
@@ -279,7 +299,15 @@ public class Game
 			game.ui.DebugLog ("River()");
 
 			if (subRoundCount == 0) {
-				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
+				var card = game.deck.Deal();
+				var image = GameObject.Find("river").GetComponent<Image>();
+				card.setImage(image);
+				if (Settings.isDebug)
+					card.FaceUp = true;
+				//					else
+				//						card.FaceUp = false;
+				game.cards.Add(card);
+//				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 			}
 		}
 	}

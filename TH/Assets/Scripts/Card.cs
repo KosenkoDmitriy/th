@@ -192,6 +192,7 @@ public class Card
 	public void setImage (Image img)
 	{
 		this.Image = img;
+		getImageFromFile ();
 	}
 
 	public Sprite getSprite ()
