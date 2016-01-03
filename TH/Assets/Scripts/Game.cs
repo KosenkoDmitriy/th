@@ -107,6 +107,12 @@ public class Game
 			roundCount = subRoundCount = 0;
 			betToStayInGame = betTotalInThisRound = 0;
 
+			foreach (var player in game.players) {
+				foreach (var card in player.cards) {
+					card.FaceUp = true;
+				}
+			}
+
 			game.ui.HideDynamicPanels ();
 			game.ui.panelWin.SetActive (true);
 		}
@@ -204,7 +210,9 @@ public class Game
 		public void Preflop (Game game)
 		{
 			game.ui.DebugLog ("Preflop()");
-			
+
+			Card card = null;
+			Image image = null;
 			// TODO:
 			// Bet round 1
 			// check players hand strength
@@ -224,14 +232,14 @@ public class Game
 						if (preflop.position == player.no) {
 							if (preflop.hand == player.handString) {
 								for(int i = 1; i <= Settings.playerHandSize; i++) {
-									var card = game.deck.Deal();
+									card = game.deck.Deal();
 									var cardImg = GameObject.Find("player" + player.no + "hold" + i);
 									if (cardImg) {
 										card.setImage(cardImg.GetComponent<Image>());
 										if (player.no == 0 || Settings.isDebug)
 											card.FaceUp = true;
-//										else
-//											card.FaceUp = false;
+										else
+											card.FaceUp = false;
 									}
 									player.cards.Add(card);
 								}
@@ -249,10 +257,44 @@ public class Game
 
 				game.isGameRunning = true;
 				game.isGameEnd = false;
+
+
+				// flop
+				for(int i = 1; i <= 3; i++) {
+					card = game.deck.Deal();
+					image = GameObject.Find("flop"+i).GetComponent<Image>();
+					card.setImage(image);
+					if (Settings.isDebug)
+						card.FaceUp = true;
+//					else
+//						card.FaceUp = false;
+					game.cards.Add(card);
+				}
+				// turn
+				card = game.deck.Deal();
+				image = GameObject.Find("turn").GetComponent<Image>();
+				card.setImage(image);
+				if (Settings.isDebug)
+					card.FaceUp = true;
+//				else
+//					card.FaceUp = false;
+				game.cards.Add(card);
+
+				// river
+				card = game.deck.Deal();
+				image = GameObject.Find("river").GetComponent<Image>();
+				card.setImage(image);
+				if (Settings.isDebug)
+					card.FaceUp = true;
+//				else
+//					card.FaceUp = false;
+				game.cards.Add(card);
+
 //				foreach (var player in game.ui.cardsOfPlayer) {
 //					//				int rand = new Random(0, game.ui.cardsAll.Count);
 //					player.sprite = game.ui.cardsAll [1];
 //				}
+
 			}
 		}
 		
@@ -261,16 +303,9 @@ public class Game
 			game.ui.DebugLog ("Flop()");
 			
 			if (subRoundCount == 0) {
-				for(int i = 1; i <= 3; i++) {
-					var card = game.deck.Deal();
-					var image = GameObject.Find("flop"+i).GetComponent<Image>();
-					card.setImage(image);
-					if (Settings.isDebug)
-						card.FaceUp = true;
-//					else
-//						card.FaceUp = false;
-					game.cards.Add(card);
-				}
+				game.cards[0].FaceUp = true;
+				game.cards[1].FaceUp = true;
+				game.cards[2].FaceUp = true;
 //				game.ui.cardsPublic [0].sprite = game.ui.cardsAll [2];
 //				game.ui.cardsPublic [1].sprite = game.ui.cardsAll [3];
 //				game.ui.cardsPublic [2].sprite = game.ui.cardsAll [4];
@@ -282,14 +317,7 @@ public class Game
 			game.ui.DebugLog ("Turn()");
 			
 			if (subRoundCount == 0) {
-				var card = game.deck.Deal();
-				var image = GameObject.Find("turn").GetComponent<Image>();
-				card.setImage(image);
-				if (Settings.isDebug)
-					card.FaceUp = true;
-				//					else
-				//						card.FaceUp = false;
-				game.cards.Add(card);
+				game.cards[3].FaceUp = true;
 //				game.ui.cardsPublic [3].sprite = game.ui.cardsAll [5];
 			}
 		}
@@ -299,14 +327,7 @@ public class Game
 			game.ui.DebugLog ("River()");
 
 			if (subRoundCount == 0) {
-				var card = game.deck.Deal();
-				var image = GameObject.Find("river").GetComponent<Image>();
-				card.setImage(image);
-				if (Settings.isDebug)
-					card.FaceUp = true;
-				//					else
-				//						card.FaceUp = false;
-				game.cards.Add(card);
+				game.cards[4].FaceUp = true;
 //				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 			}
 		}
