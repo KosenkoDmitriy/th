@@ -241,23 +241,42 @@ public class Game
 //				var hand = new Hand();
 				foreach (var player in game.players) {
 //					player.hand = hand.GetHandByPlayerNo(player.no);
-					player.handString = "22"; // TODO: 
+
+					for (int i = 1; i <= Settings.playerHandSize; i++) {
+						card = game.deck.Deal ();
+						var cardImg = GameObject.Find ("player" + player.no + "hold" + i);
+						if (cardImg) {
+							card.setImage (cardImg.GetComponent<Image> ());
+							if (player.no == 0 || Settings.isDebug)
+								card.FaceUp = true;
+							else
+								card.FaceUp = false;
+						}
+						player.cards.Add (card);
+					}
+
+					player.handString = "";
+					bool isSuited = false;
+					if (player.cards.Count >= 2) {
+						if (player.cards[0].getSuit() == player.cards[1].getSuit()) {
+							isSuited = true;
+						}
+						player.handString += Card.rankToResString(player.cards[0].getRank());
+						player.handString += Card.rankToResString(player.cards[1].getRank());
+						if (player.cards[0].getRank() == player.cards[1].getRank()) {
+						}
+						else if (isSuited)
+							player.handString += "s";
+						else
+							player.handString += "o";
+					}
+
+
+					//					player.handString = "22"; // TODO: 
 					var preflops = source.GetPreflops ();
 					foreach (var preflop in preflops) {
 						if (preflop.position == player.no) {
 							if (preflop.hand == player.handString) {
-								for (int i = 1; i <= Settings.playerHandSize; i++) {
-									card = game.deck.Deal ();
-									var cardImg = GameObject.Find ("player" + player.no + "hold" + i);
-									if (cardImg) {
-										card.setImage (cardImg.GetComponent<Image> ());
-										if (player.no == 0 || Settings.isDebug)
-											card.FaceUp = true;
-										else
-											card.FaceUp = false;
-									}
-									player.cards.Add (card);
-								}
 
 								player.pattern = preflop.pattern;
 								player.alt_patterns = preflop.alt_patterns;
