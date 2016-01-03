@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class HandCombination  {
+public static class HandCombination  {
 	public static Hand getBestHand(Hand hand)
 	{
 		if (hand.Count() < 5)

@@ -14,7 +14,8 @@ public class Player {
 	public string name;
 
 	public string handString;
-	public Hand gand;
+	public Hand hand;
+	public List<Hand> hands;
 
 	public List<Card> cards;
 //	public List<Card> cardsTwo;
@@ -58,7 +59,7 @@ public class Player {
 	public string GetCurrentAction(double betToStayInGame, double betTotal) {
 		string action = patternCurrent.actionDefault;
 //		action = patternCurrent.actionPreffered1;
-//		action = patternCurrent.actionPreffered2;
+//		action = patternCurrent.actionPreffered2; //TODO: empty betRounds
 		if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
 		foreach (var betRound in patternCurrent.betRounds) {
 			if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {

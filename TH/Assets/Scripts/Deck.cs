@@ -51,6 +51,37 @@ public class Deck
 			deck[n] = temp;
 		}
 	}
+	public void ShuffleBuggable()
+	{
+//		int deckPtr = 0;
+		var rand = new Random ();
+//		for (deckPtr = 0; deckPtr < Settings.cardsSize; deckPtr++)
+//		{
+//			deck.Add(0xFF);
+//		}
+//		deckPtr = 0;
+		int i;
+		for (i = 0; i < deck.Count; i++)
+		{
+			int a = 0;
+			var temp = deck[rand.Next(deck.Count)];
+			for (a = 0; a <= i; a++)
+			{
+				if (temp == deck[a])//dupe?
+				{
+					i--;
+					break;
+				}
+				else
+				{
+					if (a == i)
+					{
+						deck[i] = temp;//we have our card
+					}
+				}
+			}
+		}
+	}
 	public string Print()
 	{
 		string output = "";
