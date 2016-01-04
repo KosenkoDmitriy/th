@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 static class Settings
 {
 	public static bool isDebug = false;
 
 	public static int playerHandMaxSize = 5;
-	public static int playerHandSize = 2;
+	public static int playerHandSizePreflop = 2;
 	public static readonly int maxSubRoundCount = 4;
 	public static readonly int maxRoundCount = maxSubRoundCount * 4;
 

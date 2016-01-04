@@ -4,45 +4,45 @@ using System.Linq;
 
 public class Hand {
 
-	private List<Card> myHand;
+	private List<Card> cards;
 	private List<int> handValue;
 	public Hand()
 	{
-		myHand = new List<Card>();
+		cards = new List<Card>();
 		handValue = new List<int>();
 	}
 	public Hand(Hand otherHand)
 	{
-		myHand = new List<Card>(otherHand.myHand);
+		cards = new List<Card>(otherHand.cards);
 		handValue = new List<int>();
 	}
 	public Card this[int index]
 	{
 		get
 		{
-			return myHand[index];
+			return cards[index];
 		}
 		set
 		{
-			myHand[index] = value;
+			cards[index] = value;
 		}
 	}
 	public void Clear()
 	{
-		myHand.Clear();
+		cards.Clear();
 		handValue.Clear();
 	}
 	public void Add(Card card)
 	{
-		myHand.Add(card);
+		cards.Add(card);
 	}
 	public void Remove(int index)
 	{
-		myHand.RemoveAt(index);
+		cards.RemoveAt(index);
 	}
 	public void Remove(Card card)
 	{
-		myHand.Remove(card);
+		cards.Remove(card);
 	}
 	public List<int> getValue()
 	{
@@ -54,13 +54,13 @@ public class Hand {
 	}
 	public int Count()
 	{
-		return myHand.Count;
+		return cards.Count;
 	}
 	public Card getCard(int index)
 	{
-		if (index >= myHand.Count)
+		if (index >= cards.Count)
 			throw new ArgumentOutOfRangeException();
-		return myHand[index];
+		return cards[index];
 	}
 	List<Card> QuickSortRank(List<Card> myCards)
 	{
@@ -126,11 +126,15 @@ public class Hand {
 	}
 	public void sortByRank()
 	{
-		myHand = QuickSortRank(myHand);
+		cards = QuickSortRank(cards);
 	}
 	public void sortBySuit()
 	{
-		myHand = QuickSortSuit(myHand);
+		cards = QuickSortSuit(cards);
+	}
+	public List<Card> getCards()
+	{
+		return cards;
 	}
 	public override string ToString()
 	{
@@ -165,7 +169,7 @@ public class Hand {
 	{
 		for (int i = 0; i < a.Count(); i++)
 		{
-			if (a[i] != myHand[i] || a[i].getSuit() != myHand[i].getSuit())
+			if (a[i] != cards[i] || a[i].getSuit() != cards[i].getSuit())
 				return false;
 		}
 		return true;

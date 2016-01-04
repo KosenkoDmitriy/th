@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Player {
 
 	public Player() {
-		cards = new List<Card>();
+		hand = new Hand ();
 		alt_patterns = new List<Pattern> ();
 	}
 
@@ -13,12 +13,9 @@ public class Player {
 	public int no;
 	public string name;
 
-	public string handString;
+	public string handPreflopString;
 	public Hand hand;
 	public List<Hand> hands;
-
-	public List<Card> cards;
-//	public List<Card> cardsTwo;
 
 //	bool isActive = true;
 	public bool isFolded = false;
@@ -59,7 +56,7 @@ public class Player {
 	public string GetCurrentAction(double betToStayInGame, double betTotal) {
 		string action = patternCurrent.actionDefault;
 //		action = patternCurrent.actionPreffered1;
-//		action = patternCurrent.actionPreffered2; //TODO: empty betRounds
+//		action = patternCurrent.actionPreffered2;
 		if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
 		foreach (var betRound in patternCurrent.betRounds) {
 			if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
@@ -68,6 +65,25 @@ public class Player {
 			}
 		}
 		return action;
+	}
+
+	public string GetHandPreflopString() {
+		string handPreflopString = "";
+		bool isSuited = false;
+		if (hand.getCards().Count >= 2) {
+			if (hand.getCards()[0].getSuit() == hand.getCards()[1].getSuit()) {
+				isSuited = true;
+			}
+			handPreflopString += Card.rankToResString(hand.getCards()[0].getRank());
+			handPreflopString += Card.rankToResString(hand.getCards()[1].getRank());
+			if (hand.getCards()[0].getRank() == hand.getCards()[1].getRank()) {
+			}
+			else if (isSuited)
+				handPreflopString += "s";
+			else
+				handPreflopString += "o";
+		}
+		return handPreflopString;
 	}
 
 }

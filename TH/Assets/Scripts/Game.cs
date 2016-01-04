@@ -116,7 +116,7 @@ public class Game
 			betToStayInGame = betTotalInThisRound = 0;
 
 			foreach (var player in game.players) {
-				foreach (var card in player.cards) {
+				foreach (var card in player.hand.getCards()) {
 					card.FaceUp = true;
 				}
 			}
@@ -224,25 +224,19 @@ public class Game
 		public void Preflop (Game game)
 		{
 			game.ui.DebugLog ("Preflop()");
+			// TODO: check players hand strength
 
 			Card card = null;
 			Image image = null;
-			// TODO:
-			// Bet round 1
-			// check players hand strength
-			// chose pattern and alternative patterns
-			
+
 			if (subRoundCount == 0) {
 				if (source == null)
 					source = new Constants ();
 				game.deck = new Deck ();
 				game.deck.Shuffle ();
-//				var deckCards = source.GetDeckCards();
-//				var hand = new Hand();
-				foreach (var player in game.players) {
-//					player.hand = hand.GetHandByPlayerNo(player.no);
 
-					for (int i = 1; i <= Settings.playerHandSize; i++) {
+				foreach (var player in game.players) {
+					for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
 						card = game.deck.Deal ();
 						var cardImg = GameObject.Find ("player" + player.no + "hold" + i);
 						if (cardImg) {
@@ -252,46 +246,30 @@ public class Game
 							else
 								card.FaceUp = false;
 						}
-						player.cards.Add (card);
+						player.hand.getCards().Add (card);
 					}
-
-					player.handString = "";
-					bool isSuited = false;
-					if (player.cards.Count >= 2) {
-						if (player.cards[0].getSuit() == player.cards[1].getSuit()) {
-							isSuited = true;
-						}
-						player.handString += Card.rankToResString(player.cards[0].getRank());
-						player.handString += Card.rankToResString(player.cards[1].getRank());
-						if (player.cards[0].getRank() == player.cards[1].getRank()) {
-						}
-						else if (isSuited)
-							player.handString += "s";
-						else
-							player.handString += "o";
-					}
-
-
-					//					player.handString = "22"; // TODO: 
-					var preflops = source.GetPreflops ();
-					foreach (var preflop in preflops) {
-						if (preflop.position == player.no) {
-							if (preflop.hand == player.handString) {
-
-								player.pattern = preflop.pattern;
-								player.alt_patterns = preflop.alt_patterns;
-								player.patternCurrent = player.GetAndSetPatternRandomly ();
-								player.actionCurrent = player.GetCurrentAction (betToStayInGame, betTotalInThisRound);
-								
-								break;
-							}
-						}
-					}
+					player.handPreflopString = player.GetHandPreflopString();
 				}
 
 				game.isGameRunning = true;
 				game.isGameEnd = false;
 
+				// preflop bet rounds
+				var preflops = source.GetPreflops ();
+				foreach (var player in game.players)
+				foreach (var preflop in preflops) {
+					if (preflop.position == player.no) {
+						if (preflop.hand == player.handPreflopString) {
+							
+							player.pattern = preflop.pattern;
+							player.alt_patterns = preflop.alt_patterns;
+							player.patternCurrent = player.GetAndSetPatternRandomly ();
+							player.actionCurrent = player.GetCurrentAction (betToStayInGame, betTotalInThisRound);
+							
+							break;
+						}
+					}
+				}
 
 				// flop
 				for (int i = 1; i <= 3; i++) {
@@ -347,8 +325,8 @@ public class Game
 				switch (x) {
 				case 0:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
@@ -357,8 +335,8 @@ public class Game
 					break;
 				case 1:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [3]);
@@ -366,8 +344,8 @@ public class Game
 					break;
 				case 2:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
@@ -375,8 +353,8 @@ public class Game
 					break;
 				case 3:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
@@ -384,7 +362,7 @@ public class Game
 					break;
 				case 4:
 					{
-						hand.Add (player.cards [0]);
+						hand.Add (player.hand.getCards() [0]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
@@ -393,7 +371,7 @@ public class Game
 					break;
 				case 5:
 					{
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
@@ -402,8 +380,8 @@ public class Game
 					break;
 				case 6:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [4]);
@@ -411,8 +389,8 @@ public class Game
 					break;
 				case 7:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [2]);
 						hand.Add (cards [4]);
@@ -420,8 +398,8 @@ public class Game
 					break;
 				case 8:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
 						hand.Add (cards [4]);
@@ -429,7 +407,7 @@ public class Game
 					break;
 				case 9:
 					{
-						hand.Add (player.cards [0]);
+						hand.Add (player.hand.getCards() [0]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
@@ -438,7 +416,7 @@ public class Game
 					break;
 				case 10:
 					{
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
@@ -447,8 +425,8 @@ public class Game
 					break;
 				case 11:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [3]);
 						hand.Add (cards [4]);
@@ -456,8 +434,8 @@ public class Game
 					break;
 				case 12:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [1]);
 						hand.Add (cards [3]);
 						hand.Add (cards [4]);
@@ -465,7 +443,7 @@ public class Game
 					break;
 				case 13:
 					{
-						hand.Add (player.cards [0]);
+						hand.Add (player.hand.getCards() [0]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [3]);
@@ -474,7 +452,7 @@ public class Game
 					break;
 				case 14:
 					{
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [3]);
@@ -483,8 +461,8 @@ public class Game
 					break;
 				case 15:
 					{
-						hand.Add (player.cards [0]);
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [0]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
 						hand.Add (cards [4]);
@@ -492,7 +470,7 @@ public class Game
 					break;
 				case 16:
 					{
-						hand.Add (player.cards [0]);
+						hand.Add (player.hand.getCards() [0]);
 						hand.Add (cards [0]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
@@ -501,7 +479,7 @@ public class Game
 					break;
 				case 17:
 					{
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [0]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
@@ -510,7 +488,7 @@ public class Game
 					break;
 				case 18:
 					{
-						hand.Add (player.cards [0]);
+						hand.Add (player.hand.getCards() [0]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
@@ -519,7 +497,7 @@ public class Game
 					break;
 				case 19:
 					{
-						hand.Add (player.cards [1]);
+						hand.Add (player.hand.getCards() [1]);
 						hand.Add (cards [1]);
 						hand.Add (cards [2]);
 						hand.Add (cards [3]);
