@@ -14,6 +14,8 @@ public class Player {
 	public string name;
 
 	public string handPreflopString;
+
+	public Hand handPreflop;
 	public Hand hand;
 	public List<Hand> hands;
 

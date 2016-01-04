@@ -232,6 +232,7 @@ public class Game
 						}
 						player.hand.getCards().Add (card);
 					}
+					player.handPreflop = player.hand;
 					player.handPreflopString = player.GetHandPreflopString();
 				}
 
@@ -312,9 +313,9 @@ public class Game
 					int i = 0;
 					if (player.actionCurrent == "FOLD") {
 						player.isFolded = true;
-						if (player.hand.getCards().Count >= 2) {
-							player.hand.getCard(0).FaceUp = true;
-							player.hand.getCard(1).FaceUp = true;
+						if (player.handPreflop.getCards().Count >= 2) {
+							player.handPreflop.getCards()[0].FaceUp = true;
+							player.handPreflop.getCards()[1].FaceUp = true;
 						}
 					} else if (player.actionCurrent == "CHECk") {
 						
