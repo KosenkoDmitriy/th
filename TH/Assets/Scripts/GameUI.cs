@@ -34,12 +34,12 @@ public class GameUI : MonoBehaviour
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-		ClearAll ();
+//		ClearAll ();
+//
+//		HideDynamicPanels ();
+//		panelInitBet.SetActive (true);
 
-		HideDynamicPanels ();
-		panelInitBet.SetActive (true);
-
-//		game.GameState.InitGame (game);
+		game.GameState.InitGame (game);
 	}
 
 	// end win panel

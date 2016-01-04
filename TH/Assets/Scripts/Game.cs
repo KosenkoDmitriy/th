@@ -120,6 +120,7 @@ public class Game
 
 			foreach (var player in game.players) {
 				foreach (var card in player.handPreflop.getCards()) {
+					if (player.no != 0)
 					if (player.isFolded) {
 //						card.setImage(game.ui.cardBg); // hide
 						card.isHidden = true;
@@ -146,8 +147,16 @@ public class Game
 
 		public void InitGame (Game game)
 		{
+			game.ui.ClearAll ();
+
 			game.ui.HideDynamicPanels ();
 			game.ui.panelInitBet.SetActive (true);
+
+//			GameState = new GameStates ();
+//			PatternState = new PatternStates ();
+//
+			game.cards = new List<Card> ();
+			game.players = game.GetPlayers ();
 		}
 
 		public void Check (Game game)
