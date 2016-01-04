@@ -1,10 +1,10 @@
 ﻿using System;
-
-//using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
+
+using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Game
 {
@@ -145,7 +145,6 @@ public class Game
 		public void Check (Game game)
 		{
 			NextRound (game);
-
 		}
 
 		public void Call (Game game)
@@ -154,7 +153,6 @@ public class Game
 			betTotalInThisRound += game.ui.betAmount;
 
 			NextRound (game);
-
 		}
 
 		public void Raise (Game game)
@@ -163,13 +161,11 @@ public class Game
 			betTotalInThisRound += game.ui.betAmount;
 
 			NextRound (game);
-
 		}
 
 		public void Fold (Game game)
 		{
 			EndGame (game);
-//			NextRound (game);
 		}
 
 		private void NextRound (Game game)
@@ -188,22 +184,6 @@ public class Game
 			
 			if (Settings.isDebug)
 				game.ui.DebugLog ("NextRound() current round: " + roundCount + "/" + roundMaxCount);
-
-			int i = 0;
-			foreach (var player in game.players) {
-				if (player.credits <= 0 || game.ui.betAmount <= 0) {
-					game.ui.btnCheck.GetComponent<Button> ().interactable = true;
-					game.ui.btnCall.GetComponent<Button> ().interactable = false;
-				} else {
-					game.ui.btnCheck.GetComponent<Button> ().interactable = false;
-					game.ui.btnCall.GetComponent<Button> ().interactable = true;
-					player.credits -= game.ui.betAmount;
-					game.potAmount += game.ui.betAmount;
-					game.ui.creditLabels [i].GetComponent<Text> ().text = player.credits.ToString ();
-					game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
-					i++;
-				}
-			}
 
 			if (roundCount >= 0 && roundCount < subRoundMaxCount) {
 				Preflop (game);
@@ -265,7 +245,30 @@ public class Game
 							player.alt_patterns = preflop.alt_patterns;
 							player.patternCurrent = player.GetAndSetPatternRandomly ();
 							player.actionCurrent = player.GetCurrentAction (betToStayInGame, betTotalInThisRound);
+
 							//TODO: handle player's current action
+
+							int i = 0;
+							if (player.actionCurrent == "FOLD") {
+
+							} else if (player.actionCurrent == "CHECk") {
+							} else if (player.actionCurrent == "CALL") {
+							} else if (player.actionCurrent == "RAISE") {
+							}
+
+							if (player.credits <= 0 || game.ui.betAmount <= 0) {
+								game.ui.btnCheck.GetComponent<Button> ().interactable = true;
+								game.ui.btnCall.GetComponent<Button> ().interactable = false;
+							} else {
+								game.ui.btnCheck.GetComponent<Button> ().interactable = false;
+								game.ui.btnCall.GetComponent<Button> ().interactable = true;
+								player.credits -= game.ui.betAmount;
+								game.potAmount += game.ui.betAmount;
+								game.ui.creditLabels [i].GetComponent<Text> ().text = player.credits.ToString ();
+								game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
+								i++;
+							}
+
 							break;
 						}
 					}
@@ -307,10 +310,10 @@ public class Game
 				}
 
 //				foreach (var player in game.ui.cardsOfPlayer) {
-//					//				int rand = new Random(0, game.ui.cardsAll.Count);
 //					player.sprite = game.ui.cardsAll [1];
 //				}
 				//TODO: calculate win percentage/hand strength
+
 			}
 		}
 		

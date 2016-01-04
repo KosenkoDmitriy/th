@@ -1,24 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-using System;
+﻿using System;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 
+using UnityEngine;
+using UnityEngine.UI;
 using Assets.Scripts;
-using System.Collections;
 
 public class GameUI : MonoBehaviour
 {
 	Game game;
-	GameUI() {
-		Constants source = new Constants ();
-		var list = source.GetPatterns ();
-		var preflops = source.GetPreflops ();
-		var flops = source.GetFlops ();
-		var turns = source.GetTurns ();
-		var rivers = source.GetRivers ();
 
+	GameUI() {
 //		foreach (var item in list) {
 //			DebugLog(item.name);
 //		}
