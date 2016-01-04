@@ -37,6 +37,7 @@ public class Card
 	private Image Image;
 	private Sprite sprite;
 	private bool faceUp;
+	private bool is_hidden;
 	private bool highlight;
 
 	public bool FaceUp {
@@ -44,6 +45,13 @@ public class Card
 		set { 
 			faceUp = value;
 			getImageFromFile ();
+		}
+	}
+	public bool isHidden {
+		get { return is_hidden; }
+		set { 
+			is_hidden = value;
+			getHiddenImageFromFile ();
 		}
 	}
 	//default two of diamonds
@@ -178,6 +186,15 @@ public class Card
 				this.Image.sprite = sprite;
 		} else {
 			this.sprite = Resources.Load<Sprite> (Settings.cardBackName);
+			if (this.Image != null)
+				this.Image.sprite = sprite;
+		}
+	}
+	private void getHiddenImageFromFile ()
+	{
+		if (isHidden) {
+			string path = Settings.cardBg; //Settings.cardsPrefix + rankToResString (rank) + "_" + suitToResString (suit);
+			this.sprite = Resources.Load<Sprite> (path);
 			if (this.Image != null)
 				this.Image.sprite = sprite;
 		}

@@ -104,7 +104,6 @@ public class Player {
 			{
 				hand.Add (this.hand.getCards() [0]);
 				hand.Add (this.hand.getCards() [1]);
-				
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);

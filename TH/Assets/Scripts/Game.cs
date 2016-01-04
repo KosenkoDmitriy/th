@@ -119,8 +119,13 @@ public class Game
 			betToStayInGame = betTotalInThisRound = 0;
 
 			foreach (var player in game.players) {
-				foreach (var card in player.hand.getCards()) {
-					card.FaceUp = true;
+				foreach (var card in player.handPreflop.getCards()) {
+					if (player.isFolded) {
+//						card.setImage(game.ui.cardBg); // hide
+						card.isHidden = true;
+					} else {
+						card.FaceUp = true;
+					}
 				}
 			}
 
