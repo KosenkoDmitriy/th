@@ -54,15 +54,18 @@ public class Player {
 	}
 
 	public string GetCurrentAction(double betToStayInGame, double betTotal) {
-		string action = patternCurrent.actionDefault;
-//		action = patternCurrent.actionPreffered1;
-//		action = patternCurrent.actionPreffered2;
-		if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
-		foreach (var betRound in patternCurrent.betRounds) {
-			if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
-				action = betRound.name_action;
-				break;
-			}
+		string action = "";
+		if (patternCurrent != null) {
+			action = patternCurrent.actionDefault;
+//			action = patternCurrent.actionPreffered1;
+//			åaction = patternCurrent.actionPreffered2;
+			if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
+				foreach (var betRound in patternCurrent.betRounds) {
+					if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
+						action = betRound.name_action;
+						break;
+					}
+				}
 		}
 		return action;
 	}

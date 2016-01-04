@@ -15,6 +15,8 @@ public class Game
 		PatternState = new PatternStates ();
 		cards = new List<Card> ();
 		players = GetPlayers ();
+//		playerReal = players.First ();
+//		players.Remove (playerReal);
 	}
 
 	public List<Player> GetPlayers ()
@@ -32,6 +34,7 @@ public class Game
 
 	double potAmount;
 	public Deck deck;
+//	public Player playerReal;
 	public List<Player> players;
 	public List<Card> cards;
 	public GameUI ui;
@@ -149,16 +152,16 @@ public class Game
 
 		public void Call (Game game)
 		{
-			betToStayInGame += game.ui.betAmount;
-			betTotalInThisRound += game.ui.betAmount;
+//			betToStayInGame += game.ui.betAmount;
+//			betTotalInThisRound += game.ui.betAmount;
 
 			NextRound (game);
 		}
 
 		public void Raise (Game game)
 		{
-			betToStayInGame += game.ui.betAmount;
-			betTotalInThisRound += game.ui.betAmount;
+//			betToStayInGame += game.ui.betAmount;
+//			betTotalInThisRound += game.ui.betAmount;
 
 			NextRound (game);
 		}
@@ -209,6 +212,7 @@ public class Game
 			Card card = null;
 			Image image = null;
 
+			// start preflop bet round 0
 			if (subRoundCount == 0) {
 				if (source == null)
 					source = new Constants ();
@@ -243,31 +247,6 @@ public class Game
 							
 							player.pattern = preflop.pattern;
 							player.alt_patterns = preflop.alt_patterns;
-							player.patternCurrent = player.GetAndSetPatternRandomly ();
-							player.actionCurrent = player.GetCurrentAction (betToStayInGame, betTotalInThisRound);
-
-							//TODO: handle player's current action
-
-							int i = 0;
-							if (player.actionCurrent == "FOLD") {
-
-							} else if (player.actionCurrent == "CHECk") {
-							} else if (player.actionCurrent == "CALL") {
-							} else if (player.actionCurrent == "RAISE") {
-							}
-
-							if (player.credits <= 0 || game.ui.betAmount <= 0) {
-								game.ui.btnCheck.GetComponent<Button> ().interactable = true;
-								game.ui.btnCall.GetComponent<Button> ().interactable = false;
-							} else {
-								game.ui.btnCheck.GetComponent<Button> ().interactable = false;
-								game.ui.btnCall.GetComponent<Button> ().interactable = true;
-								player.credits -= game.ui.betAmount;
-								game.potAmount += game.ui.betAmount;
-								game.ui.creditLabels [i].GetComponent<Text> ().text = player.credits.ToString ();
-								game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
-								i++;
-							}
 
 							break;
 						}
@@ -314,6 +293,61 @@ public class Game
 //				}
 				//TODO: calculate win percentage/hand strength
 
+			}
+			// end preflop bet round 0
+
+			// the same for all preflop bet rounds
+			foreach (var player in game.players) {
+//				if (player.no == 0) { // real player
+//					if (player.isFolded) EndGame(game);
+//					break;
+//				}
+				if (!player.isFolded) // active virtual players only
+				{
+					player.patternCurrent = player.GetAndSetPatternRandomly ();
+					player.actionCurrent = player.GetCurrentAction (betToStayInGame, betTotalInThisRound);
+				
+					//TODO: handle player's current action
+				
+					int i = 0;
+					if (player.actionCurrent == "FOLD") {
+						player.isFolded = true;
+						if (player.hand.getCards().Count >= 2) {
+							player.hand.getCard(0).FaceUp = true;
+							player.hand.getCard(1).FaceUp = true;
+						}
+					} else if (player.actionCurrent == "CHECk") {
+						
+					} else if (player.actionCurrent == "CALL") {
+						player.credits -= game.ui.betAmount;
+
+						betToStayInGame += game.ui.betAmount;
+						betTotalInThisRound += game.ui.betAmount;
+					} else if (player.actionCurrent == "RAISE") {
+						player.credits -= game.ui.betAmount;
+
+						betToStayInGame += game.ui.betAmount;
+						betTotalInThisRound += game.ui.betAmount;
+					}
+
+					// TODO: will refactor (credit label)
+					game.ui.creditLabels [i].GetComponent<Text> ().text = player.credits.ToString ();
+					game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
+					i++;
+				}
+			}
+
+			// tips for real player as enable/disable buttons //TODO
+			int index = 0;
+			var playerReal = game.players[index]; //real players
+			if (playerReal.credits <= 0 || game.ui.betAmount <= 0) {
+				game.ui.btnCheck.GetComponent<Button> ().interactable = true;
+				game.ui.btnCall.GetComponent<Button> ().interactable = false;
+			} else {
+				game.ui.btnCheck.GetComponent<Button> ().interactable = false;
+				game.ui.btnCall.GetComponent<Button> ().interactable = true;
+				game.ui.creditLabels [index].GetComponent<Text> ().text = playerReal.credits.ToString ();
+				game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 			}
 		}
 		

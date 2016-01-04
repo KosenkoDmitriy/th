@@ -12,9 +12,7 @@ public class GameUI : MonoBehaviour
 	Game game;
 
 	GameUI() {
-//		foreach (var item in list) {
-//			DebugLog(item.name);
-//		}
+
 	}
 
 	public void ClearAll() {
