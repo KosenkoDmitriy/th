@@ -15,6 +15,11 @@ public class Constants {
 		flops = new List<ThFTR>();
 		turns = new List<ThFTR>();
 		rivers = new List<ThFTR>();
+		patterns = GetPatterns ();
+		preflops = GetPreflops ();
+		flops = GetFlops ();
+		turns = GetTurns ();
+		rivers = GetRivers ();
 	}
 
 	public List<Pattern> GetPatterns() {
@@ -136,7 +141,7 @@ public class Constants {
 				pf.hand = arg1;
 				pf.position = position;
 				pf.pattern = GetPatternByName(arg2);
-				if (pf.pattern == null) pf.pattern = new Pattern();
+//				if (pf.pattern == null) pf.pattern = new Pattern();
 				pf.pattern.percent = 100;
 				pf.alt_patterns = new List<Pattern>();
 				preflops.Add(pf);
