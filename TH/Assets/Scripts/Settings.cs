@@ -6,7 +6,7 @@ static class Settings
 
 	public static int playerHandMaxSize = 5;
 	public static int playerHandSizePreflop = 2;
-	public static readonly int maxSubRoundCount = 4;
+	public static readonly int maxSubRoundCount = 1;
 	public static readonly int maxRoundCount = maxSubRoundCount * 4;
 
 	public static double betBonusAmount = 0;

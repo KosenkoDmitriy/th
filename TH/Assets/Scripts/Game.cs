@@ -95,7 +95,7 @@ public class Game
 
 	public class GameStates : IGameState
 	{
-		double betToStayInGame;
+		double betCurrentToStayInGame;
 		double betTotalInThisRound;
 		int roundCount;
 		readonly int roundMaxCount;
@@ -116,7 +116,7 @@ public class Game
 			game.isGameEnd = true;
 
 			roundCount = subRoundCount = 0;
-			betToStayInGame = betTotalInThisRound = 0;
+			betCurrentToStayInGame = betTotalInThisRound = 0;
 
 			foreach (var player in game.players) {
 				foreach (var card in player.handPreflop.getCards()) {
@@ -189,14 +189,15 @@ public class Game
 		{
 
 			if (roundCount >= roundMaxCount) {
-				roundCount = 0;
+				roundCount = subRoundCount = 0;
+				betTotalInThisRound = betCurrentToStayInGame = 0;
 				EndGame (game);
 				return;
 			}
 			
 			if (subRoundCount >= subRoundMaxCount) {
 				subRoundCount = 0;
-				betTotalInThisRound = 0;
+				betTotalInThisRound = betCurrentToStayInGame = 0;
 			}
 			
 			if (Settings.isDebug)
@@ -312,48 +313,48 @@ public class Game
 			// end preflop bet round 0
 
 			// the same for all preflop bet rounds
+			int index = 0;
 			foreach (var player in game.players) {
-//				if (player.no == 0) { // real player
-//					if (player.isFolded) EndGame(game);
-//					break;
-//				}
 				if (!player.isFolded) // active virtual players only
 				{
 					player.patternCurrent = player.GetAndSetPatternRandomly ();
-					player.actionCurrent = player.GetCurrentAction (betToStayInGame, betTotalInThisRound);
-				
+					player.actionCurrent = player.GetCurrentAction (betCurrentToStayInGame, betTotalInThisRound);
 					//TODO: handle player's current action
-				
-					int i = 0;
+
 					if (player.actionCurrent == "FOLD") {
 						player.isFolded = true;
-						if (player.handPreflop.getCards().Count >= 2) {
-							player.handPreflop.getCards()[0].FaceUp = true;
-							player.handPreflop.getCards()[1].FaceUp = true;
+						foreach (var pcard in player.handPreflop.getCards()) {
+							pcard.FaceUp = true;
 						}
 					} else if (player.actionCurrent == "CHECk") {
-						
+//						player.credits -= game.ui.betAmount;
+//						betToStayInGame += game.ui.betAmount;
+//						betTotalInThisRound += game.ui.betAmount;
+						int multiplier = 1;
 					} else if (player.actionCurrent == "CALL") {
-						player.credits -= game.ui.betAmount;
-
-						betToStayInGame += game.ui.betAmount;
-						betTotalInThisRound += game.ui.betAmount;
+						int multiplier = 1;
+						player.credits -= game.ui.betAmount * multiplier;
+						betCurrentToStayInGame += game.ui.betAmount * multiplier;
+						betTotalInThisRound += game.ui.betAmount * multiplier;
+						game.potAmount += game.ui.betAmount * multiplier;
 					} else if (player.actionCurrent == "RAISE") {
-						player.credits -= game.ui.betAmount;
-
-						betToStayInGame += game.ui.betAmount;
-						betTotalInThisRound += game.ui.betAmount;
+						//TODO: int multiplier = parse.FromPatternName();
+						int multiplier = 2;
+						player.credits -= game.ui.betAmount * multiplier;
+						betCurrentToStayInGame += game.ui.betAmount * multiplier;
+						betTotalInThisRound += game.ui.betAmount * multiplier;
+						game.potAmount += game.ui.betAmount * multiplier;
 					}
 
 					// TODO: will refactor (credit label)
-					game.ui.creditLabels [i].GetComponent<Text> ().text = player.credits.ToString ();
+					game.ui.creditLabels [index].GetComponent<Text> ().text = player.credits.ToString ();
 					game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
-					i++;
+					index++;
 				}
 			}
 
-			// tips for real player as enable/disable buttons //TODO
-			int index = 0;
+			// tips for real player as enable/disable buttons //TODO:
+			index = 0;
 			var playerReal = game.players[index]; //real players
 			if (playerReal.credits <= 0 || game.ui.betAmount <= 0) {
 				game.ui.btnCheck.GetComponent<Button> ().interactable = true;

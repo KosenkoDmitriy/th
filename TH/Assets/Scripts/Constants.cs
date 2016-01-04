@@ -51,15 +51,12 @@ public class Constants {
 				PatternBetRoundAndAction betRound = new PatternBetRoundAndAction();
 
 				var betChars = arg0.ToCharArray();
-				arg0 = betChars[0].ToString();
-				arg1 = betChars[1].ToString();
-
-				betRound.name_action = arg2;
+				betRound.name_action = arg1;
 				double costBet = 0;
-				Double.TryParse(arg0, out costBet);
+				Double.TryParse(betChars[0].ToString(), out costBet);
 				betRound.costBet = costBet;
 				double costBetTotal = 0;
-				Double.TryParse(arg1, out costBetTotal);
+				Double.TryParse(betChars[1].ToString(), out costBetTotal);
 				betRound.costBetTotal = costBetTotal;
 				lastPattern.betRounds.Add(betRound);
 			}
