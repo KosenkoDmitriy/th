@@ -1,5 +1,5 @@
 ﻿using System;
-//using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class Player {
@@ -84,6 +84,219 @@ public class Player {
 				handPreflopString += "o";
 		}
 		return handPreflopString;
+	}
+
+	public Hand GetBestPlayerHand (List<Card> cards)
+	{
+		var count = 20;
+		Hand hand = null;
+		this.hands = new List<Hand> ();
+		
+		for (int x = 0; x <= count; x++) {//iterate through all possible 5 card hands
+			hand = new Hand();
+			switch (x) {
+			case 0:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+			}
+				break;
+			case 1:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [3]);
+			}
+				break;
+			case 2:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+			}
+				break;
+			case 3:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+			}
+				break;
+			case 4:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+			}
+				break;
+			case 5:
+			{
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+			}
+				break;
+			case 6:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 7:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [2]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 8:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 9:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 10:
+			{
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 11:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 12:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [1]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 13:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 14:
+			{
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 15:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 16:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (cards [0]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 17:
+			{
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [0]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 18:
+			{
+				hand.Add (this.hand.getCards() [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 19:
+			{
+				hand.Add (this.hand.getCards() [1]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			case 20:
+			{
+				hand.Add (cards [0]);
+				hand.Add (cards [1]);
+				hand.Add (cards [2]);
+				hand.Add (cards [3]);
+				hand.Add (cards [4]);
+			}
+				break;
+			}
+			hand = HandCombination.getBestHand(hand); 
+			this.hands.Add (hand);
+		}
+		
+		Hand bestHand = this.hands.First();
+		foreach (var item in this.hands) {
+			if (hand > bestHand) {
+				bestHand = hand;
+			}
+		}
+		return bestHand;
 	}
 
 }
