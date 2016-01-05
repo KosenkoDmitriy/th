@@ -72,6 +72,7 @@ public class Game
 	{
 		double betCurrentToStayInGame;
 		double betTotalInThisRound;
+		double betRaiseInThisRound;
 		int roundCount;
 		readonly int roundMaxCount;
 		int subRoundCount;
@@ -132,6 +133,12 @@ public class Game
 //
 			game.cards = new List<Card> ();
 			game.players = game.GetPlayers ();
+
+			foreach (var player1 in game.players) {
+				var player = new PlayerUI(player1);
+				player.SetChipRandomly();
+			}
+
 		}
 
 		public void Check (Game game)
@@ -165,14 +172,14 @@ public class Game
 
 			if (roundCount >= roundMaxCount) {
 				roundCount = subRoundCount = 0;
-				betTotalInThisRound = betCurrentToStayInGame = 0;
+				betRaiseInThisRound = betTotalInThisRound = betCurrentToStayInGame = 0;
 				EndGame (game);
 				return;
 			}
 			
 			if (subRoundCount >= subRoundMaxCount) {
 				subRoundCount = 0;
-				betTotalInThisRound = betCurrentToStayInGame = 0;
+				betRaiseInThisRound = betTotalInThisRound = betCurrentToStayInGame = 0;
 			}
 			
 			if (Settings.isDebug)
@@ -311,6 +318,10 @@ public class Game
 						Update (game, player);
 
 					} else if (player.actionCurrent == "RAISE") {
+						int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
+						player.credits -= game.ui.betAmount * multiplier;
+						betRaiseInThisRound += game.ui.betAmount * multiplier;
+						betCurrentToStayInGame += betRaiseInThisRound;
 						Update (game, player);
 
 					}
@@ -343,6 +354,10 @@ public class Game
 			game.ui.players [player.no].lblCredits.text = player.credits.to_s();
 			game.ui.players[player.no].lblAction.text = player.actionCurrent;
 			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
+
+			game.ui.lblBet.GetComponent<Text> ().text = game.ui.betAmount.to_s();
+			game.ui.lblRaise.GetComponent<Text> ().text = betRaiseInThisRound.to_s(); // TODO:
+			game.ui.lblCall.GetComponent<Text> ().text = betCurrentToStayInGame.to_s();
 		}
 
 		public void Flop (Game game)

@@ -54,6 +54,8 @@ public class Constants {
 						Int32.TryParse(c.ToString(), out maxBetAmount);
 						if (maxBetAmount > 0) {
 							pattern.betMaxCallOrRaise = maxBetAmount;
+						} else {
+							pattern.betMaxCallOrRaise = 1;
 						}
 					}
 				}

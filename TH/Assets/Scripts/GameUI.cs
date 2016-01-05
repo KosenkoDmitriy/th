@@ -246,13 +246,6 @@ public class GameUI : MonoBehaviour
 			payTable.BuildVideoBonusPaytable();
 			payTable.SetPaytableSelectedColumn(9);
 		}
-		
-		// start init chips
-		chipSpriteList = new List<Sprite>() {
-			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
-			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
-		};
-		// end init chips
 
 //		InitCards (); // get dealers from parent object
 		HideDynamicPanels ();
@@ -383,7 +376,6 @@ public class GameUI : MonoBehaviour
 
 	public PayTable payTable;
 	public List<PlayerUI> players;
-	public List<Sprite> chipSpriteList;
 	public double betAmount, potAmount;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
