@@ -3,6 +3,7 @@ using System.Collections.Generic;
 static class Settings
 {
 	public static bool isDebug = false;
+	public static int levelGame = 2;
 
 	public static int playerHandMaxSize = 5;
 	public static int playerHandSizePreflop = 2;
@@ -16,7 +17,7 @@ static class Settings
 
 	public static bool isPlayerWithNo = true;
     public static string key = "";
-    public static int levelGame = 1;
+    
     public static int levelMainMenu = 0;
 
     public static bool isLogined = false;
