@@ -69,6 +69,7 @@
      <Compile Include="Assets\Scripts\Pattern.cs" />
      <Compile Include="Assets\Scripts\PayTable.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\PlayerUI.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
      <None Include="Assets\3DText.shader" />
  <Reference Include="UnityEngine.UI">
