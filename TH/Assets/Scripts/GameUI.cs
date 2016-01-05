@@ -255,9 +255,9 @@ public class GameUI : MonoBehaviour
 		game = new Game (this);
 		int i = 0;
 		foreach (var player1 in game.players) {
-//			var player = (PlayerUI)player1.Clone();
 			var player = new PlayerUI(player1);
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
+//			player.SetChipRandomly();
 			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
 			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
 			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();

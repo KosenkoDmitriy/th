@@ -7,10 +7,15 @@ using UnityEngine.UI;
 
 public class PlayerUI : Player {
 
+	System.Random rand;
+
 	public PlayerUI() {
+		rand = new System.Random ();
 	}
 
 	public PlayerUI(Player player) {
+		rand = new System.Random ();
+
 		this.name = player.name;
 		this.credits = player.credits;
 		this.no = player.no;
@@ -28,20 +33,8 @@ public class PlayerUI : Player {
 		this.pattern = player.pattern;
 		this.alt_patterns = player.alt_patterns;
 	}
-
-//	public override object Clone()
-//	{
-//		PlayerUI copy = (PlayerUI)base.Clone();
-//		copy.chip = this.chip;
-//		return copy;
-//	}
-
-//	public Player player;
-	public Image chip {
-		get { return this.chip; }
-		set { this.chip = value; SetChipRandomly();	}
-	}
-
+	
+	public Image chip;
 	List<Sprite> chipSpriteList;
 	public Image dealer;
 	public Text lblCredits;
@@ -50,13 +43,13 @@ public class PlayerUI : Player {
 
 	public void SetChipRandomly() {
 		// start init chips
-		if (chipSpriteList.Count <= 0)
+		if (chipSpriteList == null)
 		chipSpriteList = new List<Sprite>() {
 			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
 			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
 		};
 		// end init chips
-		var rand = new System.Random ();
-		this.chip.sprite = chipSpriteList [rand.Next (0, chipSpriteList.Count - 1)];
+		int index = rand.Next (0, chipSpriteList.Count);
+		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
 }

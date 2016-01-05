@@ -9,30 +9,6 @@ public class Player {
 		alt_patterns = new List<Pattern> ();
 	}
 
-//	public virtual object Clone()
-//	{
-//		Player copy = (Player)Activator.CreateInstance(this.GetType());
-//
-////		Player copy = new Player ();
-//		copy.name = this.name;
-//		copy.credits = this.credits;
-//		copy.no = this.no;
-//		copy.handPreflopString = this.handPreflopString;
-//		copy.handPreflopStringReversed = this.handPreflopStringReversed;
-//
-//		copy.handPreflop = this.handPreflop;
-//		copy.hand = this.hand;
-//
-//		copy.hands = this.hands;
-//		copy.isFolded = this.isFolded;
-//		copy.actionCurrent = this.actionCurrent;
-//		copy.patternCurrent = this.patternCurrent;
-//
-//		copy.pattern = this.pattern;
-//		copy.alt_patterns = this.alt_patterns;
-//		return copy;
-//	}
-	
 	public double credits;
 	public int no;
 	public string name;

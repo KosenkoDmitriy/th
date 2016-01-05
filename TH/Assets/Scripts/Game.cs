@@ -133,12 +133,6 @@ public class Game
 //
 			game.cards = new List<Card> ();
 			game.players = game.GetPlayers ();
-
-			foreach (var player1 in game.players) {
-				var player = new PlayerUI(player1);
-				player.SetChipRandomly();
-			}
-
 		}
 
 		public void Check (Game game)
@@ -216,6 +210,11 @@ public class Game
 				game.deck = new Deck ();
 				game.deck.Shuffle ();
 
+				foreach (var player in game.ui.players) {
+//					var player = new PlayerUI(player1);
+					player.SetChipRandomly();
+				}
+
 				foreach (var player in game.players) {
 					for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
 						card = game.deck.Deal ();
@@ -232,6 +231,7 @@ public class Game
 					player.handPreflop = player.hand;
 					player.handPreflopString = player.GetHandPreflopString();
 				}
+
 
 				game.isGameRunning = true;
 				game.isGameEnd = false;
