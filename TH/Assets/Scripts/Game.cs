@@ -67,31 +67,6 @@ public class Game
 //		void BetBonus();
 	}
 
-	public interface IPatternState
-	{
-		void CheckFold_Fold (Game game); // always fold
-		void CheckCall_Call (Game game); // always call
-		void CheckCall1_Fold (Game game);
-
-		void CheckCall2_Call (Game game);
-
-		void CheckCall3_Call (Game game);
-
-		void CheckRaise_Raise (Game game);
-
-		void CheckRaise1_Raise (Game game);
-
-		void CheckRaise2_Raise (Game game);
-
-		void Raise_Raise (Game game); // always raise
-		void RaiseCall1_Raise (Game game);
-
-		void RaiseCall2_Raise (Game game);
-
-		void OpenCall1_Fold (Game game);
-
-		void OpenCall2_Fold (Game game);
-	}
 
 	public class GameStates : IGameState
 	{
@@ -401,74 +376,6 @@ public class Game
 				game.cards [4].FaceUp = true;
 //				game.ui.cardsPublic [4].sprite = game.ui.cardsAll [6];
 			}
-		}
-	}
-
-	public class PatternStates : IPatternState
-	{
-		public void CheckFold_Fold (Game game)
-		{
-
-		}
-
-		public void CheckCall_Call (Game game)
-		{
-
-		}
-
-		public void CheckCall1_Fold (Game game)
-		{
-
-		}
-
-		public void CheckCall2_Call (Game game)
-		{
-
-		}
-
-		public void CheckCall3_Call (Game game)
-		{
-
-		}
-
-		public void CheckRaise_Raise (Game game)
-		{
-
-		}
-
-		public void CheckRaise1_Raise (Game game)
-		{
-
-		}
-
-		public void CheckRaise2_Raise (Game game)
-		{
-
-		}
-
-		public void Raise_Raise (Game game)
-		{
-
-		}
-
-		public void RaiseCall1_Raise (Game game)
-		{
-
-		}
-
-		public void RaiseCall2_Raise (Game game)
-		{
-
-		}
-
-		public void OpenCall1_Fold (Game game)
-		{
-
-		}
-
-		public void OpenCall2_Fold (Game game)
-		{
-
 		}
 	}
 
