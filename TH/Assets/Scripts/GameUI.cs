@@ -28,16 +28,15 @@ public class GameUI : MonoBehaviour
 				card.isHidden = true;
 			}
 		}
+		lblPot.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
+		lblBet.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
+		lblRaise.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
+		lblWin.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
 	}
 
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-//		ClearAll ();
-//
-//		HideDynamicPanels ();
-//		panelInitBet.SetActive (true);
-
 		game.GameState.InitGame (game);
 	}
 
@@ -337,7 +336,6 @@ public class GameUI : MonoBehaviour
 		}
 		Debug.Log (string.Format("\n\nTotal: {0} (20%) + {1} (80%) = 100 (100%)", count1, count2));
 	}
-
 
 	public int GetPercentOfAllTime(int percent) {
 		float percentOfTime = UnityEngine.Random.value * 100;

@@ -310,13 +310,14 @@ public class Game
 						int multiplier = 1;
 					} else if (player.actionCurrent == "CALL") {
 						int multiplier = 1;
+//						int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO:
 						player.credits -= game.ui.betAmount * multiplier;
 						betCurrentToStayInGame += game.ui.betAmount * multiplier;
 						betTotalInThisRound += game.ui.betAmount * multiplier;
 						game.potAmount += game.ui.betAmount * multiplier;
 					} else if (player.actionCurrent == "RAISE") {
-						//TODO: int multiplier = parse.FromPatternName();
-						int multiplier = player.patternCurrent.betMaxCallOrRaise;
+						int multiplier = 1;
+//						int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
 						player.credits -= game.ui.betAmount * multiplier;
 						betCurrentToStayInGame += game.ui.betAmount * multiplier;
 						betTotalInThisRound += game.ui.betAmount * multiplier;
@@ -325,6 +326,7 @@ public class Game
 
 					// TODO: will refactor (credit label)
 					game.ui.players[index].lblCredits.text = player.credits.ToString ();
+					game.ui.players[index].lblAction.text = player.actionCurrent;
 					game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 					index++;
 				}
