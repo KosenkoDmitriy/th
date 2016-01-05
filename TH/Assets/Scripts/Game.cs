@@ -259,7 +259,7 @@ public class Game
 				foreach (var player in game.players)
 				foreach (var preflop in preflops) {
 					if (preflop.position == player.no) {
-						if (preflop.hand == player.handPreflopString) {
+						if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
 							
 							player.pattern = preflop.pattern;
 							player.alt_patterns = preflop.alt_patterns;

@@ -13,7 +13,8 @@ public class Player {
 	public int no;
 	public string name;
 
-	public string handPreflopString;
+	public string handPreflopString;	// "AKs"
+	public string handPreflopStringReversed;	// "KAs"
 
 	public Hand handPreflop;
 	public Hand hand;
@@ -73,7 +74,8 @@ public class Player {
 	}
 
 	public string GetHandPreflopString() {
-		string handPreflopString = "";
+		handPreflopString = "";
+		handPreflopStringReversed = "";
 		bool isSuited = false;
 		if (hand.getCards().Count >= 2) {
 			if (hand.getCards()[0].getSuit() == hand.getCards()[1].getSuit()) {
@@ -81,12 +83,17 @@ public class Player {
 			}
 			handPreflopString += Card.rankToResString(hand.getCards()[0].getRank());
 			handPreflopString += Card.rankToResString(hand.getCards()[1].getRank());
+			handPreflopStringReversed += Card.rankToResString(hand.getCards()[1].getRank());
+			handPreflopStringReversed += Card.rankToResString(hand.getCards()[0].getRank());
 			if (hand.getCards()[0].getRank() == hand.getCards()[1].getRank()) {
 			}
-			else if (isSuited)
+			else if (isSuited) {
 				handPreflopString += "s";
-			else
+				handPreflopStringReversed += "s";
+			} else {
 				handPreflopString += "o";
+				handPreflopStringReversed += "o";
+			}
 		}
 		return handPreflopString;
 	}
@@ -360,10 +367,12 @@ public class River: ThFTR {
 }
 
 public class Pattern {
+
 	public string name;
 	public string actionDefault;
 	public string actionPreffered1;
 	public string actionPreffered2;
+	public int betMaxCallOrRaise;	// in number of bets
 
 	public List<PatternBetRoundAndAction> betRounds;
 
