@@ -47,7 +47,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Card.cs" />
      <Compile Include="Assets\Scripts\Constants.cs" />
+     <Compile Include="Assets\Scripts\Credit.cs" />
      <Compile Include="Assets\Scripts\Deck.cs" />
+     <Compile Include="Assets\Scripts\Extension.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\GameHelper.cs" />
      <Compile Include="Assets\Scripts\GameTest.cs" />

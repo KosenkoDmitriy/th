@@ -28,10 +28,10 @@ public class GameUI : MonoBehaviour
 				card.isHidden = true;
 			}
 		}
-		lblPot.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
-		lblBet.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
-		lblRaise.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
-		lblWin.GetComponent<Text>().text = FormatCreditsOrDollars(Settings.betNull);
+		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
+		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
+		lblRaise.GetComponent<Text>().text = Settings.betNull.to_s();
+		lblWin.GetComponent<Text>().text = Settings.betNull.to_s();
 	}
 
 	// start win panel
@@ -122,7 +122,7 @@ public class GameUI : MonoBehaviour
 		
 		Settings.betCurrent = Settings.betMax;
 		
-		string b = FormatCreditsOrDollars(Settings.betCurrent);
+		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
 		panelInitBet.GetComponentInChildren<InputField>().text = b;
 		//GameObject.Find("InputField").GetComponent<InputField>().text = b;
@@ -140,7 +140,7 @@ public class GameUI : MonoBehaviour
 		Settings.betCurrent += Settings.betDx;
 		if (Settings.betCurrent > Settings.betMax)
 			Settings.betCurrent = 0f;
-		inputBetField.text = FormatCreditsOrDollars(Settings.betCurrent);
+		inputBetField.text = Settings.betCurrent.to_s();
 	}
 	
 	public void btnClearBetClick()
@@ -150,15 +150,9 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(pressedSound);
 		
 		Settings.betCurrent = Settings.betNull;
-		inputBetField.text = FormatCreditsOrDollars(Settings.betCurrent);
+		inputBetField.text = Settings.betCurrent.to_s();
 	}
 	// end bet panel
-
-
-	public string FormatCreditsOrDollars(double amount) {
-		string creditAmount = String.Format("{0:N2}", amount);// amount.ToString("#,#", System.Globalization.CultureInfo.CurrentCulture);
-		return creditAmount;
-	}
 
 	public void Start ()
 	{
@@ -191,7 +185,7 @@ public class GameUI : MonoBehaviour
 
 		// bet panel
 		inputBetField = panelInitBet.GetComponentInChildren<InputField> (); //GameObject.Find("InputBetField").GetComponent<InputField>(); // 
-		inputBetField.text = FormatCreditsOrDollars (Settings.betNull);
+		inputBetField.text = Settings.betNull.to_s();
 			
 		lblPanelBet = GameObject.Find ("lblPanelBet");
 			
