@@ -299,7 +299,7 @@ public class Game
 
 					if (player.actionCurrent == "FOLD") {
 						game.ui.players[player.no].lblAction.text = player.actionCurrent;
-
+						game.ui.players[player.no].lblCredits.text = game.ui.FormatCreditsOrDollars(player.credits);
 						player.isFolded = true;
 						foreach (var pcard in player.handPreflop.getCards()) {
 							pcard.FaceUp = true;
@@ -340,9 +340,9 @@ public class Game
 			game.potAmount += game.ui.betAmount * multiplier;
 			
 			// TODO: will refactor (credit label)
-			game.ui.players[player.no].lblCredits.text = player.credits.ToString ();
+			game.ui.players [player.no].lblCredits.text = game.ui.FormatCreditsOrDollars (player.credits);
 			game.ui.players[player.no].lblAction.text = player.actionCurrent;
-			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
+			game.ui.lblPot.GetComponent<Text> ().text = game.ui.FormatCreditsOrDollars(game.potAmount);
 		}
 
 		public void Flop (Game game)

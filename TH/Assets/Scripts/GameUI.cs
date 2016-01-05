@@ -155,7 +155,7 @@ public class GameUI : MonoBehaviour
 	// end bet panel
 
 
-	private string FormatCreditsOrDollars(double amount) {
+	public string FormatCreditsOrDollars(double amount) {
 		string creditAmount = String.Format("{0:N2}", amount);// amount.ToString("#,#", System.Globalization.CultureInfo.CurrentCulture);
 		return creditAmount;
 	}
