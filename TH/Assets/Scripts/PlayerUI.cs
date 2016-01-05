@@ -8,12 +8,6 @@ using UnityEngine.UI;
 public class PlayerUI : Player {
 
 	public PlayerUI() {
-		// start init chips
-		chipSpriteList = new List<Sprite>() {
-			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
-			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
-		};
-		// end init chips
 	}
 
 	public PlayerUI(Player player) {
@@ -55,6 +49,13 @@ public class PlayerUI : Player {
 	public Text lblName;
 
 	public void SetChipRandomly() {
+		// start init chips
+		if (chipSpriteList.Count <= 0)
+		chipSpriteList = new List<Sprite>() {
+			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
+			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
+		};
+		// end init chips
 		var rand = new System.Random ();
 		this.chip.sprite = chipSpriteList [rand.Next (0, chipSpriteList.Count - 1)];
 	}
