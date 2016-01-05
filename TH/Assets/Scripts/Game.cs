@@ -210,8 +210,8 @@ public class Game
 				game.deck = new Deck ();
 				game.deck.Shuffle ();
 
+				// chips
 				foreach (var player in game.ui.players) {
-//					var player = new PlayerUI(player1);
 					player.SetChipRandomly();
 				}
 

@@ -6,16 +6,12 @@ using UnityEngine.UI;
 
 
 public class PlayerUI : Player {
-
-	System.Random rand;
-
+	
 	public PlayerUI() {
-		rand = new System.Random ();
+		Init ();
 	}
 
 	public PlayerUI(Player player) {
-		rand = new System.Random ();
-
 		this.name = player.name;
 		this.credits = player.credits;
 		this.no = player.no;
@@ -32,24 +28,27 @@ public class PlayerUI : Player {
 
 		this.pattern = player.pattern;
 		this.alt_patterns = player.alt_patterns;
+		Init ();
 	}
-	
+
+	private void Init() {
+		// start init chips
+		chipSpriteList = new List<Sprite>() {
+			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
+			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
+		};
+		// end init chips
+	}
+
 	public Image chip;
 	List<Sprite> chipSpriteList;
 	public Image dealer;
 	public Text lblCredits;
 	public Text lblAction;
 	public Text lblName;
-
+	
 	public void SetChipRandomly() {
-		// start init chips
-		if (chipSpriteList == null)
-		chipSpriteList = new List<Sprite>() {
-			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
-			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
-		};
-		// end init chips
-		int index = rand.Next (0, chipSpriteList.Count);
+		int index = UnityEngine.Random.Range(0,chipSpriteList.Count);
 		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
 }
