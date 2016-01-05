@@ -290,7 +290,6 @@ public class Game
 			// end preflop bet round 0
 
 			// the same for all preflop bet rounds
-			int index = 0;
 			foreach (var player in game.players) {
 				if (!player.isFolded) // active virtual players only
 				{
@@ -299,42 +298,28 @@ public class Game
 					//TODO: handle player's current action
 
 					if (player.actionCurrent == "FOLD") {
+						game.ui.players[player.no].lblAction.text = player.actionCurrent;
+
 						player.isFolded = true;
 						foreach (var pcard in player.handPreflop.getCards()) {
 							pcard.FaceUp = true;
 						}
-					} else if (player.actionCurrent == "CHECk") {
-//						player.credits -= game.ui.betAmount;
-//						betToStayInGame += game.ui.betAmount;
-//						betTotalInThisRound += game.ui.betAmount;
-						int multiplier = 1;
-					} else if (player.actionCurrent == "CALL") {
-						int multiplier = 1;
-//						int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO:
-						player.credits -= game.ui.betAmount * multiplier;
-						betCurrentToStayInGame += game.ui.betAmount * multiplier;
-						betTotalInThisRound += game.ui.betAmount * multiplier;
-						game.potAmount += game.ui.betAmount * multiplier;
-					} else if (player.actionCurrent == "RAISE") {
-						int multiplier = 1;
-//						int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-						player.credits -= game.ui.betAmount * multiplier;
-						betCurrentToStayInGame += game.ui.betAmount * multiplier;
-						betTotalInThisRound += game.ui.betAmount * multiplier;
-						game.potAmount += game.ui.betAmount * multiplier;
-					}
+					} else if (player.actionCurrent == "CHECK") {
+						Update (game, player);
 
-					// TODO: will refactor (credit label)
-					game.ui.players[index].lblCredits.text = player.credits.ToString ();
-					game.ui.players[index].lblAction.text = player.actionCurrent;
-					game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
-					index++;
+					} else if (player.actionCurrent == "CALL") {
+						Update (game, player);
+
+					} else if (player.actionCurrent == "RAISE") {
+						Update (game, player);
+
+					}
 				}
 			}
 
-			// tips for real player as enable/disable buttons //TODO:
-			index = 0;
-			var playerReal = game.players[index]; //real players
+			//TODO: tips for real player as enable/disable buttons
+			int index = 0;
+			var playerReal = game.players[index]; //real player
 			if (playerReal.credits <= 0 || game.ui.betAmount <= 0) {
 				game.ui.btnCheck.GetComponent<Button> ().interactable = true;
 				game.ui.btnCall.GetComponent<Button> ().interactable = false;
@@ -345,7 +330,21 @@ public class Game
 				game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 			}
 		}
-		
+
+		public void Update(Game game, Player player) {
+			int multiplier = 1;
+//			int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
+			player.credits -= game.ui.betAmount * multiplier;
+			betCurrentToStayInGame += game.ui.betAmount * multiplier;
+			betTotalInThisRound += game.ui.betAmount * multiplier;
+			game.potAmount += game.ui.betAmount * multiplier;
+			
+			// TODO: will refactor (credit label)
+			game.ui.players[player.no].lblCredits.text = player.credits.ToString ();
+			game.ui.players[player.no].lblAction.text = player.actionCurrent;
+			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
+		}
+
 		public void Flop (Game game)
 		{
 			game.ui.DebugLog ("Flop()");
