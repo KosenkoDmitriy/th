@@ -12,25 +12,24 @@ public class GameUI : MonoBehaviour
 	Game game;
 
 	GameUI() {
-
+		players = new List<PlayerUI> ();
 	}
 
 	public void ClearAll() {
-		ClearPlayerCards ();
-		ClearPublicCards ();
-	}
-
-	public void ClearPlayerCards() {
-		foreach (var item in cardsOfPlayer) {
-			item.sprite = cardsAll.LastOrDefault();
+		foreach (var card in game.cards) {
+			card.isHidden = true;
+		}
+		foreach (var player in players) {
+			player.chip.sprite = Resources.Load<Sprite>(Settings.cardBg);
+			player.dealer.sprite = Resources.Load<Sprite>(Settings.cardBg);
+			player.lblAction.text = "";
+			player.lblCredits.text = "";
+			foreach (var card in player.hand.getCards()) {
+				card.isHidden = true;
+			}
 		}
 	}
 
-	public void ClearPublicCards() {
-		foreach (var item in cardsPublic) {
-			item.sprite = cardsAll.LastOrDefault();
-		}
-	}
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
@@ -97,7 +96,7 @@ public class GameUI : MonoBehaviour
 		if (inputBetField)
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
-		var player = game.players [0];
+		var player = players.First();
 		if (game.isGameRunning) {
 			if (player.credits - betAmount < 0) {
 				game.GameState.Check (game);
@@ -230,9 +229,6 @@ public class GameUI : MonoBehaviour
 			
 		lblCall = GameObject.Find ("lblCall");
 		lblWin = GameObject.Find ("lblWin");
-		lblGameState = GameObject.Find ("lblGameState");
-			
-		lblSurrender = GameObject.Find ("lblSurrender");
 			
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
@@ -242,24 +238,7 @@ public class GameUI : MonoBehaviour
 		raiseSound = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
 		videoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
 		// end sounds
-			
-//		if (btnBetNow)
-//			btnBetNow.GetComponent<Button> ().onClick.AddListener (() => btnBetNowClickListener ());
-//		if (btnStartGame)
-//			btnStartGame.GetComponent<Button> ().onClick.AddListener (() => btnStartGameClickListener ());
-//		if (btnRaise)
-//			btnRaise.GetComponent<Button> ().onClick.AddListener (() => btnRaiseClickListener ());
-//		if (btnCall)
-//			btnCall.GetComponent<Button> ().onClick.AddListener (() => btnCallClickListener ());
-//		if (btnCheck)
-//			btnCheck.GetComponent<Button> ().onClick.AddListener (() => btnCheckClickListener ());
-//		if (btnSurrender)
-//			btnSurrender.GetComponent<Button> ().onClick.AddListener (() => btnSurrenderClickListener ());
-//		if (btnAllIn)
-//			btnAllIn.GetComponent<Button> ().onClick.AddListener (() => btnAllInClickListener ());
-//		if (btnRepeatBet)
-//			btnRepeatBet.GetComponent<Button> ().onClick.AddListener (() => btnRepeatBetOfBetFormClickListener ());
-			
+
 		panelHelp = GameObject.Find ("PanelHelp");
 		if (panelHelp)
 			panelHelp.SetActive (false);
@@ -268,44 +247,63 @@ public class GameUI : MonoBehaviour
 		if (panelInstructions)
 			panelInstructions.SetActive (false);
 			
-		InitCards ();
+		
+		payTable = new PayTable ();
+		if (payTable != null) {
+			payTable.BuildVideoBonusPaytable();
+			payTable.SetPaytableSelectedColumn(9);
+		}
+		
+		// start init chips
+		chipSpriteList = new List<Sprite>() {
+			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
+			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
+		};
+		// end init chips
+
+//		InitCards (); // get dealers from parent object
 		HideDynamicPanels ();
 
 		panelInitBet.SetActive (true);
 
-
 		game = new Game (this);
+		int i = 0;
+		foreach (var player1 in game.players) {
+//			var player = (PlayerUI)player1.Clone();
+			var player = new PlayerUI(player1);
+			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
+			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
+			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
+			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
+			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
+			players.Add(player);
+			i++;
+		}
+
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
 		updatePlayerNames ();
 	}
 
-	private IEnumerator DisplayPlayerNames(List<Player> players, float repeatRate) {
+	private IEnumerator DisplayPlayerNames(List<PlayerUI> players, float repeatRate) {
 		int i = 0;
 		foreach(var player in players) {
-			var lbl = playerNamesLabels.ElementAt (i);
-			if (lbl)
-				lbl.GetComponent<Text> ().text = player.name;
-
+			player.lblName.text = player.name;
 			yield return new WaitForSeconds(repeatRate);
-
 			i++;
 		}
 	}
 
 	private void updatePlayerNames() {
-		StartCoroutine(DisplayPlayerNames(game.players, Settings.updateInterval));
+		StartCoroutine(DisplayPlayerNames(players, Settings.updateInterval));
 //		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
 	}
 
-	int playerNo;
+	int playerNo = 0;
 	private void UpdatePlayerName() {
-		if (playerNo < game.players.Count) {
-			var player = game.players.ElementAt (playerNo);
-			
-			var lbl = playerNamesLabels.ElementAt (playerNo);
-			if (lbl)
-				lbl.GetComponent<Text> ().text = player.name;
+		if (playerNo < players.Count) {
+			var player = players.ElementAt (playerNo);
+			player.lblName.text = player.name;
 			playerNo++;
 		} else {
 			playerNo = 0;
@@ -358,111 +356,9 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug)
 			Debug.Log ("InitCards()");
-			
-		//cards
-		playerhold1 = GameObject.Find ("player0hold1");
-		playerhold2 = GameObject.Find ("player0hold2");
-		player1hold1 = GameObject.Find ("player1hold1");
-		player1hold2 = GameObject.Find ("player1hold2");
-		player2hold1 = GameObject.Find ("player2hold1");
-		player2hold2 = GameObject.Find ("player2hold2");
-		player3hold1 = GameObject.Find ("player3hold1");
-		player3hold2 = GameObject.Find ("player3hold2");
-		player4hold1 = GameObject.Find ("player4hold1");
-		player4hold2 = GameObject.Find ("player4hold2");
-		player5hold1 = GameObject.Find ("player5hold1");
-		player5hold2 = GameObject.Find ("player5hold2");
-			
-		List<GameObject> cardsOfPlayerGameObjects = new List<GameObject> ()
-			{
-				playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2,
-				player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2
-			};
-			
-		cardsOfPlayer = new List<Image> ();
-		foreach (var obj in cardsOfPlayerGameObjects) {
-			cardsOfPlayer.Add (obj.GetComponent<Image> ());
-		}
-			
-		// init cards with images/sprites
-		cardsAll = new List<Sprite> ();
-		List<string> masti = new List<string> () { "spades", "dia", "clubs", "hearts" };
-		string separator = "_";
-		string path = "";
-		Sprite cardSprite;
-		List<string> cards = new List<string> () { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
-		foreach (string mast in masti)
-			foreach (string card in cards) {
-				path = Settings.cardsPrefix + card + separator + mast;
-				cardSprite = Resources.Load (path, typeof(Sprite)) as Sprite;
-				cardsAll.Add (cardSprite);
-			}
-			
-		cardBg = Resources.Load (Settings.cardBg, typeof(Sprite)) as Sprite;
-		cardBack = Resources.Load (Settings.cardBackName, typeof(Sprite)) as Sprite;
-		cardsAll.Add (cardBack);
-		cardsAll.Add (cardBg); //card with the background color
-			
-		//cards flop, turn, river
-		cardsPublic = new List<Image> ()
-			{
-				GameObject.Find("flop1").GetComponent<Image>(),
-				GameObject.Find("flop2").GetComponent<Image>(),
-				GameObject.Find("flop3").GetComponent<Image>(),
-				GameObject.Find("turn").GetComponent<Image>(),
-				GameObject.Find("river").GetComponent<Image>(),
-			};
-			
-		//init labels for credits and bets of each player
-		betLabels = new List<GameObject> () {
-				GameObject.Find("lblBetPlayer0"),
-				GameObject.Find("lblBetPlayer1"),
-				GameObject.Find("lblBetPlayer2"),
-				GameObject.Find("lblBetPlayer3"),
-				GameObject.Find("lblBetPlayer4"),
-				GameObject.Find("lblBetPlayer5")
-			};
-			
-		playerNamesLabels = new List<GameObject> () {
-				GameObject.Find("lblPlayerName0"),
-				GameObject.Find("lblPlayerName1"),
-				GameObject.Find("lblPlayerName2"),
-				GameObject.Find("lblPlayerName3"),
-				GameObject.Find("lblPlayerName4"),
-				GameObject.Find("lblPlayerName5")
-			};
-			
-		creditLabels = new List<GameObject> () {
-				GameObject.Find("lblCreditPlayer0"),
-				GameObject.Find("lblCreditPlayer1"),
-				GameObject.Find("lblCreditPlayer2"),
-				GameObject.Find("lblCreditPlayer3"),
-				GameObject.Find("lblCreditPlayer4"),
-				GameObject.Find("lblCreditPlayer5")
-			};
-		
-		payTable = new PayTable ();
-		if (payTable != null) {
-			payTable.BuildVideoBonusPaytable();
-			payTable.SetPaytableSelectedColumn(9);
-		}
-		
-		Image chipBox1 = GameObject.Find("Chip1").GetComponent<Image>();
-		Image chipBox2 = GameObject.Find("Chip2").GetComponent<Image>();
-		Image chipBox3 = GameObject.Find("Chip3").GetComponent<Image>();
-		Image chipBox4 = GameObject.Find("Chip4").GetComponent<Image>();
-		Image chipBox5 = GameObject.Find("Chip5").GetComponent<Image>();
-		chipBoxes = new List<Image>() { chipBox1, chipBox2, chipBox3, chipBox4, chipBox5 };
-		
-		// start init chips
-		chipSpriteList = new List<Sprite>() {
-			Resources.Load("chips_red", typeof(Sprite)) as Sprite,
-			Resources.Load("chips_blue", typeof(Sprite)) as Sprite
-		};
-		// end init chips
 		
 		// start dealer icons
-		dealers = new List<GameObject>();
+		var dealers = new List<GameObject>();
 		var transform = GameObject.Find("Dealers").GetComponentsInChildren<Transform>();
 		foreach (Transform child in transform)
 		{
@@ -494,34 +390,16 @@ public class GameUI : MonoBehaviour
 	}
 
 	public PayTable payTable;
-	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin; //, bonusPokerPanel;
-	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, lblPanelBet, lblPanelBetText; // panelInitBet
-	public GameObject btnBetNow, btnRepeatLastBet, playerAllCredits; // left panel (start/restart the game)
-	public GameObject btnCredit, btnRepeatBet, btnAutoPlay, btnNewGame, btnAllIn, btnCreditOk;
-	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblGameState;
-	public List<GameObject> betLabels, creditLabels, playerNamesLabels; // for each player
-	public GameObject txtSurrender, lblSurrender;//panel surrender
-	public GameObject playerhold1, playerhold2, player1hold1, player1hold2, player2hold1, player2hold2, player3hold1, player3hold2, player4hold1, player4hold2, player5hold1, player5hold2;
-	public double betAmount;
-	public double dollarAmount;
-	public InputField inputBetField;
-	public List<Sprite> cardsAll;
-	public List<Image> cardsOfPlayer, cardsPublic;
-	public Sprite cardBg; // background of the desk
-	public Sprite cardBack; // back card side
-	// panel XYZ
-		
-	bool isFromRaiseBtn = false;
-	bool isFromBetOkBtn = false;
-	bool isFromFoldBtn = false;
-	bool isFromRepeatBetBtn = false;
-	List<Image> chipBoxes;
-	List<GameObject> dealers;
-	List<Sprite> chipSpriteList;
+	public List<PlayerUI> players;
+	public List<Sprite> chipSpriteList;
+	public double betAmount, potAmount;
+	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
+	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
+	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
+	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblPanelBet, lblPanelBetText, lblWinPlayerName, playerAllCredits;
 	AudioSource audio;
 	AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
-	GameObject lblWinPlayerName;
-	GameObject btnBetBonus;
-	GameObject panelBonus;
+	public InputField inputBetField;
+
 }
 

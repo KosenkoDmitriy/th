@@ -324,7 +324,7 @@ public class Game
 					}
 
 					// TODO: will refactor (credit label)
-					game.ui.creditLabels [index].GetComponent<Text> ().text = player.credits.ToString ();
+					game.ui.players[index].lblCredits.text = player.credits.ToString ();
 					game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 					index++;
 				}
@@ -339,7 +339,7 @@ public class Game
 			} else {
 				game.ui.btnCheck.GetComponent<Button> ().interactable = false;
 				game.ui.btnCall.GetComponent<Button> ().interactable = true;
-				game.ui.creditLabels [index].GetComponent<Text> ().text = playerReal.credits.ToString ();
+				game.ui.players[index].lblCredits.text = playerReal.credits.ToString ();
 				game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 			}
 		}
