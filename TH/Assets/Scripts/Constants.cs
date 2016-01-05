@@ -125,8 +125,12 @@ public class Constants {
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
 				altPattern.percent = percent;
-				preflops.Last().pattern.percent -= percent;
-				preflops.Last().alt_patterns.Add(altPattern);
+				preflops[preflops.Count-1].pattern.percent -= percent;
+				preflops[preflops.Count-1].alt_patterns.Add(altPattern);
+				var pl = preflops.Last();
+//				preflops.Last().pattern.percent -= percent;
+//				preflops.Last().alt_patterns.Add(altPattern);
+
 //				player.preflopBets.Last().pattern.percent -= percent;
 //				player.preflopBets.Last().alt_patterns.Add(altPattern);
 			}

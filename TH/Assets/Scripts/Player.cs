@@ -42,9 +42,9 @@ public class Player {
 	public Pattern GetAndSetPatternRandomly() {
 		float percentOfTime = UnityEngine.Random.value * 100;
 		if (pattern != null) {
-			if (percentOfTime <= pattern.percent) {
+//			if (percentOfTime <= pattern.percent) {
 				patternCurrent = pattern;
-			}
+//			}
 		}
 		if (alt_patterns.Count > 0) {
 			foreach(var item in alt_patterns) {
@@ -53,15 +53,16 @@ public class Player {
 				}
 			}
 		}
+
+		if (patternCurrent == null) {
+			patternCurrent = pattern;
+		}
 		return patternCurrent;
 	}
 
 	public string GetCurrentAction(double betToStayInGame, double betTotal) {
 		string action = "";
 		if (patternCurrent != null) {
-			action = patternCurrent.actionDefault;
-//			action = patternCurrent.actionPreffered1;
-//			åaction = patternCurrent.actionPreffered2;
 			if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
 				foreach (var betRound in patternCurrent.betRounds) {
 					if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
@@ -69,8 +70,41 @@ public class Player {
 						break;
 					}
 				}
+			if (string.IsNullOrEmpty (action))
+				action = GetAction (patternCurrent.actionPreffered2, betToStayInGame);
+			if (string.IsNullOrEmpty (action))
+				action = GetAction (patternCurrent.actionPreffered1, betToStayInGame);
+			if (patternCurrent != null)
+			if (string.IsNullOrEmpty (action))
+				action = patternCurrent.actionDefault;
 		}
+//		if (pattern != null)
+//			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
 		return action;
+	}
+	
+	private string GetAction(string action, double betToStayInGame) {
+		// TODO: maxBet for call and raise
+		string res = "";
+		double amount = credits - betToStayInGame;
+		if (action == "CALL") {
+			if (amount >= 0) {
+				res = action;
+			}
+		} else if (action == "CHECK") {
+			if (amount >= 0) {
+				res = action;
+			}
+		} else if (action == "RAISE") {
+			if (amount >= 0) {
+				res = action;
+			}
+		} else if (action == "FOLD") {
+			if (amount < 0) {
+				res = action;
+			}
+		}
+		return res;
 	}
 
 	public string GetHandPreflopString() {
@@ -81,10 +115,10 @@ public class Player {
 			if (hand.getCards()[0].getSuit() == hand.getCards()[1].getSuit()) {
 				isSuited = true;
 			}
-			handPreflopString += Card.rankToResString(hand.getCards()[0].getRank());
-			handPreflopString += Card.rankToResString(hand.getCards()[1].getRank());
-			handPreflopStringReversed += Card.rankToResString(hand.getCards()[1].getRank());
-			handPreflopStringReversed += Card.rankToResString(hand.getCards()[0].getRank());
+			handPreflopString += Card.rankToMathString(hand.getCards()[0].getRank());
+			handPreflopString += Card.rankToMathString(hand.getCards()[1].getRank());
+			handPreflopStringReversed += Card.rankToMathString(hand.getCards()[1].getRank());
+			handPreflopStringReversed += Card.rankToMathString(hand.getCards()[0].getRank());
 			if (hand.getCards()[0].getRank() == hand.getCards()[1].getRank()) {
 			}
 			else if (isSuited) {
