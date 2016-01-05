@@ -66,6 +66,7 @@
      <Compile Include="Assets\Scripts\Orig\Settings.cs" />
      <Compile Include="Assets\Scripts\Orig\VirtualPlayer.cs" />
      <Compile Include="Assets\Scripts\Orig\Win32Support.cs" />
+     <Compile Include="Assets\Scripts\Pattern.cs" />
      <Compile Include="Assets\Scripts\PayTable.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />

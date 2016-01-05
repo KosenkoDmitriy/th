@@ -341,7 +341,7 @@ public class Game
 						game.potAmount += game.ui.betAmount * multiplier;
 					} else if (player.actionCurrent == "RAISE") {
 						//TODO: int multiplier = parse.FromPatternName();
-						int multiplier = 2;
+						int multiplier = player.patternCurrent.betMaxCallOrRaise;
 						player.credits -= game.ui.betAmount * multiplier;
 						betCurrentToStayInGame += game.ui.betAmount * multiplier;
 						betTotalInThisRound += game.ui.betAmount * multiplier;
