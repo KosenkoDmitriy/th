@@ -265,6 +265,8 @@ public class Game
 							player.alt_patterns = preflop.alt_patterns;
 
 							break;
+						} else {
+							player.pattern = source.GetPatternByName(Settings.defaultPreflopPattern);
 						}
 					}
 				}

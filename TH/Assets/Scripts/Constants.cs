@@ -72,42 +72,6 @@ public class Constants {
 		return null;
 	}
 
-
-	public List<int> GetDeckCards()
-	{
-		List<int> deck = new List<int>();
-		var rand = new System.Random ();
-//		if (Settings.isDebug) Debug.Log("shuffleDeck()");
-		int deckPtr;
-		for (deckPtr = 0; deckPtr < Settings.cardsSize; deckPtr++)
-		{
-			deck.Add(0xFF);
-		}
-		deckPtr = 0;
-		int i;
-		for (i = 0; i < Settings.cardsSize; i++)
-		{
-			int a = 0;
-			int temp = rand.Next(Settings.cardsSize);
-			for (a = 0; a <= i; a++)
-			{
-				if (temp == deck[a])//dupe?
-				{
-					i--;
-					break;
-				}
-				else
-				{
-					if (a == i)
-					{
-						deck[i] = temp;//we have our card
-					}
-				}
-			}
-		}
-		return deck;
-	}
-
 	public List<PreFlop> GetPreflops() {
 		if (preflops.Count > 0) return preflops;
 
@@ -161,7 +125,7 @@ public class Constants {
 		return preflops;
 	}
 
-	private Pattern GetPatternByName(string name) {
+	public Pattern GetPatternByName(string name) {
 		Pattern pattern = null;
 		foreach (var p in patterns) {
 			if (p.name == name) {

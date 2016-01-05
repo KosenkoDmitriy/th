@@ -9,6 +9,8 @@ static class Settings
 	public static readonly int maxSubRoundCount = 1;
 	public static readonly int maxRoundCount = maxSubRoundCount * 4;
 
+	public static readonly string defaultPreflopPattern = "CHECK/FOLD"; // default pattern if the preflop hand is not found in the math model
+
 	public static double betBonusAmount = 0;
 	public static double betMaxBonusAmount = 125;
 
