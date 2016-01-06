@@ -16,7 +16,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void ClearAll() {
-
+		if (game.players != null)
 		foreach (var player in game.players) {
 			player.chip.sprite = Resources.Load<Sprite>(Settings.cardBg);
 			player.isDealer = false;
@@ -25,7 +25,12 @@ public class GameUI : MonoBehaviour
 			foreach (var card in player.hand.getCards()) {
 				card.isHidden = true;
 			}
+			foreach(var hand in player.hands)
+			foreach (var card in hand.getCards()) {
+				card.isHidden = true;
+			}
 		}
+		if (game.cards != null)
 		foreach (var card in game.cards) {
 			card.isHidden = true;
 		}
@@ -254,7 +259,6 @@ public class GameUI : MonoBehaviour
 		panelInitBet.SetActive (true);
 
 		game = new Game (this);
-		int i = 0;
 
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 

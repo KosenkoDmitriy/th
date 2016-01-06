@@ -12,13 +12,8 @@ public class Game
 	{
 		this.ui = ui;
 		GameState = new GameStates ();
-		PatternState = new PatternStates ();
-		cards = new List<Card> ();
-
+//		PatternState = new PatternStates ();
 		dealerIndex = Settings.dealerIndex;
-		players = InitPlayers ();
-//		playerReal = players.First ();
-//		players.Remove (playerReal);
 	}
 
 	public List<Player> InitPlayers ()
@@ -75,7 +70,6 @@ public class Game
 	public int dealerIndex; // dealer = position + 1
 	double potAmount;
 	public Deck deck;
-//	public Player playerReal;
 	public List<Player> players;
 	public List<Card> cards;
 	public GameUI ui;
@@ -165,15 +159,13 @@ public class Game
 		public void InitGame (Game game)
 		{
 			game.ui.ClearAll ();
-
+			
 			game.ui.HideDynamicPanels ();
 			game.ui.panelInitBet.SetActive (true);
 
-//			GameState = new GameStates ();
-//			PatternState = new PatternStates ();
-//
-			game.cards = new List<Card> ();
 			game.players = game.InitPlayers ();
+			game.cards = new List<Card> ();
+
 		}
 
 		public void Check (Game game)

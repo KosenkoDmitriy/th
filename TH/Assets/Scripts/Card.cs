@@ -211,7 +211,7 @@ public class Card
 	private void getHiddenImageFromFile ()
 	{
 		if (isHidden) {
-			string path = Settings.cardBg; //Settings.cardsPrefix + rankToResString (rank) + "_" + suitToResString (suit);
+			string path = Settings.cardBg;
 			this.sprite = Resources.Load<Sprite> (path);
 			if (this.Image != null)
 				this.Image.sprite = sprite;
