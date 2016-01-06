@@ -14,24 +14,54 @@ public class Game
 		GameState = new GameStates ();
 		PatternState = new PatternStates ();
 		cards = new List<Card> ();
-		players = GetPlayers ();
+
+		dealerIndex = Settings.dealerIndex;
+		players = InitPlayers ();
 //		playerReal = players.First ();
 //		players.Remove (playerReal);
 	}
 
-	public List<Player> GetPlayers ()
+	public List<Player> InitPlayers ()
 	{
+		if (dealerIndex >= Settings.playerSize) {
+			dealerIndex = 0;
+		}
+
 		var players = new List<Player> ();
 		for (int i = 0; i < Settings.playerSize; i++) {
 			var player = new Player ();
+			if (player.no == 0) {
+				player.isReal = true;
+			} else {
+				player.isReal = false;
+			}
 			player.name = "Player #" + i;
 			player.no = i;
 			player.credits = Settings.playerCredits;
 			players.Add (player);
 		}
-		return players;
+
+		// player's sorting by dealer position/index
+		var playersBeforeDealer = new List<Player> ();
+		var playersAfterDealer = new List<Player> ();
+		foreach(var player in players) {
+			if (player.no <= dealerIndex) {
+				playersBeforeDealer.Add (player);
+			} else {
+				playersAfterDealer.Add (player);
+			}
+		}
+
+		var playerList = new List<Player> ();
+		playerList.AddRange (playersAfterDealer);
+		playerList.AddRange( playersBeforeDealer);
+
+		dealerIndex++;
+
+		return playerList;
 	}
 
+	public int dealerIndex; // dealer = position + 1
 	double potAmount;
 	public Deck deck;
 //	public Player playerReal;
@@ -132,7 +162,7 @@ public class Game
 //			PatternState = new PatternStates ();
 //
 			game.cards = new List<Card> ();
-			game.players = game.GetPlayers ();
+			game.players = game.InitPlayers ();
 		}
 
 		public void Check (Game game)

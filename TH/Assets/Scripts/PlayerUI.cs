@@ -15,6 +15,9 @@ public class PlayerUI : Player {
 		this.name = player.name;
 		this.credits = player.credits;
 		this.no = player.no;
+
+		this.isReal = player.isReal;
+
 		this.handPreflopString = player.handPreflopString;
 		this.handPreflopStringReversed = player.handPreflopStringReversed;
 

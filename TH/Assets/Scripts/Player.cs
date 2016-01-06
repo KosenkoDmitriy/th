@@ -9,6 +9,13 @@ public class Player {
 		alt_patterns = new List<Pattern> ();
 	}
 
+	public override string ToString ()
+	{
+		return string.Format ("{0} {1} {2} {3} {4}", no, name, handPreflopString, credits, actionCurrent);
+	}
+
+	public bool isReal;
+
 	public double credits;
 	public int no;
 	public string name;
@@ -21,7 +28,7 @@ public class Player {
 	public List<Hand> hands;
 
 //	bool isActive = true;
-	public bool isFolded = false;
+	public bool isFolded;
 
 
 	public string actionCurrent;

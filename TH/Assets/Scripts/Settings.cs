@@ -64,6 +64,8 @@ static class Settings
     public static int cardsSize = 52; 
     public static readonly int pockerHandPossibleSize = 5;
     public static readonly int playerSize = 6;
+	public static readonly int dealerIndex = playerSize - 1;
+
     public static readonly int playerVirtualSize = 5;
     public static readonly int kickerSize = 6;
     public static int year = 2010;
