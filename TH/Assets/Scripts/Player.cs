@@ -14,16 +14,17 @@ public class Player {
 
 	public override string ToString ()
 	{
-		return string.Format ("{0} {1} {2} {3} {4}", no, name, handPreflopString, credits, actionCurrent);
+		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, credits, actionCurrent);
 	}
 
 	public bool isReal;
 
 	public double credits;
-	public int no;
+	public int id;			// for ui
+	public int position;	// first to act (player after dealer)
 	public string name;
 
-	public string handPreflopString;	// "AKs"
+	public string handPreflopString;			// "AKs"
 	public string handPreflopStringReversed;	// "KAs"
 
 	public Hand handPreflop;

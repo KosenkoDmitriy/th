@@ -25,19 +25,19 @@ public class Game
 		var players = new List<Player> ();
 		for (int i = 0; i < Settings.playerSize; i++) {
 			var player = new Player ();
-			if (player.no == 0) {
+			if (player.id == 0) {
 				player.isReal = true;
 			} else {
 				player.isReal = false;
 			}
 			player.name = "Player #" + i;
-			player.no = i;
+			player.id = i;
 			player.credits = Settings.playerCredits;
 
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
 			//			player.SetChipRandomly();
 			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
-			if (player.no == dealerIndex) player.isDealer = true;// else player.isDealer = false;
+			if (player.id == dealerIndex) player.isDealer = true;// else player.isDealer = false;
 			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
 			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
 			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
@@ -51,7 +51,7 @@ public class Game
 		var playersBeforeDealer = new List<Player> ();
 		var playersAfterDealer = new List<Player> ();
 		foreach(var player in players) {
-			if (player.no <= dealerIndex) {
+			if (player.id <= dealerIndex) {
 				playersBeforeDealer.Add (player);
 			} else {
 				playersAfterDealer.Add (player);
@@ -61,6 +61,12 @@ public class Game
 		var playerList = new List<Player> ();
 		playerList.AddRange (playersAfterDealer);
 		playerList.AddRange( playersBeforeDealer);
+
+		int j = 0;
+		foreach (var player in playerList) {
+			player.position = j;	// for math (first to act player)
+			j++;
+		}
 
 		dealerIndex++;
 
@@ -131,7 +137,7 @@ public class Game
 
 			foreach (var player in game.players) {
 				foreach (var card in player.handPreflop.getCards()) {
-					if (player.no != 0)
+					if (player.id != 0)
 					if (player.isFolded) {
 //						card.setImage(game.ui.cardBg); // hide
 						card.isHidden = true;
@@ -251,10 +257,10 @@ public class Game
 				foreach (var player in game.players) {
 					for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
 						card = game.deck.Deal ();
-						var cardImg = GameObject.Find ("player" + player.no + "hold" + i);
+						var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
 						if (cardImg) {
 							card.setImage (cardImg.GetComponent<Image> ());
-							if (player.no == 0 || Settings.isDebug)
+							if (player.id == 0 || Settings.isDebug)
 								card.FaceUp = true;
 							else
 								card.FaceUp = false;
@@ -273,7 +279,7 @@ public class Game
 				var preflops = source.GetPreflops ();
 				foreach (var player in game.players)
 				foreach (var preflop in preflops) {
-					if (preflop.position == player.no) {
+					if (preflop.position == player.position) {
 						if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
 							
 							player.pattern = preflop.pattern;
