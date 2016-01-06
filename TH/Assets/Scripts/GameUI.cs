@@ -25,25 +25,19 @@ public class GameUI : MonoBehaviour
 			player.lblAction.text = "";
 			player.lblCredits.text = "";
 			foreach (var card in player.hand.getCards()) {
-//				card.isHidden = true;
-				card.getHiddenImageFromFile();
+				card.isHidden = true;
 			}
 			foreach (var card in player.handPreflop.getCards()) {
-				//				card.isHidden = true;
-				card.getHiddenImageFromFile();
+				card.isHidden = true;
 			}
 			foreach(var hand in player.hands)
 			foreach (var card in hand.getCards()) {
-//				card.isHidden = true;
-				card.getHiddenImageFromFile();
-
+				card.isHidden = true;
 			}
 		}
 		if (game.cards != null)
 		foreach (var card in game.cards) {
-//			card.isHidden = true;
-			card.getHiddenImageFromFile();
-
+			card.isHidden = true;
 		}
 		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
