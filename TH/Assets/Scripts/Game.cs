@@ -27,6 +27,7 @@ public class Game
 			var player = new Player ();
 			if (player.id == 0) {
 				player.isReal = true;
+				this.player = player;
 			} else {
 				player.isReal = false;
 			}
@@ -77,6 +78,7 @@ public class Game
 	double potAmount;
 	public Deck deck;
 	public List<Player> players;
+	public Player player;
 	public List<Card> cards;
 	public GameUI ui;
 	public bool isGameRunning;

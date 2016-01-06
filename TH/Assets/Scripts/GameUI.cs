@@ -106,15 +106,14 @@ public class GameUI : MonoBehaviour
 		if (inputBetField)
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
-		var player = game.players.First();
+
+		var player = game.player;
 		if (game.isGameRunning) {
 			if (player.credits - betAmount < 0) {
 				game.GameState.Check (game);
-			} else if (player.credits - betAmount >= 0) {
+			} else 
+			if (player.credits - betAmount >= 0) {
 				game.GameState.Raise (game);
-			} else {
-				return;
-//				game.GameState.Check (game);
 			}
 		} else if (!game.isGameRunning && betAmount > 0 && player.credits - betAmount >= 0) {
 			game.GameState.Raise(game);
@@ -338,8 +337,7 @@ public class GameUI : MonoBehaviour
 
 	private void InitCards ()
 	{
-		if (Settings.isDebug)
-			Debug.Log ("InitCards()");
+		if (Settings.isDebug) Debug.Log ("InitCards()");
 		
 		// start dealer icons
 		var dealers = new List<GameObject>();
@@ -382,6 +380,5 @@ public class GameUI : MonoBehaviour
 	AudioSource audio;
 	AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
 	public InputField inputBetField;
-
 }
 
