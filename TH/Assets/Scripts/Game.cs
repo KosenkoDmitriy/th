@@ -25,14 +25,14 @@ public class Game
 		var players = new List<Player> ();
 		for (int i = 0; i < Settings.playerSize; i++) {
 			var player = new Player ();
-			if (player.id == 0) {
-				player.isReal = true;
+			player.name = "Player #" + i;
+			player.id = i;
+			if (player.id == Settings.playerRealIndex) {
 				this.player = player;
+				player.isReal = true;
 			} else {
 				player.isReal = false;
 			}
-			player.name = "Player #" + i;
-			player.id = i;
 			player.credits = Settings.playerCredits;
 
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
@@ -42,7 +42,6 @@ public class Game
 			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
 			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
 			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
-			players.Add(player);
 
 			players.Add (player);
 		}
@@ -73,22 +72,6 @@ public class Game
 
 		return playerList;
 	}
-
-	public int dealerIndex; // dealer = position + 1
-	double potAmount;
-	public Deck deck;
-	public List<Player> players;
-	public Player player;
-	public List<Card> cards;
-	public GameUI ui;
-	public bool isGameRunning;
-	public bool isGameEnd;
-
-	public IMathState MathState { get; private set; }
-
-	public IGameState GameState { get; private set; }
-
-	public IPatternState PatternState { get; private set; }
 
 	public interface IGameState
 	{
@@ -174,6 +157,12 @@ public class Game
 			game.players = game.InitPlayers ();
 			game.cards = new List<Card> ();
 
+			game.playerCollection = new PlayerCollection ();
+			foreach (var p in game.players) {
+				game.playerCollection[p.position] = p;
+			}
+
+			game.playerIterator = new PlayerIterator(game.playerCollection);
 		}
 
 		public void Check (Game game)
@@ -272,7 +261,6 @@ public class Game
 					player.handPreflop = player.hand;
 					player.handPreflopString = player.GetHandPreflopString();
 				}
-
 
 				game.isGameRunning = true;
 				game.isGameEnd = false;
@@ -436,4 +424,18 @@ public class Game
 		}
 	}
 
+	public PlayerIterator playerIterator;
+	public PlayerCollection playerCollection;
+	public int dealerIndex; // dealer = position + 1
+	double potAmount;
+	public Deck deck;
+	public List<Player> players;
+	public Player player;
+	public List<Card> cards;
+	public GameUI ui;
+	public bool isGameRunning;
+	public bool isGameEnd;
+	public IMathState MathState { get; private set; }
+	public IGameState GameState { get; private set; }
+	public IPatternState PatternState { get; private set; }
 }

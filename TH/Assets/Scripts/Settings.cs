@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static readonly int playerRealIndex = 0;
+
 	public static bool isDebug = false;
 	public static int levelGame = 2;
 

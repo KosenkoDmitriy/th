@@ -17,6 +17,7 @@ public class Player {
 		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, credits, actionCurrent);
 	}
 
+//	public int currentBetRoundNo;
 	public bool isReal;
 
 	public double credits;

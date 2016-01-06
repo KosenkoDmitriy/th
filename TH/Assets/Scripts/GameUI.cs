@@ -49,22 +49,34 @@ public class GameUI : MonoBehaviour
 	public void btnWinPanelCloseClick()
 	{
 		game.GameState.InitGame (game);
+
+		audio.PlayOneShot(pressedSound);
+		isWaiting = false;
 	}
 
 	// end win panel
 	// start game panel
 	public void btnCheckClick()
 	{
+		audio.PlayOneShot(pressedSound);
+		isWaiting = false;
+
 		game.GameState.Check (game);
 	}
 
 	public void btnCallClick()
 	{
+		audio.PlayOneShot(pressedSound);
+		isWaiting = false;
+
 		game.GameState.Call (game);
 	}
 
 	public void btnRaiseClick()
 	{
+		audio.PlayOneShot(pressedSound);
+		isWaiting = false;
+
 		betAmount = 0;
 		HideDynamicPanels ();
 		if (panelInitBet) panelInitBet.SetActive (true);
@@ -75,16 +87,28 @@ public class GameUI : MonoBehaviour
 //		game.MathState.BetRound1 ();
 //		game.GameState.EndGame (game);
 		game.GameState.Fold (game);
+		audio.PlayOneShot(pressedSound);
 	}
 
 	public void btnAllInClick()
 	{
 //		game.MathState.River (game);
+		audio.PlayOneShot(pressedSound);
 	}
 
 	public void btnHelpClick()
 	{
+		audio.PlayOneShot(pressedSound);
 		
+		if (Settings.isDebug) Debug.Log("btnHelpClick()");
+		if (panelHelp) panelHelp.SetActive (true);
+	}
+	
+	public void btnHelpCloseClick() {
+		audio.PlayOneShot(pressedSound);
+		
+		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
+		if (panelHelp) panelHelp.SetActive (false);
 	}
 	// end game panel
 
@@ -115,8 +139,10 @@ public class GameUI : MonoBehaviour
 			if (player.credits - betAmount >= 0) {
 				game.GameState.Raise (game);
 			}
+			isWaiting = false;
 		} else if (!game.isGameRunning && betAmount > 0 && player.credits - betAmount >= 0) {
 			game.GameState.Raise(game);
+			isWaiting = false;
 		} else {
 			return;
 		}
@@ -162,8 +188,24 @@ public class GameUI : MonoBehaviour
 		Settings.betCurrent = Settings.betNull;
 		inputBetField.text = Settings.betCurrent.to_s();
 	}
+	
 	// end bet panel
 
+	public void btnInstructionClick()
+	{
+		audio.PlayOneShot(pressedSound);
+
+		if (Settings.isDebug) Debug.Log("btnInstructionClick()");
+		if (panelInstructions) panelInstructions.SetActive (true);
+	}
+	
+	public void btnInstructionCloseClick() {
+		audio.PlayOneShot(pressedSound);
+		isWaiting = false;//TODO: will remove after testing
+		if (Settings.isDebug) Debug.Log("btnInstructionCloseClick()");
+		if (panelInstructions) panelInstructions.SetActive (false);
+	}
+	
 	public void Start ()
 	{
 		if (Settings.isDebug)
@@ -266,7 +308,7 @@ public class GameUI : MonoBehaviour
 		game.GameState.InitGame (game);
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
-		updatePlayerNames ();
+//		updatePlayerNames ();
 	}
 
 	private IEnumerator DisplayPlayerNames(List<Player> players, float repeatRate) {
@@ -294,11 +336,40 @@ public class GameUI : MonoBehaviour
 		}
 	}
 
+	bool isWaiting;
 	private void UpdateInterval() {
 //		int percentRand = GetPercentOfAllTime (20);
 //		Debug.Log (percentRand + " 20%/100%");
 
 //		TestPercentOfTime (20);
+
+		if (!isWaiting) {
+			var player = game.playerIterator.NextLoop ();
+			if (player.isReal) {
+				isWaiting = true;
+				player.lblAction.text = "waiting";
+			} else {
+				player.lblAction.text = "auto";
+			}
+		}
+		/*
+		// Create iterator
+		PlayerIterator iterator = new PlayerIterator(playerCollection);
+		
+		// Skip every other item
+		iterator.Step = 1;
+		
+		Console.WriteLine("Iterating over collection:");
+		
+		for (Player item = iterator.First(); !iterator.IsDone; item = iterator.Next())
+		{
+//			if (item.isReal) 
+			//			Console.WriteLine(item.name);
+		}
+		
+		// Wait for user
+		//		Console.ReadKey();
+		*/
 	}
 
 	public void TestPercentOfTime(int percent) {
