@@ -201,7 +201,6 @@ public class GameUI : MonoBehaviour
 	
 	public void btnInstructionCloseClick() {
 		audio.PlayOneShot(pressedSound);
-		isWaiting = false;//TODO: will remove after testing
 		if (Settings.isDebug) Debug.Log("btnInstructionCloseClick()");
 		if (panelInstructions) panelInstructions.SetActive (false);
 	}

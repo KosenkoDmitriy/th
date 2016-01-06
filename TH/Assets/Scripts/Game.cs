@@ -163,8 +163,101 @@ public class Game
 			}
 
 			game.playerIterator = new PlayerIterator(game.playerCollection);
-		}
 
+
+
+			
+			Card card = null;
+			Image image = null;
+			if (source == null)
+				source = new Constants ();
+			game.deck = new Deck ();
+			game.deck.Shuffle ();
+			
+			// chips
+			foreach (var player in game.players) {
+				player.SetChipRandomly();
+			}
+			
+			foreach (var player in game.players) {
+				for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
+					card = game.deck.Deal ();
+					var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
+					if (cardImg) {
+						card.setImage (cardImg.GetComponent<Image> ());
+						if (player.id == Settings.playerRealIndex || Settings.isDebug)
+							card.FaceUp = true;
+						else
+							card.FaceUp = false;
+					}
+					player.hand.getCards().Add (card);
+				}
+				player.handPreflop = player.hand;
+				player.handPreflopString = player.GetHandPreflopString();
+			}
+			
+			game.isGameRunning = true;
+			game.isGameEnd = false;
+			
+			// preflop bet rounds
+			var preflops = source.GetPreflops ();
+			foreach (var player in game.players)
+			foreach (var preflop in preflops) {
+				if (preflop.position == player.position) {
+					if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
+						
+						player.pattern = preflop.pattern;
+						player.alt_patterns = preflop.alt_patterns;
+						
+						break;
+					} else {
+						player.pattern = source.GetPatternByName(Settings.defaultPreflopPattern);
+					}
+				}
+			}
+			
+			// flop
+			for (int i = 1; i <= 3; i++) {
+				card = game.deck.Deal ();
+				image = GameObject.Find ("flop" + i).GetComponent<Image> ();
+				card.setImage (image);
+				if (Settings.isDebug)
+					card.FaceUp = true;
+				//					else
+				//						card.FaceUp = false;
+				game.cards.Add (card);
+			}
+			// turn
+			card = game.deck.Deal ();
+			image = GameObject.Find ("turn").GetComponent<Image> ();
+			card.setImage (image);
+			if (Settings.isDebug)
+				card.FaceUp = true;
+			//				else
+			//					card.FaceUp = false;
+			game.cards.Add (card);
+			
+			// river
+			card = game.deck.Deal ();
+			image = GameObject.Find ("river").GetComponent<Image> ();
+			card.setImage (image);
+			if (Settings.isDebug)
+				card.FaceUp = true;
+			//				else
+			//					card.FaceUp = false;
+			game.cards.Add (card);
+			
+			foreach (var player in game.players) {
+				player.hand = player.GetBestPlayerHand (game.cards);
+			}
+			
+			//				foreach (var player in game.ui.cardsOfPlayer) {
+			//					player.sprite = game.ui.cardsAll [1];
+			//				}
+			//TODO: calculate win percentage/hand strength
+
+		}
+		
 		public void Check (Game game)
 		{
 			NextRound (game);
@@ -228,99 +321,9 @@ public class Game
 		public void Preflop (Game game)
 		{
 			game.ui.DebugLog ("Preflop()");
-			// TODO: check players hand strength
-
-			Card card = null;
-			Image image = null;
 
 			// start preflop bet round 0
 			if (subRoundCount == 0) {
-				if (source == null)
-					source = new Constants ();
-				game.deck = new Deck ();
-				game.deck.Shuffle ();
-
-				// chips
-				foreach (var player in game.players) {
-					player.SetChipRandomly();
-				}
-
-				foreach (var player in game.players) {
-					for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
-						card = game.deck.Deal ();
-						var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
-						if (cardImg) {
-							card.setImage (cardImg.GetComponent<Image> ());
-							if (player.id == Settings.playerRealIndex || Settings.isDebug)
-								card.FaceUp = true;
-							else
-								card.FaceUp = false;
-						}
-						player.hand.getCards().Add (card);
-					}
-					player.handPreflop = player.hand;
-					player.handPreflopString = player.GetHandPreflopString();
-				}
-
-				game.isGameRunning = true;
-				game.isGameEnd = false;
-
-				// preflop bet rounds
-				var preflops = source.GetPreflops ();
-				foreach (var player in game.players)
-				foreach (var preflop in preflops) {
-					if (preflop.position == player.position) {
-						if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
-							
-							player.pattern = preflop.pattern;
-							player.alt_patterns = preflop.alt_patterns;
-
-							break;
-						} else {
-							player.pattern = source.GetPatternByName(Settings.defaultPreflopPattern);
-						}
-					}
-				}
-
-				// flop
-				for (int i = 1; i <= 3; i++) {
-					card = game.deck.Deal ();
-					image = GameObject.Find ("flop" + i).GetComponent<Image> ();
-					card.setImage (image);
-					if (Settings.isDebug)
-						card.FaceUp = true;
-//					else
-//						card.FaceUp = false;
-					game.cards.Add (card);
-				}
-				// turn
-				card = game.deck.Deal ();
-				image = GameObject.Find ("turn").GetComponent<Image> ();
-				card.setImage (image);
-				if (Settings.isDebug)
-					card.FaceUp = true;
-//				else
-//					card.FaceUp = false;
-				game.cards.Add (card);
-
-				// river
-				card = game.deck.Deal ();
-				image = GameObject.Find ("river").GetComponent<Image> ();
-				card.setImage (image);
-				if (Settings.isDebug)
-					card.FaceUp = true;
-//				else
-//					card.FaceUp = false;
-				game.cards.Add (card);
-
-				foreach (var player in game.players) {
-					player.hand = player.GetBestPlayerHand (game.cards);
-				}
-
-//				foreach (var player in game.ui.cardsOfPlayer) {
-//					player.sprite = game.ui.cardsAll [1];
-//				}
-				//TODO: calculate win percentage/hand strength
 
 			}
 			// end preflop bet round 0
@@ -382,8 +385,8 @@ public class Game
 			// TODO: will refactor (credit label)
 			player.lblCredits.text = player.credits.to_s();
 			player.lblAction.text = player.actionCurrent;
-			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
 
+			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
 			game.ui.lblBet.GetComponent<Text> ().text = game.ui.betAmount.to_s();
 			game.ui.lblRaise.GetComponent<Text> ().text = betRaiseInThisRound.to_s(); // TODO:
 			game.ui.lblCall.GetComponent<Text> ().text = betCurrentToStayInGame.to_s();
