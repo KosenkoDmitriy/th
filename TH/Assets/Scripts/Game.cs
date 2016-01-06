@@ -12,8 +12,10 @@ public class Game
 	{
 		this.ui = ui;
 		GameState = new GameStates ();
-//		PatternState = new PatternStates ();
 		dealerIndex = Settings.dealerIndex;
+//		GameState.InitGame (this);
+		players = InitPlayers ();
+		cards = new List<Card>();
 	}
 
 	public List<Player> InitPlayers ()
@@ -164,7 +166,7 @@ public class Game
 			game.ui.panelInitBet.SetActive (true);
 
 			game.players = game.InitPlayers ();
-			game.cards = new List<Card> ();
+//			game.cards = new List<Card> ();
 
 		}
 
