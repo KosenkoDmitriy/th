@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,11 +47,35 @@ public class Player {
 	
 	public Image chip;
 	List<Sprite> chipSpriteList;
+
 	public Image dealer;
+
+	private bool is_dealer;
+	public bool isDealer {
+		get { return is_dealer; }
+		set { 
+			is_dealer = value;
+			UpdateDealerImage ();
+		}
+	}
+
 	public Text lblCredits;
 	public Text lblAction;
 	public Text lblName;
-	
+
+	private void UpdateDealerImage ()
+	{
+		if (isDealer) {
+			var sprite = Resources.Load<Sprite> ("ic_dealer_old");
+			if (this.dealer != null)
+				this.dealer.sprite = sprite;
+		} else {
+			var sprite = Resources.Load<Sprite> (Settings.cardBg);
+			if (this.dealer != null)
+				this.dealer.sprite = sprite;
+		}
+	}
+
 	public void SetChipRandomly() {
 		if (chipSpriteList == null) {
 			// start init chips

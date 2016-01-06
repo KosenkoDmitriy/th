@@ -42,6 +42,7 @@ public class Game
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
 			//			player.SetChipRandomly();
 			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
+			if (player.no == dealerIndex) player.isDealer = true;// else player.isDealer = false;
 			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
 			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
 			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();

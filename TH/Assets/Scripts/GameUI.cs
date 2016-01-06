@@ -16,17 +16,18 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void ClearAll() {
-		foreach (var card in game.cards) {
-			card.isHidden = true;
-		}
+
 		foreach (var player in game.players) {
 			player.chip.sprite = Resources.Load<Sprite>(Settings.cardBg);
-			player.dealer.sprite = Resources.Load<Sprite>(Settings.cardBg);
+			player.isDealer = false;
 			player.lblAction.text = "";
 			player.lblCredits.text = "";
 			foreach (var card in player.hand.getCards()) {
 				card.isHidden = true;
 			}
+		}
+		foreach (var card in game.cards) {
+			card.isHidden = true;
 		}
 		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
