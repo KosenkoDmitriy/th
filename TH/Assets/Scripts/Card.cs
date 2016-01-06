@@ -208,14 +208,13 @@ public class Card
 				this.Image.sprite = sprite;
 		}
 	}
-	private void getHiddenImageFromFile ()
+	public void getHiddenImageFromFile ()
 	{
-		if (isHidden) {
-			string path = Settings.cardBg;
-			this.sprite = Resources.Load<Sprite> (path);
+//		if (isHidden) {
+			this.sprite = Resources.Load<Sprite> (Settings.cardBg);
 			if (this.Image != null)
 				this.Image.sprite = sprite;
-		}
+//		}
 	}
 	//get the current image
 	public Image getImage ()

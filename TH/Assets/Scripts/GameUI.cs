@@ -16,23 +16,34 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void ClearAll() {
+		if (Settings.isDebug) DebugLog("ClearAll()");
+		var bg = Resources.Load<Sprite> (Settings.cardBg);
 		if (game.players != null)
 		foreach (var player in game.players) {
-			player.chip.sprite = Resources.Load<Sprite>(Settings.cardBg);
+			player.chip.sprite = bg;
 			player.isDealer = false;
 			player.lblAction.text = "";
 			player.lblCredits.text = "";
 			foreach (var card in player.hand.getCards()) {
-				card.isHidden = true;
+//				card.isHidden = true;
+				card.getHiddenImageFromFile();
+			}
+			foreach (var card in player.handPreflop.getCards()) {
+				//				card.isHidden = true;
+				card.getHiddenImageFromFile();
 			}
 			foreach(var hand in player.hands)
 			foreach (var card in hand.getCards()) {
-				card.isHidden = true;
+//				card.isHidden = true;
+				card.getHiddenImageFromFile();
+
 			}
 		}
 		if (game.cards != null)
 		foreach (var card in game.cards) {
-			card.isHidden = true;
+//			card.isHidden = true;
+			card.getHiddenImageFromFile();
+
 		}
 		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
@@ -259,7 +270,7 @@ public class GameUI : MonoBehaviour
 		panelInitBet.SetActive (true);
 
 		game = new Game (this);
-
+		game.GameState.InitGame (game);
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
 		updatePlayerNames ();
