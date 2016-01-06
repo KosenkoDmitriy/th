@@ -122,7 +122,7 @@ public class Game
 
 			foreach (var player in game.players) {
 				foreach (var card in player.handPreflop.getCards()) {
-					if (player.id != 0)
+					if (player.id != Settings.playerRealIndex)
 					if (player.isFolded) {
 //						card.setImage(game.ui.cardBg); // hide
 						card.isHidden = true;
@@ -251,7 +251,7 @@ public class Game
 						var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
 						if (cardImg) {
 							card.setImage (cardImg.GetComponent<Image> ());
-							if (player.id == 0 || Settings.isDebug)
+							if (player.id == Settings.playerRealIndex || Settings.isDebug)
 								card.FaceUp = true;
 							else
 								card.FaceUp = false;
