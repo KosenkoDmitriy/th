@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerUI : Player {
 	
+	/*
 	public PlayerUI() {
 		Init ();
 	}
@@ -54,4 +55,5 @@ public class PlayerUI : Player {
 		int index = UnityEngine.Random.Range(0,chipSpriteList.Count);
 		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
+	*/
 }

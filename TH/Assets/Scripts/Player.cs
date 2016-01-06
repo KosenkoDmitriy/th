@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class Player {
 
@@ -42,8 +44,26 @@ public class Player {
 //	public List<Turn> turnBets;
 //	public List<River> riverBets;
 	
-	public void dealCards() {
+	public Image chip;
+	List<Sprite> chipSpriteList;
+	public Image dealer;
+	public Text lblCredits;
+	public Text lblAction;
+	public Text lblName;
+	
+	public void SetChipRandomly() {
+		if (chipSpriteList == null) {
+			// start init chips
+			chipSpriteList = new List<Sprite> ()
+			{
+				Resources.Load("chips_red", typeof(Sprite)) as Sprite,
+				Resources.Load("chips_blue", typeof(Sprite)) as Sprite
+			};
+			// end init chips
+		}
 
+		int index = UnityEngine.Random.Range(0,chipSpriteList.Count);
+		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
 
 	public Pattern GetAndSetPatternRandomly() {

@@ -12,14 +12,14 @@ public class GameUI : MonoBehaviour
 	Game game;
 
 	GameUI() {
-		players = new List<PlayerUI> ();
+
 	}
 
 	public void ClearAll() {
 		foreach (var card in game.cards) {
 			card.isHidden = true;
 		}
-		foreach (var player in players) {
+		foreach (var player in game.players) {
 			player.chip.sprite = Resources.Load<Sprite>(Settings.cardBg);
 			player.dealer.sprite = Resources.Load<Sprite>(Settings.cardBg);
 			player.lblAction.text = "";
@@ -95,7 +95,7 @@ public class GameUI : MonoBehaviour
 		if (inputBetField)
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out betAmount);
-		var player = players.First();
+		var player = game.players.First();
 		if (game.isGameRunning) {
 			if (player.credits - betAmount < 0) {
 				game.GameState.Check (game);
@@ -254,26 +254,15 @@ public class GameUI : MonoBehaviour
 
 		game = new Game (this);
 		int i = 0;
-		foreach (var player1 in game.players) {
-			var player = new PlayerUI(player1);
-			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
-//			player.SetChipRandomly();
-			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
-			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
-			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
-			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
-			players.Add(player);
-			i++;
-		}
 
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
 		updatePlayerNames ();
 	}
 
-	private IEnumerator DisplayPlayerNames(List<PlayerUI> players, float repeatRate) {
+	private IEnumerator DisplayPlayerNames(List<Player> players, float repeatRate) {
 		int i = 0;
-		foreach(var player in players) {
+		foreach(var player in game.players) {
 			player.lblName.text = player.name;
 			yield return new WaitForSeconds(repeatRate);
 			i++;
@@ -281,14 +270,14 @@ public class GameUI : MonoBehaviour
 	}
 
 	private void updatePlayerNames() {
-		StartCoroutine(DisplayPlayerNames(players, Settings.updateInterval));
+		StartCoroutine(DisplayPlayerNames(game.players, Settings.updateInterval));
 //		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
 	}
 
 	int playerNo = 0;
 	private void UpdatePlayerName() {
-		if (playerNo < players.Count) {
-			var player = players.ElementAt (playerNo);
+		if (playerNo < game.players.Count) {
+			var player = game.players.ElementAt (playerNo);
 			player.lblName.text = player.name;
 			playerNo++;
 		} else {
@@ -375,7 +364,6 @@ public class GameUI : MonoBehaviour
 	}
 
 	public PayTable payTable;
-	public List<PlayerUI> players;
 	public double betAmount, potAmount;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 

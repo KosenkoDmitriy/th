@@ -38,8 +38,18 @@ public class Game
 			player.name = "Player #" + i;
 			player.no = i;
 			player.credits = Settings.playerCredits;
+
+			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
+			//			player.SetChipRandomly();
+			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
+			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
+			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
+			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
+			players.Add(player);
+
 			players.Add (player);
 		}
+
 
 		// player's sorting by dealer position/index
 		var playersBeforeDealer = new List<Player> ();
@@ -241,7 +251,7 @@ public class Game
 				game.deck.Shuffle ();
 
 				// chips
-				foreach (var player in game.ui.players) {
+				foreach (var player in game.players) {
 					player.SetChipRandomly();
 				}
 
@@ -335,8 +345,8 @@ public class Game
 					//TODO: handle player's current action
 
 					if (player.actionCurrent == "FOLD") {
-						game.ui.players[player.no].lblAction.text = player.actionCurrent;
-						game.ui.players[player.no].lblCredits.text = player.credits.to_s();
+						player.lblAction.text = player.actionCurrent;
+						player.lblCredits.text = player.credits.to_s();
 						player.isFolded = true;
 						foreach (var pcard in player.handPreflop.getCards()) {
 							pcard.FaceUp = true;
@@ -367,7 +377,7 @@ public class Game
 			} else {
 				game.ui.btnCheck.GetComponent<Button> ().interactable = false;
 				game.ui.btnCall.GetComponent<Button> ().interactable = true;
-				game.ui.players[index].lblCredits.text = playerReal.credits.ToString ();
+				playerReal.lblCredits.text = playerReal.credits.ToString ();
 				game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 			}
 		}
@@ -381,8 +391,8 @@ public class Game
 			game.potAmount += game.ui.betAmount * multiplier;
 			
 			// TODO: will refactor (credit label)
-			game.ui.players [player.no].lblCredits.text = player.credits.to_s();
-			game.ui.players[player.no].lblAction.text = player.actionCurrent;
+			player.lblCredits.text = player.credits.to_s();
+			player.lblAction.text = player.actionCurrent;
 			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
 
 			game.ui.lblBet.GetComponent<Text> ().text = game.ui.betAmount.to_s();
