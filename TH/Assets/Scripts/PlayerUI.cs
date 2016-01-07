@@ -90,6 +90,59 @@ public class PlayerIterator : IAbstractPlayerIterator
 		_current += _step;
 		return player;
 	}
+
+	private int _foldedCount;
+	public Player NextActive() {
+		_foldedCount = 0;
+		Player player = null;
+		while(true) {
+			if (_current >= _collection.Count)
+				_current = 0;
+			player = _collection[_current] as Player;
+			_current += _step;
+			if (IsExit(player)) break;
+		};
+		return player;
+	}
+	public Player PrevActive() {
+		_foldedCount = 0;
+		int prevIndex = _current-1;
+		Player player = null;
+		while(true) {
+			prevIndex -= _step;
+			if (prevIndex < 0) {
+				prevIndex = _collection.Count-1;
+			}
+			player = _collection[prevIndex] as Player;
+			if (IsExit(player)) break;
+		};
+		return player;
+	}
+
+	private bool IsExit(Player player) {
+		bool isExit = false;
+		if (!player.isFolded)
+		{
+			isExit = true;
+		} else {
+			if (_foldedCount >= _collection.Count) {
+				_foldedCount = 0;
+				// exit if all players are folded
+				isExit = true;;
+			}
+			_foldedCount += _step;
+		}
+		return isExit;
+	}
+
+	public Player Prev() {
+		int prevIndex = _current-1;
+		if (prevIndex < 0) {
+			prevIndex = _collection.Count-1;
+		}
+		Player player = _collection[prevIndex] as Player;
+		return player;
+	}
 	
 	// Gets or sets stepsize
 	public int Step

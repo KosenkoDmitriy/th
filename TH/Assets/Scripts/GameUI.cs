@@ -356,7 +356,8 @@ public class GameUI : MonoBehaviour
 //		TestPercentOfTime (20);
 
 		if (!isWaiting) {
-			var player = game.playerIterator.NextLoop ();
+			var player = game.playerIterator.NextActive();
+			var playerPrev = game.playerIterator.PrevActive();
 			if (player.isReal) {
 				isWaiting = true;
 				StartCoroutine(DealCards());
@@ -365,6 +366,8 @@ public class GameUI : MonoBehaviour
 			} else {
 				player.lblAction.text = "auto";
 			}
+
+
 		}
 		/*
 		// Create iterator
@@ -395,7 +398,7 @@ public class GameUI : MonoBehaviour
 		for (int i = 0; i < percentOfAllTime; i++) {
 			float percentOfTime = UnityEngine.Random.value * 100;
 			
-			if (percentOfTime < percent) { 
+			if (percentOfTime < percent) {
 				DebugLog(percentOfTime + "%");
 				//				DebugLog (string.Format ("20% {0} count: {1}", percentOfTime, count1));
 				count1++;
