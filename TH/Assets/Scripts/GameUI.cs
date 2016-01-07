@@ -324,6 +324,19 @@ public class GameUI : MonoBehaviour
 //		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
 	}
 
+	private IEnumerator DealCards() {
+//		for(int i = 1; i >= 0; i--)
+		for(int i = 0; i < 2; i++)
+		foreach(var player in game.players) {
+			var card = player.handPreflop.getCard(i);
+			if (player.id == Settings.playerRealIndex || Settings.isDebug)
+				card.FaceUp = true;
+			else
+				card.FaceUp = false;
+			yield return new WaitForSeconds(Settings.updateInterval);
+		}
+	}
+
 	int playerNo = 0;
 	private void UpdatePlayerName() {
 		if (playerNo < game.players.Count) {
@@ -346,6 +359,8 @@ public class GameUI : MonoBehaviour
 			var player = game.playerIterator.NextLoop ();
 			if (player.isReal) {
 				isWaiting = true;
+				StartCoroutine(DealCards());
+
 				player.lblAction.text = "waiting";
 			} else {
 				player.lblAction.text = "auto";

@@ -157,13 +157,6 @@ public class Game
 			game.players = game.InitPlayers ();
 			game.cards = new List<Card> ();
 
-			game.playerCollection = new PlayerCollection ();
-			foreach (var p in game.players) {
-				game.playerCollection[p.position] = p;
-			}
-
-			game.playerIterator = new PlayerIterator(game.playerCollection);
-
 
 
 			
@@ -177,7 +170,11 @@ public class Game
 			// chips
 			foreach (var player in game.players) {
 				player.SetChipRandomly();
+				player.lblName.text = player.name;
+				player.lblCredits.text = player.credits.to_s();
+				player.lblAction.text = "";
 			}
+
 			
 			foreach (var player in game.players) {
 				for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
@@ -185,10 +182,10 @@ public class Game
 					var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
 					if (cardImg) {
 						card.setImage (cardImg.GetComponent<Image> ());
-						if (player.id == Settings.playerRealIndex || Settings.isDebug)
-							card.FaceUp = true;
-						else
-							card.FaceUp = false;
+//						if (player.id == Settings.playerRealIndex || Settings.isDebug)
+//							card.FaceUp = true;
+//						else
+//							card.FaceUp = false;
 					}
 					player.hand.getCards().Add (card);
 				}
@@ -256,6 +253,14 @@ public class Game
 			//				}
 			//TODO: calculate win percentage/hand strength
 
+
+			// using in update of the game loop
+			game.playerCollection = new PlayerCollection ();
+			foreach (var p in game.players) {
+				game.playerCollection[p.position] = p;
+			}
+			
+			game.playerIterator = new PlayerIterator(game.playerCollection);
 		}
 		
 		public void Check (Game game)
