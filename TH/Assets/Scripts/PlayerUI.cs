@@ -59,7 +59,8 @@ public class PlayerIterator : IAbstractPlayerIterator
 	private PlayerCollection _collection;
 	private int _current = 0;
 	private int _step = 1;
-	
+	private int _foldedCount;
+
 	// Constructor
 	public PlayerIterator(PlayerCollection collection)
 	{
@@ -82,6 +83,15 @@ public class PlayerIterator : IAbstractPlayerIterator
 		else
 			return null;
 	}
+	
+	public Player PrevLoop() {
+		int prevIndex = _current - _step;
+		if (prevIndex < 0) {
+			prevIndex = _collection.Count - _step;
+		}
+		Player player = _collection[prevIndex] as Player;
+		return player;
+	}
 
 	public Player NextLoop() {
 		if (_current >= _collection.Count)
@@ -91,7 +101,21 @@ public class PlayerIterator : IAbstractPlayerIterator
 		return player;
 	}
 
-	private int _foldedCount;
+	public Player PrevActive() {
+		_foldedCount = 0;
+		int prevIndex = _current - _step;
+		Player player = null;
+		while(true) {
+			if (prevIndex < 0) {
+				prevIndex = _collection.Count - _step;
+			}
+			player = _collection[prevIndex] as Player;
+			prevIndex -= _step;
+			if (IsExit(player)) break;
+		};
+		return player;
+	}
+
 	public Player NextActive() {
 		_foldedCount = 0;
 		Player player = null;
@@ -99,21 +123,8 @@ public class PlayerIterator : IAbstractPlayerIterator
 			if (_current >= _collection.Count)
 				_current = 0;
 			player = _collection[_current] as Player;
+
 			_current += _step;
-			if (IsExit(player)) break;
-		};
-		return player;
-	}
-	public Player PrevActive() {
-		_foldedCount = 0;
-		int prevIndex = _current-1;
-		Player player = null;
-		while(true) {
-			prevIndex -= _step;
-			if (prevIndex < 0) {
-				prevIndex = _collection.Count-1;
-			}
-			player = _collection[prevIndex] as Player;
 			if (IsExit(player)) break;
 		};
 		return player;
@@ -133,15 +144,6 @@ public class PlayerIterator : IAbstractPlayerIterator
 			_foldedCount += _step;
 		}
 		return isExit;
-	}
-
-	public Player Prev() {
-		int prevIndex = _current-1;
-		if (prevIndex < 0) {
-			prevIndex = _collection.Count-1;
-		}
-		Player player = _collection[prevIndex] as Player;
-		return player;
 	}
 	
 	// Gets or sets stepsize

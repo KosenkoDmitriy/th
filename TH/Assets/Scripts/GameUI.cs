@@ -356,18 +356,15 @@ public class GameUI : MonoBehaviour
 //		TestPercentOfTime (20);
 
 		if (!isWaiting) {
-			var player = game.playerIterator.NextActive();
 			var playerPrev = game.playerIterator.PrevActive();
+			var player = game.playerIterator.NextActive();
 			if (player.isReal) {
 				isWaiting = true;
 				StartCoroutine(DealCards());
-
 				player.lblAction.text = "waiting";
 			} else {
 				player.lblAction.text = "auto";
 			}
-
-
 		}
 		/*
 		// Create iterator
