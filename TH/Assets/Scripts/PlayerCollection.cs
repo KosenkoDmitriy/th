@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class PlayerUI : Player {
-	
-}
-
 /// <summary>
 /// The 'Aggregate' interface
 /// </summary>

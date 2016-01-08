@@ -77,7 +77,7 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(pressedSound);
 		isWaiting = false;
 
-		betAmount = 0;
+		game.betAmount = 0;
 		HideDynamicPanels ();
 		if (panelInitBet) panelInitBet.SetActive (true);
 	}
@@ -129,18 +129,18 @@ public class GameUI : MonoBehaviour
 		string betAmountString = "0";
 		if (inputBetField)
 			betAmountString = inputBetField.text;
-		Double.TryParse (betAmountString, out betAmount);
+		Double.TryParse (betAmountString, out game.betAmount);
 
 		var player = game.player;
 		if (game.isGameRunning) {
-			if (player.credits - betAmount < 0) {
+			if (player.credits - game.betAmount < 0) {
 				game.GameState.Check (game);
 			} else 
-			if (player.credits - betAmount >= 0) {
+			if (player.credits - game.betAmount >= 0) {
 				game.GameState.Raise (game);
 			}
 			isWaiting = false;
-		} else if (!game.isGameRunning && betAmount > 0 && player.credits - betAmount >= 0) {
+		} else if (!game.isGameRunning && game.betAmount > 0 && player.credits - game.betAmount >= 0) {
 			game.GameState.Raise(game);
 			isWaiting = false;
 		} else {
@@ -458,7 +458,6 @@ public class GameUI : MonoBehaviour
 	}
 
 	public PayTable payTable;
-	public double betAmount, potAmount;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;

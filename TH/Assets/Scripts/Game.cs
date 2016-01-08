@@ -270,16 +270,16 @@ public class Game
 
 		public void Call (Game game)
 		{
-//			betToStayInGame += game.ui.betAmount;
-//			betTotalInThisRound += game.ui.betAmount;
+//			betToStayInGame += game.betAmount;
+//			betTotalInThisRound += game.betAmount;
 
 			NextRound (game);
 		}
 
 		public void Raise (Game game)
 		{
-//			betToStayInGame += game.ui.betAmount;
-//			betTotalInThisRound += game.ui.betAmount;
+//			betToStayInGame += game.betAmount;
+//			betTotalInThisRound += game.betAmount;
 
 			NextRound (game);
 		}
@@ -356,8 +356,8 @@ public class Game
 
 					} else if (player.actionCurrent == "RAISE") {
 						int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-						player.credits -= game.ui.betAmount * multiplier;
-						betRaiseInThisRound += game.ui.betAmount * multiplier;
+						player.credits -= game.betAmount * multiplier;
+						betRaiseInThisRound += game.betAmount * multiplier;
 						betCurrentToStayInGame += betRaiseInThisRound;
 						Update (game, player);
 
@@ -368,7 +368,7 @@ public class Game
 			//TODO: tips for real player as enable/disable buttons
 			int index = 0;
 			var playerReal = game.players[index]; //real player
-			if (playerReal.credits <= 0 || game.ui.betAmount <= 0) {
+			if (playerReal.credits <= 0 || game.betAmount <= 0) {
 				game.ui.btnCheck.GetComponent<Button> ().interactable = true;
 				game.ui.btnCall.GetComponent<Button> ().interactable = false;
 			} else {
@@ -382,17 +382,17 @@ public class Game
 		public void Update(Game game, Player player) {
 			int multiplier = 1;
 //			int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-			player.credits -= game.ui.betAmount * multiplier;
-			betCurrentToStayInGame += game.ui.betAmount * multiplier;
-			betTotalInThisRound += game.ui.betAmount * multiplier;
-			game.potAmount += game.ui.betAmount * multiplier;
+			player.credits -= game.betAmount * multiplier;
+			betCurrentToStayInGame += game.betAmount * multiplier;
+			betTotalInThisRound += game.betAmount * multiplier;
+			game.potAmount += game.betAmount * multiplier;
 			
 			// TODO: will refactor (credit label)
 			player.lblCredits.text = player.credits.to_s();
 			player.lblAction.text = player.actionCurrent;
 
 			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
-			game.ui.lblBet.GetComponent<Text> ().text = game.ui.betAmount.to_s();
+			game.ui.lblBet.GetComponent<Text> ().text = game.betAmount.to_s();
 			game.ui.lblRaise.GetComponent<Text> ().text = betRaiseInThisRound.to_s(); // TODO:
 			game.ui.lblCall.GetComponent<Text> ().text = betCurrentToStayInGame.to_s();
 		}
@@ -432,10 +432,12 @@ public class Game
 		}
 	}
 
+	public double betAmountAnt, betAmount, potAmount;
+
 	public PlayerIterator playerIterator;
 	public PlayerCollection playerCollection;
 	public int dealerIndex; // dealer = position + 1
-	double potAmount;
+
 	public Deck deck;
 	public List<Player> players;
 	public Player player;
