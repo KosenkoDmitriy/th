@@ -14,19 +14,20 @@ public interface IBetRoundState
 public abstract class AbstractBetRound {
 	public int subRoundMaxSize;
 	public int subRoundCurrent;
+	public double bet;
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
 
 	public BetRound() {
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+		this.bet = Settings.betPreflopFlop;
 	}
 
 	#region IBetRoundState implementation
 
 	public void SubRound ()
 	{
-
 		throw new NotImplementedException ();
 	}
 
@@ -40,6 +41,7 @@ public class AnteRound : BetRound {
 
 	public AnteRound() {
 		this.subRoundMaxSize = Settings.betAnteSubRoundMaxSize;
+		this.bet = Settings.betAnte;
 	}
 
 	public void SubRound ()
@@ -70,6 +72,9 @@ public class FlopRound : BetRound {
 	#endregion
  }
 public class TurnRound : BetRound {
+	public TurnRound() {
+		this.bet = Settings.betTurnRiver;
+	}
 	#region IBetRoundState implementation
 
 	public void SubRound ()
@@ -80,6 +85,9 @@ public class TurnRound : BetRound {
 	#endregion
  }
 public class RiverRound : BetRound {
+	public RiverRound() {
+		this.bet = Settings.betTurnRiver;
+	}
 	#region IBetRoundState implementation
 
 	public void SubRound ()

@@ -5,6 +5,11 @@ static class Settings
 	public static readonly int betAnteSubRoundMaxSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
 
+	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
+	public static readonly double betAnte = 2 * betCreditsMultiplier;
+	public static readonly double betPreflopFlop = 2 * betCreditsMultiplier;
+	public static readonly double betTurnRiver = 4 * betCreditsMultiplier;
+
 	public static readonly int playerRealIndex = 0;
 
 	public static bool isDebug = false;
