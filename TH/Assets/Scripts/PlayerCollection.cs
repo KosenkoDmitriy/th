@@ -5,7 +5,7 @@ using System.Collections;
 /// <summary>
 /// The 'Aggregate' interface
 /// </summary>
-interface IAbstractCollection
+interface IAbstractPlayerCollection
 {
 	PlayerIterator CreateIterator();
 }
@@ -13,7 +13,7 @@ interface IAbstractCollection
 /// <summary>
 /// The 'ConcreteAggregate' class
 /// </summary>
-public class PlayerCollection : IAbstractCollection
+public class PlayerCollection : IAbstractPlayerCollection
 {
 	private ArrayList _items = new ArrayList();
 	

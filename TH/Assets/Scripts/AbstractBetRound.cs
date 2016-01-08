@@ -6,17 +6,122 @@ using System.Collections.Generic;
 
 public interface IBetRoundState
 {
-
+	void SubRound ();
 }
 
 
-public class AnteRound : IBetRoundState { }
-public class PreflopRound : IBetRoundState { }
-public class FlopRound : IBetRoundState { }
-public class TurnRound : IBetRoundState { }
-public class RiverRound : IBetRoundState { }
-public class EndGame : IBetRoundState { }
-public class InitGame : IBetRoundState { }
+public abstract class AbstractBetRound {
+	int subRoundMaxSize;
+	int subRoundCurrent;
+}
+
+public class BetRound : AbstractBetRound, IBetRoundState {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+
+
+}
+
+public class AnteRound : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+public class PreflopRound : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+public class FlopRound : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+public class TurnRound : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+public class RiverRound : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+public class EndGame : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+public class InitGame : BetRound {
+	#region IBetRoundState implementation
+
+	public void SubRound ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
+ }
+
+public class States {
+	public States() {
+		StateCollection collection = new StateCollection ();
+		collection [0] = new InitGame ();
+		collection [1] = new AnteRound ();
+		collection [2] = new PreflopRound ();
+		collection [3] = new FlopRound ();
+		collection [4] = new TurnRound ();
+		collection [5] = new RiverRound ();
+		collection [6] = new EndGame ();
+
+		StateIterator stateIterator = new StateIterator (collection);
+		stateIterator.Step = 1;
+
+		for (BetRound item = stateIterator.First(); !stateIterator.IsDone; item = stateIterator.Next())
+		{
+			item.SubRound();
+		}
+		
+		// Wait for user ui interaction
+		// game.isWaiting = true;
+	}
+}
 
 public interface IGameState
 {
