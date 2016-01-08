@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static readonly int betAnteSubRoundMaxSize = 1;
+	public static readonly int betSubRoundMaxSize = 4;
+
 	public static readonly int playerRealIndex = 0;
 
 	public static bool isDebug = false;

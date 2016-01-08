@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using UnityEngine.UI;
 using UnityEngine;
-using System.Collections.Generic;
 
 
 public interface IBetRoundState
@@ -11,15 +12,21 @@ public interface IBetRoundState
 
 
 public abstract class AbstractBetRound {
-	int subRoundMaxSize;
-	int subRoundCurrent;
+	public int subRoundMaxSize;
+	public int subRoundCurrent;
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
+
+	public BetRound() {
+		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+	}
+
 	#region IBetRoundState implementation
 
 	public void SubRound ()
 	{
+
 		throw new NotImplementedException ();
 	}
 
@@ -30,6 +37,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 public class AnteRound : BetRound {
 	#region IBetRoundState implementation
+
+	public AnteRound() {
+		this.subRoundMaxSize = Settings.betAnteSubRoundMaxSize;
+	}
 
 	public void SubRound ()
 	{
