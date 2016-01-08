@@ -12,6 +12,7 @@ public class Game
 	{
 		this.ui = ui;
 		GameState = new GameStates ();
+		var states = new States ();
 //		PatternState = new PatternStates ();
 		dealerIndex = Settings.dealerIndex;
 	}

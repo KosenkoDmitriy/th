@@ -120,6 +120,27 @@ public class InitGame : BetRound {
 
 public class States {
 	public States() {
+
+		IEnumerable<BetRound> rounds = new List<BetRound> () {new InitGame() };//, new AnteRound(), new PreflopRound()};
+
+		foreach (var round in rounds) {
+			var item = round;
+			var str = item.ToString();
+//			round.SubRound();
+		}
+		var enumerator = rounds.GetEnumerator ();
+
+		using (var round = rounds.GetEnumerator())
+		{
+			while (round.MoveNext())
+			{
+				// Do something with round.Current.
+//				round.Current.SubRound();
+				var item = round.Current;
+				var str = item.ToString();
+			}
+		}
+		/*
 		StateCollection collection = new StateCollection ();
 		collection [0] = new InitGame ();
 		collection [1] = new AnteRound ();
@@ -132,13 +153,14 @@ public class States {
 		StateIterator stateIterator = new StateIterator (collection);
 		stateIterator.Step = 1;
 
-		for (BetRound item = stateIterator.First(); !stateIterator.IsDone; item = stateIterator.Next())
+		for (var item = stateIterator.First(); !stateIterator.IsDone; item = stateIterator.Next())
 		{
 			item.SubRound();
 		}
 		
 		// Wait for user ui interaction
 		// game.isWaiting = true;
+		*/
 	}
 }
 
