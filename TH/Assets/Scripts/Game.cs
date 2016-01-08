@@ -91,7 +91,7 @@ public class Game
 	public GameUI ui;
 	public bool isGameRunning;
 	public bool isGameEnd;
-	public IMathState MathState { get; private set; }
+	public IBetRoundState BetRound { get; private set; }
 	public IGameState GameState { get; private set; }
 	public IPatternState PatternState { get; private set; }
 }

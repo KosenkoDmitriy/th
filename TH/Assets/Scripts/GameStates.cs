@@ -4,7 +4,19 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public interface IMathState {}
+public interface IBetRoundState
+{
+
+}
+
+
+public class AnteRound : IBetRoundState { }
+public class PreflopRound : IBetRoundState { }
+public class FlopRound : IBetRoundState { }
+public class TurnRound : IBetRoundState { }
+public class RiverRound : IBetRoundState { }
+public class EndGame : IBetRoundState { }
+public class InitGame : IBetRoundState { }
 
 public interface IGameState
 {
