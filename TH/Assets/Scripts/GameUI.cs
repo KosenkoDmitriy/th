@@ -358,6 +358,7 @@ public class GameUI : MonoBehaviour
 		if (!isWaiting) {
 			var playerPrev = game.playerIterator.PrevActive();
 			var player = game.playerIterator.NextActive();
+			var playerLastActive = game.playerIterator.LastActive();
 			if (player.isReal) {
 				isWaiting = true;
 				StartCoroutine(DealCards());

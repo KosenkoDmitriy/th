@@ -115,7 +115,7 @@ public class PlayerIterator : IAbstractPlayerIterator
 		};
 		return player;
 	}
-
+		
 	public Player NextActive() {
 		_foldedCount = 0;
 		Player player = null;
@@ -127,6 +127,17 @@ public class PlayerIterator : IAbstractPlayerIterator
 			_current += _step;
 			if (IsExit(player)) break;
 		};
+		return player;
+	}
+
+	public Player LastActive() {
+		Player player = null;
+		for (int i = _collection.Count - 1; i >= 0; i--) {
+			player = _collection[i] as Player;
+			if (!player.isFolded) {
+				break;
+			}
+		}
 		return player;
 	}
 
