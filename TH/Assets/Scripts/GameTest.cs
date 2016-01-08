@@ -1,5 +1,6 @@
 ﻿using System;
 
+namespace test {
 public class GameTest {
 
     public IGameState GameState { get; set; }
@@ -29,6 +30,18 @@ public class GameTest {
     }
 }
 
+
+public interface IGameState
+{
+	void EndGame(GameTest game);
+	void StartNewGame(GameTest game);
+	//void Flop(Game game);
+	//void Turn(Game game);
+	//void River(Game game);
+	//void Pause(Game game);
+}
+
+
 public interface IMathState
 {
 	void Preflop(GameTest game);
@@ -49,15 +62,6 @@ class PreflopState : IMathState {
 	}
 }
 
-public interface IGameState
-{
-    void EndGame(GameTest game);
-    void StartNewGame(GameTest game);
-    //void Flop(Game game);
-    //void Turn(Game game);
-    //void River(Game game);
-    //void Pause(Game game);
-}
 
 
 public interface IThState
@@ -248,4 +252,5 @@ class AllInThState : IThState
     {
         throw new NotImplementedException();
     }
+}
 }
