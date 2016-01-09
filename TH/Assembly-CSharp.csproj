@@ -72,7 +72,6 @@
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerCollection.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
-     <Compile Include="Assets\Scripts\States.cs" />
      <Compile Include="Assets\Scripts\States\AnteRound.cs" />
      <Compile Include="Assets\Scripts\States\BetRound.cs" />
      <Compile Include="Assets\Scripts\States\EndGame.cs" />
@@ -80,6 +79,7 @@
      <Compile Include="Assets\Scripts\States\InitGame.cs" />
      <Compile Include="Assets\Scripts\States\PreflopRound.cs" />
      <Compile Include="Assets\Scripts\States\RiverRound.cs" />
+     <Compile Include="Assets\Scripts\States\States.cs" />
      <Compile Include="Assets\Scripts\States\TurnRound.cs" />
      <None Include="Assets\3DText.shader" />
  <Reference Include="UnityEngine.UI">
