@@ -48,10 +48,24 @@ public class GameUI : MonoBehaviour
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-		game.GameState.InitGame (game);
+//		game.GameState.InitGame (game);
+		ReInitGame ();
 
 		audio.PlayOneShot(pressedSound);
 		isWaiting = false;
+	}
+
+
+	public void ReInitGame () {
+
+		// TODO: clear all/reset all
+
+		//		game.GameState.InitGame (game);
+		game.states = new States(game);
+//		game.states.Next ();
+//		game.state = game.states.state;
+
+
 	}
 
 	// end win panel
@@ -304,7 +318,9 @@ public class GameUI : MonoBehaviour
 		panelInitBet.SetActive (true);
 
 		game = new Game (this);
-		game.GameState.InitGame (game);
+
+		ReInitGame ();
+
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
 //		updatePlayerNames ();
@@ -355,7 +371,7 @@ public class GameUI : MonoBehaviour
 
 //		TestPercentOfTime (20);
 
-		if (!isWaiting) {
+		if (!isWaiting && !game.states.isDone) {
 			var playerPrev = game.playerIterator.PrevActive();
 			var player = game.playerIterator.NextActive();
 			var playerLastActive = game.playerIterator.LastActive();
@@ -367,24 +383,7 @@ public class GameUI : MonoBehaviour
 				player.lblAction.text = "auto";
 			}
 		}
-		/*
-		// Create iterator
-		PlayerIterator iterator = new PlayerIterator(playerCollection);
-		
-		// Skip every other item
-		iterator.Step = 1;
-		
-		Console.WriteLine("Iterating over collection:");
-		
-		for (Player item = iterator.First(); !iterator.IsDone; item = iterator.Next())
-		{
-//			if (item.isReal) 
-			//			Console.WriteLine(item.name);
-		}
-		
-		// Wait for user
-		//		Console.ReadKey();
-		*/
+
 	}
 
 	public void TestPercentOfTime(int percent) {

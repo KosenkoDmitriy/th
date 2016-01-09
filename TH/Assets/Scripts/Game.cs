@@ -8,11 +8,11 @@ using UnityEngine.UI;
 
 public class Game
 {
+
 	public Game (GameUI ui)
 	{
 		this.ui = ui;
-		GameState = new GameStates ();
-		var states = new States ();
+//		GameState = new GameStates ();
 //		PatternState = new PatternStates ();
 		dealerIndex = Settings.dealerIndex;
 	}
@@ -76,8 +76,9 @@ public class Game
 
 
 
-
-
+	public Constants source;
+	public States states;
+//	public BetRound state;
 
 	public double betAmountAnt, betAmount, potAmount;
 

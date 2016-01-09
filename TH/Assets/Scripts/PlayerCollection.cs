@@ -172,3 +172,22 @@ public class PlayerIterator : IAbstractPlayerIterator
 		get { return _current >= _collection.Count; }
 	}
 }
+
+/* USAGE of PlayerIterator
+		// Create iterator
+		PlayerIterator iterator = new PlayerIterator(playerCollection);
+		
+		// Skip every other item
+		iterator.Step = 1;
+		
+		Console.WriteLine("Iterating over collection:");
+		
+		for (Player item = iterator.First(); !iterator.IsDone; item = iterator.Next())
+		{
+//			if (item.isReal) 
+			//			Console.WriteLine(item.name);
+		}
+		
+		// Wait for user
+		//		Console.ReadKey();
+*/
