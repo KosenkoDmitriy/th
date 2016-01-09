@@ -20,6 +20,9 @@ public class Player {
 //	public int currentBetRoundNo;
 	public bool isReal;
 
+	public double bet;
+	public double betTotal;
+
 	public double credits;
 	public int id;			// for ui
 	public int position;	// first to act (player after dealer)
@@ -121,7 +124,7 @@ public class Player {
 				foreach (var betRound in patternCurrent.betRounds) {
 					if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
 						action = betRound.name_action;
-						break;
+					break;
 					}
 				}
 			if (string.IsNullOrEmpty (action))

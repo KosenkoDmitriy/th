@@ -10,6 +10,8 @@ public class States {
 
 	public States(Game game) {
 		isDone = false;
+		state = new InitGame (game);
+
 		rounds = new List<BetRound> () {
 			new AnteRound(game),
 			new PreflopRound(game),
@@ -20,7 +22,6 @@ public class States {
 		};
 
 		enumerator = rounds.GetEnumerator ();
-		state = new InitGame (game);
 
 //		foreach (var round in rounds) {
 //			var item = round;
@@ -67,17 +68,27 @@ public interface IBetRoundState
 }
 
 public abstract class AbstractBetRound {
-	public int subRoundMaxSize;
-	public int subRoundCurrent;
-	public double bet;
+	protected int subRoundMaxSize;
+	protected int subRoundCurrent;
+	protected double betMin;
+	protected Game game;
+	protected double betToStayInGame, pot;
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
-	protected Game game;
 
 	public BetRound() {
+		Init ();
+	}
+
+	public BetRound(Game game) {
+		Init ();
+		this.game = game;
+	}
+
+	private void Init() {
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
-		this.bet = Settings.betPreflopFlop;
+		this.betMin = Settings.betPreflopFlop;
 	}
 	
 	#region IBetRoundState implementation
@@ -96,7 +107,7 @@ public class AnteRound : BetRound {
 	public AnteRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMaxSize;
-		this.bet = Settings.betAnte;
+		this.betMin = Settings.betAnte;
 	}
 	
 	public void SubRound ()
@@ -109,7 +120,78 @@ public class AnteRound : BetRound {
 public class PreflopRound : BetRound {
 	public PreflopRound(Game game) {
 		this.game = game;
+
+		game.ui.DebugLog ("Preflop()");
+		
+		// start preflop bet round 0
+		if (subRoundCurrent == 0) {
+			
+		}
+		// end preflop bet round 0
+		
+		// the same for all preflop bet rounds
+		foreach (var player in game.players) {
+			if (!player.isFolded) // active virtual players only
+			{
+				player.patternCurrent = player.GetAndSetPatternRandomly ();
+				player.actionCurrent = player.GetCurrentAction (betToStayInGame, player.bet);	// betTotalInThisRound);
+				//TODO: handle player's current action
+				
+				if (player.actionCurrent == "FOLD") {
+					player.lblAction.text = player.actionCurrent;
+					player.lblCredits.text = player.credits.to_s();
+					player.isFolded = true;
+					foreach (var pcard in player.handPreflop.getCards()) {
+						pcard.FaceUp = true;
+					}
+				} else if (player.actionCurrent == "CHECK") {
+					Update (game, player);
+					
+				} else if (player.actionCurrent == "CALL") {
+					Update (game, player);
+
+				} else if (player.actionCurrent == "RAISE") {
+					int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
+					player.credits -= game.betAmount * multiplier;
+					betToStayInGame += game.betAmount * multiplier;
+					betToStayInGame += betToStayInGame;
+					Update (game, player);
+				}
+			}
+		}
+		
+		//TODO: tips for real player as enable/disable buttons
+		int index = 0;
+		var playerReal = game.players[index]; //real player
+		if (playerReal.credits <= 0 || game.betAmount <= 0) {
+			game.ui.btnCheck.GetComponent<Button> ().interactable = true;
+			game.ui.btnCall.GetComponent<Button> ().interactable = false;
+		} else {
+			game.ui.btnCheck.GetComponent<Button> ().interactable = false;
+			game.ui.btnCall.GetComponent<Button> ().interactable = true;
+			playerReal.lblCredits.text = playerReal.credits.ToString ();
+			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
+		}
 	}
+
+	private void Update(Game game, Player player) {
+		int multiplier = 1;
+		//			int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
+		player.credits -= game.betAmount * multiplier;
+		betToStayInGame += game.betAmount * multiplier;
+		pot += game.betAmount * multiplier;
+		game.potAmount += game.betAmount * multiplier;
+		
+		// TODO: will refactor (credit label)
+		player.lblCredits.text = player.credits.to_s();
+		player.lblAction.text = player.actionCurrent;
+		
+		game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
+		game.ui.lblBet.GetComponent<Text> ().text = game.betAmount.to_s();
+		game.ui.lblRaise.GetComponent<Text> ().text = betToStayInGame.to_s(); // TODO:
+		game.ui.lblCall.GetComponent<Text> ().text = betToStayInGame.to_s();
+	}
+
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
@@ -136,7 +218,7 @@ public class FlopRound : BetRound {
 public class TurnRound : BetRound {
 	public TurnRound(Game game) {
 		this.game = game;
-		this.bet = Settings.betTurnRiver;
+		this.betMin = Settings.betTurnRiver;
 	}
 	#region IBetRoundState implementation
 	
@@ -150,7 +232,7 @@ public class TurnRound : BetRound {
 public class RiverRound : BetRound {
 	public RiverRound(Game game) {
 		this.game = game;
-		this.bet = Settings.betTurnRiver;
+		this.betMin = Settings.betTurnRiver;
 	}
 	#region IBetRoundState implementation
 	
@@ -164,6 +246,29 @@ public class RiverRound : BetRound {
 public class EndGame : BetRound {
 	public EndGame(Game game) {
 		this.game = game;
+
+		if (Settings.isDebug)
+			game.ui.DebugLog ("EndGame()");
+		game.isGameRunning = false;
+		game.isGameEnd = true;
+		
+//		roundCount = subRoundCount = 0;
+//		betCurrentToStayInGame = betTotalInThisRound = 0;
+		
+		foreach (var player in game.players) {
+			foreach (var card in player.handPreflop.getCards()) {
+				if (player.id != Settings.playerRealIndex)
+				if (player.isFolded) {
+					//						card.setImage(game.ui.cardBg); // hide
+					card.isHidden = true;
+				} else {
+					card.FaceUp = true;
+				}
+			}
+		}
+		
+		game.ui.HideDynamicPanels ();
+		game.ui.panelWin.SetActive (true);
 	}
 
 	#region IBetRoundState implementation
