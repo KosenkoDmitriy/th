@@ -52,7 +52,6 @@
      <Compile Include="Assets\Scripts\Extension.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\GameStates.cs" />
-     <Compile Include="Assets\Scripts\GameTest.cs" />
      <Compile Include="Assets\Scripts\GameUI.cs" />
      <Compile Include="Assets\Scripts\Hand.cs" />
      <Compile Include="Assets\Scripts\HandCombination.cs" />
