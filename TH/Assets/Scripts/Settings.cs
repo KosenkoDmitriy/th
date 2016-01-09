@@ -56,7 +56,7 @@ static class Settings
     //public static string cardBackName = cardsPrefix + "logo_back_cards"; // image name of the card back side
 	public static string cardBackName = cardsPrefix + "card_back_black_with_logo";
     //"card_back_black_with_logo", "card_back_black_with_logo1", "card_back_black", "card_back_red" "card_back_red_with_logo"
-    public static string cardBg = "card_background"; // the same color as in table
+	public static string cardBg = "transparent"; //"card_background"; // the same color as in table
     // end cards
 
     public static int videoPokerLowRank = 15;
