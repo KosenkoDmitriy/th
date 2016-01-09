@@ -55,28 +55,6 @@ public class States {
 //			}
 //		}
 
-		
-		/*
-		StateCollection collection = new StateCollection ();
-		collection [0] = new InitGame ();
-		collection [1] = new AnteRound ();
-		collection [2] = new PreflopRound ();
-		collection [3] = new FlopRound ();
-		collection [4] = new TurnRound ();
-		collection [5] = new RiverRound ();
-		collection [6] = new EndGame ();
-
-		StateIterator stateIterator = new StateIterator (collection);
-		stateIterator.Step = 1;
-
-		for (var item = stateIterator.First(); !stateIterator.IsDone; item = stateIterator.Next())
-		{
-			item.SubRound();
-		}
-		
-		// Wait for user ui interaction
-		// game.isWaiting = true;
-		*/
 	}
 }
 

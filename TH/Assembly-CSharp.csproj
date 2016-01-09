@@ -73,7 +73,6 @@
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerCollection.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
-     <Compile Include="Assets\Scripts\StateCollection.cs" />
      <Compile Include="Assets\Scripts\States.cs" />
      <None Include="Assets\3DText.shader" />
  <Reference Include="UnityEngine.UI">
