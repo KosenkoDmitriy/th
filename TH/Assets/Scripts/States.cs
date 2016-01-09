@@ -129,7 +129,7 @@ public class AnteRound : BetRound {
 	
 	public AnteRound(Game game) {
 		this.game = game;
-		this.subRoundMaxSize = Settings.betSubRoundMinSize;
+		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
 		this.betMin = Settings.betAnte;
 	}
 
@@ -170,12 +170,7 @@ public class PreflopRound : BetRound {
 		return;
 
 		game.ui.DebugLog ("Preflop()");
-		
-		// start preflop bet round 0
-		if (subRoundCurrent == 0) {
-			
-		}
-		// end preflop bet round 0
+
 		
 		// the same for all preflop bet rounds
 		foreach (var player in game.players) {

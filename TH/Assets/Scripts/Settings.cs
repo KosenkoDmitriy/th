@@ -3,6 +3,7 @@ using System.Collections.Generic;
 static class Settings
 {
 	public static readonly int betSubRoundMinSize = 0;
+	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
 
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
@@ -64,7 +65,7 @@ static class Settings
     public static bool isIgnoreIniFile = true;
     public static bool testGame = false;
     public static bool logging = false;
-    public static float updateInterval = 0.5f;
+    public static float updateInterval = 0.05f;
 
     public static int bonusTableMaxTitleSize = 10;  //unused
     public static int bonusTableWidth = 220;

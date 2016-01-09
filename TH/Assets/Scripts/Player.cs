@@ -192,11 +192,10 @@ public class Player {
 	public Hand GetBestPlayerHand (List<Card> cards)
 	{
 		var count = 20;
-		Hand hand = null;
 		this.hands = new List<Hand> ();
 		
 		for (int x = 0; x <= count; x++) {//iterate through all possible 5 card hands
-			hand = new Hand();
+			var hand = new Hand();
 			switch (x) {
 			case 0:
 			{
@@ -394,8 +393,8 @@ public class Player {
 		
 		Hand bestHand = this.hands.First();
 		foreach (var item in this.hands) {
-			if (hand > bestHand) {
-				bestHand = hand;
+			if (item > bestHand) {
+				bestHand = item;
 			}
 		}
 		return bestHand;
