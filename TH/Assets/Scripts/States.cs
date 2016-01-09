@@ -131,6 +131,15 @@ public class PreflopRound : BetRound {
 		
 		// the same for all preflop bet rounds
 		foreach (var player in game.players) {
+
+			foreach (var pcard in player.handPreflop.getCards()) {
+				if (player.isReal || player.isFolded || Settings.isDebug) {
+					pcard.FaceUp = true;
+				} else {
+					pcard.FaceUp = false;
+				}
+			}
+
 			if (!player.isFolded) // active virtual players only
 			{
 				player.patternCurrent = player.GetAndSetPatternRandomly ();
@@ -204,13 +213,19 @@ public class PreflopRound : BetRound {
 public class FlopRound : BetRound {
 	public FlopRound(Game game) {
 		this.game = game;
+
+		game.cards [0].FaceUp = true;
+		game.cards [1].FaceUp = true;
+		game.cards [2].FaceUp = true;
 	}
 
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
 	{
-		throw new NotImplementedException ();
+		if (subRoundCurrent == 0) {
+
+		}
 	}
 	
 	#endregion
@@ -219,7 +234,10 @@ public class TurnRound : BetRound {
 	public TurnRound(Game game) {
 		this.game = game;
 		this.betMin = Settings.betTurnRiver;
+
+		game.cards [3].FaceUp = true;
 	}
+
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
@@ -233,7 +251,10 @@ public class RiverRound : BetRound {
 	public RiverRound(Game game) {
 		this.game = game;
 		this.betMin = Settings.betTurnRiver;
+
+		game.cards [4].FaceUp = true;
 	}
+
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
@@ -345,6 +366,7 @@ public class InitGame : BetRound {
 					break;
 				} else {
 					player.pattern = game.source.GetPatternByName(Settings.defaultPreflopPattern);
+					// TODO: alt_patterns? 
 				}
 			}
 		}

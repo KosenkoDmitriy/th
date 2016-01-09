@@ -370,8 +370,9 @@ public class GameUI : MonoBehaviour
 //		Debug.Log (percentRand + " 20%/100%");
 
 //		TestPercentOfTime (20);
-		if (!game.states.isDone)
-			game.states.Next ();
+
+//		if (!game.states.isDone)
+//			game.states.Next ();
 		return;
 
 		if (!isWaiting && !game.states.isDone) {
