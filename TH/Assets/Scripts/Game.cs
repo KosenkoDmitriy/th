@@ -78,7 +78,7 @@ public class Game
 
 	public Constants source;
 	public States states;
-//	public BetRound state;
+	public BetRound state;
 
 	public double betAmountAnt, betAmount, potAmount;
 

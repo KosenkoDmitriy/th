@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 static class Settings
 {
-	public static readonly int betAnteSubRoundMaxSize = 1;
+	public static readonly int betSubRoundMinSize = 0;
 	public static readonly int betSubRoundMaxSize = 4;
 
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits

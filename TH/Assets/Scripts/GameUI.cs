@@ -61,7 +61,8 @@ public class GameUI : MonoBehaviour
 		// TODO: clear all/reset all
 
 		//		game.GameState.InitGame (game);
-		game.states = new States(game);
+//		game.states = new States(game);
+		game.state = new InitGame (game);
 //		game.states.Next ();
 //		game.state = game.states.state;
 
@@ -373,6 +374,11 @@ public class GameUI : MonoBehaviour
 
 //		if (!game.states.isDone)
 //			game.states.Next ();
+
+//		game.state = new AnteRound ();
+		if (game.state != null && !game.state.isWaiting) {
+			game.state.SubRound ();
+		}
 		return;
 
 		if (!isWaiting && !game.states.isDone) {

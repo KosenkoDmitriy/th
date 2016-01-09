@@ -76,6 +76,7 @@ public abstract class AbstractBetRound {
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
+	public bool isWaiting; // wait for corountine
 
 	public BetRound() {
 		Init ();
@@ -87,15 +88,37 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 
 	private void Init() {
-		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.betMin = Settings.betPreflopFlop;
 	}
 	
 	#region IBetRoundState implementation
 	
-	public void SubRound ()
+	public virtual void SubRound ()
 	{
-		throw new NotImplementedException ();
+		if (subRoundCurrent == 0) {
+			FirstAction ();
+		} else if (subRoundCurrent <= subRoundMaxSize && subRoundMaxSize > 0) {
+			BetSubRounds ();
+		} else {
+			LastAction(); //next state (preflop, turn, river)
+			subRoundCurrent = 0;
+		}
+		subRoundCurrent++;
+	}
+
+	public virtual void FirstAction() {
+//		isWaiting = true;
+//		// do something (deal cards, display win info, reinit game, ui animation
+//		isWaiting = false;
+	}
+
+	public virtual void BetSubRounds() {
+		// bet sub rounds
+	}
+
+	public virtual void LastAction() {
+		// bet sub rounds
 	}
 	
 	#endregion
@@ -106,20 +129,41 @@ public class AnteRound : BetRound {
 	
 	public AnteRound(Game game) {
 		this.game = game;
-		this.subRoundMaxSize = Settings.betAnteSubRoundMaxSize;
+		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.betMin = Settings.betAnte;
 	}
-	
-	public void SubRound ()
+
+	public override void BetSubRounds ()
 	{
-		throw new NotImplementedException ();
+//		base.BetSubRounds ();
+		// TODO
 	}
-	
+	public override void LastAction ()
+	{
+//		base.LastAction ();
+		game.state = new PreflopRound (game);
+	}
+
 	#endregion
 }
 public class PreflopRound : BetRound {
 	public PreflopRound(Game game) {
 		this.game = game;
+		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+	}
+	public override void BetSubRounds ()
+	{
+		//		base.BetSubRounds ();
+		// TODO
+	}
+	public override void LastAction ()
+	{
+		//		base.LastAction ();
+		game.state = new FlopRound (game);
+	}
+	public override void FirstAction ()
+	{
+//		base.FirstAction ();
 
 		game.ui.DebugLog ("Preflop()");
 		
@@ -201,73 +245,84 @@ public class PreflopRound : BetRound {
 		game.ui.lblCall.GetComponent<Text> ().text = betToStayInGame.to_s();
 	}
 
-	#region IBetRoundState implementation
-	
-	public void SubRound ()
-	{
-		throw new NotImplementedException ();
-	}
-	
-	#endregion
 }
 public class FlopRound : BetRound {
 	public FlopRound(Game game) {
 		this.game = game;
-
+		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+	}
+	public override void FirstAction() {
 		game.cards [0].FaceUp = true;
 		game.cards [1].FaceUp = true;
 		game.cards [2].FaceUp = true;
 	}
-
-	#region IBetRoundState implementation
-	
-	public void SubRound ()
+	public override void LastAction ()
 	{
-		if (subRoundCurrent == 0) {
-
-		}
+		//		base.LastAction ();
+		game.state = new TurnRound (game);
 	}
-	
-	#endregion
+	public override void BetSubRounds ()
+	{
+		base.BetSubRounds ();
+	}
 }
 public class TurnRound : BetRound {
 	public TurnRound(Game game) {
 		this.game = game;
 		this.betMin = Settings.betTurnRiver;
+		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+	}
 
+	public override void FirstAction() {
 		game.cards [3].FaceUp = true;
 	}
-
-	#region IBetRoundState implementation
-	
-	public void SubRound ()
+	public override void LastAction ()
 	{
-		throw new NotImplementedException ();
+		//		base.LastAction ();
+		game.state = new RiverRound (game);
 	}
-	
-	#endregion
+	public override void BetSubRounds ()
+	{
+		base.BetSubRounds ();
+	}
 }
 public class RiverRound : BetRound {
 	public RiverRound(Game game) {
 		this.game = game;
 		this.betMin = Settings.betTurnRiver;
+		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+	}
 
+	public override void FirstAction() {
 		game.cards [4].FaceUp = true;
 	}
-
-	#region IBetRoundState implementation
-	
-	public void SubRound ()
+	public override void LastAction ()
 	{
-		throw new NotImplementedException ();
+		//		base.LastAction ();
+		game.state = new EndGame (game);
 	}
-	
-	#endregion
+	public override void BetSubRounds ()
+	{
+		base.BetSubRounds ();
+	}
 }
 public class EndGame : BetRound {
 	public EndGame(Game game) {
 		this.game = game;
+	}
 
+	public override void LastAction ()
+	{
+		//		base.LastAction ();
+//		game.state = new InitGame (game);
+	}
+
+	public override void BetSubRounds ()
+	{
+//		base.BetSubRounds ();
+	}
+
+	public override void FirstAction() {
 		if (Settings.isDebug)
 			game.ui.DebugLog ("EndGame()");
 		game.isGameRunning = false;
@@ -303,6 +358,11 @@ public class EndGame : BetRound {
 }
 
 public class InitGame : BetRound {
+	public override void LastAction ()
+	{
+//		base.LastAction ();
+		game.state = new AnteRound (game);
+	}
 	public InitGame(Game game2) {
 		this.game = game2;
 		game.ui.ClearAll ();
@@ -420,16 +480,6 @@ public class InitGame : BetRound {
 		
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}
-//	public InitGame(Game game) {
-//		game.states = new States ();
-//	}
-	#region IBetRoundState implementation
-	
-	public void SubRound ()
-	{
-		throw new NotImplementedException ();
-	}
-	
-	#endregion
+
 }
 
