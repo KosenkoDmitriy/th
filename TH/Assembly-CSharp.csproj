@@ -73,6 +73,14 @@
      <Compile Include="Assets\Scripts\PlayerCollection.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
      <Compile Include="Assets\Scripts\States.cs" />
+     <Compile Include="Assets\Scripts\States\AnteRound.cs" />
+     <Compile Include="Assets\Scripts\States\BetRound.cs" />
+     <Compile Include="Assets\Scripts\States\EndGame.cs" />
+     <Compile Include="Assets\Scripts\States\FlopRound.cs" />
+     <Compile Include="Assets\Scripts\States\InitGame.cs" />
+     <Compile Include="Assets\Scripts\States\PreflopRound.cs" />
+     <Compile Include="Assets\Scripts\States\RiverRound.cs" />
+     <Compile Include="Assets\Scripts\States\TurnRound.cs" />
      <None Include="Assets\3DText.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
