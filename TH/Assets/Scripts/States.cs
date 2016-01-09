@@ -164,6 +164,10 @@ public class PreflopRound : BetRound {
 	public override void FirstAction ()
 	{
 //		base.FirstAction ();
+		isWaiting = true;
+		game.ui.StartCoroutine(game.ui.DealCards());
+		// isWaiting = false (must be in the end line of coroutine)
+		return;
 
 		game.ui.DebugLog ("Preflop()");
 		

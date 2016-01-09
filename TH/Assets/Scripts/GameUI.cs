@@ -341,7 +341,7 @@ public class GameUI : MonoBehaviour
 //		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
 	}
 
-	private IEnumerator DealCards() {
+	public IEnumerator DealCards() {
 //		for(int i = 1; i >= 0; i--)
 		for(int i = 0; i < 2; i++)
 		foreach(var player in game.players) {
@@ -352,6 +352,7 @@ public class GameUI : MonoBehaviour
 				card.FaceUp = false;
 			yield return new WaitForSeconds(Settings.updateInterval);
 		}
+		game.state.isWaiting = false;
 	}
 
 	int playerNo = 0;
