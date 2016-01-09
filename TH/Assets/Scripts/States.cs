@@ -1,40 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine.UI;
 using UnityEngine;
 
 
 public class States {
-	IEnumerable<BetRound> rounds;
-	private IEnumerator<BetRound> enumerator;
-	public BetRound state;
-	public bool isDone;
-
-	public void Next() {
-		if (enumerator.MoveNext ()) {
-			state = enumerator.Current;
-			state.SubRound ();
-			isDone = false;
-		} else {
-			isDone = true;
-		}
-	}
-
-//	public BetRound GetCurrentState() {
-//		return state;
-//	}
 
 	public States(Game game) {
 		isDone = false;
 		rounds = new List<BetRound> () {
-			new AnteRound(),
-			new PreflopRound(),
-			new FlopRound(),
-			new TurnRound(),
-			new RiverRound(),
-			new EndGame(), // win panel (when close it > InitGame()
+			new AnteRound(game),
+			new PreflopRound(game),
+			new FlopRound(game),
+			new TurnRound(game),
+			new RiverRound(game),
+			new EndGame(game), // win panel (when close it > InitGame()
 		};
+
 		enumerator = rounds.GetEnumerator ();
 		state = new InitGame (game);
 
@@ -56,6 +40,23 @@ public class States {
 //		}
 
 	}
+
+	
+	public void Next() {
+		if (enumerator.MoveNext ()) {
+			state = enumerator.Current;
+			//			state.SubRound ();
+			isDone = false;
+		} else {
+			isDone = true;
+		}
+	}
+
+	IEnumerable<BetRound> rounds;
+	private IEnumerator<BetRound> enumerator;
+	public BetRound state;
+	public bool isDone;
+
 }
 
 
@@ -72,7 +73,8 @@ public abstract class AbstractBetRound {
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
-	
+	protected Game game;
+
 	public BetRound() {
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		this.bet = Settings.betPreflopFlop;
@@ -91,7 +93,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 public class AnteRound : BetRound {
 	#region IBetRoundState implementation
 	
-	public AnteRound() {
+	public AnteRound(Game game) {
+		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMaxSize;
 		this.bet = Settings.betAnte;
 	}
@@ -104,6 +107,9 @@ public class AnteRound : BetRound {
 	#endregion
 }
 public class PreflopRound : BetRound {
+	public PreflopRound(Game game) {
+		this.game = game;
+	}
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
@@ -114,6 +120,10 @@ public class PreflopRound : BetRound {
 	#endregion
 }
 public class FlopRound : BetRound {
+	public FlopRound(Game game) {
+		this.game = game;
+	}
+
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
@@ -124,7 +134,8 @@ public class FlopRound : BetRound {
 	#endregion
 }
 public class TurnRound : BetRound {
-	public TurnRound() {
+	public TurnRound(Game game) {
+		this.game = game;
 		this.bet = Settings.betTurnRiver;
 	}
 	#region IBetRoundState implementation
@@ -137,7 +148,8 @@ public class TurnRound : BetRound {
 	#endregion
 }
 public class RiverRound : BetRound {
-	public RiverRound() {
+	public RiverRound(Game game) {
+		this.game = game;
 		this.bet = Settings.betTurnRiver;
 	}
 	#region IBetRoundState implementation
@@ -150,6 +162,10 @@ public class RiverRound : BetRound {
 	#endregion
 }
 public class EndGame : BetRound {
+	public EndGame(Game game) {
+		this.game = game;
+	}
+
 	#region IBetRoundState implementation
 	
 	public void SubRound ()
@@ -159,8 +175,8 @@ public class EndGame : BetRound {
 	
 	#endregion
 }
+
 public class InitGame : BetRound {
-	Game game;
 	public InitGame(Game game2) {
 		this.game = game2;
 		game.ui.ClearAll ();
