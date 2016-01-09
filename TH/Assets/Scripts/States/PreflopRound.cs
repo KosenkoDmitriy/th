@@ -6,24 +6,25 @@ public class PreflopRound : BetRound {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 	}
-	public override void BetSubRounds ()
-	{
-		//		base.BetSubRounds ();
-		// TODO
-	}
+
 	public override void LastAction ()
 	{
 		//		base.LastAction ();
 		game.state = new FlopRound (game);
 	}
+
 	public override void FirstAction ()
 	{
 		//		base.FirstAction ();
 		isWaiting = true;
-		game.ui.StartCoroutine(game.ui.DealCards());
+		game.ui.StartCoroutine (game.ui.DealCards ());
 		// isWaiting = false (must be in the end line of coroutine)
-		return;
+	}
 		
+	public override void BetSubRounds ()
+	{
+		//		base.BetSubRounds ();
+
 		game.ui.DebugLog ("Preflop()");
 		
 		
