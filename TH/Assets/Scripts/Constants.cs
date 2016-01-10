@@ -47,8 +47,8 @@ public class Constants {
 				pattern.actionDefault = arg2;
 				var prefActions = arg1.Replace("*", "").Split('/');
 				if (prefActions.Length >= 2) {
-					pattern.actionPreffered1 = prefActions[0];
-					pattern.actionPreffered2 = prefActions[1];
+					pattern.actionPriority2 = prefActions[0];
+					pattern.actionPriority1 = prefActions[1];
 					foreach(var c in prefActions[1]) {
 						int maxBetAmount = 0;
 						Int32.TryParse(c.ToString(), out maxBetAmount);

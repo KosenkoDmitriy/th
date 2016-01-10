@@ -67,12 +67,13 @@ public class Player {
 	}
 
 	public Action GetFinalAction(double betToStayInGame, double betAlreadyInvested) {
+		// summary:
 		// get pattern randomly
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
 		patternCurrent = GetAndSetPatternRandomly ();
 		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvested); // best actionString from the patternCurrent
-		GetAndSetActionTip (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
+		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
 
 		Action actionFinal = null;
 		double creditsAfterAction = betTotal - betAlreadyInvested - betToStayInGame; // betAlreadyInvested == betTotal
@@ -140,28 +141,26 @@ public class Player {
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0)
 				foreach (var betRound in patternCurrent.betSubRounds) {
-					if (betRound.costBet * Settings.betDxInCredits == betToStayInGame && betRound.costBetTotal * Settings.betDxInCredits == betTotal) {
+					if (betRound.costBet == betToStayInGame && betRound.costBetTotal == betTotal) {
+//					if (betRound.costBet * Settings.betDxInCredits == betToStayInGame && betRound.costBetTotal * Settings.betDxInCredits == betTotal) {
 						actionString = betRound.name_action;
 					break;
 					}
 				}
 			if (string.IsNullOrEmpty (actionString))
-				actionString = GetAndSetActionTip (patternCurrent.actionPreffered2, betToStayInGame);
+				actionString = GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority1, betToStayInGame);
 			if (string.IsNullOrEmpty (actionString))
-				actionString = GetAndSetActionTip (patternCurrent.actionPreffered1, betToStayInGame);
+				actionString = GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority2, betToStayInGame);
 			if (patternCurrent != null)
 			if (string.IsNullOrEmpty (actionString))
 				actionString = patternCurrent.actionDefault;
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
-
-		// final action
-//		actionFinal = GetFinalAction(betToStayInGame, betTotal);
 		return actionString;
 	}
 	
-	private string GetAndSetActionTip(string action, double betToStayInGame) {
+	private string GetAndSetActionTipByNameAndBetToContinue(string action, double betToStayInGame) {
 		// TODO: maxBet for call and raise
 		string res = "";
 		actionTip = new ActionTip(this, betToStayInGame);

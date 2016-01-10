@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public class Pattern
 {
 	public string name;
 	public string actionDefault;
-	public string actionPreffered1;
-	public string actionPreffered2;
+	public string actionPriority2;
+	public string actionPriority1;
 	public int betMaxCallOrRaise;	// in number of bets
 	
 	public List<PatternBetRoundAndAction> betSubRounds;

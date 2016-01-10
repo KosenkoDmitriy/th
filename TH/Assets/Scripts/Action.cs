@@ -5,26 +5,18 @@ public interface IAction
 	void Do ();
 }
 public class ActionTip: Action {
-	public bool isCall;
-	public bool isFold;
-	public bool isCheck;
-	public bool isRaise;
-//	public bool isAllIn;
-
 	public ActionTip (Player player, double betToStayInGame)
 	{
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-
-	public void Do() {
-
-	}
+	public bool isCall;
+	public bool isFold;
+	public bool isCheck;
+	public bool isRaise;
+	//	public bool isAllIn;
 }
 public class Action : IAction {
-	public Player p;
-	public double bet;
-
 	public Action() {}
 
 	public Action (Player player, double betToStayInGame)
@@ -32,17 +24,18 @@ public class Action : IAction {
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
+
 	#region IAction implementation
 	
 	public void Do ()
 	{
-		
-//		if (bet == 0) {
-//			p.actionFinal = new Check (p, bet);
-//		}
+		 
 	}
 	
 	#endregion
+
+	public Player p;
+	public double bet;
 }
 
 public class Call : Action
@@ -52,16 +45,6 @@ public class Call : Action
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-//	#region IAction implementation
-
-//	public void Do ()
-//	{
-//		if (bet == 0) {
-//			p.actionFinal = new Check (p, bet);
-//		}
-//	}
-//
-//	#endregion
 }
 
 public class Check : Action
@@ -74,14 +57,6 @@ public class Check : Action
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-//	#region IAction implementation
-//	
-//	public void Do ()
-//	{
-//
-//	}
-//     
-// #endregion
 }
 
 public class Fold : Action
@@ -94,16 +69,6 @@ public class Fold : Action
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-//	#region IAction implementation
-//	
-//	public void Do ()
-//	{
-//		if (bet == 0) {
-//			p.actionFinal = new Check (p, bet);
-//		}
-//	}
-//	
-//	#endregion
 }
 
 
@@ -117,18 +82,4 @@ public class Raise : Action
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-//	#region IAction implementation
-//	
-//	public void Do ()
-//	{
-//		if (bet == 0) {
-//			p.actionFinal = new Check (p, bet);
-//		} else if (p.betTotal > bet) {
-//			// raise
-//		} else if (p.betTotal == bet) {
-//			p.actionFinal = new Call (p, bet);
-//		}
-//	}
-//	
-//	#endregion
 }
