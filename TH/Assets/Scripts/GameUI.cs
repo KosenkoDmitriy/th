@@ -52,7 +52,8 @@ public class GameUI : MonoBehaviour
 		ReInitGame ();
 
 		audio.PlayOneShot(pressedSound);
-		isWaiting = false;
+//		isWaiting = false;
+		game.state.isWaiting = false;
 	}
 
 
@@ -74,23 +75,26 @@ public class GameUI : MonoBehaviour
 	public void btnCheckClick()
 	{
 		audio.PlayOneShot(pressedSound);
-		isWaiting = false;
+		game.player.actionFinal = new Check(game.player, game.player.bet);
+		game.state.isWaiting = false;
 
-		game.GameState.Check (game);
+//		isWaiting = false;
+//		game.GameState.Check (game);
 	}
 
 	public void btnCallClick()
 	{
 		audio.PlayOneShot(pressedSound);
-		isWaiting = false;
+		game.player.actionFinal = new Call(game.player, game.player.bet);
+		game.state.isWaiting = false;
 
-		game.GameState.Call (game);
+//		isWaiting = false;
+//		game.GameState.Call (game);
 	}
 
 	public void btnRaiseClick()
 	{
 		audio.PlayOneShot(pressedSound);
-		isWaiting = false;
 
 		game.betAmount = 0;
 		HideDynamicPanels ();
@@ -99,10 +103,9 @@ public class GameUI : MonoBehaviour
 
 	public void btnFoldClick()
 	{
-//		game.MathState.BetRound1 ();
-//		game.GameState.EndGame (game);
-		game.GameState.Fold (game);
 		audio.PlayOneShot(pressedSound);
+
+		game.state = new EndGame (game);
 	}
 
 	public void btnAllInClick()
@@ -149,15 +152,20 @@ public class GameUI : MonoBehaviour
 		var player = game.player;
 		if (game.isGameRunning) {
 			if (player.betTotal - game.betAmount < 0) {
-				game.GameState.Check (game);
+//				game.GameState.Check (game);
+				game.player.actionFinal = new Check(game.player, game.player.bet);
 			} else 
 			if (player.betTotal - game.betAmount >= 0) {
-				game.GameState.Raise (game);
+				game.player.actionFinal = new Raise(game.player, game.player.bet);
+//				game.GameState.Raise (game);
 			}
-			isWaiting = false;
+//			isWaiting = false;
+			game.state.isWaiting = false;
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
-			game.GameState.Raise(game);
-			isWaiting = false;
+			game.player.actionFinal = new Raise(game.player, Settings.betAnte);
+			game.state.isWaiting = false;
+//			game.GameState.Raise(game);
+//			isWaiting = false;
 		} else {
 			return;
 		}
@@ -171,7 +179,7 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		Settings.betCurrent = Settings.betMaxInCredits;
+		Settings.betCurrent = Settings.betMax;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
@@ -188,8 +196,8 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		Settings.betCurrent += Settings.betDxInCredits;
-		if (Settings.betCurrent > Settings.betMaxInCredits)
+		Settings.betCurrent += Settings.betDx;
+		if (Settings.betCurrent > Settings.betMax)
 			Settings.betCurrent = 0f;
 		inputBetField.text = Settings.betCurrent.to_s();
 	}
@@ -372,6 +380,7 @@ public class GameUI : MonoBehaviour
 		}
 		game.state.isWaiting = false;
 	}
+
 	int playerNo = 0;
 	private void UpdatePlayerName() {
 		if (playerNo < game.players.Count) {
@@ -383,7 +392,7 @@ public class GameUI : MonoBehaviour
 		}
 	}
 
-	bool isWaiting;
+//	bool isWaiting;
 	private void UpdateInterval() {
 //		test ();
 
@@ -401,18 +410,20 @@ public class GameUI : MonoBehaviour
 
 //		if (!game.states.isDone)
 //			game.states.Next ();
-		if (!isWaiting && !game.states.isDone) {
-			var playerPrev = game.playerIterator.PrevActive();
-			var player = game.playerIterator.NextActive();
-			var playerLastActive = game.playerIterator.LastActive();
-			if (player.isReal) {
-				isWaiting = true;
-				StartCoroutine(DealCards());
-				player.lblAction.text = "waiting";
-			} else {
-				player.lblAction.text = "auto";
-			}
-		}
+//		return;
+
+//		if (!isWaiting && !game.states.isDone) {
+//			var playerPrev = game.playerIterator.PrevActive();
+//			var player = game.playerIterator.NextActive();
+//			var playerLastActive = game.playerIterator.LastActive();
+//			if (player.isReal) {
+//				isWaiting = true;
+//				StartCoroutine(DealCards());
+//				player.lblAction.text = "waiting";
+//			} else {
+//				player.lblAction.text = "auto";
+//			}
+//		}
 	}
 
 	public void TestPercentOfTime(int percent) {
