@@ -12,12 +12,20 @@ public class Player {
 		alt_patterns = new List<Pattern> ();
 	}
 
+	public void Action() {
+		// TODO:
+		// get pattern randomly
+		// preferred/recommend action from the pattern
+		// final optimal correct actual action
+	}
+
 	public override string ToString ()
 	{
 		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, credits, actionCurrent);
 	}
 
-	public Action action;
+	public Action actionTip;
+	public Action actionFinal;
 //	public int currentBetRoundNo;
 	public bool isReal;
 
