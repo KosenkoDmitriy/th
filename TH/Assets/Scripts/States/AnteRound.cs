@@ -14,12 +14,17 @@ public class AnteRound : BetRound {
 		//		base.BetSubRounds ();
 		// TODO
 		foreach (var player in game.players) {
-			player.actionFinal = player.GetFinalAction (10, player.betAlreadyInvestedBeforeAction);
+			player.actionFinal = player.GetFinalAction (betMin, player.betAlreadyInvestedBeforeAction);
+//			if (player.isReal) {
+//				if (player.isFolded) {
+//					game.state = new EndGame(game);
+//				}
+//			}
 			player.actionFinal.Do ();
+//			betToStayInGame += player.bet;
 		}
 
 		game.state.isWaiting = true;
-
 		game.ui.StartCoroutine (game.ui.UpdatePlayers());
 	}
 	public override void LastAction ()

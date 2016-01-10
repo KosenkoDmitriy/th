@@ -79,6 +79,7 @@ public class Player {
 		double creditsAfterAction = betTotal - betAlreadyInvested - betToStayInGame; // betAlreadyInvested == betTotal
 		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
 		//2
+//		bet = betToStayInGame;
 		double betDt = betToStayInGame - betAlreadyInvested;
 //		if (betMaxCallOrRaiseInMathBets <= betDt) {
 //			// raise
@@ -122,7 +123,7 @@ public class Player {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
 				if (betMaxCallOrRaiseInMathBets <= betDt) {
-					actionFinal = new Raise(this, betDt);
+					actionFinal = new Raise(this, betMaxCallOrRaiseInMathBets);
 				} else if (betAlreadyInvested == betDt) {
 					actionFinal = new Check(this, betDt);
 				} else {

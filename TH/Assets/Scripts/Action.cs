@@ -29,15 +29,18 @@ public class Action : IAction {
 	
 	public void Do ()
 	{
+		if (p != null) {
+			if (p.isReal) {
 
-//		if (p.isReal) {
-////			game.state.isWaiting = true //TODO:
-//		} else {
-//			if (!p.isFolded) {
-//				p.bet += bet;
-//				p.betTotal -= bet;
-//			}
-//		}
+	//			game.state.isWaiting = true //TODO:
+			} else {
+				if (!p.isFolded) {
+					p.bet = bet;
+					p.betAlreadyInvestedBeforeAction += bet;
+					p.betTotal -= bet;
+				}
+			}
+		}
 	}
 	
 	#endregion
