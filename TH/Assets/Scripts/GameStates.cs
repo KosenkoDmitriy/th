@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using UnityEngine.UI;
@@ -102,7 +102,7 @@ public class GameStates : IGameState
 		foreach (var player in game.players) {
 			player.SetChipRandomly();
 			player.lblName.text = player.name;
-			player.lblCredits.text = player.credits.to_s();
+			player.lblCredits.text = player.betTotal.to_s();
 			player.lblAction.text = "";
 		}
 		
@@ -269,25 +269,25 @@ public class GameStates : IGameState
 			if (!player.isFolded) // active virtual players only
 			{
 				player.patternCurrent = player.GetAndSetPatternRandomly ();
-				player.actionCurrent = player.GetCurrentAction (betCurrentToStayInGame, betTotalInThisRound);
+				player.actionCurrentString = player.GetCurrentActionString (betCurrentToStayInGame, betTotalInThisRound);
 				//TODO: handle player's current action
 				
-				if (player.actionCurrent == "FOLD") {
-					player.lblAction.text = player.actionCurrent;
-					player.lblCredits.text = player.credits.to_s();
+				if (player.actionCurrentString == "FOLD") {
+					player.lblAction.text = player.actionCurrentString;
+					player.lblCredits.text = player.betTotal.to_s();
 					player.isFolded = true;
 					foreach (var pcard in player.handPreflop.getCards()) {
 						pcard.FaceUp = true;
 					}
-				} else if (player.actionCurrent == "CHECK") {
+				} else if (player.actionCurrentString == "CHECK") {
 					Update (game, player);
 					
-				} else if (player.actionCurrent == "CALL") {
+				} else if (player.actionCurrentString == "CALL") {
 					Update (game, player);
 					
-				} else if (player.actionCurrent == "RAISE") {
+				} else if (player.actionCurrentString == "RAISE") {
 					int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-					player.credits -= game.betAmount * multiplier;
+					player.betTotal -= game.betAmount * multiplier;
 					betRaiseInThisRound += game.betAmount * multiplier;
 					betCurrentToStayInGame += betRaiseInThisRound;
 					Update (game, player);
@@ -299,13 +299,13 @@ public class GameStates : IGameState
 		//TODO: tips for real player as enable/disable buttons
 		int index = 0;
 		var playerReal = game.players[index]; //real player
-		if (playerReal.credits <= 0 || game.betAmount <= 0) {
+		if (playerReal.betTotal <= 0 || game.betAmount <= 0) {
 			game.ui.btnCheck.GetComponent<Button> ().interactable = true;
 			game.ui.btnCall.GetComponent<Button> ().interactable = false;
 		} else {
 			game.ui.btnCheck.GetComponent<Button> ().interactable = false;
 			game.ui.btnCall.GetComponent<Button> ().interactable = true;
-			playerReal.lblCredits.text = playerReal.credits.ToString ();
+			playerReal.lblCredits.text = playerReal.betTotal.ToString ();
 			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 		}
 	}
@@ -313,14 +313,14 @@ public class GameStates : IGameState
 	public void Update(Game game, Player player) {
 		int multiplier = 1;
 		//			int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-		player.credits -= game.betAmount * multiplier;
+		player.betTotal -= game.betAmount * multiplier;
 		betCurrentToStayInGame += game.betAmount * multiplier;
 		betTotalInThisRound += game.betAmount * multiplier;
 		game.potAmount += game.betAmount * multiplier;
 		
 		// TODO: will refactor (credit label)
-		player.lblCredits.text = player.credits.to_s();
-		player.lblAction.text = player.actionCurrent;
+		player.lblCredits.text = player.betTotal.to_s();
+		player.lblAction.text = player.actionCurrentString;
 		
 		game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
 		game.ui.lblBet.GetComponent<Text> ().text = game.betAmount.to_s();

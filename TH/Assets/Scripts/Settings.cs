@@ -6,10 +6,29 @@ static class Settings
 	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
 
+	public static readonly double betMath = 1; // always 1 bet
+	public static readonly double betAnte = 2 * betMath;
+	public static readonly double betPreflopFlop = 2 * betMath;
+	public static readonly double betTurnRiver = 4 * betMath;
+
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
-	public static readonly double betAnte = 2 * betCreditsMultiplier;
-	public static readonly double betPreflopFlop = 2 * betCreditsMultiplier;
-	public static readonly double betTurnRiver = 4 * betCreditsMultiplier;
+	public static readonly double betAnteCredits = 2 * betMath * betCreditsMultiplier;
+	public static readonly double betPreflopFlopCredits = 2 * betMath * betCreditsMultiplier;
+	public static readonly double betTurnRiverCredits = 4 * betMath * betCreditsMultiplier;
+
+	public static readonly int betMaxMultiplier = 4;
+	public static readonly double betDxInCredits = betPreflopFlopCredits; // TODO: change to betTurnRiverCredits when turn and river
+	public static readonly double betMaxInCredits = betDxInCredits * betMaxMultiplier;
+	
+	public static readonly double betDx = 1;							// .25;	
+	public static readonly double betMax = betDx * betMaxMultiplier;	// 1.5;
+
+	
+	public static double betBonusAmount = 0;
+	public static double betMaxBonusAmount = betDx * betMaxMultiplier - 1;
+
+	public static double playerCredits = 500;
+	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
 
 	public static readonly int playerRealIndex = 0;
 
@@ -23,16 +42,12 @@ static class Settings
 
 	public static readonly string defaultPreflopPattern = "CHECK/FOLD"; // default pattern if the preflop hand is not found in the math model
 
-	public static double betBonusAmount = 0;
-	public static double betMaxBonusAmount = 125;
-
 	public static bool isPlayerWithNo = true;
     public static string key = "";
     
     public static int levelMainMenu = 0;
 
     public static bool isLogined = false;
-    public static double playerCredits = 500;
 
     public static readonly string http = "http://";
     public static readonly string host = http + "th.shopomob.ru";
@@ -85,10 +100,7 @@ static class Settings
     //public static int playerAutoPlayCredits = 1000;
     public static int intervalGameOver = 1000;
 
-    public static readonly double betDx = 25; // .25;
-    public static readonly double betMax = betDx * 6; // 1.5;
-
-    public static double gameDenomination = betDx;
+    public static double gameDenomination = betDxInCredits;
     public static readonly int GameDenominationDivider = 100;
     public static readonly int videoBonusMaxMultiplier = 5;
     public static readonly int betAmountAutoplay = 5;

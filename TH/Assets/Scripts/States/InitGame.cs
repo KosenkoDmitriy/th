@@ -36,7 +36,7 @@ public class InitGame : BetRound {
 		foreach (var player in game.players) {
 			player.SetChipRandomly();
 			player.lblName.text = player.name;
-			player.lblCredits.text = player.credits.to_s();
+			player.lblCredits.text = player.betTotal.to_s();
 			player.lblAction.text = "";
 		}
 		

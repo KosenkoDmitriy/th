@@ -12,71 +12,11 @@ public class Player {
 		alt_patterns = new List<Pattern> ();
 	}
 
-	public void Action() {
-		// TODO:
-		// get pattern randomly
-		// preferred/recommend action from the pattern
-		// final optimal correct actual action
-	}
-
 	public override string ToString ()
 	{
-		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, credits, actionCurrent);
+		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString);
 	}
-
-	public Action actionTip;
-	public Action actionFinal;
-//	public int currentBetRoundNo;
-	public bool isReal;
-
-	public double bet;
-	public double betTotal;
-
-	public double credits;
-	public int id;			// for ui
-	public int position;	// first to act (player after dealer)
-	public string name;
-
-	public string handPreflopString;			// "AKs"
-	public string handPreflopStringReversed;	// "KAs"
-
-	public Hand handPreflop;
-	public Hand hand;
-	public List<Hand> hands;
-
-//	bool isActive = true;
-	public bool isFolded;
-
-
-	public string actionCurrent;
-	public Pattern patternCurrent;
-
-	public Pattern pattern;
-	public List<Pattern> alt_patterns;
-
-//	public List<PreFlop> preflopBets;
-//	public List<Flop> flopBets;
-//	public List<Turn> turnBets;
-//	public List<River> riverBets;
 	
-	public Image chip;
-	List<Sprite> chipSpriteList;
-
-	public Image dealer;
-
-	private bool is_dealer;
-	public bool isDealer {
-		get { return is_dealer; }
-		set { 
-			is_dealer = value;
-			UpdateDealerImage ();
-		}
-	}
-
-	public Text lblCredits;
-	public Text lblAction;
-	public Text lblName;
-
 	private void UpdateDealerImage ()
 	{
 		if (isDealer) {
@@ -126,47 +66,124 @@ public class Player {
 		return patternCurrent;
 	}
 
-	public string GetCurrentAction(double betToStayInGame, double betTotal) {
-		string action = "";
+	public Action GetFinalAction(double betToStayInGame, double betAlreadyInvested) {
+		// get pattern randomly
+		// preferred/recommend action from the pattern
+		// final optimal correct actual action
+		patternCurrent = GetAndSetPatternRandomly ();
+		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvested); // best actionString from the patternCurrent
+		GetAndSetActionTip (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
+
+		Action actionFinal = null;
+		double creditsAfterAction = betTotal - betAlreadyInvested - betToStayInGame; // betAlreadyInvested == betTotal
+		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
+		//2
+		double betDt = betToStayInGame - betAlreadyInvested;
+//		if (betMaxCallOrRaiseInMathBets <= betDt) {
+//			// raise
+//		} else {
+//
+//		}
+		if (actionTip.isRaise) {
+			actionFinal = new Raise(this, betToStayInGame);
+		} else if (actionTip.isCall) {
+			if (creditsAfterAction < 0) {
+				actionFinal = new Fold(this, betToStayInGame);
+			} else if (creditsAfterAction >= 0) {
+				if (betAlreadyInvested == betToStayInGame) {
+					actionFinal = new Check(this, betToStayInGame);
+				} else {
+					actionFinal = new Call(this, betToStayInGame);
+				}
+			}
+		} else if (actionTip.isCheck) {
+			if (creditsAfterAction < 0) {
+				actionFinal = new Fold(this, betToStayInGame);
+			} else if (creditsAfterAction >= 0) {
+				if (betAlreadyInvested == betToStayInGame) {
+					actionFinal = new Check(this, betToStayInGame);
+				} else {
+					actionFinal = new Call(this, betToStayInGame);
+				}
+			}
+		} else if (actionTip.isFold) {
+			if (creditsAfterAction < 0) {
+				actionFinal = new Fold(this, betToStayInGame);
+			} else if (creditsAfterAction >= 0) {
+				if (betAlreadyInvested == betToStayInGame) {
+					actionFinal = new Check(this, betToStayInGame);
+				} else {
+					actionFinal = new Call(this, betToStayInGame);
+				}
+			}
+		} else if (actionTip.isRaise) {
+			if (creditsAfterAction < 0) {
+				actionFinal = new Fold(this, betToStayInGame);
+			} else if (creditsAfterAction >= 0) {
+				if (betMaxCallOrRaiseInMathBets <= betDt) {
+					actionFinal = new Raise(this, betToStayInGame);
+				} else if (betAlreadyInvested == betToStayInGame) {
+					actionFinal = new Check(this, betToStayInGame);
+				} else {
+					actionFinal = new Call(this, betToStayInGame);
+				}
+			}
+		}
+		if (actionFinal == null)
+			Debug.LogError ("error: actionFinal is null");
+
+		return actionFinal;
+	}
+
+	public string GetCurrentActionString(double betToStayInGame, double betTotal) {
+		string actionString = "";
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0)
 				foreach (var betRound in patternCurrent.betSubRounds) {
-					if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
-						action = betRound.name_action;
+					if (betRound.costBet * Settings.betDxInCredits == betToStayInGame && betRound.costBetTotal * Settings.betDxInCredits == betTotal) {
+						actionString = betRound.name_action;
 					break;
 					}
 				}
-			if (string.IsNullOrEmpty (action))
-				action = GetAction (patternCurrent.actionPreffered2, betToStayInGame);
-			if (string.IsNullOrEmpty (action))
-				action = GetAction (patternCurrent.actionPreffered1, betToStayInGame);
+			if (string.IsNullOrEmpty (actionString))
+				actionString = GetAndSetActionTip (patternCurrent.actionPreffered2, betToStayInGame);
+			if (string.IsNullOrEmpty (actionString))
+				actionString = GetAndSetActionTip (patternCurrent.actionPreffered1, betToStayInGame);
 			if (patternCurrent != null)
-			if (string.IsNullOrEmpty (action))
-				action = patternCurrent.actionDefault;
+			if (string.IsNullOrEmpty (actionString))
+				actionString = patternCurrent.actionDefault;
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
-		return action;
+
+		// final action
+//		actionFinal = GetFinalAction(betToStayInGame, betTotal);
+		return actionString;
 	}
 	
-	private string GetAction(string action, double betToStayInGame) {
+	private string GetAndSetActionTip(string action, double betToStayInGame) {
 		// TODO: maxBet for call and raise
 		string res = "";
-		double amount = credits - betToStayInGame;
+		actionTip = new ActionTip(this, betToStayInGame);
+		double amount = betTotal - betToStayInGame;
 		if (action == "CALL") {
 			if (amount >= 0) {
+				actionTip.isCall = true;
 				res = action;
 			}
 		} else if (action == "CHECK") {
 			if (amount >= 0) {
+				actionTip.isCheck = true;
 				res = action;
 			}
 		} else if (action == "RAISE") {
 			if (amount >= 0) {
+				actionTip.isRaise = true;
 				res = action;
 			}
 		} else if (action == "FOLD") {
 			if (amount < 0) {
+				actionTip.isFold = true;
 				res = action;
 			}
 		}
@@ -408,5 +425,61 @@ public class Player {
 		}
 		return bestHand;
 	}
+
+
+	public ActionTip actionTip;
+	public Action actionFinal;
+	//	public int currentBetRoundNo;
+	public bool isReal;
+	
+	public double bet;
+	public double betAlreadyInvestedBeforeAction;
+
+	public double credits; // credits/creditMultiplier
+	public double betTotal;	// betTotal * creditMulitplier
+
+	public int id;			// for ui
+	public int position;	// first to act (player after dealer)
+	public string name;
+	
+	public string handPreflopString;			// "AKs"
+	public string handPreflopStringReversed;	// "KAs"
+	
+	public Hand handPreflop;
+	public Hand hand;
+	public List<Hand> hands;
+	
+	//	bool isActive = true;
+	public bool isFolded;
+	
+	
+	public string actionCurrentString;
+	public Pattern patternCurrent;
+	
+	public Pattern pattern;
+	public List<Pattern> alt_patterns;
+	
+	//	public List<PreFlop> preflopBets;
+	//	public List<Flop> flopBets;
+	//	public List<Turn> turnBets;
+	//	public List<River> riverBets;
+	
+	public Image chip;
+	List<Sprite> chipSpriteList;
+	
+	public Image dealer;
+	
+	private bool is_dealer;
+	public bool isDealer {
+		get { return is_dealer; }
+		set { 
+			is_dealer = value;
+			UpdateDealerImage ();
+		}
+	}
+	
+	public Text lblCredits;
+	public Text lblAction;
+	public Text lblName;
 
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -33,7 +33,7 @@ public class Game
 			} else {
 				player.isReal = false;
 			}
-			player.credits = Settings.playerCredits;
+			player.betTotal = Settings.playerCreditsInNumberOfBets;
 
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
 			//			player.SetChipRandomly();

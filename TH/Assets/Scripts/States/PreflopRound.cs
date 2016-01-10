@@ -42,25 +42,25 @@ public class PreflopRound : BetRound {
 			if (!player.isFolded) // active virtual players only
 			{
 				player.patternCurrent = player.GetAndSetPatternRandomly ();
-				player.actionCurrent = player.GetCurrentAction (betToStayInGame, player.bet);	// betTotalInThisRound);
+				player.actionCurrentString = player.GetCurrentActionString (betToStayInGame, player.bet);	// betTotalInThisRound);
 				//TODO: handle player's current action
 				
-				if (player.actionCurrent == "FOLD") {
-					player.lblAction.text = player.actionCurrent;
-					player.lblCredits.text = player.credits.to_s();
+				if (player.actionCurrentString == "FOLD") {
+					player.lblAction.text = player.actionCurrentString;
+					player.lblCredits.text = player.betTotal.to_s();
 					player.isFolded = true;
 					foreach (var pcard in player.handPreflop.getCards()) {
 						pcard.FaceUp = true;
 					}
-				} else if (player.actionCurrent == "CHECK") {
+				} else if (player.actionCurrentString == "CHECK") {
 					Update (game, player);
 					
-				} else if (player.actionCurrent == "CALL") {
+				} else if (player.actionCurrentString == "CALL") {
 					Update (game, player);
 					
-				} else if (player.actionCurrent == "RAISE") {
+				} else if (player.actionCurrentString == "RAISE") {
 					int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-					player.credits -= game.betAmount * multiplier;
+					player.betTotal -= game.betAmount * multiplier;
 					betToStayInGame += game.betAmount * multiplier;
 					betToStayInGame += betToStayInGame;
 					Update (game, player);
@@ -71,13 +71,13 @@ public class PreflopRound : BetRound {
 		//TODO: tips for real player as enable/disable buttons
 		int index = 0;
 		var playerReal = game.players[index]; //real player
-		if (playerReal.credits <= 0 || game.betAmount <= 0) {
+		if (playerReal.betTotal <= 0 || game.betAmount <= 0) {
 			game.ui.btnCheck.GetComponent<Button> ().interactable = true;
 			game.ui.btnCall.GetComponent<Button> ().interactable = false;
 		} else {
 			game.ui.btnCheck.GetComponent<Button> ().interactable = false;
 			game.ui.btnCall.GetComponent<Button> ().interactable = true;
-			playerReal.lblCredits.text = playerReal.credits.ToString ();
+			playerReal.lblCredits.text = playerReal.betTotal.ToString ();
 			game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.ToString ();
 		}
 	}
@@ -85,14 +85,14 @@ public class PreflopRound : BetRound {
 	private void Update(Game game, Player player) {
 		int multiplier = 1;
 		//			int multiplier = player.patternCurrent.betMaxCallOrRaise; //TODO
-		player.credits -= game.betAmount * multiplier;
+		player.betTotal -= game.betAmount * multiplier;
 		betToStayInGame += game.betAmount * multiplier;
 		pot += game.betAmount * multiplier;
 		game.potAmount += game.betAmount * multiplier;
 		
 		// TODO: will refactor (credit label)
-		player.lblCredits.text = player.credits.to_s();
-		player.lblAction.text = player.actionCurrent;
+		player.lblCredits.text = player.betTotal.to_s();
+		player.lblAction.text = player.actionCurrentString;
 		
 		game.ui.lblPot.GetComponent<Text> ().text = game.potAmount.to_s();
 		game.ui.lblBet.GetComponent<Text> ().text = game.betAmount.to_s();

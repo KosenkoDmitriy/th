@@ -4,6 +4,23 @@ public interface IAction
 {
 	void Do ();
 }
+public class ActionTip: Action {
+	public bool isCall;
+	public bool isFold;
+	public bool isCheck;
+	public bool isRaise;
+//	public bool isAllIn;
+
+	public ActionTip (Player player, double betToStayInGame)
+	{
+		this.p = player;
+		this.bet = betToStayInGame;
+	}
+
+	public void Do() {
+
+	}
+}
 public class Action : IAction {
 	public Player p;
 	public double bet;

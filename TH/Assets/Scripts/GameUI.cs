@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -148,14 +148,14 @@ public class GameUI : MonoBehaviour
 
 		var player = game.player;
 		if (game.isGameRunning) {
-			if (player.credits - game.betAmount < 0) {
+			if (player.betTotal - game.betAmount < 0) {
 				game.GameState.Check (game);
 			} else 
-			if (player.credits - game.betAmount >= 0) {
+			if (player.betTotal - game.betAmount >= 0) {
 				game.GameState.Raise (game);
 			}
 			isWaiting = false;
-		} else if (!game.isGameRunning && game.betAmount > 0 && player.credits - game.betAmount >= 0) {
+		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
 			game.GameState.Raise(game);
 			isWaiting = false;
 		} else {
@@ -171,7 +171,7 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		Settings.betCurrent = Settings.betMax;
+		Settings.betCurrent = Settings.betMaxInCredits;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
@@ -188,8 +188,8 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		Settings.betCurrent += Settings.betDx;
-		if (Settings.betCurrent > Settings.betMax)
+		Settings.betCurrent += Settings.betDxInCredits;
+		if (Settings.betCurrent > Settings.betMaxInCredits)
 			Settings.betCurrent = 0f;
 		inputBetField.text = Settings.betCurrent.to_s();
 	}
