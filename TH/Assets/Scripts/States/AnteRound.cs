@@ -18,12 +18,11 @@ public class AnteRound : BetRound {
 	public override void BetSubRounds ()
 	{
 		//		base.BetSubRounds ();
-		// TODO
 		if (!game.state.isWaiting) {
 			var player = game.player;
 			player = this.game.playerIterator.Next ();
 			if (player == null) {
-				LastAction ();
+				subRoundCurrent++; // or LastAction();
 			} else {
 				player.actionFinal = player.GetFinalAction (betMin, player.betAlreadyInvestedBeforeAction);
 				if (player.isReal) {
