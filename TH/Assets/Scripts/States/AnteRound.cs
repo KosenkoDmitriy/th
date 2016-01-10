@@ -25,14 +25,14 @@ public class AnteRound : BetRound {
 //						game.state = new EndGame(game);
 //					}
 				} else {
-					player.actionFinal.Do ();
+					player.actionFinal.Do (game);
 					//			betToStayInGame += player.bet;
 				}
 			}
 		}
 
-//		game.state.isWaiting = true;
-//		game.ui.StartCoroutine (game.ui.UpdatePlayers());
+		game.state.isWaiting = true;
+		game.ui.StartCoroutine (game.ui.UpdatePlayers());
 	}
 	public override void LastAction ()
 	{

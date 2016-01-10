@@ -2,7 +2,7 @@
 
 public interface IAction
 {
-	void Do ();
+	void Do (Game game);
 }
 public class ActionTip: Action {
 	public ActionTip (Player player, double betToStayInGame)
@@ -27,12 +27,11 @@ public class Action : IAction {
 
 	#region IAction implementation
 	
-	public void Do ()
+	public void Do (Game game)
 	{
 		if (p != null) {
 			if (p.isReal) {
-
-	//			game.state.isWaiting = true //TODO:
+				game.state.isWaiting = true;
 			} else {
 				if (!p.isFolded) {
 					p.bet = bet;

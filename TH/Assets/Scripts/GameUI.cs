@@ -76,7 +76,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(pressedSound);
 		game.player.actionFinal = new Check(game.player, game.player.bet);
-		game.state.isWaiting = false;
+		game.player.actionFinal.Do (game);
 
 //		isWaiting = false;
 //		game.GameState.Check (game);
@@ -86,7 +86,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(pressedSound);
 		game.player.actionFinal = new Call(game.player, game.player.bet);
-		game.state.isWaiting = false;
+		game.player.actionFinal.Do (game);
 
 //		isWaiting = false;
 //		game.GameState.Call (game);
@@ -160,10 +160,10 @@ public class GameUI : MonoBehaviour
 //				game.GameState.Raise (game);
 			}
 //			isWaiting = false;
-			game.state.isWaiting = false;
+			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
 			game.player.actionFinal = new Raise(game.player, Settings.betAnte);
-			game.state.isWaiting = false;
+			game.player.actionFinal.Do (game);
 //			game.GameState.Raise(game);
 //			isWaiting = false;
 		} else {
