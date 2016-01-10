@@ -11,13 +11,15 @@ public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
 	protected int subRoundCurrent;
 	protected double betMin;
+	protected double betMax;
 	protected Game game;
 	protected double betToStayInGame, pot;
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
 	public bool isWaiting; // wait for corountine
-	
+	public bool isCanToRaise;
+
 	public BetRound() {
 		Init ();
 	}
@@ -30,6 +32,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	private void Init() {
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.betMin = Settings.betPreflopFlop;
+		this.isCanToRaise = true;
 	}
 	
 	#region IBetRoundState implementation
