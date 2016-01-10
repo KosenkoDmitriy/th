@@ -75,7 +75,7 @@ public class Player {
 		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvested); // best actionString from the patternCurrent
 		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
 
-		Action actionFinal = null;
+		Action actionFinal = new Action();
 		double creditsAfterAction = betTotal - betAlreadyInvested - betToStayInGame; // betAlreadyInvested == betTotal
 		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
 		//2

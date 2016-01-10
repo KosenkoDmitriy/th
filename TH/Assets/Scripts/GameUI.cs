@@ -346,7 +346,7 @@ public class GameUI : MonoBehaviour
 		for(int i = 0; i < 2; i++)
 		foreach(var player in game.players) {
 			var card = player.handPreflop.getCard(i);
-			if (player.id == Settings.playerRealIndex || Settings.isDebug)
+			if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded)
 				card.FaceUp = true;
 			else
 				card.FaceUp = false;
