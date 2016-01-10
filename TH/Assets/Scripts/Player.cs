@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -120,8 +120,8 @@ public class Player {
 	public string GetCurrentAction(double betToStayInGame, double betTotal) {
 		string action = "";
 		if (patternCurrent != null) {
-			if (patternCurrent.betRounds != null && patternCurrent.betRounds.Count > 0)
-				foreach (var betRound in patternCurrent.betRounds) {
+			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0)
+				foreach (var betRound in patternCurrent.betSubRounds) {
 					if (betRound.costBet * Settings.betDx == betToStayInGame && betRound.costBetTotal * Settings.betDx == betTotal) {
 						action = betRound.name_action;
 					break;

@@ -1,20 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public class Constants {
 	List<Pattern> patterns;
-	List<PreFlop> preflops;
-	List<ThFTR> flops;
-	List<ThFTR> turns;
-	List<ThFTR> rivers;
+	List<PatternPreflop> preflops;
+	List<PatternFTR> flops;
+	List<PatternFTR> turns;
+	List<PatternFTR> rivers;
 
 	public Constants() {
 		patterns = new List<Pattern> ();
-		preflops = new List<PreFlop>();
-		flops = new List<ThFTR>();
-		turns = new List<ThFTR>();
-		rivers = new List<ThFTR>();
+		preflops = new List<PatternPreflop>();
+		flops = new List<PatternFTR>();
+		turns = new List<PatternFTR>();
+		rivers = new List<PatternFTR>();
 		patterns = GetPatterns ();
 		preflops = GetPreflops ();
 		flops = GetFlops ();
@@ -42,7 +42,7 @@ public class Constants {
 			if (arg0 == "PATTERN")
 			{
 				Pattern pattern = new Pattern();
-				pattern.betRounds = new List<PatternBetRoundAndAction>();
+				pattern.betSubRounds = new List<PatternBetRoundAndAction>();
 				pattern.name = arg1;
 				pattern.actionDefault = arg2;
 				var prefActions = arg1.Replace("*", "").Split('/');
@@ -72,13 +72,13 @@ public class Constants {
 				double costBetTotal = 0;
 				Double.TryParse(betChars[1].ToString(), out costBetTotal);
 				betRound.costBetTotal = costBetTotal;
-				lastPattern.betRounds.Add(betRound);
+				lastPattern.betSubRounds.Add(betRound);
 			}
 		}
 		return patterns;
 	}
 
-	public Pattern GetPatternByHandStrength(string hand) {
+	public Pattern GetPatternByPreflopHand(string hand) {
 		foreach (var item in preflops) {
 			if (item.hand == hand) return GetPatternByName(hand);
 			break;
@@ -86,7 +86,7 @@ public class Constants {
 		return null;
 	}
 
-	public List<PreFlop> GetPreflops() {
+	public List<PatternPreflop> GetPreflops() {
 		if (preflops.Count > 0) return preflops;
 
 //		var players = Settings.GetPlayers ();
@@ -112,7 +112,7 @@ public class Constants {
 //				player = players[position];
 //				player.preflopBets = new List<PreFlop>();
 			} else if (arg0 == "HAND") {
-				var pf = new PreFlop();
+				var pf = new PatternPreflop();
 				pf.hand = arg1;
 				pf.position = position;
 				pf.pattern = GetPatternByName(arg2);
@@ -154,11 +154,11 @@ public class Constants {
 		return pattern;
 	}
 
-	private List<ThFTR> GetFTR(List<ThFTR> list, string[] stringList) {
+	private List<PatternFTR> GetFTR(List<PatternFTR> list, string[] stringList) {
 		if (list.Count > 0)
 			return list;
 
-		ThFTR flop = null;
+		PatternFTR flop = null;
 		foreach (var item in stringList) {
 			string[] items = item.Split ('\t');
 			string arg0, arg1, arg2, arg3;
@@ -174,7 +174,7 @@ public class Constants {
 				arg3 = items[3];
 			
 			if (arg0 == "OPPONENTS") {
-				flop = new ThFTR();
+				flop = new PatternFTR();
 				flop.alt_patterns = new List<Pattern>();
 				int opponentsCount = 0;
 				Int32.TryParse(arg1, out opponentsCount);
@@ -214,15 +214,15 @@ public class Constants {
 		return list;
 	}
 
-	public List<ThFTR> GetTurns() {
+	public List<PatternFTR> GetTurns() {
 		return GetFTR (turns, c_str_turn);
 	}
 
-	public List<ThFTR> GetRivers() {
+	public List<PatternFTR> GetRivers() {
 		return GetFTR (rivers, c_str_river);
 	}
 
-	public List<ThFTR> GetFlops() {
+	public List<PatternFTR> GetFlops() {
 		return GetFTR (flops, c_str_flop);
 	}
 

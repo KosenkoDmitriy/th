@@ -13,7 +13,6 @@ public class Game
 	{
 		this.ui = ui;
 //		GameState = new GameStates ();
-//		PatternState = new PatternStates ();
 		dealerIndex = Settings.dealerIndex;
 	}
 
@@ -95,5 +94,4 @@ public class Game
 	public bool isGameEnd;
 	public IBetRoundState BetRound { get; private set; }
 	public IGameState GameState { get; private set; }
-	public IPatternState PatternState { get; private set; }
 }
