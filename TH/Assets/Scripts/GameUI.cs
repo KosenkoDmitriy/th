@@ -357,7 +357,17 @@ public class GameUI : MonoBehaviour
 	
 	public IEnumerator UpdatePlayers() {
 		foreach (var player in game.players) {
-			player.lblAction.text = player.name;
+//			player.betTotal -= 10;
+			for(int i = 0; i < 2; i++) {
+				var card = player.handPreflop.getCard(i);
+//				if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded)
+					if (player.isFolded)
+					card.FaceUp = true;
+//				else
+//					card.FaceUp = false;
+			}
+			player.lblCredits.text = player.betTotal.to_s();
+			player.lblAction.text = player.actionCurrentString;
 			yield return new WaitForSeconds (Settings.updateInterval);
 		}
 		game.state.isWaiting = false;

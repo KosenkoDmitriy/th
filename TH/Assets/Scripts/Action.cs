@@ -29,9 +29,15 @@ public class Action : IAction {
 	
 	public void Do ()
 	{
-		if (p.isReal) {
-			//game.state.isWaiting = true //TODO:
-		}
+
+//		if (p.isReal) {
+////			game.state.isWaiting = true //TODO:
+//		} else {
+//			if (!p.isFolded) {
+//				p.bet += bet;
+//				p.betTotal -= bet;
+//			}
+//		}
 	}
 	
 	#endregion
@@ -51,8 +57,6 @@ public class Call : Action
 
 public class Check : Action
 {
-	public Player p;
-	double bet;
 
 	public Check (Player player, double betToStayInGame)
 	{
@@ -63,9 +67,7 @@ public class Check : Action
 
 public class Fold : Action
 {
-	public Player p;
-	double bet;
-	
+
 	public Fold (Player player, double betToStayInGame)
 	{
 		this.p = player;
@@ -76,9 +78,7 @@ public class Fold : Action
 
 public class Raise : Action
 {
-	public Player p;
-	double bet;
-	
+
 	public Raise (Player player, double betToStayInGame)
 	{
 		this.p = player;

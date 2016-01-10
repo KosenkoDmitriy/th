@@ -86,47 +86,47 @@ public class Player {
 //
 //		}
 		if (actionTip.isRaise) {
-			actionFinal = new Raise(this, betToStayInGame);
+			actionFinal = new Raise(this, betDt);
 		} else if (actionTip.isCall) {
 			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betToStayInGame);
+				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
 				if (betAlreadyInvested == betToStayInGame) {
-					actionFinal = new Check(this, betToStayInGame);
+					actionFinal = new Check(this, betDt);
 				} else {
-					actionFinal = new Call(this, betToStayInGame);
+					actionFinal = new Call(this, betDt);
 				}
 			}
 		} else if (actionTip.isCheck) {
 			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betToStayInGame);
+				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
 				if (betAlreadyInvested == betToStayInGame) {
-					actionFinal = new Check(this, betToStayInGame);
+					actionFinal = new Check(this, betDt);
 				} else {
-					actionFinal = new Call(this, betToStayInGame);
+					actionFinal = new Call(this, betDt);
 				}
 			}
 		} else if (actionTip.isFold) {
 			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betToStayInGame);
+				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvested == betToStayInGame) {
-					actionFinal = new Check(this, betToStayInGame);
+				if (betAlreadyInvested == betDt) {
+					actionFinal = new Check(this, betDt);
 				} else {
-					actionFinal = new Call(this, betToStayInGame);
+					actionFinal = new Call(this, betDt);
 				}
 			}
 		} else if (actionTip.isRaise) {
 			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betToStayInGame);
+				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
 				if (betMaxCallOrRaiseInMathBets <= betDt) {
-					actionFinal = new Raise(this, betToStayInGame);
-				} else if (betAlreadyInvested == betToStayInGame) {
-					actionFinal = new Check(this, betToStayInGame);
+					actionFinal = new Raise(this, betDt);
+				} else if (betAlreadyInvested == betDt) {
+					actionFinal = new Check(this, betDt);
 				} else {
-					actionFinal = new Call(this, betToStayInGame);
+					actionFinal = new Call(this, betDt);
 				}
 			}
 		}

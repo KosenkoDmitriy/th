@@ -13,6 +13,11 @@ public class AnteRound : BetRound {
 	{
 		//		base.BetSubRounds ();
 		// TODO
+		foreach (var player in game.players) {
+			player.actionFinal = player.GetFinalAction (10, player.betAlreadyInvestedBeforeAction);
+			player.actionFinal.Do ();
+		}
+
 		game.state.isWaiting = true;
 
 		game.ui.StartCoroutine (game.ui.UpdatePlayers());
