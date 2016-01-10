@@ -77,7 +77,6 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(pressedSound);
 		game.player.actionFinal = new Check(game.player, game.player.bet);
 		game.player.actionFinal.Do (game);
-
 //		isWaiting = false;
 //		game.GameState.Check (game);
 	}

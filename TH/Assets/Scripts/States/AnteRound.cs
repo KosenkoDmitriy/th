@@ -19,12 +19,13 @@ public class AnteRound : BetRound {
 	{
 		//		base.BetSubRounds ();
 		// TODO
-		var player = this.game.playerIterator.Next ();
-		if (player == null) {
-			LastAction ();
-		} else {
-			player.actionFinal = player.GetFinalAction (betMin, player.betAlreadyInvestedBeforeAction);
-			if (!game.state.isWaiting) {
+		if (!game.state.isWaiting) {
+			var player = game.player;
+			player = this.game.playerIterator.Next ();
+			if (player == null) {
+				LastAction ();
+			} else {
+				player.actionFinal = player.GetFinalAction (betMin, player.betAlreadyInvestedBeforeAction);
 				if (player.isReal) {
 					game.state.isWaiting = true;
 					game.player = player;

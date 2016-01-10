@@ -31,7 +31,7 @@ public class Action : IAction {
 	{
 		if (p != null) {
 			if (p.isReal) {
-				game.state.isWaiting = true;
+				game.state.isWaiting = false;
 			} else {
 				if (!p.isFolded) {
 					p.bet = bet;

@@ -4,6 +4,7 @@ using System.Collections;
 public interface IBetRoundState
 {
 	void SubRound ();
+	void NextPlayer ();
 }
 
 public abstract class AbstractBetRound {
@@ -37,15 +38,18 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	{
 		if (subRoundCurrent == 0) {
 			FirstAction ();
+			subRoundCurrent++;
 		} else if (subRoundCurrent <= subRoundMaxSize && subRoundMaxSize > 0) {
 			BetSubRounds ();
 		} else {
 			LastAction(); //next state (preflop, turn, river)
 			subRoundCurrent = 0;
 		}
-		subRoundCurrent++;
 	}
-	
+
+	public virtual void NextPlayer() {
+
+	}
 	#endregion
 	
 	public virtual void FirstAction() {

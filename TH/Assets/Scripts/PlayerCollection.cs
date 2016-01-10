@@ -67,17 +67,19 @@ public class PlayerIterator : IAbstractPlayerIterator
 	public Player First()
 	{
 		_current = 0;
-		return _collection[_current] as Player;
+		var player = _collection[_current] as Player;
+		_current += _step;
+		return player;
 	}
 	
 	// Gets next item
 	public Player Next()
 	{
-		_current += _step;
+		Player player = null;
 		if (!IsDone)
-			return _collection[_current] as Player;
-		else
-			return null;
+			player = _collection[_current] as Player;
+		_current += _step;
+		return player;
 	}
 	
 	public Player PrevLoop() {
