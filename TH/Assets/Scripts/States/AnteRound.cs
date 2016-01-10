@@ -13,6 +13,9 @@ public class AnteRound : BetRound {
 	{
 		//		base.BetSubRounds ();
 		// TODO
+		game.state.isWaiting = true;
+
+		game.ui.StartCoroutine (game.ui.UpdatePlayers());
 	}
 	public override void LastAction ()
 	{

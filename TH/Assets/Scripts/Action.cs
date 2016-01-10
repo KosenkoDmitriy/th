@@ -29,7 +29,9 @@ public class Action : IAction {
 	
 	public void Do ()
 	{
-		 
+		if (p.isReal) {
+			//game.state.isWaiting = true //TODO:
+		}
 	}
 	
 	#endregion

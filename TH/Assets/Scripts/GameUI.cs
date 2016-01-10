@@ -354,7 +354,14 @@ public class GameUI : MonoBehaviour
 		}
 		game.state.isWaiting = false;
 	}
-
+	
+	public IEnumerator UpdatePlayers() {
+		foreach (var player in game.players) {
+			player.lblAction.text = player.name;
+			yield return new WaitForSeconds (Settings.updateInterval);
+		}
+		game.state.isWaiting = false;
+	}
 	int playerNo = 0;
 	private void UpdatePlayerName() {
 		if (playerNo < game.players.Count) {
@@ -368,6 +375,15 @@ public class GameUI : MonoBehaviour
 
 	bool isWaiting;
 	private void UpdateInterval() {
+//		test ();
+
+		if (game.state != null && !game.state.isWaiting) {
+			game.state.SubRound ();
+		}
+
+	}
+
+	private void test() {
 //		int percentRand = GetPercentOfAllTime (20);
 //		Debug.Log (percentRand + " 20%/100%");
 
@@ -375,13 +391,6 @@ public class GameUI : MonoBehaviour
 
 //		if (!game.states.isDone)
 //			game.states.Next ();
-
-//		game.state = new AnteRound ();
-		if (game.state != null && !game.state.isWaiting) {
-			game.state.SubRound ();
-		}
-		return;
-
 		if (!isWaiting && !game.states.isDone) {
 			var playerPrev = game.playerIterator.PrevActive();
 			var player = game.playerIterator.NextActive();
@@ -394,7 +403,6 @@ public class GameUI : MonoBehaviour
 				player.lblAction.text = "auto";
 			}
 		}
-
 	}
 
 	public void TestPercentOfTime(int percent) {
