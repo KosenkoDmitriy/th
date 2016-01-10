@@ -4,30 +4,50 @@ public interface IAction
 {
 	void Do ();
 }
-
-public class Call : IAction
-{
+public class Action : IAction {
 	public Player p;
-	double bet;
+	public double bet;
 
-	public Call (Player player, double betToStayInGame)
+	public Action() {}
+
+	public Action (Player player, double betToStayInGame)
 	{
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
 	#region IAction implementation
-
+	
 	public void Do ()
 	{
-		if (bet == 0) {
-			p.action = new Check (p, bet);
-		}
+		
+//		if (bet == 0) {
+//			p.actionFinal = new Check (p, bet);
+//		}
 	}
-
+	
 	#endregion
 }
 
-public class Check : IAction
+public class Call : Action
+{
+	public Call (Player player, double betToStayInGame)
+	{
+		this.p = player;
+		this.bet = betToStayInGame;
+	}
+//	#region IAction implementation
+
+//	public void Do ()
+//	{
+//		if (bet == 0) {
+//			p.actionFinal = new Check (p, bet);
+//		}
+//	}
+//
+//	#endregion
+}
+
+public class Check : Action
 {
 	public Player p;
 	double bet;
@@ -37,17 +57,17 @@ public class Check : IAction
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-	#region IAction implementation
-	
-	public void Do ()
-	{
-
-	}
-     
- #endregion
+//	#region IAction implementation
+//	
+//	public void Do ()
+//	{
+//
+//	}
+//     
+// #endregion
 }
 
-public class Fold : IAction
+public class Fold : Action
 {
 	public Player p;
 	double bet;
@@ -57,20 +77,20 @@ public class Fold : IAction
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-	#region IAction implementation
-	
-	public void Do ()
-	{
-		if (bet == 0) {
-			p.action = new Check (p, bet);
-		}
-	}
-	
-	#endregion
+//	#region IAction implementation
+//	
+//	public void Do ()
+//	{
+//		if (bet == 0) {
+//			p.actionFinal = new Check (p, bet);
+//		}
+//	}
+//	
+//	#endregion
 }
 
 
-public class Raise : IAction
+public class Raise : Action
 {
 	public Player p;
 	double bet;
@@ -80,18 +100,18 @@ public class Raise : IAction
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
-	#region IAction implementation
-	
-	public void Do ()
-	{
-		if (bet == 0) {
-			p.action = new Check (p, bet);
-		} else if (p.betTotal > bet) {
-			// raise
-		} else if (p.betTotal == bet) {
-			p.action = new Call (p, bet);
-		}
-	}
-	
-	#endregion
+//	#region IAction implementation
+//	
+//	public void Do ()
+//	{
+//		if (bet == 0) {
+//			p.actionFinal = new Check (p, bet);
+//		} else if (p.betTotal > bet) {
+//			// raise
+//		} else if (p.betTotal == bet) {
+//			p.actionFinal = new Call (p, bet);
+//		}
+//	}
+//	
+//	#endregion
 }
