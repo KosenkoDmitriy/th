@@ -72,13 +72,20 @@ public class Player {
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
 
-		if (!isCanToRaise) {
-			//TODO don't allow the raise action to any player at all
-		}
-
 		patternCurrent = GetAndSetPatternRandomly ();
 		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvestedBeforeAction); // best actionString from the patternCurrent
 		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
+
+		
+		if (!isCanToRaise) {
+			// choosing between all available actions except raise
+			if (actionTip.isRaise)
+				GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority1, betToStayInGame);
+			if (actionTip.isRaise)
+				GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority2, betToStayInGame);
+			if (actionTip.isRaise)
+				GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionDefault, betToStayInGame);
+		}
 
 		Action actionFinal = new Action();
 		double creditsAfterAction = betTotal - betAlreadyInvestedBeforeAction - betToStayInGame; // betAlreadyInvested == betTotal
