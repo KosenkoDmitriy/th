@@ -1,4 +1,5 @@
 ﻿using System;
+//using UnityEngine.UI;
 
 public interface IAction
 {
@@ -88,13 +89,20 @@ public class Raise : Action
 	}
 
 	public override void Do(Game game) {
-		if (!p.isFolded) {
-			if (!game.state.isCanToRaise) {
-				p.actionFinal = new Call (p, p.bet);
-				p.actionFinal.Do (game);
-			} else {
-				base.Do (game);
-			}
-		}
+//		if (p.isReal) {
+//			if (game.state.isCanToRaise) {
+//				game.ui.btnRaise.GetComponent<Button>().interactable = true;
+//			} else {
+//				game.ui.btnRaise.GetComponent<Button>().interactable = false;
+//			}
+//		}
+//		if (!p.isFolded) {
+//			if (!game.state.isCanToRaise) {
+//				p.actionFinal = new Call (p, p.bet);
+//				p.actionFinal.Do (game);
+//			} else {
+//				base.Do (game);
+//			}
+//		}
 	}
 }
