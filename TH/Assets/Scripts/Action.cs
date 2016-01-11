@@ -32,6 +32,9 @@ public class Action : IAction {
 	{
 		if (p != null) {
 			if (p.isReal) {
+				if (p.isFolded) {
+					game.state = new EndGame(game);
+				}
 				game.state.isWaiting = false;
 			} else {
 				if (!p.isFolded) {
@@ -88,21 +91,7 @@ public class Raise : Action
 		this.bet = betToStayInGame;
 	}
 
-	public override void Do(Game game) {
-//		if (p.isReal) {
-//			if (game.state.isCanToRaise) {
-//				game.ui.btnRaise.GetComponent<Button>().interactable = true;
-//			} else {
-//				game.ui.btnRaise.GetComponent<Button>().interactable = false;
-//			}
-//		}
-//		if (!p.isFolded) {
-//			if (!game.state.isCanToRaise) {
-//				p.actionFinal = new Call (p, p.bet);
-//				p.actionFinal.Do (game);
-//			} else {
-//				base.Do (game);
-//			}
-//		}
-	}
+//	public override void Do(Game game) {
+//
+//	}
 }
