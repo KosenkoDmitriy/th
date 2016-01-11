@@ -71,6 +71,11 @@ public class Player {
 		// get pattern randomly
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
+
+		if (!isCanToRaise) {
+			//TODO don't allow the raise action to any player at all
+		}
+
 		patternCurrent = GetAndSetPatternRandomly ();
 		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvestedBeforeAction); // best actionString from the patternCurrent
 		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)

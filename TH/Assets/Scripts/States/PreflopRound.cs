@@ -36,17 +36,10 @@ public class PreflopRound : BetRound {
 			var player = game.playerIterator.NextActive();
 			if (player.position == game.playerIterator.LastActive().position) { // last player
 				isCanToRaise = !isCanToRaise;
-
-				if (player.isReal) {
-					game.state.isWaiting = true;
-					if (isCanToRaise) {
-						game.ui.btnRaise.GetComponent<Button>().interactable = true;
-						//					game.ui.btnCheck.GetComponent<Button>().interactable = false;
-					} else {
-						game.ui.btnRaise.GetComponent<Button>().interactable = false;
-						//					game.ui.btnCheck.GetComponent<Button>().interactable = true;
-					}
+				if (!isRaised) {
+					LastAction(); // next bet round if no any raise
 				}
+				isRaised = false;
 			}
 
 			if (player.isReal) {
@@ -60,30 +53,33 @@ public class PreflopRound : BetRound {
 				}
 			} else {
 				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise);
-				player.actionFinal.Do(game);
-				if (!isCanToRaise) {
-					//TODO don't allow the raise action to any player at all
-				}
 
 				if (player.betAlreadyInvestedBeforeAction >= betMax) {
+					game.playerIterator = new PlayerIterator(game.playerCollection); // start from first to act player
 					betMax = player.betAlreadyInvestedBeforeAction;
-					subRoundCurrent++;
+					subRoundCurrent++;	// next bet sub round
+					// below code already implemented in the FinalAction()
 //					if (subRoundCurrent >= subRoundMaxSize) {
 //						subRoundCurrent = 0;
 //						betMax = 0;
 //						game.state = new FlopRound(game);
 //					}
 				} else {
-
+					player.actionFinal.Do(game);
+					if (player.betAlreadyInvestedBeforeAction > betMax) {
+						if (isCanToRaise) {
+							betMax = player.betAlreadyInvestedBeforeAction;
+							isRaised = true;
+						} else {
+							//TODO call
+						}
+					}
 				}
 			}
-
 			game.ui.UpdatePlayer(player);
-
-
 		}
+//		game.state.isWaiting = true;
 //		isWaiting = true;
 //		game.ui.StartCoroutine (game.ui.UpdatePlayer (player));
-//		subRoundCurrent++;
 	}
 }
