@@ -350,15 +350,22 @@ public class GameUI : MonoBehaviour
 
 	public IEnumerator DealCards() {
 //		for(int i = 1; i >= 0; i--)
-		for(int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; i++) {
 		foreach(var player in game.players) {
-			var card = player.handPreflop.getCard(i);
-			if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded)
-				card.FaceUp = true;
-			else
-				card.FaceUp = false;
-			yield return new WaitForSeconds(Settings.updateInterval);
+//			for(var player = game.playerIterator.First (); !game.playerIterator.IsDone; player = game.playerIterator.Next()) {
+//			Player player = game.playerIterator.Next();
+//			while(!game.playerIterator.IsDone) {
+				var card = player.handPreflop.getCard (i);
+				if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded) {
+					card.FaceUp = true;
+				} else {
+					card.FaceUp = false;
+				}
+				yield return new WaitForSeconds (Settings.updateInterval);
+//				player = game.playerIterator.Next();
+			}
 		}
+	
 		game.state.isWaiting = false;
 	}
 	
