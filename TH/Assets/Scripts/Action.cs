@@ -41,6 +41,8 @@ public class Action : IAction {
 					p.bet = bet;
 					p.betAlreadyInvestedBeforeAction += bet;
 					p.betTotal -= bet;
+				} else {
+					p.ShowCards(game);
 				}
 			}
 		}

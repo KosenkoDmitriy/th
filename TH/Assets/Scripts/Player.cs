@@ -433,6 +433,13 @@ public class Player {
 		return bestHand;
 	}
 
+	public void ShowCards (Game game)
+	{
+		for (int i = 0; i < 2; i++) {
+			var card = handPreflop.getCard(i);
+			card.FaceUp = true;
+		}
+	}
 
 	public ActionTip actionTip;
 	public Action actionFinal;
