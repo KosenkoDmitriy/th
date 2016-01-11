@@ -59,7 +59,7 @@ public class PreflopRound : BetRound {
 					//					game.ui.btnCheck.GetComponent<Button>().interactable = true;
 				}
 			} else {
-				player.actionFinal = player.GetFinalAction(betMax,player.betAlreadyInvestedBeforeAction);
+				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise);
 				player.actionFinal.Do(game);
 				if (!isCanToRaise) {
 					//TODO don't allow the raise action to any player at all

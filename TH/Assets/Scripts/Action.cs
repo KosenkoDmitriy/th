@@ -27,7 +27,7 @@ public class Action : IAction {
 
 	#region IAction implementation
 	
-	public void Do (Game game)
+	public virtual void Do (Game game)
 	{
 		if (p != null) {
 			if (p.isReal) {
@@ -85,5 +85,16 @@ public class Raise : Action
 	{
 		this.p = player;
 		this.bet = betToStayInGame;
+	}
+
+	public override void Do(Game game) {
+		if (!p.isFolded) {
+			if (!game.state.isCanToRaise) {
+				p.actionFinal = new Call (p, p.bet);
+				p.actionFinal.Do (game);
+			} else {
+				base.Do (game);
+			}
+		}
 	}
 }

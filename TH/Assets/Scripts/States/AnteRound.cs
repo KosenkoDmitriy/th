@@ -24,7 +24,7 @@ public class AnteRound : BetRound {
 			if (player == null) {
 				subRoundCurrent++; // or LastAction();
 			} else {
-				player.actionFinal = player.GetFinalAction (betMin, player.betAlreadyInvestedBeforeAction);
+				player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
 				if (player.isReal) {
 					game.state.isWaiting = true;
 					game.player = player;

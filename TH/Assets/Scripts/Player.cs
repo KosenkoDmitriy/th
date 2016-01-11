@@ -66,33 +66,28 @@ public class Player {
 		return patternCurrent;
 	}
 
-	public Action GetFinalAction(double betToStayInGame, double betAlreadyInvested) {
+	public Action GetFinalAction(double betToStayInGame, bool isCanToRaise) {
 		// summary:
 		// get pattern randomly
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
 		patternCurrent = GetAndSetPatternRandomly ();
-		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvested); // best actionString from the patternCurrent
+		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvestedBeforeAction); // best actionString from the patternCurrent
 		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
 
 		Action actionFinal = new Action();
-		double creditsAfterAction = betTotal - betAlreadyInvested - betToStayInGame; // betAlreadyInvested == betTotal
+		double creditsAfterAction = betTotal - betAlreadyInvestedBeforeAction - betToStayInGame; // betAlreadyInvested == betTotal
 		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
-		//2
-//		bet = betToStayInGame;
-		double betDt = betToStayInGame - betAlreadyInvested;
-//		if (betMaxCallOrRaiseInMathBets <= betDt) {
-//			// raise
-//		} else {
-//
-//		}
+
+		double betDt = betToStayInGame - betAlreadyInvestedBeforeAction;
+//		isCanToRaise
 		if (actionTip.isRaise) {
 			actionFinal = new Raise(this, betDt);
 		} else if (actionTip.isCall) {
 			if (creditsAfterAction < 0) {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvested == betToStayInGame) {
+				if (betAlreadyInvestedBeforeAction == betToStayInGame) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -102,7 +97,7 @@ public class Player {
 			if (creditsAfterAction < 0) {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvested == betToStayInGame) {
+				if (betAlreadyInvestedBeforeAction == betToStayInGame) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -112,7 +107,7 @@ public class Player {
 			if (creditsAfterAction < 0) {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvested == betDt) {
+				if (betAlreadyInvestedBeforeAction == betDt) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -124,7 +119,7 @@ public class Player {
 			} else if (creditsAfterAction >= 0) {
 				if (betMaxCallOrRaiseInMathBets <= betDt) {
 					actionFinal = new Raise(this, betMaxCallOrRaiseInMathBets);
-				} else if (betAlreadyInvested == betDt) {
+				} else if (betAlreadyInvestedBeforeAction == betDt) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
