@@ -41,17 +41,17 @@ public class EndGame : BetRound {
 		}
 
 		// TODO: split the pot between win players
-		double winPercent = 0;
+		Hand winHand = game.players[0].hand;
 		foreach (var player in game.players) {
-			if (winPercent <= 0) winPercent = player.winPercent;
-			if (player.winPercent > winPercent) {
-				winPercent = player.winPercent;
+//			if (winPercent <= 0) winPercent = player.winPercent;
+			if (player.hand > winHand) {
+				winHand = player.hand;
 			}
 		}
 		List<Player> winPlayers = new List<Player>();
 		string winHandString = "";
 		foreach (var player in game.players) {
-			if (winPercent == player.winPercent) {
+			if (winHand == player.hand) {
 				winPlayers.Add(player);
 				winHandString = player.handWinBestString;
 			}
@@ -60,11 +60,12 @@ public class EndGame : BetRound {
 		string winString = "";
 		double winAmount = game.potAmount/winPlayers.Count;
 		if (winPlayers.Count > 1) {
+			winString += winHandString + '\n';
 			winString += string.Format("the pot was split in {0} ways:\n".ToUpper(), winPlayers.Count);
 			int no = 0;
 			foreach(var player in game.players) {
 				no++;
-				winString += string.Format("{0}) {1} {2}\n", no, player.name, winHandString);
+				winString += string.Format("{0}) {1}\n", no, player.name);
 				player.betTotal += winAmount;
 				player.lblCredits.text = player.betTotal.to_s();
 			}
