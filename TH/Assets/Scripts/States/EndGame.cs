@@ -4,20 +4,8 @@ using System.Collections.Generic;
 public class EndGame : BetRound {
 	public EndGame(Game game) {
 		this.game = game;
-	}
 	
-	public override void LastAction ()
-	{
-//		base.LastAction ();
-		//		game.state = new InitGame (game);
-	}
-	
-	public override void BetSubRounds ()
-	{
-		//		base.BetSubRounds ();
-	}
-	
-	public override void FirstAction() {
+
 		if (Settings.isDebug)
 			game.ui.DebugLog ("EndGame()");
 
@@ -56,7 +44,7 @@ public class EndGame : BetRound {
 			foreach(var player in game.winners) {
 				player.betTotal += winAmount;
 				no++;
-				winString += string.Format("\n{0}) {1} win {2} credits", no, player.name, player.betTotal);
+				winString += string.Format("{0}) {1} win {2} credits\n", no, player.name, player.betTotal);
 				player.lblCredits.text = player.betTotal.to_s();
 			}
 		} else { // if (game.winners.Count == 1) { // one win player
@@ -66,8 +54,8 @@ public class EndGame : BetRound {
 			player.lblCredits.text = player.betTotal.to_s();
 		}
 
-//		game.potAmount = 0;
-//		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
+		game.potAmount = 0;
+		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
 
 		//TODO: calculate bonus payouts
 
@@ -77,6 +65,19 @@ public class EndGame : BetRound {
 		game.ui.panelWin.SetActive (true);
 
 //		LastAction ();
-		game.state.isWaiting = true;
+//		game.state.isWaiting = true;
 	}
+
+	public override void LastAction ()
+	{
+		//		base.LastAction ();
+		//		game.state = new InitGame (game);
+	}
+
+	public override void BetSubRounds ()
+	{
+		//		base.BetSubRounds ();
+	}
+
+	public override void FirstAction() {}
 }
