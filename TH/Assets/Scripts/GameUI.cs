@@ -51,7 +51,7 @@ public class GameUI : MonoBehaviour
 //		game.GameState.InitGame (game);
 		ReInitGame ();
 
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 //		isWaiting = false;
 		game.state.isWaiting = false;
 	}
@@ -74,7 +74,7 @@ public class GameUI : MonoBehaviour
 	// start game panel
 	public void btnCheckClick()
 	{
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		game.player.actionFinal = new Check(game.player, game.player.bet);
 		game.player.actionFinal.Do (game);
 //		isWaiting = false;
@@ -83,7 +83,7 @@ public class GameUI : MonoBehaviour
 
 	public void btnCallClick()
 	{
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		game.player.actionFinal = new Call(game.player, game.player.bet);
 		game.player.actionFinal.Do (game);
 
@@ -93,7 +93,7 @@ public class GameUI : MonoBehaviour
 
 	public void btnRaiseClick()
 	{
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 
 		game.betAmount = 0;
 		HideDynamicPanels ();
@@ -102,7 +102,7 @@ public class GameUI : MonoBehaviour
 
 	public void btnFoldClick()
 	{
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 
 		game.state = new EndGame (game);
 	}
@@ -110,19 +110,19 @@ public class GameUI : MonoBehaviour
 	public void btnAllInClick()
 	{
 //		game.MathState.River (game);
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 	}
 
 	public void btnHelpClick()
 	{
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		
 		if (Settings.isDebug) Debug.Log("btnHelpClick()");
 		if (panelHelp) panelHelp.SetActive (true);
 	}
 	
 	public void btnHelpCloseClick() {
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		
 		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
 		if (panelHelp) panelHelp.SetActive (false);
@@ -134,7 +134,7 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug) Debug.Log("btnBetNowClick()");
 		
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		
 //		if (panelInitBet) panelInitBet.SetActive(true);
 //		if (btnRepeatBet) btnRepeatBet.SetActive(true);
@@ -176,7 +176,7 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
 		
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		
 		Settings.betCurrent = Settings.betMaxMath;
 		
@@ -189,7 +189,7 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug) Debug.Log("btnMinBetClick()");
 		
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		
 		Settings.betCurrent += Settings.betDxMath;
 		if (Settings.betCurrent > Settings.betMaxMath)
@@ -202,7 +202,7 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug) Debug.Log("btnClearBetClick()");
 		
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		
 		Settings.betCurrent = Settings.betNull;
 
@@ -213,14 +213,14 @@ public class GameUI : MonoBehaviour
 
 	public void btnInstructionClick()
 	{
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 
 		if (Settings.isDebug) Debug.Log("btnInstructionClick()");
 		if (panelInstructions) panelInstructions.SetActive (true);
 	}
 	
 	public void btnInstructionCloseClick() {
-		audio.PlayOneShot(pressedSound);
+		audio.PlayOneShot(soundBtnClicked);
 		if (Settings.isDebug) Debug.Log("btnInstructionCloseClick()");
 		if (panelInstructions) panelInstructions.SetActive (false);
 	}
@@ -296,11 +296,11 @@ public class GameUI : MonoBehaviour
 			
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
-		pressedSound = Resources.Load<AudioClip> ("Sounds/cardFan1");//pressed");
-		dealSound = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
-		buttonSound = Resources.Load<AudioClip> ("Sounds/cardsShove4");//push3"); //push2
-		raiseSound = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
-		videoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
+		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/cardFan1");//pressed");
+		soundDeal = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
+//		soundButton = Resources.Load<AudioClip> ("Sounds/cardsShove4");//push3"); //push2
+		soundRaise = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
+		soundVideoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
 		// end sounds
 
 		panelHelp = GameObject.Find ("PanelHelp");
@@ -359,7 +359,7 @@ public class GameUI : MonoBehaviour
 				} else {
 					card.FaceUp = false;
 				}
-				audio.PlayOneShot(dealSound);
+				audio.PlayOneShot(soundDeal);
 				yield return new WaitForSeconds (Settings.updateInterval);
 //				player = game.playerIterator.Next();
 			}
@@ -511,7 +511,7 @@ public class GameUI : MonoBehaviour
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblPanelBet, lblPanelBetText, lblWinPlayerName, playerAllCredits;
 	public AudioSource audio;
-	public AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
+	public AudioClip soundBtnClicked, soundDeal, soundButton, soundRaise, soundVideoWin;
 	public InputField inputBetField;
 }
 

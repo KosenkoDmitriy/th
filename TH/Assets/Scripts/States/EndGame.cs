@@ -52,6 +52,8 @@ public class EndGame : BetRound {
 			winString = string.Format("{0} win\n {1} credits \n{2}".ToUpper(), player.name, game.potAmount.to_s(), player.GetHandStringFromHandObj());
 			player.betTotal += winAmount;
 			player.lblCredits.text = player.betTotal.to_s();
+
+			game.ui.audio.PlayOneShot(game.ui.soundVideoWin);
 		}
 
 		game.potAmount = 0;
