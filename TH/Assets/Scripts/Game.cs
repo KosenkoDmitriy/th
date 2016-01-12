@@ -73,7 +73,49 @@ public class Game
 		return playerList;
 	}
 
+	public List<Player> GetWinners() {
 
+		Hand winHand = this.players[0].hand;
+
+		// detect max win hand
+		foreach (var player in this.players) {
+			if (player.hand > winHand) {
+				winHand = player.hand;
+			}
+		}
+
+		// detect winners
+		List<Player> winners = new List<Player>();
+		foreach (var player in this.players) {
+			if (winHand == player.hand) {
+				winners.Add(player);
+			}
+		}
+
+		return winners;
+	}
+
+	public List<Player> GetWinnersAndSetWinPercentage() {
+		List<Player> winners = GetWinners ();
+
+		// start calculating the win percentage/hand strength
+		if (winners.Count > 0) {
+			double winPercentage = 100/winners.Count;
+			foreach (var item in winners) {
+				foreach (var player in this.players) {
+					if (player.id == item.id && player.name == item.name) {
+						item.winPercent = winPercentage;
+						player.winPercent = winPercentage;
+					}
+				}
+			}
+		}
+		// end calculating the win percentage/hand strength
+
+		return winners;
+	}
+
+	public List<Player> winners;
 
 	public Constants source;
 	public States states;

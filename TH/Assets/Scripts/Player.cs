@@ -441,6 +441,11 @@ public class Player {
 		}
 	}
 
+	public string GetHandStringFromHandObj() {
+		string handWinBestString = HandCombination.GetHandStringByHandObj (this.hand);
+		return handWinBestString;
+	}
+
 	public double winPercent;
 	public ActionTip actionTip;
 	public Action actionFinal;
@@ -459,7 +464,7 @@ public class Player {
 	
 	public string handPreflopString;			// "AKs"
 	public string handPreflopStringReversed;	// "KAs"
-	public string handWinBestString;			// 5 cards
+//	public string handWinBestString;			// 5 cards
 	
 	public Hand handPreflop;
 	public Hand hand;

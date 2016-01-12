@@ -591,5 +591,32 @@ public static class HandCombination  {
 		return specialCards;
 	}
 
+	public static string GetHandStringByHandObj(Hand hand) {
+		string str = "";
+		if (HandCombination.isRoyalFlush(hand)) {
+			str = "Royal Flush";
+		} else if (HandCombination.isStraightFlush(hand)) {
+			str = "Straight Flush";
+		} else if (HandCombination.isFourOfAKind(hand)) {
+			str = "Four of a Kind";
+		} else if (HandCombination.isFullHouse(hand)) {
+			str = "Full House";
+		} else if (HandCombination.isFlush(hand)) {
+			str = "Flush";
+		} else if (HandCombination.isStraight(hand)) {
+			str = "Straight";
+		} else if (HandCombination.isThreeOfAKind(hand)) {
+			str = "Three of a Kind";
+		} else if (HandCombination.isTwoPair(hand)) {
+			str = "Two Pair";
+		} else if (HandCombination.isOnePair(hand)) {
+			str = "One Pair";
+		} else if (HandCombination.isHighCard(hand)) {
+			str = "High Card";
+		} else {
+			str = "Lose Hand";
+		}
+		return str;
+	}
 
 }

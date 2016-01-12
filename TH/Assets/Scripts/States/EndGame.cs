@@ -40,48 +40,43 @@ public class EndGame : BetRound {
 			}
 		}
 
-		// TODO: split the pot between win players
-		Hand winHand = game.players[0].hand;
-		foreach (var player in game.players) {
-//			if (winPercent <= 0) winPercent = player.winPercent;
-			if (player.hand > winHand) {
-				winHand = player.hand;
-			}
-		}
-		List<Player> winPlayers = new List<Player>();
+		// split the pot between win players
 		string winHandString = "";
 		foreach (var player in game.players) {
-			if (winHand == player.hand) {
-				winPlayers.Add(player);
-				winHandString = player.handWinBestString;
-			}
-			player.lblAction.text = player.handWinBestString; // show player's hand
+			winHandString = player.GetHandStringFromHandObj();
+			player.lblAction.text = winHandString; // show player's hand
 		}
+
 		string winString = "";
-		double winAmount = game.potAmount/winPlayers.Count;
-		if (winPlayers.Count > 1) {
+		double winAmount = game.potAmount/game.winners.Count;
+		if (game.winners.Count > 1) {
 			winString += winHandString + '\n';
-			winString += string.Format("the pot was split in {0} ways:\n".ToUpper(), winPlayers.Count);
+			winString += string.Format("the pot was split in {0} ways:\n".ToUpper(), game.winners.Count);
 			int no = 0;
-			foreach(var player in game.players) {
-				no++;
-				winString += string.Format("{0}) {1}\n", no, player.name);
+			foreach(var player in game.winners) {
 				player.betTotal += winAmount;
+				no++;
+				winString += string.Format("\n{0}) {1} win {2} credits", no, player.name, player.betTotal);
 				player.lblCredits.text = player.betTotal.to_s();
 			}
-		} else { // one win player
-			Player player = winPlayers[0];
-			winString = string.Format("{0} win\n {1}".ToUpper(), player.name, player.handWinBestString);
+		} else { // if (game.winners.Count == 1) { // one win player
+			Player player = game.winners[0];
+			winString = string.Format("{0} win\n {1} credits \n{2}".ToUpper(), player.name, game.potAmount.to_s(), player.GetHandStringFromHandObj());
 			player.betTotal += winAmount;
 			player.lblCredits.text = player.betTotal.to_s();
 		}
-		game.potAmount = 0;
-		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
+
+//		game.potAmount = 0;
+//		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
+
 		//TODO: calculate bonus payouts
 
 		game.ui.lblWinPlayerName.GetComponent<UnityEngine.UI.Text> ().text = winString;
 
 		game.ui.HideDynamicPanels ();
 		game.ui.panelWin.SetActive (true);
+
+//		LastAction ();
+		game.state.isWaiting = true;
 	}
 }
