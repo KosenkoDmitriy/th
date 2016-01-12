@@ -450,7 +450,7 @@ public class Player {
 	public double bet;
 	public double betAlreadyInvestedBeforeAction;
 
-	public double credits; // credits/creditMultiplier
+//	public double credits; // credits/creditMultiplier
 	public double betTotal;	// betTotal * creditMulitplier
 
 	public int id;			// for ui

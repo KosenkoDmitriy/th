@@ -130,7 +130,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		foreach (var player in game.players)
 			foreach (var item in items) {
 				if (item.position == player.position) {
-					if (item.winPercentMin >= player.winPercent && player.winPercent <= item.winPercentMax) {
+					if (item.winPercentMin > player.winPercent && player.winPercent <= item.winPercentMax) {
 					
 						player.pattern = item.pattern;
 						player.alt_patterns = item.alt_patterns;

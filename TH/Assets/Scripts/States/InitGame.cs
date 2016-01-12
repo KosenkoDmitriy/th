@@ -137,7 +137,6 @@ public class InitGame : BetRound {
 				player.handWinBestString = "Lose Hand";
 			}
 		}
-		// TODO: split the pot between win players
 
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
