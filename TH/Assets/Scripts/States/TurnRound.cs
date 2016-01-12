@@ -16,11 +16,13 @@ public class TurnRound : BetRound {
 	public override void FirstAction() {
 		game.cards [3].FaceUp = true;
 	}
+
 	public override void LastAction ()
 	{
-		//		base.LastAction ();
+		base.LastAction ();
 		game.state = new RiverRound (game);
 	}
+
 	public override void BetSubRounds ()
 	{
 		base.BetSubRounds ();

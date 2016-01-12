@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public interface IBetRoundState
 {
@@ -57,18 +58,72 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 	#endregion
 	
-	public virtual void FirstAction() {
-		//		isWaiting = true;
-		//		// do something (deal cards, display win info, reinit game, ui animation
-		//		isWaiting = false;
+	public virtual void FirstAction() {}
+
+	public virtual void LastAction() {
+		game.playerIterator = new PlayerIterator (game.playerCollection);
+		while (!game.playerIterator.IsDone) {
+			var player = game.playerIterator.Next();
+			pot += player.betAlreadyInvestedBeforeAction;
+		}
+		game.potAmount = pot;
+		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
+		game.state = new FlopRound (game);
 	}
 	
 	public virtual void BetSubRounds() {
 		// bet sub rounds
+		if (!game.state.isWaiting) {
+			var player = game.playerIterator.NextActive();
+			
+			if (player.isReal) {
+				game.state.isWaiting = true;
+				if (isCanToRaise) {
+					game.ui.btnRaise.GetComponent<Button>().interactable = true;
+				} else {
+					game.ui.btnRaise.GetComponent<Button>().interactable = false;
+				}
+			} else {
+				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise);
+				player.actionTip.Do(game);
+			}
+			
+			if (player.position == game.playerIterator.LastActive().position) { // last player
+				isCanToRaise = false;
+				if (!isCanToRaise) {
+					if (subRoundCount < subRoundMaxSize) {
+						subRoundCount++;
+					} else if (subRoundCount == subRoundMaxSize) {	// last subround
+						if (IsNextBetRound()) {						// no any raise
+							subRoundCount++; // LastAction();		// next bet round
+						} else {			
+							isCanToRaise = false; // repeat last subround with disabled raise action
+						}
+					}
+					if (IsNextBetRound()) {
+						LastAction(); // next bet round if no any raise in any subround
+					}
+				}
+			}
+			game.ui.UpdatePlayer(player);
+		}
+		//		game.state.isWaiting = true;
+		//		game.ui.StartCoroutine (game.ui.UpdatePlayer (player));
 	}
-	
-	public virtual void LastAction() {
-		// bet sub rounds
+
+	private bool IsNextBetRound() {
+		var iterator = new PlayerIterator (game.playerCollection);
+		bool isNextBetRound = false;
+		while (!iterator.IsDone) {
+			var player = iterator.NextActive();
+			if (player.betAlreadyInvestedBeforeAction != betMax) {
+				isNextBetRound = false;
+			} else {
+				isNextBetRound = true;
+				break;
+			}
+		}
+		return isNextBetRound;
 	}
 
 	public void SetPatternAndHisAlternatives(List<PatternFTR> items) {

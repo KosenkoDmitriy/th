@@ -7,7 +7,7 @@ public class EndGame : BetRound {
 	
 	public override void LastAction ()
 	{
-		//		base.LastAction ();
+		base.LastAction ();
 		//		game.state = new InitGame (game);
 	}
 	
@@ -19,6 +19,7 @@ public class EndGame : BetRound {
 	public override void FirstAction() {
 		if (Settings.isDebug)
 			game.ui.DebugLog ("EndGame()");
+
 		game.isGameRunning = false;
 		game.isGameEnd = true;
 		

@@ -44,9 +44,10 @@ public class AnteRound : BetRound {
 //		game.state.isWaiting = true;
 //		game.ui.StartCoroutine (game.ui.UpdatePlayers());
 	}
+
 	public override void LastAction ()
 	{
-		//		base.LastAction ();
+		base.LastAction ();
 		game.state = new PreflopRound (game);
 	}
 	

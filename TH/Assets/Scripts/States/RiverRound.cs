@@ -18,7 +18,7 @@ public class RiverRound : BetRound {
 	}
 	public override void LastAction ()
 	{
-		//		base.LastAction ();
+		base.LastAction ();
 		game.state = new EndGame (game);
 	}
 	public override void BetSubRounds ()
