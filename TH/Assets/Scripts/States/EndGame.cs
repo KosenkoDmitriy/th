@@ -68,16 +68,9 @@ public class EndGame : BetRound {
 //		game.state.isWaiting = true;
 	}
 
-	public override void LastAction ()
-	{
-		//		base.LastAction ();
-		//		game.state = new InitGame (game);
-	}
+	public override void LastAction () {}
 
-	public override void BetSubRounds ()
-	{
-		//		base.BetSubRounds ();
-	}
+	public override void BetSubRounds () {}
 
 	public override void FirstAction() {}
 }

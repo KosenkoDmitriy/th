@@ -9,6 +9,7 @@ public class PreflopRound : BetRound {
 	public override void LastAction ()
 	{
 		base.LastAction ();
+		game.state = new FlopRound (game);
 	}
 
 	public override void FirstAction ()

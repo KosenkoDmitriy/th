@@ -68,7 +68,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		}
 		game.potAmount = pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
-		game.state = new FlopRound (game);
 	}
 	
 	public virtual void BetSubRounds() {
