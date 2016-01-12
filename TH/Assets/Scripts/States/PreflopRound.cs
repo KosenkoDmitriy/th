@@ -25,10 +25,11 @@ public class PreflopRound : BetRound {
 
 	public override void FirstAction ()
 	{
-		//		base.FirstAction ();
-		isWaiting = true;
+//		base.FirstAction ();
+		game.state.isWaiting = true;
 		game.ui.StartCoroutine (game.ui.DealCards ());
-		// isWaiting = false (must be in the end line of coroutine)
+		// game.state.isWaiting = false (must be in the end line of coroutine)
+
 		game.playerIterator = new PlayerIterator (game.playerCollection);
 	}
 
