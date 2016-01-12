@@ -19,7 +19,7 @@ public abstract class AbstractBetRound {
 public class BetRound : AbstractBetRound, IBetRoundState {
 	public bool isWaiting; // wait for corountine
 	public bool isCanToRaise;
-	public bool isRaised;
+//	public bool isRaised;
 
 	public BetRound() {
 		Init ();

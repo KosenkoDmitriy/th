@@ -13,6 +13,7 @@ public class PreflopRound : BetRound {
 //		game.potAmount = pot;
 
 		//		game.playerIterator.First ();
+		game.playerIterator = new PlayerIterator (game.playerCollection);
 		while (!game.playerIterator.IsDone) {
 			var player = game.playerIterator.Next();
 			pot += player.betAlreadyInvestedBeforeAction;
@@ -34,13 +35,18 @@ public class PreflopRound : BetRound {
 	public override void BetSubRounds () {
 		if (!game.state.isWaiting) {
 			var player = game.playerIterator.NextActive();
+
 			if (player.position == game.playerIterator.LastActive().position) { // last player
 				isCanToRaise = !isCanToRaise;
-				if (!isRaised) {
-					LastAction(); // next bet round if no any raise
+				if (!isCanToRaise) {
+					
+					if (IsNextBetRound()) {
+						LastAction(); // next bet round if no any raise
+					}
+
 				}
-				isRaised = false;
 			}
+			
 
 			if (player.isReal) {
 				game.state.isWaiting = true;
@@ -69,7 +75,7 @@ public class PreflopRound : BetRound {
 					if (player.betAlreadyInvestedBeforeAction > betMax) {
 						if (isCanToRaise) {
 							betMax = player.betAlreadyInvestedBeforeAction;
-							isRaised = true;
+//							isRaised = true;
 						} else {
 							//TODO call
 						}
@@ -77,9 +83,25 @@ public class PreflopRound : BetRound {
 				}
 			}
 			game.ui.UpdatePlayer(player);
+
 		}
 //		game.state.isWaiting = true;
 //		isWaiting = true;
 //		game.ui.StartCoroutine (game.ui.UpdatePlayer (player));
+	}
+
+	private bool IsNextBetRound() {
+		var iterator = new PlayerIterator (game.playerCollection);
+		bool isNextBetRound = false;
+		while (!iterator.IsDone) {
+			var player = iterator.NextActive();
+			if (player.betAlreadyInvestedBeforeAction != betMax) {
+				isNextBetRound = false;
+			} else {
+				isNextBetRound = true;
+				break;
+			}
+		}
+		return isNextBetRound;
 	}
 }
