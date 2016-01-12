@@ -8,26 +8,26 @@ static class Settings
 	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
 
-	public static readonly double betMath = 1; // always 1 bet
-	public static readonly double betAnte = 2 * betMath;
-	public static readonly double betPreflopFlop = 2 * betMath;
-	public static readonly double betTurnRiver = 4 * betMath;
-
-	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
-	public static readonly double betAnteCredits = 2 * betMath * betCreditsMultiplier;
-	public static readonly double betPreflopFlopCredits = 2 * betMath * betCreditsMultiplier;
-	public static readonly double betTurnRiverCredits = 4 * betMath * betCreditsMultiplier;
+	public static readonly double betAnteMultiplier = 2;
+	public static readonly double betPreflopFlopMultiplier = 2;
+	public static readonly double betTurnRiverMultiplier = 4;
 
 	public static readonly int betMaxMultiplier = 4;
+	public static readonly double betDxMath = 1;								// .25;	
+	public static readonly double betMaxMath = betDxMath * betMaxMultiplier;	// 1.5;
+
+	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
+
+	public static double betBonusAmount = 0;
+	public static double betMaxBonusAmount = betDxMath * betMaxMultiplier - 1;
+
+	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
+	public static readonly double betAnteCredits = betAnteMultiplier * betCreditsMultiplier;
+	public static readonly double betPreflopFlopCredits = betPreflopFlopMultiplier * betCreditsMultiplier;
+	public static readonly double betTurnRiverCredits = betTurnRiverMultiplier * betCreditsMultiplier;
+
 	public static readonly double betDxInCredits = betPreflopFlopCredits; // TODO: change to betTurnRiverCredits when turn and river
 	public static readonly double betMaxInCredits = betDxInCredits * betMaxMultiplier;
-	
-	public static readonly double betDx = 1;							// .25;	
-	public static readonly double betMax = betDx * betMaxMultiplier;	// 1.5;
-
-	
-	public static double betBonusAmount = 0;
-	public static double betMaxBonusAmount = betDx * betMaxMultiplier - 1;
 
 	public static double playerCredits = 500;
 	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
@@ -107,7 +107,7 @@ static class Settings
     public static readonly int betAmountAutoplay = 5;
 
     public static string dollar = " credits ";// { get; internal set; }
-    public static double betNull = 0.00;
+    public static readonly double betNull = 0.00;
     public static double betCurrent = 0.00;
 
 	public static void OpenUrl(string url) {

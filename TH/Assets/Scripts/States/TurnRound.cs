@@ -3,8 +3,8 @@ using System;
 public class TurnRound : BetRound {
 	public TurnRound(Game game) {
 		this.game = game;
-		this.betMin = Settings.betTurnRiver;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+		Settings.betCurrentMultiplier = Settings.betTurnRiverMultiplier;
 
 		// turn bet rounds
 		var turns = game.source.GetTurns ();

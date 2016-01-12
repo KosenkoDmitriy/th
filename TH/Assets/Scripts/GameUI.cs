@@ -161,7 +161,7 @@ public class GameUI : MonoBehaviour
 //			isWaiting = false;
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
-			game.player.actionFinal = new Raise(game.player, Settings.betAnte);
+			game.player.actionFinal = new Raise(game.player, Settings.betAnteMultiplier);
 			game.player.actionFinal.Do (game);
 //			game.GameState.Raise(game);
 //			isWaiting = false;
@@ -178,15 +178,11 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		Settings.betCurrent = Settings.betMax;
+		Settings.betCurrent = Settings.betMaxMath;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
 		panelInitBet.GetComponentInChildren<InputField>().text = b;
-		//GameObject.Find("InputField").GetComponent<InputField>().text = b;
-		
-		//var obj = GameObject.Find("BetInputField");
-		//obj.GetComponent<InputField>().text = b;
 	}
 	
 	public void btnMinBetClick()
@@ -195,9 +191,10 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(pressedSound);
 		
-		Settings.betCurrent += Settings.betDx;
-		if (Settings.betCurrent > Settings.betMax)
-			Settings.betCurrent = 0f;
+		Settings.betCurrent += Settings.betDxMath;
+		if (Settings.betCurrent > Settings.betMaxMath)
+			Settings.betCurrent = Settings.betNull;
+
 		inputBetField.text = Settings.betCurrent.to_s();
 	}
 	
@@ -208,6 +205,7 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(pressedSound);
 		
 		Settings.betCurrent = Settings.betNull;
+
 		inputBetField.text = Settings.betCurrent.to_s();
 	}
 	

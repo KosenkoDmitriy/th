@@ -34,8 +34,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	
 	private void Init() {
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
-		this.betMin = Settings.betPreflopFlop;
 		this.isCanToRaise = true;
+		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
 	}
 	
 	#region IBetRoundState implementation

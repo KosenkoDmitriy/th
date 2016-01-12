@@ -6,7 +6,8 @@ public class AnteRound : BetRound {
 	public AnteRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
-		this.betMin = Settings.betAnte;
+		this.betMin = Settings.betDxMath;
+		Settings.betCurrentMultiplier = Settings.betAnteMultiplier;
 	}
 
 	public override void FirstAction ()

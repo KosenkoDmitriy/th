@@ -4,6 +4,7 @@ public class PreflopRound : BetRound {
 	public PreflopRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
 	}
 
 	public override void LastAction ()
