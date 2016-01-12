@@ -14,6 +14,7 @@ public class FlopRound : BetRound {
 	}
 
 	public override void FirstAction() {
+		game.ui.audio.PlayOneShot(game.ui.dealSound);
 		game.cards [0].FaceUp = true;
 		game.cards [1].FaceUp = true;
 		game.cards [2].FaceUp = true;

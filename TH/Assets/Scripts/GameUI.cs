@@ -359,6 +359,7 @@ public class GameUI : MonoBehaviour
 				} else {
 					card.FaceUp = false;
 				}
+				audio.PlayOneShot(dealSound);
 				yield return new WaitForSeconds (Settings.updateInterval);
 //				player = game.playerIterator.Next();
 			}
@@ -509,8 +510,8 @@ public class GameUI : MonoBehaviour
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblPanelBet, lblPanelBetText, lblWinPlayerName, playerAllCredits;
-	AudioSource audio;
-	AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
+	public AudioSource audio;
+	public AudioClip pressedSound, dealSound, buttonSound, raiseSound, videoWin;
 	public InputField inputBetField;
 }
 

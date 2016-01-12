@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 static class Settings
 {
-	public static float updateInterval = 0.05f;
+	public static float updateInterval = 0.5f;
 
 	public static readonly int betSubRoundMinSize = 0;
 	public static readonly int betAnteSubRoundMinSize = 1;

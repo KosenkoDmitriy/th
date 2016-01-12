@@ -14,6 +14,7 @@ public class RiverRound : BetRound {
 	}
 	
 	public override void FirstAction() {
+		game.ui.audio.PlayOneShot(game.ui.dealSound);
 		game.cards [4].FaceUp = true;
 	}
 
