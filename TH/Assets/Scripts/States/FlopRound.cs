@@ -6,21 +6,9 @@ public class FlopRound : BetRound {
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 
 		// flop bet rounds
-		var items = game.source.GetFlops ();
-		foreach (var player in game.players)
-		foreach (var item in items) {
-			if (item.position == player.position) {
-				if (item.winPercentMin >= player.winPercent && player.winPercent <= item.winPercentMax) {
-					
-					player.pattern = item.pattern;
-					player.alt_patterns = item.alt_patterns;
-					
-					break;
-				} else {
-					player.pattern = game.source.GetPatternByName(Settings.defaultPreflopPattern);
-				}
-			}
-		}
+		var flops = game.source.GetFlops ();
+		SetPatternAndHisAlternatives (flops);
+
 
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();

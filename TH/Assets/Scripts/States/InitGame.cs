@@ -63,20 +63,7 @@ public class InitGame : BetRound {
 		
 		// preflop bet rounds
 		var preflops = game.source.GetPreflops ();
-		foreach (var player in game.players)
-		foreach (var preflop in preflops) {
-			if (preflop.position == player.position) {
-				if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
-					
-					player.pattern = preflop.pattern;
-					player.alt_patterns = preflop.alt_patterns;
-					
-					break;
-				} else {
-					player.pattern = game.source.GetPatternByName(Settings.defaultPreflopPattern);
-				}
-			}
-		}
+		SetPatternAndHisAlternativesForPreflop (preflops);
 		
 		// flop
 		for (int i = 1; i <= 3; i++) {
