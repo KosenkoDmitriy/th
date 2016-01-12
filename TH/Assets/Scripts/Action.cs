@@ -36,6 +36,7 @@ public class Action : IAction {
 					game.state = new EndGame(game);
 				}
 				game.state.isWaiting = false;
+				game.ui.SetBalance(p.betTotal.to_s());
 			} else {
 				if (!p.isFolded) {
 					p.bet = bet;
