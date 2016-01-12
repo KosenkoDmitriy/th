@@ -268,8 +268,8 @@ public class GameStates : IGameState
 		foreach (var player in game.players) {
 			if (!player.isFolded) // active virtual players only
 			{
-				player.patternCurrent = player.GetAndSetPatternRandomly ();
-				player.actionCurrentString = player.GetCurrentActionString (betCurrentToStayInGame, betTotalInThisRound);
+				player.patternCurrent = player.GetAndSetCurrentPatternRandomly ();
+				player.actionCurrentString = player.GetCurrentActionStringFromCurrentPattern (betCurrentToStayInGame, betTotalInThisRound);
 				//TODO: handle player's current action
 				
 				if (player.actionCurrentString == "FOLD") {

@@ -45,7 +45,7 @@ public class Player {
 		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
 
-	public Pattern GetAndSetPatternRandomly() {
+	public Pattern GetAndSetCurrentPatternRandomly() {
 		float percentOfTime = UnityEngine.Random.value * 100;
 		if (pattern != null) {
 //			if (percentOfTime <= pattern.percent) {
@@ -72,8 +72,8 @@ public class Player {
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
 
-		patternCurrent = GetAndSetPatternRandomly ();
-		actionCurrentString = GetCurrentActionString (betToStayInGame, betAlreadyInvestedBeforeAction); // best actionString from the patternCurrent
+		patternCurrent = GetAndSetCurrentPatternRandomly ();
+		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betToStayInGame, betAlreadyInvestedBeforeAction); // best actionString from the patternCurrent
 		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
 
 		
@@ -144,7 +144,7 @@ public class Player {
 		return actionFinal;
 	}
 
-	public string GetCurrentActionString(double betToStayInGame, double betTotal) {
+	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGame, double betTotal) {
 		string actionString = "";
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0)
