@@ -99,12 +99,35 @@ public class InitGame : BetRound {
 		foreach (var player in game.players) {
 			player.hand = player.GetBestPlayerHand (game.cards);
 		}
-		
-		//				foreach (var player in game.ui.cardsOfPlayer) {
-		//					player.sprite = game.ui.cardsAll [1];
-		//				}
-		//TODO: calculate win percentage/hand strength
-		
+
+		// calculating the win percentage/hand strength
+		foreach (var player in game.players) {
+			if (HandCombination.isRoyalFlush(player.hand)) {
+				player.winPercent = 100;
+			} else if (HandCombination.isStraightFlush(player.hand)) {
+				player.winPercent = 90;
+			} else if (HandCombination.isFourOfAKind(player.hand)) {
+				player.winPercent = 80;
+			} else if (HandCombination.isFullHouse(player.hand)) {
+				player.winPercent = 70;
+			} else if (HandCombination.isFlush(player.hand)) {
+				player.winPercent = 60;
+			} else if (HandCombination.isStraight(player.hand)) {
+				player.winPercent = 50;
+			} else if (HandCombination.isThreeOfAKind(player.hand)) {
+				player.winPercent = 40;
+			} else if (HandCombination.isTwoPair(player.hand)) {
+				player.winPercent = 30;
+			} else if (HandCombination.isOnePair(player.hand)) {
+				player.winPercent = 20;
+			} else if (HandCombination.isHighCard(player.hand)) {
+				player.winPercent = 10;
+			} else {
+				player.winPercent = 0;
+			}
+		}
+		// TODO: split the pot between win players
+
 		
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
