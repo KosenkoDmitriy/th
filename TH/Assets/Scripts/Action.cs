@@ -61,6 +61,10 @@ public class Call : Action
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
+	public override void Do(Game game) {
+		base.Do (game);
+		game.ui.audio.PlayOneShot(game.ui.soundRaise);
+	}
 }
 
 public class Check : Action
@@ -93,7 +97,8 @@ public class Raise : Action
 		this.bet = betToStayInGame;
 	}
 
-//	public override void Do(Game game) {
-//
-//	}
+	public override void Do(Game game) {
+		base.Do (game);
+		game.ui.audio.PlayOneShot(game.ui.soundRaise);
+	}
 }
