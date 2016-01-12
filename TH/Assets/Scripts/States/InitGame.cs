@@ -74,7 +74,6 @@ public class InitGame : BetRound {
 					break;
 				} else {
 					player.pattern = game.source.GetPatternByName(Settings.defaultPreflopPattern);
-					// TODO: alt_patterns? 
 				}
 			}
 		}
@@ -120,7 +119,7 @@ public class InitGame : BetRound {
 		//TODO: calculate win percentage/hand strength
 		
 		
-		// using in update of the game loop
+		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
 		foreach (var p in game.players) {
 			game.playerCollection[p.position] = p;

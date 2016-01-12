@@ -152,7 +152,7 @@ public class Player {
 					if (betRound.costBet == betToStayInGame && betRound.costBetTotal == betTotal) {
 //					if (betRound.costBet * Settings.betDxInCredits == betToStayInGame && betRound.costBetTotal * Settings.betDxInCredits == betTotal) {
 						actionString = betRound.name_action;
-					break;
+						break;
 					}
 				}
 			if (string.IsNullOrEmpty (actionString))
@@ -441,6 +441,7 @@ public class Player {
 		}
 	}
 
+	public double winPercent;
 	public ActionTip actionTip;
 	public Action actionFinal;
 	//	public int currentBetRoundNo;
