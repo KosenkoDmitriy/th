@@ -224,7 +224,19 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnInstructionCloseClick()");
 		if (panelInstructions) panelInstructions.SetActive (false);
 	}
+
+	private void btnCreditAddClickListener()
+	{
+		if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
+		if (panelAddCredits) panelAddCredits.SetActive(true);
+	}
 	
+	private void btnCreditOkClickListener()
+	{
+		if (Settings.isDebug) Debug.Log("btnCreditOkClickListener()");
+		if (panelAddCredits) panelAddCredits.SetActive(false);
+	}
+
 	public void Start ()
 	{
 		if (Settings.isDebug)
@@ -235,7 +247,7 @@ public class GameUI : MonoBehaviour
 		if (panelAddCredits) {
 			btnCreditOk = panelAddCredits.transform.FindChild ("btnOk").gameObject;
 			if (btnCreditOk)
-//				btnCreditOk.GetComponent<Button> ().onClick.AddListener (() => btnCreditOkClickListener ());
+				btnCreditOk.GetComponent<Button> ().onClick.AddListener (() => btnCreditOkClickListener ());
 			if (panelAddCredits)
 				panelAddCredits.SetActive (false);
 		}
@@ -281,8 +293,8 @@ public class GameUI : MonoBehaviour
 			
 
 		btnCredit = GameObject.Find ("btnCredit");
-//		if (btnCredit)
-//			btnCredit.GetComponent<Button> ().onClick.AddListener (() => btnCreditAddClickListener ());
+		if (btnCredit)
+			btnCredit.GetComponent<Button> ().onClick.AddListener (() => btnCreditAddClickListener ());
 			
 		btnAutoPlay = GameObject.Find ("btnAutoPlay");
 		btnNewGame = GameObject.Find ("btnNewGame");
@@ -502,10 +514,128 @@ public class GameUI : MonoBehaviour
 			panelWin.SetActive (false);
 	}
 
+	#region api
+	public void Add(string amount)
+	{
+		string url = string.Format("{0}/{1}", Settings.host, Settings.actionAdd);
+		if (Settings.isDebug) Debug.Log(url);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("a", amount);
+		form.AddField("k", Settings.key);
+		
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForRequest(www));
+	}
+	
+	public void Sub(string amount)
+	{
+		string url = string.Format("{0}/{1}", Settings.host, Settings.actionSub);
+		if (Settings.isDebug) Debug.Log(url);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("a", amount);
+		form.AddField("k", Settings.key);
+		
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForRequest(www));
+	}
+	
+	public void GetBalance()
+	{
+		string url = string.Format("{0}/{1}", Settings.host, Settings.actionGetBalance);
+		if (Settings.isDebug) Debug.Log(url);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("k", Settings.key);
+		
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForGetBalanceRequest(www));
+	}
+	
+	public void SetBalance(string amount)
+	{
+		string url = string.Format("{0}/{1}", Settings.host, Settings.actionSetBalance);
+		if (Settings.isDebug) Debug.Log(url);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("a", amount);
+		form.AddField("k", Settings.key);
+		
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForRequest(www));
+	}
+	
+	IEnumerator WaitForRequest(WWW www)
+	{
+		yield return www;
+		// check for errors
+		if (www.error == null)
+		{
+			if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
+		}
+		else
+		{
+			string msg = "error api: " + www.error;
+			if (Settings.isDebug) Debug.Log(msg);
+		}
+	}
+	
+	IEnumerator WaitForGetBalanceRequest(WWW www)
+	{
+		yield return www;
+		var lblMyCreditsTitle = GameObject.Find("lblMyCredits") ;
+		// check for errors
+		if (www.error == null)
+		{
+			double credits = 0;
+			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = www.text;
+			Double.TryParse(www.text, out credits);
+			if (credits >= 0) {
+				game.player.betTotal = credits/Settings.betCreditsMultiplier;
+			}
+			if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
+		}
+		else
+		{
+//			game.player.betTotal = Settings.playerCredits/Settings.betCreditsMultiplier; // if we play without login
+			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = "pls relogin and try again";
+			string msg = "error getting balance: " + www.error;
+			if (Settings.isDebug) Debug.Log(msg);
+		}
+	}
+	
+	public void urlBuy()
+	{
+		Settings.OpenUrl (Settings.urlBuy);
+	}
+	
+	public void urlCredits()
+	{
+		Settings.OpenUrl (Settings.urlCredits);
+	}
+	
+	public void urlLogin()
+	{
+		Settings.OpenUrl (Settings.urlLogin);
+	}
+	
+	public void urlInviteFriend()
+	{
+		Settings.OpenUrl (Settings.urlInviteFriend);
+	}
+	
+	public void urlFortuneWheel()
+	{
+		Settings.OpenUrl (Settings.urlFortuneWheel);
+	}
+	
+	#endregion
+
 	public void DebugLog(string message) {
 		if (Settings.isDebug) Debug.Log(message);
 	}
-
+	
 	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 

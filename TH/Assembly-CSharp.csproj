@@ -82,6 +82,7 @@
      <Compile Include="Assets\Scripts\States\RiverRound.cs" />
      <Compile Include="Assets\Scripts\States\States.cs" />
      <Compile Include="Assets\Scripts\States\TurnRound.cs" />
+     <Compile Include="Assets\Scripts\WebApi.cs" />
      <None Include="Assets\3DText.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
