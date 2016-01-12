@@ -22,7 +22,7 @@ public class AnteRound : BetRound {
 			var player = game.player;
 			player = this.game.playerIterator.Next ();
 			if (player == null) {
-				subRoundCurrent++; // or LastAction();
+				subRoundCount++; // or LastAction();
 			} else {
 				player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
 				if (player.isReal) {

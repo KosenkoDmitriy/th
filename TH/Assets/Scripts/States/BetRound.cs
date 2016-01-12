@@ -9,7 +9,7 @@ public interface IBetRoundState
 
 public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
-	protected int subRoundCurrent;
+	protected int subRoundCount;
 	protected double betMin;
 	protected double betMax;
 	protected Game game;
@@ -40,14 +40,14 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	
 	public virtual void SubRound ()
 	{
-		if (subRoundCurrent == 0) {
+		if (subRoundCount == 0) {
 			FirstAction ();
-			subRoundCurrent++;
-		} else if (subRoundCurrent <= subRoundMaxSize && subRoundMaxSize > 0) {
+			subRoundCount++;
+		} else if (subRoundCount <= subRoundMaxSize && subRoundMaxSize > 0) {
 			BetSubRounds ();
 		} else {
 			LastAction(); //next state (preflop, turn, river)
-			subRoundCurrent = 0;
+			subRoundCount = 0;
 		}
 	}
 
