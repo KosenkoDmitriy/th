@@ -85,6 +85,11 @@ public class Fold : Action
 		this.p = player;
 		this.bet = betToStayInGame;
 	}
+
+	public override void Do(Game game) {
+		base.Do (game);
+		game.ui.audio.PlayOneShot(game.ui.soundFold);
+	}
 }
 
 

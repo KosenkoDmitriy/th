@@ -300,6 +300,7 @@ public class GameUI : MonoBehaviour
 		soundDeal = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
 //		soundButton = Resources.Load<AudioClip> ("Sounds/cardsShove4");//push3"); //push2
 		soundRaise = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
+		soundFold = Resources.Load<AudioClip> ("Sounds/fold");
 		soundVideoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
 		// end sounds
 
@@ -511,7 +512,7 @@ public class GameUI : MonoBehaviour
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblPanelBet, lblPanelBetText, lblWinPlayerName, playerAllCredits;
 	public AudioSource audio;
-	public AudioClip soundBtnClicked, soundDeal, soundButton, soundRaise, soundVideoWin;
+	public AudioClip soundBtnClicked, soundDeal, soundButton, soundRaise, soundVideoWin, soundFold;
 	public InputField inputBetField;
 }
 
