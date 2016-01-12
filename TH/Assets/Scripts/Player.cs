@@ -459,6 +459,7 @@ public class Player {
 	
 	public string handPreflopString;			// "AKs"
 	public string handPreflopStringReversed;	// "KAs"
+	public string handWinBestString;			// 5 cards
 	
 	public Hand handPreflop;
 	public Hand hand;

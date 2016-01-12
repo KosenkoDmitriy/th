@@ -104,31 +104,41 @@ public class InitGame : BetRound {
 		foreach (var player in game.players) {
 			if (HandCombination.isRoyalFlush(player.hand)) {
 				player.winPercent = 100;
+				player.handWinBestString = "Royal Flush";
 			} else if (HandCombination.isStraightFlush(player.hand)) {
 				player.winPercent = 90;
+				player.handWinBestString = "Straight Flush";
 			} else if (HandCombination.isFourOfAKind(player.hand)) {
 				player.winPercent = 80;
+				player.handWinBestString = "Four of a Kind";
 			} else if (HandCombination.isFullHouse(player.hand)) {
 				player.winPercent = 70;
+				player.handWinBestString = "Full House";
 			} else if (HandCombination.isFlush(player.hand)) {
 				player.winPercent = 60;
+				player.handWinBestString = "Flush";
 			} else if (HandCombination.isStraight(player.hand)) {
 				player.winPercent = 50;
+				player.handWinBestString = "Straight";
 			} else if (HandCombination.isThreeOfAKind(player.hand)) {
 				player.winPercent = 40;
+				player.handWinBestString = "Three of a Kind";
 			} else if (HandCombination.isTwoPair(player.hand)) {
 				player.winPercent = 30;
+				player.handWinBestString = "Two Pair";
 			} else if (HandCombination.isOnePair(player.hand)) {
 				player.winPercent = 20;
+				player.handWinBestString = "One Pair";
 			} else if (HandCombination.isHighCard(player.hand)) {
 				player.winPercent = 10;
+				player.handWinBestString = "High Card";
 			} else {
 				player.winPercent = 0;
+				player.handWinBestString = "Lose Hand";
 			}
 		}
 		// TODO: split the pot between win players
 
-		
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
 		foreach (var p in game.players) {
