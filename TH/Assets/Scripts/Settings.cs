@@ -19,15 +19,15 @@ static class Settings
 	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
 
 	public static double betBonusAmount = 0;
-	public static double betMaxBonusAmount = betDxMath * betMaxMultiplier - 1;
+	public static double betMaxBonusAmount = betDxMath * betMaxMultiplier;
 
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
-	public static readonly double betAnteCredits = betAnteMultiplier * betCreditsMultiplier;
-	public static readonly double betPreflopFlopCredits = betPreflopFlopMultiplier * betCreditsMultiplier;
-	public static readonly double betTurnRiverCredits = betTurnRiverMultiplier * betCreditsMultiplier;
-
-	public static readonly double betDxInCredits = betPreflopFlopCredits; // TODO: change to betTurnRiverCredits when turn and river
-	public static readonly double betMaxInCredits = betDxInCredits * betMaxMultiplier;
+//	public static readonly double betAnteCredits = betAnteMultiplier * betCreditsMultiplier;
+//	public static readonly double betPreflopFlopCredits = betPreflopFlopMultiplier * betCreditsMultiplier;
+//	public static readonly double betTurnRiverCredits = betTurnRiverMultiplier * betCreditsMultiplier;
+//
+//	public static readonly double betDxInCredits = betPreflopFlopCredits;
+//	public static readonly double betMaxInCredits = betDxInCredits * betMaxMultiplier;
 
 	public static double playerCredits = 500;
 	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
@@ -101,7 +101,7 @@ static class Settings
     //public static int playerAutoPlayCredits = 1000;
     public static int intervalGameOver = 1000;
 
-    public static double gameDenomination = betDxInCredits;
+	public static double gameDenominationDx = betDxMath * Settings.betCurrentMultiplier;
     public static readonly int GameDenominationDivider = 100;
     public static readonly int videoBonusMaxMultiplier = 5;
     public static readonly int betAmountAutoplay = 5;

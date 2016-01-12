@@ -170,7 +170,7 @@ namespace Assets.Scripts
             int newRank = ROYAL_FLUSH - rank;
             if (newRank < paytableRowSize)
             {
-                return (double)PayTableAmounts[newRank] * Settings.gameDenomination;
+                return (double)PayTableAmounts[newRank] * Settings.gameDenominationDx;
             }
             else
             {
