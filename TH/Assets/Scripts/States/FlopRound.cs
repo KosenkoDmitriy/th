@@ -8,13 +8,6 @@ public class FlopRound : BetRound {
 		// flop bet rounds
 		var flops = game.source.GetFlops ();
 		SetPatternAndHisAlternatives (flops);
-
-
-		// using in update() of the game loop
-		game.playerCollection = new PlayerCollection ();
-		foreach (var p in game.players) {
-			game.playerCollection[p.position] = p;
-		}
 		
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}

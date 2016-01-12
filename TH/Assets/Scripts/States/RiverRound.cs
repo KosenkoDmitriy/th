@@ -5,6 +5,12 @@ public class RiverRound : BetRound {
 		this.game = game;
 		this.betMin = Settings.betTurnRiver;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+
+		// rivers bet rounds
+		var rivers = game.source.GetRivers ();
+		SetPatternAndHisAlternatives (rivers);
+
+		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}
 	
 	public override void FirstAction() {

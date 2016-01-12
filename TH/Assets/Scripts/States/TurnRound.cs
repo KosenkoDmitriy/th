@@ -5,6 +5,12 @@ public class TurnRound : BetRound {
 		this.game = game;
 		this.betMin = Settings.betTurnRiver;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
+
+		// turn bet rounds
+		var turns = game.source.GetTurns ();
+		SetPatternAndHisAlternatives (turns);
+		
+		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}
 	
 	public override void FirstAction() {
