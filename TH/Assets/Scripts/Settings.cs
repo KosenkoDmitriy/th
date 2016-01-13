@@ -29,9 +29,16 @@ static class Settings
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
 
 	// bonus table
-	public static double betBonusMultiplier = 1;
+	public static double betBonusMaxMultiplier = 10;
 	public static double betBonus = 0;
-	public static double betBonusMax = betDxMath * (betMaxMultiplier + 1);
+	public static double betBonusMin = betDxMath;
+	public static double betBonusMax = betBonusMin * (betMaxMultiplier + 1);
+
+	public static int paytableRowSize = 9; //rows
+	public static int paytableColumnSize = 6; //cols
+	
+	public static readonly int ColsCount = 5;
+	public static readonly int RowsCount = 8;
 	// end bonus table
 
 	public static readonly double betNull = 0.00;

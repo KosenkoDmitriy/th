@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 public static class Extension {
 	public static string f(this Credit c, double d) {
@@ -12,7 +12,7 @@ public static class Extension {
 	}
 
 	public static string to_b(this double d) {
-		string res = String.Format("{0:N2}", d * Settings.betBonusMultiplier * Settings.betCreditsMultiplier);
+		string res = String.Format("{0:N2}", d * Settings.betCreditsMultiplier);
 		return res;
 	}
 

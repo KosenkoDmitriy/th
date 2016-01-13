@@ -247,52 +247,33 @@ public class GameUI : MonoBehaviour
 	
 	public void btnBonusPanelCloseClick() {
 		if (Settings.betBonus > 0) {
-			
-			if (payTable != null)
-			{
-				//TODO uncomment
-//				Settings.videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
-//				Settings.videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
-			}
 
 			lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
 			game.player.betTotal -= Settings.betBonus;
 
-//			int value = (int)(Settings.betBonusAmount / Settings.payTableDx); // dx = 5 bet / 5 cols = 1
-
-//			if (value > Settings.videoBonusMaxMultiplier)
-//			{
-//				value = Settings.videoBonusMaxMultiplier;
-//			}
-//			if (value < Settings.videoBonusMaxMultiplier)
-//			{
-//				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier(Settings.videoBonusMaxMultiplier);
-//			}
-//			else
-//			{
-//				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)Settings.betBonusAmount);
-//			}
-//			Settings.selectedColumn = value;
 			if (payTable != null) payTable.SetBet(Settings.betBonus);
 		}
 		if (panelBonus) panelBonus.SetActive (false);
 	}
 	
 	public void btnBonusBetMinClick() {
-		Settings.betBonus += Settings.betDxMath;
+		Settings.betBonus += Settings.betBonusMin;
 		if (Settings.betBonus > Settings.betBonusMax)
 			Settings.betBonus = 0;
+		if (payTable != null) payTable.SetBet(Settings.betBonus);
 		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
 	}
 
 	public void btnBonusBetMaxClick() 
 	{
 		Settings.betBonus = Settings.betBonusMax;
+		if (payTable != null) payTable.SetBet(Settings.betBonus);
 		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
 	}
 	
 	public void btnBonusBetClearClick() {
 		Settings.betBonus = Settings.betNull;
+		if (payTable != null) payTable.SetBet(Settings.betBonus);
 		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.ToString();
 	}
 	#endregion
@@ -388,8 +369,8 @@ public class GameUI : MonoBehaviour
 		
 		payTable = new PayTable ();
 		if (payTable != null) {
-			payTable.BuildVideoBonusPaytable();
-			payTable.SetPaytableSelectedColumn(9);
+			payTable.Init();
+			payTable.SelectColumnByIndex(9);
 		}
 
 //		InitCards (); // get dealers from parent object
