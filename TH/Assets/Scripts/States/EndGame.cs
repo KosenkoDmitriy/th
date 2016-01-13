@@ -46,7 +46,7 @@ public class EndGame : BetRound {
 				no++;
 				winString += string.Format ("{0}) {1} \n", no, player.name);
 				if (player.isReal) {
-					winString += GetAndSetBonusString(player);
+					winString += GetAndSetBonusString(player, winAmount);
 				}
 			}
 		} else { // one win player
@@ -69,12 +69,11 @@ public class EndGame : BetRound {
 	}
 
 	private string GetWinStringForOneWinPlayer(Player player, double winAmount, string winString) {
-		double winBonus = 0;
 		string winBonusString = "";
 
 		if (player.isReal) {
 			game.ui.audio.PlayOneShot (game.ui.soundWin);
-			winString += GetAndSetBonusString(player);
+			winString += GetAndSetBonusString(player, winAmount);
 		}
 
 		winString += string.Format ("({2})\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal, player.GetHandStringFromHandObj ());
@@ -88,7 +87,7 @@ public class EndGame : BetRound {
 		return winString;
 	}
 
-	private string GetAndSetBonusString(Player player) {
+	private string GetAndSetBonusString(Player player, double winAmount) {
 		// check for bet bonus
 		string winBonusString = "";
 		if (Settings.betBonus > 0) {
