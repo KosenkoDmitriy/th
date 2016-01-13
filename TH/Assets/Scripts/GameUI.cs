@@ -88,7 +88,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
-		game.state = new EndGame (game);
+		game.state = new InitGame (game);
 	}
 
 	public void btnAllInClick()
