@@ -30,6 +30,7 @@ public class Game
 			if (player.id == Settings.playerRealIndex) {
 				this.player = player;
 				player.isReal = true;
+				player.name = "YOU";
 			} else {
 				player.isReal = false;
 			}

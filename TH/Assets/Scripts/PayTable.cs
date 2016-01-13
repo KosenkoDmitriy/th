@@ -60,7 +60,7 @@ namespace Assets.Scripts
 			for (int row = 0; row < paytableRowSize; row++) {
 				if (payTableStrings[row].ToLower() == handString.ToLower()) {
 					payTableGrid [row, col].color = Color.red; //.Selected = true;
-					this.bonusVideoPoker = payTableValues [row, col] * Settings.betCreditsMultiplier;
+					this.bonusVideoPoker = payTableValues [row, col];
 				}
 			}
 			return this.bonusVideoPoker;

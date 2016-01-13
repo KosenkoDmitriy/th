@@ -43,30 +43,15 @@ public class EndGame : BetRound {
 			winString += string.Format("(each player win {0} credits):\n".ToLower(), winAmount.to_s());
 			int no = 0;
 			foreach(var player in game.winners) {
-				player.betTotal += winAmount;
 				no++;
-				winString += string.Format("{0}) {1} \n", no, player.name);
-				player.lblCredits.text = player.betTotal.to_s();
-			}
-		} else { // if (game.winners.Count == 1) { // one win player
-			Player player = game.winners[0];
-
-			game.ui.audio.PlayOneShot(game.ui.soundWin);
-			if (Settings.betBonus > 0) {
-				if (game.ui.payTable != null) {
-					double winBonus = game.ui.payTable.GetAndSelectBonusWin(player);
-					if (winBonus > 0) {
-//						winString += string.Format("Bonus: {0}\n", winBonus);
-						player.betTotal += winBonus;
-						game.ui.audio.PlayOneShot(game.ui.soundVideoWin);
-					}
+				winString += string.Format ("{0}) {1} \n", no, player.name);
+				if (player.isReal) {
+					winString += GetAndSetBonusString(player);
 				}
 			}
-			player.betTotal += winAmount;
-
-			winString += string.Format("{0} win\n {1} credits \n ({2})".ToUpper(), player.name, player.betTotal, player.GetHandStringFromHandObj());
-
-			player.lblCredits.text = player.betTotal.to_s();
+		} else { // one win player
+			Player player = game.winners[0];
+			winString += GetWinStringForOneWinPlayer (player, winAmount, winString);
 		}
 
 		game.potAmount = 0;
@@ -81,6 +66,42 @@ public class EndGame : BetRound {
 
 //		LastAction ();
 //		game.state.isWaiting = true;
+	}
+
+	private string GetWinStringForOneWinPlayer(Player player, double winAmount, string winString) {
+		double winBonus = 0;
+		string winBonusString = "";
+
+		if (player.isReal) {
+			game.ui.audio.PlayOneShot (game.ui.soundWin);
+			winString += GetAndSetBonusString(player);
+		}
+
+		winString += string.Format ("({2})\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal, player.GetHandStringFromHandObj ());
+		if (!string.IsNullOrEmpty (winBonusString)) {
+			winString += winBonusString;
+		}
+
+		player.betTotal += winAmount;
+		player.lblCredits.text = player.betTotal.to_s();
+
+		return winString;
+	}
+
+	private string GetAndSetBonusString(Player player) {
+		// check for bet bonus
+		string winBonusString = "";
+		if (Settings.betBonus > 0) {
+			if (game.ui.payTable != null) {
+				double winBonus = game.ui.payTable.GetAndSelectBonusWin (player);
+				if (winBonus > 0) {
+					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
+					player.betTotal += winBonus;
+					winBonusString = string.Format ("{0} (pot) + {1} (bonus) = {2}", winAmount.to_s (), winBonus.to_b (), player.betTotal.to_s ());
+				}
+			}
+		}
+		return winBonusString;
 	}
 
 	public override void LastAction () {}

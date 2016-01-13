@@ -21,9 +21,6 @@ public class InitGame : BetRound {
 		game.players = game.InitPlayers ();
 		game.cards = new List<Card> ();
 		
-		
-		
-		
 		Card card = null;
 		Image image = null;
 		
