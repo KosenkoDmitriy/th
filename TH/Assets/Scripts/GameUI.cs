@@ -258,7 +258,7 @@ public class GameUI : MonoBehaviour
 			lblPot.GetComponent<Text>().text = Settings.betBonusAmount.to_s ();
 			game.player.betTotal -= Settings.betBonusAmount;
 
-			int value = (int)(Settings.betBonusAmount / Settings.payTableDx); // dx = 5 bet / 5 cols = 1
+//			int value = (int)(Settings.betBonusAmount / Settings.payTableDx); // dx = 5 bet / 5 cols = 1
 
 //			if (value > Settings.videoBonusMaxMultiplier)
 //			{
@@ -272,8 +272,8 @@ public class GameUI : MonoBehaviour
 //			{
 //				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)Settings.betBonusAmount);
 //			}
-			Settings.selectedColumn = value;
-			if (payTable != null) payTable.SetPaytableSelectedColumn(Settings.selectedColumn);
+//			Settings.selectedColumn = value;
+			if (payTable != null) payTable.SetBet(Settings.betBonusAmount);
 		}
 		if (panelBonus) panelBonus.SetActive (false);
 	}

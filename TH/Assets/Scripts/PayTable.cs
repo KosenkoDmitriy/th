@@ -19,36 +19,6 @@ namespace Assets.Scripts
 
         public int selGridInt = 0;
 
-        Rect pos;
-        float screenX, screenY;
-        float width = Settings.bonusTableWidth;
-        float height = Settings.bonusTableHeight;
-        float offsetY = 50;
-        float offsetX = 0;
-        
-        //TODO: remove this duplication vars, because they already exsits in the LoadOnClick class.
-        const int ROYAL_FLUSH = 21;
-        const int STRAIGHT_FLUSH = 20;
-        const int HIGH_FOUR_OF_A_KIND = 19;
-        const int MID_FOUR_OF_A_KIND = 18;
-        const int FOUR_OF_A_KIND = 17;
-        const int FULL_HOUSE = 16;
-        const int FLUSH = 15;
-        const int STRAIGHT = 14;
-        const int HIGH_THREE_OF_A_KIND = 13;
-        const int MID_THREE_OF_A_KIND = 12;
-        const int THREE_OF_A_KIND = 11;
-        const int TWO_PAIR = 10;
-        const int HIGH_PAIR = 9;
-        const int MID_PAIR = 8;
-        const int PAIR = 7;
-        const int FOUR_TO_A_FLUSH = 6;
-        const int THREE_TO_A_FLUSH = 5;
-        const int FOUR_TO_A_STRAIGHT_INSIDE = 4;
-        const int THREE_TO_A_STRAIGHT_INSIDE = 3;
-        const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
-        const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
-
         GUIStyle smallFont;
         GUIStyle largeFont;
 
@@ -71,7 +41,6 @@ namespace Assets.Scripts
                 2,      // TWO_PAIR,
                 1,      // PAIR
             };
-            //screenX = screenY = 0;
         }
 
         public void SetPaytableSelectedWin(Player pWin)
@@ -190,5 +159,10 @@ namespace Assets.Scripts
             return paytableRowSize;
         }
 
+		public void SetBet (double betBonusAmount)
+		{
+			int selectedColumn = 1;
+			SetPaytableSelectedColumn(selectedColumn);
+		}
     }
 }
