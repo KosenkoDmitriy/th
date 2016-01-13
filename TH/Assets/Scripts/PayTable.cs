@@ -17,11 +17,6 @@ namespace Assets.Scripts
         public List<int> payTableAmounts;
         public List<string> payTableStrings;
 
-        public int selGridInt = 0;
-
-        GUIStyle smallFont;
-        GUIStyle largeFont;
-
         Text[,] paytableGrid;
 
         #endregion
@@ -49,7 +44,7 @@ namespace Assets.Scripts
 			for (int row = 0; row < paytableRowSize; row++) {
 				for (int col = 0; col < paytableColumnSize; col++) {
 					if (payTableStrings[row] == handString) {
-						if (payTableAmounts[col] * Settings.payTableMultiplier == Settings.betBonusAmount) {
+						if (payTableAmounts[col] * Settings.betBonusMultiplier == Settings.betBonus) {
 			                paytableGrid[row, col].color = Color.red;                        //.Selected = true;
 						}
 					}
@@ -139,7 +134,7 @@ namespace Assets.Scripts
         public double GetVideoPokerBonus(int rank)
         {
 			double res = 0;
-			res = payTableAmounts[rank] * Settings.payTableDx;
+			res = payTableAmounts [rank];
 			return res;
 //            rank = AdjustWinRank(rank);
 //

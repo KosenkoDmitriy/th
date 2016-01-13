@@ -2,8 +2,17 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static bool isDebug = false;
+	public static int levelGame = 2;
+	public static int levelMainMenu = 0;
+	
+	public static readonly int playerSize = 6;
+	public static readonly int dealerIndex = playerSize - 1;
+	public static readonly int playerRealIndex = 0;
+
 	public static float updateInterval = 0.5f;
 
+	#region bets
 	public static readonly int betSubRoundMinSize = 0;
 	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
@@ -15,28 +24,31 @@ static class Settings
 	public static readonly int betMaxMultiplier = 4;
 	public static readonly double betDxMath = 1;								// .25;	
 	public static readonly double betMaxMath = betDxMath * betMaxMultiplier;	// 1.5;
-
 	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
-
-	public static double betBonusAmount = 0;
-	public static double betMaxBonusAmount = betDxMath * betMaxMultiplier;
 
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
 
+	// bonus table
+	public static double betBonusMultiplier = 1;
+	public static double betBonus = 0;
+	public static double betBonusMax = betDxMath * (betMaxMultiplier + 1);
+	// end bonus table
+
+	public static readonly double betNull = 0.00;
+	public static double betCurrent = 0.00;
+
 	public static double playerCredits = 500;
+	public static string credits = " credits ";// { get; internal set; }
+
 	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
+	#endregion
 
-	public static readonly int playerRealIndex = 0;
-
-	public static bool isDebug = false;
-	public static int levelGame = 2;
-	public static int levelMainMenu = 0;
-
+	// subrounds
 	public static int playerHandMaxSize = 5;
 	public static int playerHandSizePreflop = 2;
 	public static readonly int maxSubRoundCount = 1;
 	public static readonly int maxRoundCount = maxSubRoundCount * 4;
-
+	// end subrounds
 	public static readonly string defaultPreflopPattern = "CHECK/FOLD"; // default pattern if the preflop hand is not found in the math model
 	    
 	#region api
@@ -62,23 +74,12 @@ static class Settings
 	#endregion api
 
     // cards
-    public static string cardsPrefix = "cards_new/"; //"cards";
-    //public static string cardBackName = cardsPrefix + "logo_back_cards"; // image name of the card back side
+    public static string cardsPrefix = "cards_new/";
 	public static string cardBackName = cardsPrefix + "card_back_black_with_logo";
-    //"card_back_black_with_logo", "card_back_black_with_logo1", "card_back_black", "card_back_red" "card_back_red_with_logo"
-	public static string cardBg = "transparent"; //"card_background"; // the same color as in table
-    // end cards
+	public static string cardBg = "transparent";
+    public static int cardsSize = 52;
+	// end cards
 
-    public static int cardsSize = 52; 
-    public static readonly int playerSize = 6;
-	public static readonly int dealerIndex = playerSize - 1;
-
-	public static double payTableMultiplier = 1;
-	public static double payTableDx = betDxMath * payTableMultiplier * betAnteMultiplier;
-
-    public static string dollar = " credits ";// { get; internal set; }
-    public static readonly double betNull = 0.00;
-    public static double betCurrent = 0.00;
 
 	public static void OpenUrl(string url) {
 		#if UNITY_WEBPLAYER

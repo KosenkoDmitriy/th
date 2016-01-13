@@ -246,7 +246,7 @@ public class GameUI : MonoBehaviour
 	}
 	
 	public void btnBonusPanelCloseClick() {
-		if (Settings.betBonusAmount > 0) {
+		if (Settings.betBonus > 0) {
 			
 			if (payTable != null)
 			{
@@ -254,9 +254,9 @@ public class GameUI : MonoBehaviour
 //				Settings.videoPokerLowRank = payTable.AdjustWinRank(ROYAL_FLUSH - (payTable.paytableRowSize - 1));
 //				Settings.videoPokerLowRank = adjustedRanks[payTable.GetEntriesCount() - 1];
 			}
-			
-			lblPot.GetComponent<Text>().text = Settings.betBonusAmount.to_s ();
-			game.player.betTotal -= Settings.betBonusAmount;
+
+			lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
+			game.player.betTotal -= Settings.betBonus;
 
 //			int value = (int)(Settings.betBonusAmount / Settings.payTableDx); // dx = 5 bet / 5 cols = 1
 
@@ -273,27 +273,27 @@ public class GameUI : MonoBehaviour
 //				if (payTable != null) payTable.UpdateVideoBonusMaxMultiplier((int)Settings.betBonusAmount);
 //			}
 //			Settings.selectedColumn = value;
-			if (payTable != null) payTable.SetBet(Settings.betBonusAmount);
+			if (payTable != null) payTable.SetBet(Settings.betBonus);
 		}
 		if (panelBonus) panelBonus.SetActive (false);
 	}
 	
 	public void btnBonusBetMinClick() {
-		Settings.betBonusAmount += Settings.betDxMath;
-		if (Settings.betBonusAmount > Settings.betMaxBonusAmount)
-			Settings.betBonusAmount = 0;
-		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.to_s();
+		Settings.betBonus += Settings.betDxMath;
+		if (Settings.betBonus > Settings.betBonusMax)
+			Settings.betBonus = 0;
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
 	}
-	
+
 	public void btnBonusBetMaxClick() 
 	{
-		Settings.betBonusAmount = Settings.betMaxBonusAmount;
-		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.to_s();
+		Settings.betBonus = Settings.betBonusMax;
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
 	}
 	
 	public void btnBonusBetClearClick() {
-		Settings.betBonusAmount = Settings.betNull;
-		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonusAmount.ToString();
+		Settings.betBonus = Settings.betNull;
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.ToString();
 	}
 	#endregion
 
