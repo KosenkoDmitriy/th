@@ -61,8 +61,8 @@ public class LoadOnClick : MonoBehaviour
     const int THREE_TO_A_STRAIGHT_INSIDE = 3;
     const int FOUR_TO_A_STRAIGHT_OUTSIDE = 2;
     const int THREE_TO_A_STRAIGHT_OUTSIDE = 1;
-
-    PayTable payTable;
+	
+	Scripts.Orig.PayTable payTable;
     bool AutoPlay = false;
 
     int offsetX = 25;//40;
@@ -5875,7 +5875,7 @@ public class LoadOnClick : MonoBehaviour
             Settings.pathToAssetRes = System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\";        
         }
 
-		payTable = new PayTable ();
+		payTable = new Scripts.Orig.PayTable ();
 		if (payTable != null) {
 			payTable.BuildVideoBonusPaytable();
 			payTable.SetPaytableSelectedColumn(9);

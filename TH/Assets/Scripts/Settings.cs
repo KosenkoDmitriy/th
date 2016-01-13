@@ -93,18 +93,11 @@ static class Settings
     public static readonly int playerSize = 6;
 	public static readonly int dealerIndex = playerSize - 1;
 
-    public static readonly int playerVirtualSize = 5;
-    public static readonly int kickerSize = 6;
-    public static int year = 2010;
-    public static int playerNameSize = 20;
-    public static int playerCreditsLimit = 100;
-    //public static int playerAutoPlayCredits = 1000;
-    public static int intervalGameOver = 1000;
-
-	public static double gameDenominationDx = betDxMath * Settings.betCurrentMultiplier;
-    public static readonly int GameDenominationDivider = 100;
-    public static readonly int videoBonusMaxMultiplier = 5;
-    public static readonly int betAmountAutoplay = 5;
+	public static double payTableMultiplier = 2;
+	public static double payTableDx = betDxMath * betAnteMultiplier;//* Settings.betCurrentMultiplier;
+//    public static readonly int GameDenominationDivider = 100;
+//    public static readonly int videoBonusMaxMultiplier = 5;
+//    public static readonly int betAmountAutoplay = 5;
 
     public static string dollar = " credits ";// { get; internal set; }
     public static readonly double betNull = 0.00;

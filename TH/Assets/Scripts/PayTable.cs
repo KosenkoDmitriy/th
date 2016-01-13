@@ -14,8 +14,8 @@ namespace Assets.Scripts
         public readonly int ColsInRowOfTheBonusTable = 5;
         public readonly int RowsCount = 8; // Entries - the number of entries you wish in the paytable
 
-        public List<int> PayTableAmounts;
-        public List<string> PayTableStrings;
+        public List<int> payTableAmounts;
+        public List<string> payTableStrings;
 
         public int selGridInt = 0;
 
@@ -58,20 +58,9 @@ namespace Assets.Scripts
 
         public PayTable()
         {
-            PayTableStrings = new List<string>() {
-                "ROYAL FLUSH",
-                "STRAIGHT FLUSH",
-                "FOUR OF A KIND",
-                "FULL HOUSE",
-                "FLUSH",
-                "STRAIGHT",
-                "THREE OF A KIND",
-                "TWO PAIR",
-                "PAIR",
-                "HIGH CARD"
-            };
+			payTableStrings = HandCombination.names;
 
-            PayTableAmounts = new List<int> {
+            payTableAmounts = new List<int> {
                 250,    // ROYAL_FLUSH,
                 50,     // STRAIGHT_FLUSH,
                 25,     // FOUR_OF_A_KIND,
@@ -85,20 +74,35 @@ namespace Assets.Scripts
             //screenX = screenY = 0;
         }
 
-        public void SetPaytableSelectedWin(int rank)
+        public void SetPaytableSelectedWin(Player pWin)
         {
-            SetPaytableSelectedColumn(9);//clear the grid
-            int tempRank = AdjustWinRank(rank);
-            tempRank = ROYAL_FLUSH - tempRank;
-            if (Settings.selectedColumn > paytableColumnSize - 1)
-            {
-                Settings.selectedColumn = paytableColumnSize - 1;
-            }
-            if (rank >= Settings.videoPokerLowRank)
-            {
-                paytableGrid[tempRank, Settings.selectedColumn].color = Color.red;  //.Selected = true;
-                paytableGrid[tempRank, 0].color = Color.red;                        //.Selected = true;
-            }
+			string handString = pWin.GetHandStringFromHandObj ();
+			for (int row = 0; row < paytableRowSize; row++) {
+				for (int col = 0; col < paytableColumnSize; col++) {
+					if (payTableStrings[row] == handString) {
+						if (payTableAmounts[col] * Settings.payTableMultiplier == Settings.betBonusAmount) {
+			                paytableGrid[row, col].color = Color.red;                        //.Selected = true;
+						}
+					}
+				}
+			}
+//			var handString = player.GetHandStringFromHandObj();
+//			if (HandCombination.isFlush (pWin.hand)) {
+//
+//			}
+
+//            SetPaytableSelectedColumn(9);//clear the grid
+//            int tempRank = AdjustWinRank(rank);
+//            tempRank = ROYAL_FLUSH - tempRank;
+//            if (Settings.selectedColumn > paytableColumnSize - 1)
+//            {
+//                Settings.selectedColumn = paytableColumnSize - 1;
+//            }
+//            if (rank >= Settings.videoPokerLowRank)
+//            {
+//                paytableGrid[tempRank, Settings.selectedColumn].color = Color.red;  //.Selected = true;
+//                paytableGrid[tempRank, 0].color = Color.red;                        //.Selected = true;
+//            }
         }
 
         public void SetPaytableSelectedColumn(int column)
@@ -138,70 +142,49 @@ namespace Assets.Scripts
 
             for (int i = 0; i < paytableRowSize; i++)
             {
-                paytableGrid[i, 0].text = PayTableStrings[i];
+                paytableGrid[i, 0].text = payTableStrings[i];
                 paytableGrid[i, 0].color = Color.yellow;
                 //paytableGrid[i, 0].enabled = false; //hide
                 for (int j = 1; j < paytableColumnSize; j++)
                 {
-                    paytableGrid[i, j].text = (PayTableAmounts[i] * j).ToString();
+                    paytableGrid[i, j].text = (payTableAmounts[i] * j).ToString();
                 }
             }
             //TODO: UpdateVideoBonusMaxMultiplier(5);
             SetPaytableSelectedColumn(0);
         }
 
-        public void UpdateVideoBonusMaxMultiplier(int multiplier)
-        {
-            multiplier = 5;
-            for (int x = 0; x < paytableRowSize; x++)
-            {
-                if (x == 0)
-                {
-                    PayTableAmounts[x] = 800;
-                }
-                //paytableGrid[paytableColumnSize - 1, x].Value = (PayTableAmounts[x] * multiplier).ToString();
-            }
-        }
+//        public void UpdateVideoBonusMaxMultiplier(int multiplier)
+//        {
+//            multiplier = 5;
+//            for (int x = 0; x < paytableRowSize; x++)
+//            {
+//                if (x == 0)
+//                {
+//                    payTableAmounts[x] = 800;
+//                }
+//                //paytableGrid[paytableColumnSize - 1, x].Value = (PayTableAmounts[x] * multiplier).ToString();
+//            }
+//        }
 
         public double GetVideoPokerBonus(int rank)
         {
-            rank = AdjustWinRank(rank);
-
-            int newRank = ROYAL_FLUSH - rank;
-            if (newRank < paytableRowSize)
-            {
-                return (double)PayTableAmounts[newRank] * Settings.gameDenominationDx;
-            }
-            else
-            {
-                return 0;
-            }
+			double res = 0;
+			res = payTableAmounts[rank] * Settings.payTableDx;
+			return res;
+//            rank = AdjustWinRank(rank);
+//
+//            int newRank = ROYAL_FLUSH - rank;
+//            if (newRank < paytableRowSize)
+//            {
+//                return (double)payTableAmounts[newRank] * Settings.gameDenominationDx;
+//            }
+//            else
+//            {
+//                return 0;
+//            }
         }
 
-        public int AdjustWinRank(int rank)
-        {
-            int retRank = 0;
-            switch (rank)
-            {
-                case ROYAL_FLUSH: retRank = ROYAL_FLUSH; break;
-                case STRAIGHT_FLUSH: retRank = ROYAL_FLUSH - 1; break;
-                case HIGH_FOUR_OF_A_KIND:
-                case MID_FOUR_OF_A_KIND:
-                case FOUR_OF_A_KIND: retRank = ROYAL_FLUSH - 2; break;
-                case FULL_HOUSE: retRank = ROYAL_FLUSH - 3; break;
-                case FLUSH: retRank = ROYAL_FLUSH - 4; break;
-                case STRAIGHT: retRank = ROYAL_FLUSH - 5; break;
-                case HIGH_THREE_OF_A_KIND:
-                case MID_THREE_OF_A_KIND:
-                case THREE_OF_A_KIND: retRank = ROYAL_FLUSH - 6; break;
-                case TWO_PAIR: retRank = ROYAL_FLUSH - 7; break;
-                case HIGH_PAIR:
-                case MID_PAIR:
-                case PAIR: retRank = ROYAL_FLUSH - 8; break;
-                default: retRank = ROYAL_FLUSH - 9; break;
-            }
-            return retRank;
-        }
 
         public int GetEntriesCount() {
             return paytableRowSize;

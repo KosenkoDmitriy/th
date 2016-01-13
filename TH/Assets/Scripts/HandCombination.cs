@@ -594,29 +594,42 @@ public static class HandCombination  {
 	public static string GetHandStringByHandObj(Hand hand) {
 		string str = "";
 		if (HandCombination.isRoyalFlush(hand)) {
-			str = "Royal Flush";
+			str = names[0];
 		} else if (HandCombination.isStraightFlush(hand)) {
-			str = "Straight Flush";
+			str = names[1];
 		} else if (HandCombination.isFourOfAKind(hand)) {
-			str = "Four of a Kind";
+			str = names[2];
 		} else if (HandCombination.isFullHouse(hand)) {
-			str = "Full House";
+			str = names[3];
 		} else if (HandCombination.isFlush(hand)) {
-			str = "Flush";
+			str = names[4];
 		} else if (HandCombination.isStraight(hand)) {
-			str = "Straight";
+			str = names[5];
 		} else if (HandCombination.isThreeOfAKind(hand)) {
-			str = "Three of a Kind";
+			str = names[6];
 		} else if (HandCombination.isTwoPair(hand)) {
-			str = "Two Pair";
+			str = names[7];
 		} else if (HandCombination.isOnePair(hand)) {
-			str = "One Pair";
+			str = names[8];
 		} else if (HandCombination.isHighCard(hand)) {
-			str = "High Card";
+			str = names[9];
 		} else {
 			str = "Lose Hand";
 		}
-		return str;
+		return str.ToUpperInvariant();
 	}
+
+	public static List<string> names = new List<string>() {
+		"ROYAL FLUSH",
+		"STRAIGHT FLUSH",
+		"FOUR OF A KIND",
+		"FULL HOUSE",
+		"FLUSH",
+		"STRAIGHT",
+		"THREE OF A KIND",
+		"TWO PAIR",
+		"ONE PAIR",
+		"HIGH CARD"
+	};
 
 }

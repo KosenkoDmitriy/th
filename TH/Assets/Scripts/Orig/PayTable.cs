@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Orig {
-namespace Assets.Scripts
-{
     class PayTable
     {
         #region init_vars
@@ -210,5 +208,5 @@ namespace Assets.Scripts
 
     }
 }
-}
+
 
