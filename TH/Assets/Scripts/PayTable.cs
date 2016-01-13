@@ -9,6 +9,8 @@ namespace Assets.Scripts
     public class PayTable
     {
         #region init_vars
+		int selectedCol;
+		private double bonusVideoPoker;
 
         public int paytableRowSize = Settings.paytableRowSize; //rows
         public int paytableColumnSize = Settings.paytableColumnSize; //cols
@@ -44,18 +46,24 @@ namespace Assets.Scripts
 			payTableValues = new double[paytableRowSize, paytableColumnSize];
         }
 
-        public void SelectBonusWin(Player pWin)
+        public double GetAndSelectBonusWin(Player pWin)
         {
+			this.bonusVideoPoker = 0;
 			string handString = pWin.GetHandStringFromHandObj ();
+			int col = selectedCol;
+
+			// clear selected column
 			for (int row = 0; row < paytableRowSize; row++) {
-				for (int col = 0; col < paytableColumnSize; col++) {
-					if (payTableStrings[row] == handString) {
-						if (payTableValuesOfFirstColumn[col] == Settings.betBonus) {
-			                payTableGrid[row, col].color = Color.red;                        //.Selected = true;
-						}
-					}
+				payTableGrid[row, col].color = Color.yellow; //.Selected = false;
+			}
+			// select item
+			for (int row = 0; row < paytableRowSize; row++) {
+				if (payTableStrings[row].ToLower() == handString.ToLower()) {
+					payTableGrid [row, col].color = Color.red; //.Selected = true;
+					this.bonusVideoPoker = payTableValues [row, col] * Settings.betCreditsMultiplier;
 				}
 			}
+			return this.bonusVideoPoker;
         }
 
         public void SelectColumnByIndex(int column)
@@ -67,6 +75,7 @@ namespace Assets.Scripts
                     if (col == column)
                     {
                         payTableGrid[row, col].color = Color.red; // .Selected = true
+						selectedCol = column;
                     }
                     else
                     {
@@ -102,12 +111,6 @@ namespace Assets.Scripts
                 }
             }
 //            SetPaytableSelectedColumn(0);
-        }
-
-        public double GetBonusVideoPoker(int i, int j)
-        {
-			double res = payTableValues[i, j] * Settings.betBonus;
-			return res;
         }
 
 		public void SetBet (double betBonusAmount)

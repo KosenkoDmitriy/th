@@ -251,7 +251,13 @@ public class GameUI : MonoBehaviour
 			lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
 			game.player.betTotal -= Settings.betBonus;
 
-			if (payTable != null) payTable.SetBet(Settings.betBonus);
+			if (payTable != null) {
+				double bonusAmount = 0;
+				payTable.SetBet(Settings.betBonus);
+				bonusAmount = payTable.GetAndSelectBonusWin(game.player);
+				var ba = bonusAmount;
+
+			}
 		}
 		if (panelBonus) panelBonus.SetActive (false);
 	}
