@@ -100,12 +100,11 @@ public class InitGame : BetRound {
 			player.hand = player.GetBestPlayerHand (game.cards);
 		}
 
-
-		
 		// start calculating the win percentage/hand strength
 		game.winners = game.GetWinnersAndSetWinPercentage ();
 		// end calculating the win percentage/hand strength
 
+		game.ui.btnBetBonus.GetComponent<Button> ().interactable = true; // enable "bet bonus" button
 
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();

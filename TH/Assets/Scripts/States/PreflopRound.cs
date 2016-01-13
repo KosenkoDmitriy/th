@@ -5,6 +5,8 @@ public class PreflopRound : BetRound {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
+
+		game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
 	}
 
 	public override void LastAction ()
@@ -16,6 +18,7 @@ public class PreflopRound : BetRound {
 	public override void FirstAction ()
 	{
 //		base.FirstAction ();
+
 		game.state.isWaiting = true;
 		game.ui.StartCoroutine (game.ui.DealCards ());
 		// game.state.isWaiting = false (must be in the end line of coroutine)

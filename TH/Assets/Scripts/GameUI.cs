@@ -247,16 +247,10 @@ public class GameUI : MonoBehaviour
 	
 	public void btnBonusPanelCloseClick() {
 		if (Settings.betBonus > 0) {
-
-			lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
-			game.player.betTotal -= Settings.betBonus;
-
 			if (payTable != null) {
-				double bonusAmount = 0;
+				lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
+				game.player.betTotal -= Settings.betBonus;
 				payTable.SetBet(Settings.betBonus);
-				bonusAmount = payTable.GetAndSelectBonusWin(game.player);
-				var ba = bonusAmount;
-
 			}
 		}
 		if (panelBonus) panelBonus.SetActive (false);
@@ -358,10 +352,11 @@ public class GameUI : MonoBehaviour
 		audio = gameObject.AddComponent<AudioSource> ();
 		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/cardFan1");//pressed");
 		soundDeal = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
-//		soundButton = Resources.Load<AudioClip> ("Sounds/cardsShove4");//push3"); //push2
 		soundRaise = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
 		soundFold = Resources.Load<AudioClip> ("Sounds/fold");
 		soundVideoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
+		soundWin = Resources.Load<AudioClip> ("Sounds/VideoWin");
+
 		// end sounds
 
 		panelHelp = GameObject.Find ("PanelHelp");
@@ -690,7 +685,7 @@ public class GameUI : MonoBehaviour
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblPanelBet, lblPanelBetText, lblWinPlayerName, playerAllCredits;
 	public AudioSource audio;
-	public AudioClip soundBtnClicked, soundDeal, soundButton, soundRaise, soundVideoWin, soundFold;
+	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
 }
 

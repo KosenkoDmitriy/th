@@ -39,21 +39,34 @@ public class EndGame : BetRound {
 		double winAmount = game.potAmount/game.winners.Count;
 		if (game.winners.Count > 1) {
 			winString += winHandString + '\n';
-			winString += string.Format("the pot was split in {0} ways:\n".ToUpper(), game.winners.Count);
+			winString += string.Format("the pot was split in {0} ways\n".ToUpper(), game.winners.Count);
+			winString += string.Format("(each player win {0} credits):\n".ToLower(), winAmount.to_s());
 			int no = 0;
 			foreach(var player in game.winners) {
 				player.betTotal += winAmount;
 				no++;
-				winString += string.Format("{0}) {1} win {2} credits\n", no, player.name, player.betTotal);
+				winString += string.Format("{0}) {1} \n", no, player.name);
 				player.lblCredits.text = player.betTotal.to_s();
 			}
 		} else { // if (game.winners.Count == 1) { // one win player
 			Player player = game.winners[0];
-			winString = string.Format("{0} win\n {1} credits \n{2}".ToUpper(), player.name, game.potAmount.to_s(), player.GetHandStringFromHandObj());
-			player.betTotal += winAmount;
-			player.lblCredits.text = player.betTotal.to_s();
 
-			game.ui.audio.PlayOneShot(game.ui.soundVideoWin);
+			game.ui.audio.PlayOneShot(game.ui.soundWin);
+			if (Settings.betBonus > 0) {
+				if (game.ui.payTable != null) {
+					double winBonus = game.ui.payTable.GetAndSelectBonusWin(player);
+					if (winBonus > 0) {
+//						winString += string.Format("Bonus: {0}\n", winBonus);
+						player.betTotal += winBonus;
+						game.ui.audio.PlayOneShot(game.ui.soundVideoWin);
+					}
+				}
+			}
+			player.betTotal += winAmount;
+
+			winString += string.Format("{0} win\n {1} credits \n ({2})".ToUpper(), player.name, player.betTotal, player.GetHandStringFromHandObj());
+
+			player.lblCredits.text = player.betTotal.to_s();
 		}
 
 		game.potAmount = 0;
