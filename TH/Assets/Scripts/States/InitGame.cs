@@ -15,6 +15,13 @@ public class InitGame : BetRound {
 
 	public InitGame(Game game2) {
 		this.game = game2;
+
+		game.isGameEnd = true;
+		game.isGameRunning = false;
+
+		Settings.betBonus = 0;
+		game.betAmount = 0;
+
 		game.ui.ClearAll ();
 		
 		game.ui.HideDynamicPanels ();
@@ -56,9 +63,7 @@ public class InitGame : BetRound {
 			player.handPreflop = player.hand;
 			player.handPreflopString = player.GetHandPreflopString();
 		}
-		
-		game.isGameEnd = false;
-		
+
 		// preflop bet rounds
 		var preflops = game.source.GetPreflops ();
 		SetPatternAndHisAlternativesForPreflop (preflops);

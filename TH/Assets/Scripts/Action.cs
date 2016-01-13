@@ -34,7 +34,8 @@ public class Action : IAction {
 		if (p != null) {
 			if (p.isReal) {
 				if (p.isFolded) {
-					game.state = new EndGame(game);
+					game.state = new InitGame(game);
+//					game.state = new EndGame(game);
 				}
 				game.state.isWaiting = false;
 				game.ui.SetBalance(p.betTotal.to_s());

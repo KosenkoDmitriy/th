@@ -132,6 +132,9 @@ public class GameUI : MonoBehaviour
 			betAmountString = inputBetField.text;
 		Double.TryParse (betAmountString, out game.betAmount);
 
+		if (game.betAmount > 0) {
+			game.betAmount /= Settings.betCreditsMultiplier; // * Settings.betCurrentMultiplier;
+		}
 		var player = game.player;
 		if (game.isGameRunning) {
 			if (player.betTotal - game.betAmount < 0) {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class EndGame : BetRound {
 	public EndGame(Game game) {
 		this.game = game;
-	
 
 		if (Settings.isDebug)
 			game.ui.DebugLog ("EndGame()");
@@ -15,9 +14,8 @@ public class EndGame : BetRound {
 		// display all community cards
 		for (int i = 0; i < 5; i++) {
 			var card = game.cards[i];
-			if (!card.FaceUp) {
+//			if (!card.FaceUp)
 				card.FaceUp = true;
-			}
 		}
 
 		//		roundCount = subRoundCount = 0;
@@ -84,7 +82,7 @@ public class EndGame : BetRound {
 			winString += GetAndSetBonusString(player, winAmount);
 		}
 
-		winString += string.Format ("({2})\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal.to_b(), player.GetHandStringFromHandObj ());
+		winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal.to_b(), player.GetHandStringFromHandObj ());
 		if (!string.IsNullOrEmpty (winBonusString)) {
 			winString += winBonusString;
 		}
