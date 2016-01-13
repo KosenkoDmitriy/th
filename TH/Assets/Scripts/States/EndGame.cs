@@ -11,7 +11,15 @@ public class EndGame : BetRound {
 
 		game.isGameRunning = false;
 		game.isGameEnd = true;
-		
+
+		// display all community cards
+		for (int i = 0; i < 5; i++) {
+			var card = game.cards[i];
+			if (!card.FaceUp) {
+				card.FaceUp = true;
+			}
+		}
+
 		//		roundCount = subRoundCount = 0;
 		//		betCurrentToStayInGame = betTotalInThisRound = 0;
 
@@ -76,7 +84,7 @@ public class EndGame : BetRound {
 			winString += GetAndSetBonusString(player, winAmount);
 		}
 
-		winString += string.Format ("({2})\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal, player.GetHandStringFromHandObj ());
+		winString += string.Format ("({2})\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal.to_b(), player.GetHandStringFromHandObj ());
 		if (!string.IsNullOrEmpty (winBonusString)) {
 			winString += winBonusString;
 		}

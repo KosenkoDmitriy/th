@@ -1,10 +1,10 @@
 ﻿using System;
-//using UnityEngine.UI;
 
 public interface IAction
 {
 	void Do (Game game);
 }
+
 public class ActionTip: Action {
 	public ActionTip (Player player, double betToStayInGame)
 	{
@@ -17,6 +17,7 @@ public class ActionTip: Action {
 	public bool isRaise;
 	//	public bool isAllIn;
 }
+
 public class Action : IAction {
 	public Action() {}
 
@@ -92,7 +93,6 @@ public class Fold : Action
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}
 }
-
 
 public class Raise : Action
 {

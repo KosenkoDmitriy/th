@@ -29,8 +29,14 @@ public class AnteRound : BetRound {
 				if (player.isReal) {
 					game.state.isWaiting = true;
 					game.player = player;
-					game.ui.panelGame.SetActive (true);
-					game.ui.panelInitBet.SetActive (false);
+
+					if (game.isGameRunning) {
+						game.ui.panelGame.SetActive (true);
+						game.ui.panelInitBet.SetActive (false);
+					} else {
+						game.ui.panelGame.SetActive (false);
+						game.ui.panelInitBet.SetActive (true);
+					}
 //					if (player.isFolded) {
 //						game.state = new EndGame(game);
 //					}

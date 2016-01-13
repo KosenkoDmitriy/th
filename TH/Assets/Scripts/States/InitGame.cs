@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 
 public class InitGame : BetRound {
+
 	public override void LastAction ()
 	{
 		//		base.LastAction ();
 		game.state = new AnteRound (game);
 	}
+
 	public InitGame(Game game2) {
 		this.game = game2;
 		game.ui.ClearAll ();
@@ -55,7 +57,6 @@ public class InitGame : BetRound {
 			player.handPreflopString = player.GetHandPreflopString();
 		}
 		
-		game.isGameRunning = true;
 		game.isGameEnd = false;
 		
 		// preflop bet rounds
@@ -69,8 +70,6 @@ public class InitGame : BetRound {
 			card.setImage (image);
 			if (Settings.isDebug)
 				card.FaceUp = true;
-			//					else
-			//						card.FaceUp = false;
 			game.cards.Add (card);
 		}
 		// turn
@@ -79,8 +78,6 @@ public class InitGame : BetRound {
 		card.setImage (image);
 		if (Settings.isDebug)
 			card.FaceUp = true;
-		//				else
-		//					card.FaceUp = false;
 		game.cards.Add (card);
 		
 		// river
@@ -89,8 +86,7 @@ public class InitGame : BetRound {
 		card.setImage (image);
 		if (Settings.isDebug)
 			card.FaceUp = true;
-		//				else
-		//					card.FaceUp = false;
+
 		game.cards.Add (card);
 		
 		foreach (var player in game.players) {

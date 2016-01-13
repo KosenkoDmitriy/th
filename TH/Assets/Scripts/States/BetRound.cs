@@ -77,6 +77,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			
 			if (player.isReal) {
 				game.state.isWaiting = true;
+
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
 				} else {
@@ -84,7 +85,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 			} else {
 				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise);
-				player.actionTip.Do(game);
+				player.actionFinal.Do(game);
 			}
 			
 			if (player.position == game.playerIterator.LastActive().position) { // last player

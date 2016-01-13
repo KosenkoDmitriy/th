@@ -48,26 +48,16 @@ public class GameUI : MonoBehaviour
 	// start win panel
 	public void btnWinPanelCloseClick()
 	{
-//		game.GameState.InitGame (game);
 		ReInitGame ();
 
 		audio.PlayOneShot(soundBtnClicked);
-//		isWaiting = false;
+
 		game.state.isWaiting = false;
 	}
 
 
 	public void ReInitGame () {
-
-		// TODO: clear all/reset all
-
-		//		game.GameState.InitGame (game);
-//		game.states = new States(game);
 		game.state = new InitGame (game);
-//		game.states.Next ();
-//		game.state = game.states.state;
-
-
 	}
 
 	// end win panel
@@ -77,8 +67,6 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 		game.player.actionFinal = new Check(game.player, game.player.bet);
 		game.player.actionFinal.Do (game);
-//		isWaiting = false;
-//		game.GameState.Check (game);
 	}
 
 	public void btnCallClick()
@@ -86,15 +74,11 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 		game.player.actionFinal = new Call(game.player, game.player.bet);
 		game.player.actionFinal.Do (game);
-
-//		isWaiting = false;
-//		game.GameState.Call (game);
 	}
 
 	public void btnRaiseClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-
 		game.betAmount = 0;
 		HideDynamicPanels ();
 		if (panelInitBet) panelInitBet.SetActive (true);
@@ -151,20 +135,16 @@ public class GameUI : MonoBehaviour
 		var player = game.player;
 		if (game.isGameRunning) {
 			if (player.betTotal - game.betAmount < 0) {
-//				game.GameState.Check (game);
 				game.player.actionFinal = new Check(game.player, game.player.bet);
 			} else 
 			if (player.betTotal - game.betAmount >= 0) {
 				game.player.actionFinal = new Raise(game.player, game.player.bet);
-//				game.GameState.Raise (game);
 			}
-//			isWaiting = false;
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
+			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, Settings.betAnteMultiplier);
 			game.player.actionFinal.Do (game);
-//			game.GameState.Raise(game);
-//			isWaiting = false;
 		} else {
 			return;
 		}
@@ -457,7 +437,6 @@ public class GameUI : MonoBehaviour
 		}
 	}
 
-//	bool isWaiting;
 	private void UpdateInterval() {
 //		test ();
 
@@ -475,20 +454,6 @@ public class GameUI : MonoBehaviour
 
 //		if (!game.states.isDone)
 //			game.states.Next ();
-//		return;
-
-//		if (!isWaiting && !game.states.isDone) {
-//			var playerPrev = game.playerIterator.PrevActive();
-//			var player = game.playerIterator.NextActive();
-//			var playerLastActive = game.playerIterator.LastActive();
-//			if (player.isReal) {
-//				isWaiting = true;
-//				StartCoroutine(DealCards());
-//				player.lblAction.text = "waiting";
-//			} else {
-//				player.lblAction.text = "auto";
-//			}
-//		}
 	}
 
 	public void TestPercentOfTime(int percent) {
