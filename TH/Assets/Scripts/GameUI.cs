@@ -282,7 +282,7 @@ public class GameUI : MonoBehaviour
 		panelSurrender = GameObject.Find ("PanelSurrender");
 			
 		panelWin = GameObject.Find ("PanelWin");
-		lblWinPlayerName = GameObject.Find ("lblWinPlayerName");
+		lblWinInfo = GameObject.Find ("lblWinInfo");
 		if (panelWin)
 			panelWin.SetActive (false);
 			
@@ -648,7 +648,7 @@ public class GameUI : MonoBehaviour
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
-	public GameObject lblPot, lblRaise, lblBet, lblCall, lblPanelBet, lblPanelBetText, lblWinPlayerName;
+	public GameObject lblPot, lblRaise, lblBet, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
