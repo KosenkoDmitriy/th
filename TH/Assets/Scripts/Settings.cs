@@ -10,21 +10,21 @@ static class Settings
 	public static readonly int dealerIndex = playerSize - 1;
 	public static readonly int playerRealIndex = 0;
 
-	public static float updateInterval = 0.5f;
+	public static float updateInterval = 0.05f;
 
 	#region bets
 	public static readonly int betSubRoundMinSize = 0;
 	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
-
-	public static readonly double betAnteMultiplier = 2;
-	public static readonly double betPreflopFlopMultiplier = 2;
-	public static readonly double betTurnRiverMultiplier = 4;
+	
+	public static readonly double betPreflopFlopMultiplier = 1;//2
+	public static readonly double betAnteMultiplier = betPreflopFlopMultiplier; //2
+	public static readonly double betTurnRiverMultiplier = betPreflopFlopMultiplier;// * 2; //4
+	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
 
 	public static readonly int betMaxMultiplier = 4;
 	public static readonly double betDxMath = 1;								// .25;	
 	public static readonly double betMaxMath = betDxMath * betMaxMultiplier;	// 1.5;
-	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
 
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
 
