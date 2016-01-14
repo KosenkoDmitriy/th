@@ -41,9 +41,13 @@ public class Action : IAction {
 				game.ui.SetBalance(p.betTotal.to_s());
 			} else {
 				if (!p.isFolded) {
-					p.bet = betToStayInGame;
-					p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
-					p.betTotal -= betToStayInGame;
+					if (betToStayInGame > 0) {
+						p.bet = betToStayInGame;
+						p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
+						p.betTotal -= betToStayInGame;
+					} else {
+						game.ui.DebugLog("ERROR: betToStayInGame should be positive");
+					}
 				} else {
 					p.ShowCards(game);
 				}

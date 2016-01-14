@@ -82,7 +82,7 @@ public class EndGame : BetRound {
 			winString += GetAndSetBonusString(player, winAmount);
 		}
 
-		winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, player.betTotal.to_b(), player.GetHandStringFromHandObj ());
+		winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, winAmount.to_s (), player.GetHandStringFromHandObj ());
 		if (!string.IsNullOrEmpty (winBonusString)) {
 			winString += winBonusString;
 		}
@@ -102,7 +102,8 @@ public class EndGame : BetRound {
 				if (winBonus > 0) {
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
 					player.betTotal += winBonus;
-					winBonusString = string.Format ("{0} (pot) + {1} (bonus) = {2}", winAmount.to_s (), winBonus.to_b (), player.betTotal.to_s ());
+//					winBonusString = string.Format ("{0} (pot) + {1} (bonus) = {2}", winAmount.to_s (), winBonus.to_b (), player.betTotal.to_s ());
+					winBonusString = string.Format (" + {1} (bonus) = {2} (totally)", winBonus.to_b (), player.betTotal.to_s ());
 				}
 			}
 		}
