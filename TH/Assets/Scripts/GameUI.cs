@@ -42,7 +42,6 @@ public class GameUI : MonoBehaviour
 		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblRaise.GetComponent<Text>().text = Settings.betNull.to_s();
-		lblWin.GetComponent<Text>().text = Settings.betNull.to_s();
 	}
 
 	// start win panel
@@ -303,7 +302,6 @@ public class GameUI : MonoBehaviour
 		btnRaise = GameObject.Find ("btnRaise");
 		btnFold = GameObject.Find ("btnFold");
 		btnSurrender = GameObject.Find ("btnSurrender");
-		playerAllCredits = GameObject.Find ("playerAllCredits");
 			
 		// bet panel
 		btnRepeatBet = GameObject.Find ("btnRepeatBet");
@@ -329,7 +327,6 @@ public class GameUI : MonoBehaviour
 		lblBet = GameObject.Find ("lblBet");
 			
 		lblCall = GameObject.Find ("lblCall");
-		lblWin = GameObject.Find ("lblWin");
 			
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
@@ -651,7 +648,7 @@ public class GameUI : MonoBehaviour
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
-	public GameObject lblPot, lblRaise, lblBet, lblCall, lblWin, lblPanelBet, lblPanelBetText, lblWinPlayerName, playerAllCredits;
+	public GameObject lblPot, lblRaise, lblBet, lblCall, lblPanelBet, lblPanelBetText, lblWinPlayerName;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
