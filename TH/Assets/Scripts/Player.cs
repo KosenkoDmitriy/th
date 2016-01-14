@@ -73,33 +73,35 @@ public class Player {
 		// final optimal correct actual action
 
 		patternCurrent = GetAndSetCurrentPatternRandomly ();
-		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betToStayInGame, betAlreadyInvestedBeforeAction); // best actionString from the patternCurrent
-		GetAndSetActionTipByNameAndBetToContinue (actionCurrentString, betToStayInGame); // set actionTip get actionTipString (recommend action)
+		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betToStayInGame, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
+		GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDx); // set actionTip get actionTipString (recommend action)
 
 		
 		if (!isCanToRaise) {
 			// choosing between all available actions except raise
 			if (actionTip.isRaise)
-				GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority1, betToStayInGame);
+				GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
 			if (actionTip.isRaise)
-				GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority2, betToStayInGame);
+				GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDx);
 			if (actionTip.isRaise)
-				GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionDefault, betToStayInGame);
+				GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betDx);
 		}
 
 		Action actionFinal = new Action();
-		double creditsAfterAction = betTotal - betAlreadyInvestedBeforeAction - betToStayInGame; // betAlreadyInvested == betTotal
+
 		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
 
-		double betDt = betToStayInGame - betAlreadyInvestedBeforeAction;
-//		isCanToRaise
+		double betDt = betToStayInGame - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
+
+		if (betDt < 0) betDt = 0;
+		double creditsAfterAction = betTotal - betDt;
 		if (actionTip.isRaise) {
 			actionFinal = new Raise(this, betDt);
 		} else if (actionTip.isCall) {
 			if (creditsAfterAction < 0) {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvestedBeforeAction == betToStayInGame) {
+				if (betAlreadyInvestedInCurrentSubRound == betToStayInGame) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -109,7 +111,7 @@ public class Player {
 			if (creditsAfterAction < 0) {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvestedBeforeAction == betToStayInGame) {
+				if (betAlreadyInvestedInCurrentSubRound == betToStayInGame) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -119,7 +121,7 @@ public class Player {
 			if (creditsAfterAction < 0) {
 				actionFinal = new Fold(this, betDt);
 			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvestedBeforeAction == betDt) {
+				if (betAlreadyInvestedInCurrentSubRound == betDt) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -131,7 +133,7 @@ public class Player {
 			} else if (creditsAfterAction >= 0) {
 				if (betMaxCallOrRaiseInMathBets <= betDt) {
 					actionFinal = new Raise(this, betMaxCallOrRaiseInMathBets);
-				} else if (betAlreadyInvestedBeforeAction == betDt) {
+				} else if (betAlreadyInvestedInCurrentSubRound == betDt) {
 					actionFinal = new Check(this, betDt);
 				} else {
 					actionFinal = new Call(this, betDt);
@@ -144,57 +146,65 @@ public class Player {
 		return actionFinal;
 	}
 
-	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGame, double betTotal) {
+	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
+//		if (betToStayInGame > 0) betToStayInGame *= Settings.betCurrentMultiplier;
+//		if (betTotalInSubRound > 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
 		string actionString = "";
 		if (patternCurrent != null) {
-			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0)
+			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 				foreach (var betRound in patternCurrent.betSubRounds) {
-					if (betRound.costBet == betToStayInGame && betRound.costBetTotal == betTotal) {
-//					if (betRound.costBet * Settings.betDxInCredits == betToStayInGame && betRound.costBetTotal * Settings.betDxInCredits == betTotal) {
+					if (betRound.costBet == betToStayInGameTotal && betRound.costBetTotal == betTotalInSubRound) {
+						patternCurrent.betDx = betRound.costBet - betRound.costBetTotal;
+						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
 						actionString = betRound.name_action;
 						break;
 					}
 				}
+			}
+			if (string.IsNullOrEmpty (actionString)) {
+				patternCurrent.betDx = patternCurrent.betMaxCallOrRaise;
+				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
+			}
 			if (string.IsNullOrEmpty (actionString))
-				actionString = GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority1, betToStayInGame);
-			if (string.IsNullOrEmpty (actionString))
-				actionString = GetAndSetActionTipByNameAndBetToContinue (patternCurrent.actionPriority2, betToStayInGame);
+				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDx);
 			if (patternCurrent != null)
-			if (string.IsNullOrEmpty (actionString))
-				actionString = patternCurrent.actionDefault;
+				if (string.IsNullOrEmpty (actionString))
+					actionString = GetAndSetActionTipByName(patternCurrent.actionDefault, patternCurrent.betDx);
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
+		actionCurrentString = actionString;
 		return actionString;
 	}
 	
-	private string GetAndSetActionTipByNameAndBetToContinue(string action, double betToStayInGame) {
-		// TODO: maxBet for call and raise
-		string res = "";
+	private string GetAndSetActionTipByName(string action, double betToStayInGame) {
+//		if (betToStayInGame > 0) betToStayInGame *= Settings.betCurrentMultiplier;	// convert math to the actual bet
+//		if (maxCallOrRaise > 0) maxCallOrRaise *= Settings.betCurrentMultiplier;	// convert math to the actual bet
+		string actionFinalString = "";
 		actionTip = new ActionTip(this, betToStayInGame);
-		double amount = betTotal - betToStayInGame;
+		double amountAfterAction = betTotal - betToStayInGame;
 		if (action == "CALL") {
-			if (amount >= 0) {
+			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
 				actionTip.isCall = true;
-				res = action;
+				actionFinalString = action;
 			}
 		} else if (action == "CHECK") {
-			if (amount >= 0) {
+			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
 				actionTip.isCheck = true;
-				res = action;
+				actionFinalString = action;
 			}
 		} else if (action == "RAISE") {
-			if (amount >= 0) {
+			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
 				actionTip.isRaise = true;
-				res = action;
+				actionFinalString = action;
 			}
 		} else if (action == "FOLD") {
-			if (amount < 0) {
+			if (betToStayInGame <= amountAfterAction && amountAfterAction < 0) {
 				actionTip.isFold = true;
-				res = action;
+				actionFinalString = action;
 			}
 		}
-		return res;
+		return actionFinalString;
 	}
 
 	public string GetHandPreflopString() {
@@ -449,11 +459,10 @@ public class Player {
 	public double winPercent;
 	public ActionTip actionTip;
 	public Action actionFinal;
-	//	public int currentBetRoundNo;
 	public bool isReal;
 	
 	public double bet;
-	public double betAlreadyInvestedBeforeAction;
+	public double betAlreadyInvestedInCurrentSubRound;
 
 //	public double credits; // credits/creditMultiplier
 	public double betTotal;	// betTotal * creditMulitplier
@@ -470,9 +479,7 @@ public class Player {
 	public Hand hand;
 	public List<Hand> hands;
 	
-	//	bool isActive = true;
 	public bool isFolded;
-	
 	
 	public string actionCurrentString;
 	public Pattern patternCurrent;

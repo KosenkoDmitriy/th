@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEngine.UI;
 
 public interface IBetRoundState
@@ -33,9 +35,18 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 	
 	private void Init() {
+		this.subRoundCount = 0;
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.isCanToRaise = true;
 		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
+
+		// clear betAlreadyInvestedInNumberOfBets for new bet round
+		//TODO change game.players to game.playerIterator
+		if (game != null && game.players != null)
+		foreach (var player in game.players) {
+			player.betAlreadyInvestedInCurrentSubRound = 0;
+			player.bet = 0;
+		}
 	}
 	
 	#region IBetRoundState implementation
@@ -64,7 +75,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		game.playerIterator = new PlayerIterator (game.playerCollection);
 		while (!game.playerIterator.IsDone) {
 			var player = game.playerIterator.Next();
-			pot += player.betAlreadyInvestedBeforeAction;
+			pot += player.betAlreadyInvestedInCurrentSubRound;
 		}
 		game.potAmount = pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
@@ -116,7 +127,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		bool isNextBetRound = false;
 		while (!iterator.IsDone) {
 			var player = iterator.NextActive();
-			if (player.betAlreadyInvestedBeforeAction != betMax) {
+			if (player.betAlreadyInvestedInCurrentSubRound != betMax) {
 				isNextBetRound = false;
 			} else {
 				isNextBetRound = true;

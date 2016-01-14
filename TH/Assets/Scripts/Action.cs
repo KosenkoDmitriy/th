@@ -9,7 +9,7 @@ public class ActionTip: Action {
 	public ActionTip (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.bet = betToStayInGame;
+		this.betToStayInGame = betToStayInGame;
 	}
 	public bool isCall;
 	public bool isFold;
@@ -24,7 +24,7 @@ public class Action : IAction {
 	public Action (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.bet = betToStayInGame;
+		this.betToStayInGame = betToStayInGame;
 	}
 
 	#region IAction implementation
@@ -41,9 +41,9 @@ public class Action : IAction {
 				game.ui.SetBalance(p.betTotal.to_s());
 			} else {
 				if (!p.isFolded) {
-					p.bet = bet;
-					p.betAlreadyInvestedBeforeAction += bet;
-					p.betTotal -= bet;
+					p.bet = betToStayInGame;
+					p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
+					p.betTotal -= betToStayInGame;
 				} else {
 					p.ShowCards(game);
 				}
@@ -54,7 +54,7 @@ public class Action : IAction {
 	#endregion
 
 	public Player p;
-	public double bet;
+	public double betToStayInGame;
 }
 
 public class Call : Action
@@ -62,7 +62,7 @@ public class Call : Action
 	public Call (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.bet = betToStayInGame;
+		this.betToStayInGame = betToStayInGame;
 	}
 	public override void Do(Game game) {
 		base.Do (game);
@@ -76,7 +76,7 @@ public class Check : Action
 	public Check (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.bet = betToStayInGame;
+		this.betToStayInGame = betToStayInGame;
 	}
 }
 
@@ -86,7 +86,7 @@ public class Fold : Action
 	public Fold (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.bet = betToStayInGame;
+		this.betToStayInGame = betToStayInGame;
 	}
 
 	public override void Do(Game game) {
@@ -101,7 +101,7 @@ public class Raise : Action
 	public Raise (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.bet = betToStayInGame;
+		this.betToStayInGame = betToStayInGame;
 	}
 
 	public override void Do(Game game) {
