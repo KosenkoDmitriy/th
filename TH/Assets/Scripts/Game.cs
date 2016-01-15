@@ -76,19 +76,19 @@ public class Game
 
 	public List<Player> GetWinners() {
 
-		Hand winHand = this.players[0].hand;
+		Hand winHandMax = this.players[0].hand;
 
 		// detect max win hand
 		foreach (var player in this.players) {
-			if (player.hand > winHand) {
-				winHand = player.hand;
+			if (player.hand > winHandMax && !player.isFolded) {
+				winHandMax = player.hand;
 			}
 		}
 
 		// detect winners
 		List<Player> winners = new List<Player>();
 		foreach (var player in this.players) {
-			if (winHand == player.hand) {
+			if (winHandMax == player.hand && !player.isFolded) {
 				winners.Add(player);
 			}
 		}

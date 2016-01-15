@@ -11,6 +11,7 @@ public class EndGame : BetRound {
 		game.isGameRunning = false;
 		game.isGameEnd = true;
 
+
 		// display all community cards
 		for (int i = 0; i < 5; i++) {
 			var card = game.cards[i];
@@ -33,12 +34,15 @@ public class EndGame : BetRound {
 			}
 		}
 
-		// split the pot between win players
-		string winHandString = "";
+		// display hand combinations
 		foreach (var player in game.players) {
-			winHandString = player.GetHandStringFromHandObj();
-			player.lblAction.text = winHandString; // show player's hand
+			string winHandString = player.GetHandStringFromHandObj();
+			//			player.lblAction.text = winHandString; // show player's hand
+			player.lblName.text = winHandString; // show player's hand
 		}
+
+		// split the pot between win players
+		game.winners = game.GetWinnersAndSetWinPercentage ();
 
 		string winString = "";
 		double winAmount = game.potAmount;
