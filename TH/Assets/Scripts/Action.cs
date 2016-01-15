@@ -38,6 +38,7 @@ public class Action : IAction {
 				} else {
 					game.state = new InitGame(game);
 				}
+				game.ui.lblCall.text = Settings.betNull.to_s();
 				game.state.isWaiting = false;
 				game.ui.SetBalance(p.betTotal.to_s());
 			} else {

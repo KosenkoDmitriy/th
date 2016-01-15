@@ -39,11 +39,11 @@ public class GameUI : MonoBehaviour
 		foreach (var card in game.cards) {
 			card.isHidden = true;
 		}
-		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
-		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
-		lblBetBonus.GetComponent<Text>().text = Settings.betNull.to_s();
-		lblRaise.GetComponent<Text>().text = Settings.betNull.to_s();
-		lblCall.GetComponent<Text>().text = Settings.betNull.to_s();
+		lblPot.text = Settings.betNull.to_s();
+		lblBet.text = Settings.betNull.to_s();
+		lblBetBonus.text = Settings.betNull.to_s();
+		lblRaise.text = Settings.betNull.to_s();
+		lblCall.text = Settings.betNull.to_s();
 	}
 
 	// start win panel
@@ -143,15 +143,15 @@ public class GameUI : MonoBehaviour
 			} else 
 			if (player.betTotal - game.betAmount >= 0) {
 				game.player.actionFinal = new Raise(game.player, game.betAmount);
-				if (lblCall) lblCall.GetComponent<Text>().text = game.state.betMax.to_s();
-				if (lblRaise) lblRaise.GetComponent<Text>().text = game.betAmount.to_s();
+				if (lblCall) lblCall.text = game.state.betMax.to_s();
+				if (lblRaise) lblRaise.text = game.betAmount.to_s();
 			}
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
 			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, Settings.betAnteMultiplier);
 			game.player.actionFinal.Do (game);
-			if (lblBet) lblBet.GetComponent<Text>().text = Settings.betAnteMultiplier.to_s();
+			if (lblBet) lblBet.text = Settings.betAnteMultiplier.to_s();
 		} else {
 			return;
 		}
@@ -238,7 +238,7 @@ public class GameUI : MonoBehaviour
 			if (payTable != null) {
 				lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
 				game.player.betTotal -= Settings.betBonus;
-				if (lblBetBonus) lblBetBonus.GetComponent<Text>().text = Settings.betBonus.to_b();
+				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
 				payTable.SetBet(Settings.betBonus);
 			}
 		}
@@ -289,7 +289,7 @@ public class GameUI : MonoBehaviour
 		panelSurrender = GameObject.Find ("PanelSurrender");
 			
 		panelWin = GameObject.Find ("PanelWin");
-		lblWinInfo = GameObject.Find ("lblWinInfo");
+		lblWinInfo = GameObject.Find ("lblWinInfo").GetComponent<Text>();
 		if (panelWin)
 			panelWin.SetActive (false);
 			
@@ -301,7 +301,7 @@ public class GameUI : MonoBehaviour
 		inputBetField = panelInitBet.GetComponentInChildren<InputField> (); //GameObject.Find("InputBetField").GetComponent<InputField>(); // 
 		inputBetField.text = Settings.betNull.to_s();
 			
-		lblPanelBet = GameObject.Find ("lblPanelBet");
+		lblPanelBet = GameObject.Find ("lblPanelBet").GetComponent<Text>();
 			
 		// player game panel
 		btnCheck = GameObject.Find ("btnCheck");
@@ -329,11 +329,11 @@ public class GameUI : MonoBehaviour
 		btnAutoPlay = GameObject.Find ("btnAutoPlay");
 		btnNewGame = GameObject.Find ("btnNewGame");
 		btnAllIn = GameObject.Find ("btnAllIn");
-		lblPot = GameObject.Find ("lblPot");
-		lblRaise = GameObject.Find ("lblRaise");
-		lblBet = GameObject.Find ("lblBet");
-		lblBetBonus = GameObject.Find ("lblBetBonus");
-		lblCall = GameObject.Find ("lblCall");
+		lblPot = GameObject.Find ("lblPot").GetComponent<Text>();
+		lblRaise = GameObject.Find ("lblRaise").GetComponent<Text>();
+		lblBet = GameObject.Find ("lblBet").GetComponent<Text>();
+		lblBetBonus = GameObject.Find ("lblBetBonus").GetComponent<Text>();
+		lblCall = GameObject.Find ("lblCall").GetComponent<Text>();
 			
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
@@ -617,7 +617,7 @@ public class GameUI : MonoBehaviour
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
-	public GameObject lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
+	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;

@@ -85,7 +85,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			
 			if (player.isReal) {
 				game.state.isWaiting = true;
-				game.ui.lblCall.GetComponent<Text>().text = betMax.to_s();
+				game.ui.lblCall.text = betMax.to_s();
 
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
