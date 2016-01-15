@@ -186,8 +186,10 @@ public class Player {
 				patternCurrent.betDx = patternCurrent.betMaxCallOrRaise;
 				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
 			}
-			if (string.IsNullOrEmpty (actionString))
-				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDx);
+			if (string.IsNullOrEmpty (actionString)) {
+				if (patternCurrent.actionPriority2 != "OPEN") // unknown action
+					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDx);
+			}
 			if (patternCurrent != null)
 				if (string.IsNullOrEmpty (actionString))
 					actionString = GetAndSetActionTipByName(patternCurrent.actionDefault, patternCurrent.betDx);
