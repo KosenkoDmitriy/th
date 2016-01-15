@@ -387,7 +387,7 @@ public class GameUI : MonoBehaviour
 		game.state.isWaiting = false;
 	}
 
-	public void UpdatePlayer(Player player) {
+	public void UpdatePlayerActionAndCredits(Player player) {
 		player.lblCredits.text = player.betTotal.to_s();
 		player.lblAction.text = player.actionCurrentString;
 	}

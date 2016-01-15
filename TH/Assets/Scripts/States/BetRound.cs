@@ -84,9 +84,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			var player = game.playerIterator.NextActive();
 			
 			if (player.isReal) {
-//				WaitForRealPlayer();
 				game.state.isWaiting = true;
-				
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
 				} else {
@@ -97,7 +95,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				player.actionFinal.Do(game);
 			}
 
-			game.ui.UpdatePlayer(player);
+			game.ui.UpdatePlayerActionAndCredits(player);
 		}
 	}
 

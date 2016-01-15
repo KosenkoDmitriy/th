@@ -40,7 +40,7 @@ public class AnteRound : BetRound {
 					}
 					player.actionFinal.Do (game);
 				}
-				game.ui.UpdatePlayer(player);
+				game.ui.UpdatePlayerActionAndCredits(player);
 			}
 		}
 	}
