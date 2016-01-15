@@ -41,7 +41,9 @@ public class GameUI : MonoBehaviour
 		}
 		lblPot.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblBet.GetComponent<Text>().text = Settings.betNull.to_s();
+		lblBetBonus.GetComponent<Text>().text = Settings.betNull.to_s();
 		lblRaise.GetComponent<Text>().text = Settings.betNull.to_s();
+		lblCall.GetComponent<Text>().text = Settings.betNull.to_s();
 	}
 
 	// start win panel
@@ -140,16 +142,20 @@ public class GameUI : MonoBehaviour
 				game.player.actionFinal = new Check(game.player, game.state.betMax);
 			} else 
 			if (player.betTotal - game.betAmount >= 0) {
-				game.player.actionFinal = new Raise(game.player, game.state.betMax);
+				game.player.actionFinal = new Raise(game.player, game.betAmount);
+				if (lblCall) lblCall.GetComponent<Text>().text = game.state.betMax.to_s();
+				if (lblRaise) lblRaise.GetComponent<Text>().text = game.betAmount.to_s();
 			}
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
 			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, Settings.betAnteMultiplier);
 			game.player.actionFinal.Do (game);
+			if (lblBet) lblBet.GetComponent<Text>().text = Settings.betAnteMultiplier.to_s();
 		} else {
 			return;
 		}
+
 		if (panelInitBet) panelInitBet.SetActive(false);
 		if (panelGame) panelGame.SetActive(true);
 	}
@@ -232,6 +238,7 @@ public class GameUI : MonoBehaviour
 			if (payTable != null) {
 				lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
 				game.player.betTotal -= Settings.betBonus;
+				if (lblBetBonus) lblBetBonus.GetComponent<Text>().text = Settings.betBonus.to_b();
 				payTable.SetBet(Settings.betBonus);
 			}
 		}
@@ -325,7 +332,7 @@ public class GameUI : MonoBehaviour
 		lblPot = GameObject.Find ("lblPot");
 		lblRaise = GameObject.Find ("lblRaise");
 		lblBet = GameObject.Find ("lblBet");
-			
+		lblBetBonus = GameObject.Find ("lblBetBonus");
 		lblCall = GameObject.Find ("lblCall");
 			
 		// start sounds
@@ -610,7 +617,7 @@ public class GameUI : MonoBehaviour
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
-	public GameObject lblPot, lblRaise, lblBet, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
+	public GameObject lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
