@@ -34,7 +34,7 @@ public class EndGame : BetRound {
 			}
 		}
 
-		// display hand combinations
+		// display hand combinations for any player
 		foreach (var player in game.players) {
 			string winHandString = player.GetHandStringFromHandObj();
 			//			player.lblAction.text = winHandString; // show player's hand

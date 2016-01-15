@@ -44,6 +44,7 @@ interface IAbstractPlayerIterator
 	Player First();
 	Player Next();
 	bool IsDone { get; }
+	bool IsDoneFor { get; }
 	Player CurrentItem { get; }
 }
 
@@ -52,6 +53,7 @@ interface IAbstractPlayerIterator
 /// </summary>
 public class PlayerIterator : IAbstractPlayerIterator
 {
+
 	private PlayerCollection _collection;
 	private int _current = 0;
 	private int _step = 1;
@@ -76,8 +78,9 @@ public class PlayerIterator : IAbstractPlayerIterator
 	public Player Next()
 	{
 		Player player = null;
-		if (!IsDone)
-			player = _collection[_current] as Player;
+		if (!IsDone) {
+			player = _collection [_current] as Player;
+		}
 		_current += _step;
 		return player;
 	}
@@ -172,6 +175,11 @@ public class PlayerIterator : IAbstractPlayerIterator
 	public bool IsDone
 	{
 		get { return _current >= _collection.Count; }
+	}
+
+	public bool IsDoneFor
+	{
+		get { return _current > _collection.Count; }
 	}
 }
 
