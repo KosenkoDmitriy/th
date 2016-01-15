@@ -107,6 +107,7 @@ public class Game
 					if (player.id == item.id && player.name == item.name) {
 						item.winPercent = winPercentage;
 						player.winPercent = winPercentage;
+						player.isWinner = true;
 					}
 				}
 			}

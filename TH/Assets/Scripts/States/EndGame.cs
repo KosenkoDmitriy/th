@@ -23,7 +23,6 @@ public class EndGame : BetRound {
 		//		betCurrentToStayInGame = betTotalInThisRound = 0;
 
 		// display/hide cards
-//		foreach (var player in game.players) {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			foreach (var card in player.handPreflop.getCards()) {
 				if (player.id != Settings.playerRealIndex)
@@ -36,11 +35,9 @@ public class EndGame : BetRound {
 		}
 
 		// display hand combinations for any player
-//		foreach (var player in game.players) {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			string winHandString = player.GetHandStringFromHandObj();
-			//			player.lblAction.text = winHandString; // show player's hand
-			player.lblName.text = winHandString; // show player's hand
+			player.lblAction.text = winHandString; // show player's hand
 		}
 
 		// split the pot between win players

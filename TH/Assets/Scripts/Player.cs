@@ -92,8 +92,13 @@ public class Player {
 		} else if (actionTip.isCheck) {
 			actionFinal = new Check (this, betDt);
 		} else if (actionTip.isFold) {
-			isFolded = true;
-			actionFinal = new Fold (this, betDt);
+			if (isWinner) {
+				actionCurrentString += "> CHECK";
+				actionFinal = new Check (this, betDt);
+			} else {
+				isFolded = true;
+				actionFinal = new Fold (this, betDt);
+			}
 		} else if (actionTip.isRaise) {
 			actionFinal = new Raise (this, betDt);
 		}
@@ -483,8 +488,11 @@ public class Player {
 	public double winPercent;
 	public ActionTip actionTip;
 	public Action actionFinal;
+
 	public bool isReal;
-	
+	public bool isFolded;
+	public bool isWinner;
+
 	public double bet;
 	public double betAlreadyInvestedInCurrentSubRound;
 
@@ -497,13 +505,10 @@ public class Player {
 	
 	public string handPreflopString;			// "AKs"
 	public string handPreflopStringReversed;	// "KAs"
-//	public string handWinBestString;			// 5 cards
-	
+
 	public Hand handPreflop;
 	public Hand hand;
 	public List<Hand> hands;
-	
-	public bool isFolded;
 	
 	public string actionCurrentString;
 	public Pattern patternCurrent;

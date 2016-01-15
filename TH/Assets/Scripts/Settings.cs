@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static bool isDev = true;
 	public static bool isDebug = false;
 	public static int levelGame = 2;
 	public static int levelMainMenu = 0;
