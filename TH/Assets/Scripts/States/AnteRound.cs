@@ -1,8 +1,7 @@
 using System;
 
 public class AnteRound : BetRound {
-	#region IBetRoundState implementation
-	
+
 	public AnteRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
@@ -37,12 +36,11 @@ public class AnteRound : BetRound {
 						game.ui.panelGame.SetActive (false);
 						game.ui.panelInitBet.SetActive (true);
 					}
-//					if (player.isFolded) {
-//						game.state = new EndGame(game);
-//					}
 				} else {
+					if (player.actionTip.isFold) { // always call in ante round
+						player.actionFinal = new Call(player, betMin);
+					}
 					player.actionFinal.Do (game);
-//					betToStayInGame += player.bet;
 				}
 				game.ui.UpdatePlayer(player);
 			}
@@ -58,5 +56,4 @@ public class AnteRound : BetRound {
 		game.state = new PreflopRound (game);
 	}
 	
-	#endregion
 }

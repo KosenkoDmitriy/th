@@ -35,13 +35,12 @@ public class Action : IAction {
 			if (p.isReal) {
 				if (p.isFolded) {
 					game.state = new InitGame(game);
-//					game.state = new EndGame(game);
 				}
 				game.state.isWaiting = false;
 				game.ui.SetBalance(p.betTotal.to_s());
 			} else {
 				if (!p.isFolded) {
-					if (betToStayInGame > 0) {
+					if (betToStayInGame >= 0) {
 						p.bet = betToStayInGame;
 						p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
 						p.betTotal -= betToStayInGame;

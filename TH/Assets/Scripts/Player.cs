@@ -76,7 +76,27 @@ public class Player {
 		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betToStayInGame, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
 		GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDx); // set actionTip get actionTipString (recommend action)
 
-		
+		Action actionFinal = new Action();
+		double betDt = betToStayInGame - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
+		if (betDt < 0) {
+			Debug.LogWarning("betToStayInGame should be > 0 but:"+betToStayInGame);
+			betDt = 0;
+		}
+
+		double creditsAfterAction = betTotal - betDt;
+		if (actionTip.isRaise) {
+			actionFinal = new Raise(this, betDt);
+		} else if (actionTip.isCall) {
+			actionFinal = new Call(this, betDt);
+		} else if (actionTip.isCheck) {
+			actionFinal = new Check(this, betDt);
+		} else if (actionTip.isFold) {
+			isFolded = true;
+			actionFinal = new Fold(this, betDt);
+		} else if (actionTip.isRaise) {
+			actionFinal = new Raise(this, betDt);
+		}
+		/*
 		if (!isCanToRaise) {
 			// choosing between all available actions except raise
 			if (actionTip.isRaise)
@@ -140,6 +160,7 @@ public class Player {
 				}
 			}
 		}
+		*/
 		if (actionFinal == null)
 			Debug.LogError ("error: actionFinal is null");
 
@@ -182,27 +203,27 @@ public class Player {
 //		if (maxCallOrRaise > 0) maxCallOrRaise *= Settings.betCurrentMultiplier;	// convert math to the actual bet
 		string actionFinalString = "";
 		actionTip = new ActionTip(this, betToStayInGame);
-		double amountAfterAction = betTotal - betToStayInGame;
+//		double amountAfterAction = betTotal - betToStayInGame;
 		if (action == "CALL") {
-			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
+//			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
 				actionTip.isCall = true;
 				actionFinalString = action;
-			}
+//			}
 		} else if (action == "CHECK") {
-			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
+//			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
 				actionTip.isCheck = true;
 				actionFinalString = action;
-			}
+//			}
 		} else if (action == "RAISE") {
-			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
+//			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
 				actionTip.isRaise = true;
 				actionFinalString = action;
-			}
+//			}
 		} else if (action == "FOLD") {
-			if (betToStayInGame <= amountAfterAction && amountAfterAction < 0) {
+//			if (betToStayInGame <= amountAfterAction && amountAfterAction < 0) {
 				actionTip.isFold = true;
 				actionFinalString = action;
-			}
+//			}
 		}
 		return actionFinalString;
 	}
