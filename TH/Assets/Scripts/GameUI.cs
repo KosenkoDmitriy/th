@@ -371,6 +371,8 @@ public class GameUI : MonoBehaviour
 		for (int i = 0; i < 2; i++) {
 		foreach(var player in game.players) {
 //			for(var player = game.playerIterator.First (); !game.playerIterator.IsDone; player = game.playerIterator.Next()) {
+//			while(!game.playerIterator.IsDone) {
+//				var player = game.playerIterator.Next();
 				var card = player.handPreflop.getCard (i);
 				if (player.id == Settings.playerRealIndex || Settings.isDebug) {
 					card.FaceUp = true;
@@ -394,11 +396,6 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void UpdatePlayer(Player player) {
-		for(int i = 0; i < 2; i++) {
-			var card = player.handPreflop.getCard(i);
-			if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded)
-				card.FaceUp = true;
-		}
 		player.lblCredits.text = player.betTotal.to_s();
 		player.lblAction.text = player.actionCurrentString;
 	}

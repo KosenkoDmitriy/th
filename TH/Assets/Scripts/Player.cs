@@ -84,17 +84,18 @@ public class Player {
 		}
 
 		double creditsAfterAction = betTotal - betDt;
+
 		if (actionTip.isRaise) {
-			actionFinal = new Raise(this, betDt);
+			actionFinal = new Raise (this, betDt);
 		} else if (actionTip.isCall) {
-			actionFinal = new Call(this, betDt);
+			actionFinal = new Call (this, betDt);
 		} else if (actionTip.isCheck) {
-			actionFinal = new Check(this, betDt);
+			actionFinal = new Check (this, betDt);
 		} else if (actionTip.isFold) {
 			isFolded = true;
-			actionFinal = new Fold(this, betDt);
+			actionFinal = new Fold (this, betDt);
 		} else if (actionTip.isRaise) {
-			actionFinal = new Raise(this, betDt);
+			actionFinal = new Raise (this, betDt);
 		}
 		/*
 		if (!isCanToRaise) {

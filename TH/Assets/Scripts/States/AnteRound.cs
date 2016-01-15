@@ -24,7 +24,6 @@ public class AnteRound : BetRound {
 			if (player == null) {
 				subRoundCount++; // or LastAction();
 			} else {
-				player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
 				if (player.isReal) {
 					game.state.isWaiting = true;
 					game.player = player;
@@ -37,7 +36,10 @@ public class AnteRound : BetRound {
 						game.ui.panelInitBet.SetActive (true);
 					}
 				} else {
+					player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
+
 					if (player.actionTip.isFold) { // always call in ante round
+						player.isFolded = false;
 						player.actionFinal = new Call(player, betMin);
 					}
 					player.actionFinal.Do (game);
