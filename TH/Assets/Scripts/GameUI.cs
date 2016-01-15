@@ -365,39 +365,20 @@ public class GameUI : MonoBehaviour
 
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
 
-//		updatePlayerNames ();
-	}
-
-	private IEnumerator DisplayPlayerNames(List<Player> players, float repeatRate) {
-		int i = 0;
-		foreach(var player in game.players) {
-			player.lblName.text = player.name;
-			yield return new WaitForSeconds(repeatRate);
-			i++;
-		}
-	}
-
-	private void updatePlayerNames() {
-		StartCoroutine(DisplayPlayerNames(game.players, Settings.updateInterval));
-//		InvokeRepeating("UpdatePlayerName", Settings.updateInterval, Settings.updateInterval);
 	}
 
 	public IEnumerator DealCards() {
-//		for(int i = 1; i >= 0; i--)
 		for (int i = 0; i < 2; i++) {
 		foreach(var player in game.players) {
 //			for(var player = game.playerIterator.First (); !game.playerIterator.IsDone; player = game.playerIterator.Next()) {
-//			Player player = game.playerIterator.Next();
-//			while(!game.playerIterator.IsDone) {
 				var card = player.handPreflop.getCard (i);
-				if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded) {
+				if (player.id == Settings.playerRealIndex || Settings.isDebug) {
 					card.FaceUp = true;
 				} else {
 					card.FaceUp = false;
 				}
 				audio.PlayOneShot(soundDeal);
 				yield return new WaitForSeconds (Settings.updateInterval);
-//				player = game.playerIterator.Next();
 			}
 		}
 	
@@ -413,28 +394,13 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void UpdatePlayer(Player player) {
-		//			player.betTotal -= 10;
 		for(int i = 0; i < 2; i++) {
 			var card = player.handPreflop.getCard(i);
-			//				if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded)
-			if (player.isFolded)
+			if (player.id == Settings.playerRealIndex || Settings.isDebug || player.isFolded)
 				card.FaceUp = true;
-			//				else
-			//					card.FaceUp = false;
 		}
 		player.lblCredits.text = player.betTotal.to_s();
 		player.lblAction.text = player.actionCurrentString;
-	}
-
-	int playerNo = 0;
-	private void UpdatePlayerName() {
-		if (playerNo < game.players.Count) {
-			var player = game.players.ElementAt (playerNo);
-			player.lblName.text = player.name;
-			playerNo++;
-		} else {
-			playerNo = 0;
-		}
 	}
 
 	private void UpdateInterval() {
