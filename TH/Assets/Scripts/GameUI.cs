@@ -386,14 +386,6 @@ public class GameUI : MonoBehaviour
 	
 		game.state.isWaiting = false;
 	}
-	
-	public IEnumerator UpdatePlayers() {
-		foreach (var player in game.players) {
-			UpdatePlayer(player);
-			yield return new WaitForSeconds (Settings.updateInterval);
-		}
-		game.state.isWaiting = false;
-	}
 
 	public void UpdatePlayer(Player player) {
 		player.lblCredits.text = player.betTotal.to_s();

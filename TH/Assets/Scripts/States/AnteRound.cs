@@ -47,9 +47,6 @@ public class AnteRound : BetRound {
 				game.ui.UpdatePlayer(player);
 			}
 		}
-
-//		game.state.isWaiting = true;
-//		game.ui.StartCoroutine (game.ui.UpdatePlayers());
 	}
 
 	public override void LastAction ()
