@@ -71,10 +71,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void FirstAction() {}
 
 	public virtual void LastAction() {
-//		game.playerIterator = new PlayerIterator (game.playerCollection);
-//		while (!game.playerIterator.IsDone) {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-//			var player = game.playerIterator.Next();
 			pot += player.betAlreadyInvestedInCurrentSubRound;
 		}
 		game.potAmount = pot;
@@ -87,8 +84,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			var player = game.playerIterator.NextActive();
 			
 			if (player.isReal) {
+//				WaitForRealPlayer();
 				game.state.isWaiting = true;
-
+				
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
 				} else {
@@ -98,28 +96,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise);
 				player.actionFinal.Do(game);
 			}
-			
-			if (player.position == game.playerIterator.LastActive().position) { // last player
-				isCanToRaise = false;
-				if (!isCanToRaise) {
-					if (subRoundCount < subRoundMaxSize) {
-						subRoundCount++;
-					} else if (subRoundCount == subRoundMaxSize) {	// last subround
-						if (IsNextBetRound()) {						// no any raise
-							subRoundCount++; // LastAction();		// next bet round
-						} else {			
-							isCanToRaise = false; // repeat last subround with disabled raise action
-						}
-					}
-					if (IsNextBetRound()) {
-						LastAction(); // next bet round if no any raise in any subround
-					}
-				}
-			}
+
 			game.ui.UpdatePlayer(player);
 		}
-		//		game.state.isWaiting = true;
-		//		game.ui.StartCoroutine (game.ui.UpdatePlayer (player));
 	}
 
 	private bool IsNextBetRound() {
@@ -167,6 +146,24 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				} else {
 					player.pattern = game.source.GetPatternByName(Settings.defaultPreflopPattern);
 				}
+			}
+		}
+	}
+
+	public void CheckForNextSubOrRound() {
+		isCanToRaise = false;
+		if (!isCanToRaise) {
+			if (subRoundCount < subRoundMaxSize) {
+				isCanToRaise = true;
+				subRoundCount++;
+			} else if (subRoundCount == subRoundMaxSize) {	// last subround
+				if (IsNextBetRound()) {						// no any raise
+					subRoundCount++; // LastAction();		// next bet round
+				}			
+				isCanToRaise = false; // repeat last subround with disabled raise action
+			}
+			if (IsNextBetRound()) { // no any raise
+				LastAction(); // next bet round if no any raise in any subround
 			}
 		}
 	}

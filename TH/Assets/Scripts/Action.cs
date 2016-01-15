@@ -51,6 +51,10 @@ public class Action : IAction {
 					p.ShowCards(game);
 				}
 			}
+
+			if (p.position == game.playerIterator.LastActive().position) { // last player
+				game.state.CheckForNextSubOrRound();
+			}
 		}
 	}
 	
