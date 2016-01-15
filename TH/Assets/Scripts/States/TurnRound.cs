@@ -9,8 +9,6 @@ public class TurnRound : BetRound {
 		// turn bet rounds
 		var turns = game.source.GetTurns ();
 		SetPatternAndHisAlternatives (turns);
-		
-		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}
 	
 	public override void FirstAction() {

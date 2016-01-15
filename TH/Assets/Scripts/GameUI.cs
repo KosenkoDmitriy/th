@@ -18,8 +18,10 @@ public class GameUI : MonoBehaviour
 	public void ClearAll() {
 		if (Settings.isDebug) DebugLog("ClearAll()");
 		var bg = Resources.Load<Sprite> (Settings.cardBg);
-		if (game.players != null)
-		foreach (var player in game.players) {
+//		if (game.players != null)
+//		foreach (var player in game.players) {
+		if (game.playerIterator != null)
+		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			player.chip.sprite = bg;
 			player.isDealer = false;
 			player.lblAction.text = "";
@@ -369,7 +371,8 @@ public class GameUI : MonoBehaviour
 
 	public IEnumerator DealCards() {
 		for (int i = 0; i < 2; i++) {
-			foreach(var player in game.players) {
+			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+//			foreach(var player in game.players) {
 				var card = player.handPreflop.getCard (i);
 				if (player.id == Settings.playerRealIndex || Settings.isDebug) {
 					card.FaceUp = true;
@@ -390,8 +393,8 @@ public class GameUI : MonoBehaviour
 	}
 
 	private void UpdateInterval() {
-		test ();
-		return;
+//		test ();
+//		return;
 
 		if (game.state != null && !game.state.isWaiting) {
 			game.state.SubRound ();

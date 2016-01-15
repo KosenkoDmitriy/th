@@ -41,9 +41,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
 
 		// clear betAlreadyInvestedInNumberOfBets for new bet round
-		//TODO change game.players to game.playerIterator
-		if (game != null && game.players != null)
-		foreach (var player in game.players) {
+		if (game != null && game.playerIterator != null)
+		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			player.betAlreadyInvestedInCurrentSubRound = 0;
 			player.bet = 0;
 		}
@@ -72,9 +71,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void FirstAction() {}
 
 	public virtual void LastAction() {
-		game.playerIterator = new PlayerIterator (game.playerCollection);
-		while (!game.playerIterator.IsDone) {
-			var player = game.playerIterator.Next();
+//		game.playerIterator = new PlayerIterator (game.playerCollection);
+//		while (!game.playerIterator.IsDone) {
+		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+//			var player = game.playerIterator.Next();
 			pot += player.betAlreadyInvestedInCurrentSubRound;
 		}
 		game.potAmount = pot;

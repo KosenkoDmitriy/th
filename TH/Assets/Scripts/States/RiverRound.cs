@@ -9,8 +9,6 @@ public class RiverRound : BetRound {
 		// rivers bet rounds
 		var rivers = game.source.GetRivers ();
 		SetPatternAndHisAlternatives (rivers);
-
-		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}
 	
 	public override void FirstAction() {

@@ -9,8 +9,6 @@ public class FlopRound : BetRound {
 		// flop bet rounds
 		var flops = game.source.GetFlops ();
 		SetPatternAndHisAlternatives (flops);
-		
-		game.playerIterator = new PlayerIterator(game.playerCollection);
 	}
 
 	public override void FirstAction() {

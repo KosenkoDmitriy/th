@@ -47,7 +47,6 @@ public class InitGame : BetRound {
 			player.lblAction.text = "";
 		}
 		
-		
 		foreach (var player in game.players) {
 			for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
 				card = game.deck.Deal ();

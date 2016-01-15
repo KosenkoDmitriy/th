@@ -9,11 +9,7 @@ public class AnteRound : BetRound {
 		Settings.betCurrentMultiplier = Settings.betAnteMultiplier;
 	}
 
-	public override void FirstAction ()
-	{
-//		base.FirstAction ();
-		this.game.playerIterator = new PlayerIterator(this.game.playerCollection);
-	}
+	public override void FirstAction () {}
 
 	public override void BetSubRounds ()
 	{
