@@ -174,8 +174,9 @@ public class Player {
 	}
 
 	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
-//		if (betToStayInGame > 0) betToStayInGame *= Settings.betCurrentMultiplier;
-//		if (betTotalInSubRound > 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
+		if (betToStayInGameTotal > 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
+		if (betTotalInSubRound > 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
+
 		string actionString = "";
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
@@ -202,13 +203,16 @@ public class Player {
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
+
+		if (betToStayInGameTotal > 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
+		if (betTotalInSubRound > 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
+
 		actionCurrentString = actionString;
 		return actionString;
 	}
 	
 	private string GetAndSetActionTipByName(string action, double betToStayInGame) {
-//		if (betToStayInGame > 0) betToStayInGame *= Settings.betCurrentMultiplier;	// convert math to the actual bet
-//		if (maxCallOrRaise > 0) maxCallOrRaise *= Settings.betCurrentMultiplier;	// convert math to the actual bet
+
 		string actionFinalString = "";
 		actionTip = new ActionTip(this, betToStayInGame);
 //		double amountAfterAction = betTotal - betToStayInGame;

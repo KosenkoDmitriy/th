@@ -20,10 +20,10 @@ static class Settings
 	
 	public static readonly double betPreflopFlopMultiplier = 1;//2
 	public static readonly double betAnteMultiplier = betPreflopFlopMultiplier; //2
-	public static readonly double betTurnRiverMultiplier = betPreflopFlopMultiplier;// * 2; //4
+	public static readonly double betTurnRiverMultiplier = betPreflopFlopMultiplier * 2; //4
 	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
 
-	public static readonly int betMaxMultiplier = 4;
+	public static readonly int betMaxMultiplier = 2;
 	public static readonly double betDxMath = 1;								// .25;	
 	public static readonly double betMaxMath = betDxMath * betMaxMultiplier;	// 1.5;
 

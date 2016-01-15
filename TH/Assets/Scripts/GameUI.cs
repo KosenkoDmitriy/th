@@ -166,7 +166,7 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 		
-		Settings.betCurrent = Settings.betMaxMath;
+		Settings.betCurrent = Settings.betMaxMath * Settings.betCurrentMultiplier;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
@@ -179,8 +179,8 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 		
-		Settings.betCurrent += Settings.betDxMath;
-		if (Settings.betCurrent > Settings.betMaxMath)
+		Settings.betCurrent += Settings.betDxMath * Settings.betCurrentMultiplier;
+		if (Settings.betCurrent > Settings.betMaxMath * Settings.betCurrentMultiplier)
 			Settings.betCurrent = Settings.betNull;
 
 		inputBetField.text = Settings.betCurrent.to_s();
