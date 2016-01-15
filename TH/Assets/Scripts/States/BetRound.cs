@@ -15,7 +15,7 @@ public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
 	protected int subRoundCount;
 	protected double betMin;
-	protected double betMax;
+	public double betMax;
 	protected Game game;
 	protected double betToStayInGame, pot;
 }

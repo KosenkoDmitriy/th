@@ -33,20 +33,16 @@ public class Action : IAction {
 	{
 		if (p != null) {
 			if (p.isReal) {
-				if (p.isFolded) {
+				if (!p.isFolded) {
+					DoActive(game);
+				} else {
 					game.state = new InitGame(game);
 				}
 				game.state.isWaiting = false;
 				game.ui.SetBalance(p.betTotal.to_s());
 			} else {
 				if (!p.isFolded) {
-					if (betToStayInGame >= 0) {
-						p.bet = betToStayInGame;
-						p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
-						p.betTotal -= betToStayInGame;
-					} else {
-						game.ui.DebugLog("ERROR: betToStayInGame should be positive");
-					}
+					DoActive(game);
 				} else {
 					p.ShowCards(game);
 				}
@@ -59,6 +55,18 @@ public class Action : IAction {
 	}
 	
 	#endregion
+
+	private void DoActive(Game game) {
+		if (betToStayInGame >= 0) {
+			p.bet = betToStayInGame;
+			p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
+			p.betTotal -= betToStayInGame;
+			
+			if (game.state.betMax < p.betAlreadyInvestedInCurrentSubRound){
+				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
+			}
+		}
+	}
 
 	public Player p;
 	public double betToStayInGame;

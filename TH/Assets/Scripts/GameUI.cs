@@ -64,14 +64,14 @@ public class GameUI : MonoBehaviour
 	public void btnCheckClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.player.actionFinal = new Check(game.player, game.player.bet);
+		game.player.actionFinal = new Check(game.player, game.state.betMax);
 		game.player.actionFinal.Do (game);
 	}
 
 	public void btnCallClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.player.actionFinal = new Call(game.player, game.player.bet);
+		game.player.actionFinal = new Call(game.player, game.state.betMax);
 		game.player.actionFinal.Do (game);
 	}
 
@@ -137,10 +137,10 @@ public class GameUI : MonoBehaviour
 		var player = game.player;
 		if (game.isGameRunning) {
 			if (player.betTotal - game.betAmount < 0) {
-				game.player.actionFinal = new Check(game.player, game.player.bet);
+				game.player.actionFinal = new Check(game.player, game.state.betMax);
 			} else 
 			if (player.betTotal - game.betAmount >= 0) {
-				game.player.actionFinal = new Raise(game.player, game.player.bet);
+				game.player.actionFinal = new Raise(game.player, game.state.betMax);
 			}
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
