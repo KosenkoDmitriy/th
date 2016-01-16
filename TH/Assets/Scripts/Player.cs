@@ -99,13 +99,13 @@ public class Player {
 		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 
 		if (betTotalAfterAction < 0) {
-			if (betTotal >= 0) {
-				if (Settings.isDev) actionCurrentString += "> ALL IN"; else actionCurrentString = "ALL IN";
-				actionFinal = new AllIn(this, betDt);
-			} else {
+//			if (betTotal >= 0) {
+//				if (Settings.isDev) actionCurrentString += "> ALL IN"; else actionCurrentString = "ALL IN";
+//				actionFinal = new AllIn(this, betDt);
+//			} else {
 				if (Settings.isDev) actionCurrentString += "> FOLD"; else actionCurrentString = "FOLD";
 				actionFinal = new Fold (this, betDt);
-			}
+//			}
 			return actionFinal;
 		} else
 		if (actionTip.isRaise) {
@@ -124,8 +124,8 @@ public class Player {
 			}
 		} else if (actionTip.isCheck) {
 			actionFinal = new Check (this, betDt);
-		} else if (actionTip.isAllIn) {
-			actionFinal = new AllIn (this, betDt);
+//		} else if (actionTip.isAllIn) {
+//			actionFinal = new AllIn (this, betDt);
 		} else if (actionTip.isFold) {
 			if (isWinner) {
 				if (betTotalSubRoundAfterA == betMax) {
@@ -232,7 +232,8 @@ public class Player {
 				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
+				if (actionString != "OPEN")
+					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
 			}
 			if (patternCurrent != null)
 				if (string.IsNullOrEmpty (actionString))
@@ -270,10 +271,11 @@ public class Player {
 		} else if (action == "FOLD") {
 			actionTip.isFold = true;
 			actionFinalString = action;
-		} else if (action == "OPEN") {
+		} 
+		/*else if (action == "OPEN") {
 			actionTip.isAllIn = true;
 			actionFinalString = action;
-		}
+		}*/
 		return actionFinalString;
 	}
 

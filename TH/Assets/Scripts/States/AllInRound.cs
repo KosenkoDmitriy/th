@@ -52,7 +52,12 @@ public class AllInRound : BetRound {
 			}
 		} while (playersAllIn.Count > 0);
 
-		//TODO:detect winners
+		//TODO: detect winners
+		foreach (var pot in pots) {
+			game.winners = game.GetWinnersAndSetWinPercentage (pot.players); 
+		}
+
+
 //		PlayerCollection coll = new PlayerCollection ();
 //		for(int i = 0; i < players
 	}
@@ -67,7 +72,8 @@ public class AllInRound : BetRound {
 		}
 		return minAllIn;
 	}
-	
+
+
 	public override void LastAction () {}
 	
 	public override void BetSubRounds () {}

@@ -101,6 +101,7 @@ public class GameUI : MonoBehaviour
 	public void btnAllInClick()
 	{
 //		game.MathState.River (game);
+//		game.state = new AllInRound (game, game.player, game.player.betAlreadyInvestedInCurrentSubRound - game.state.betMax); //TODO
 		audio.PlayOneShot(soundBtnClicked);
 	}
 

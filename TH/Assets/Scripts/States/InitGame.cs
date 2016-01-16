@@ -9,8 +9,8 @@ public class InitGame : BetRound {
 
 	public override void LastAction ()
 	{
-		//		base.LastAction ();
 		game.state = new AnteRound (game);
+//		game.state = new AllInRound (game, game.players[0], 100); // TODO after test will remove
 	}
 
 	public InitGame(Game game2) {
@@ -104,7 +104,7 @@ public class InitGame : BetRound {
 			player.hand = player.GetBestPlayerHand (game.cards);
 		}
 
-		game.winners = game.GetWinnersAndSetWinPercentage (); // calculating the win percentage/hand strength
+		game.winners = game.GetWinnersAndSetWinPercentage (game.players); // calculating the win percentage/hand strength
 
 		if (Settings.isDev)
 		foreach(var player in game.players) {
