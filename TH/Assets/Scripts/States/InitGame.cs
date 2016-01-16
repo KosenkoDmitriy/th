@@ -16,6 +16,8 @@ public class InitGame : BetRound {
 	public InitGame(Game game2) {
 		this.game = game2;
 
+		isWaiting = true;
+
 		game.isGameEnd = true;
 		game.isGameRunning = false;
 
@@ -115,6 +117,8 @@ public class InitGame : BetRound {
 		}
 		
 		game.playerIterator = new PlayerIterator(game.playerCollection);
+
+		isWaiting = false;
 	}
 	
 }
