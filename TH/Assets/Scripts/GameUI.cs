@@ -24,16 +24,19 @@ public class GameUI : MonoBehaviour
 			player.isDealer = false;
 			player.lblAction.text = "";
 			player.lblCredits.text = "";
-			foreach (var card in player.hand.getCards()) {
-				card.isHidden = true;
-			}
+
 			foreach (var card in player.handPreflop.getCards()) {
 				card.isHidden = true;
 			}
-			foreach(var hand in player.hands)
-			foreach (var card in hand.getCards()) {
-				card.isHidden = true;
-			}
+//			// commented because we don't need clear it
+//			foreach (var card in player.hand.getCards()) {
+//				card.isHidden = true;
+//			}
+//			foreach(var hand in player.hands)
+//			foreach (var card in hand.getCards()) {
+//				card.isHidden = true;
+//			}
+//			// commented because we don't need clear it
 		}
 		if (game.cards != null)
 		foreach (var card in game.cards) {
@@ -378,7 +381,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	public IEnumerator DealCards() {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
 			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 				var card = player.handPreflop.getCard (i);
 				if (player.id == Settings.playerRealIndex || Settings.isDebug) {

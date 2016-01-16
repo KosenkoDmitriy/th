@@ -60,7 +60,7 @@ public class InitGame : BetRound {
 					//						else
 					//							card.FaceUp = false;
 				}
-				player.hand.getCards().Add (card);
+				player.hand.Add (card);
 			}
 			player.handPreflop = player.hand;
 			player.handPreflopString = player.GetHandPreflopString();

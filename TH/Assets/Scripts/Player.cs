@@ -239,15 +239,15 @@ public class Player {
 		handPreflopString = "";
 		handPreflopStringReversed = "";
 		bool isSuited = false;
-		if (hand.getCards().Count >= 2) {
-			if (hand.getCards()[0].getSuit() == hand.getCards()[1].getSuit()) {
+		if (hand.Count() >= Settings.playerHandSizePreflop) {
+			if (hand.getCard(0).getSuit() == hand.getCard(1).getSuit()) {
 				isSuited = true;
 			}
-			handPreflopString += Card.rankToMathString(hand.getCards()[0].getRank());
-			handPreflopString += Card.rankToMathString(hand.getCards()[1].getRank());
-			handPreflopStringReversed += Card.rankToMathString(hand.getCards()[1].getRank());
-			handPreflopStringReversed += Card.rankToMathString(hand.getCards()[0].getRank());
-			if (hand.getCards()[0].getRank() == hand.getCards()[1].getRank()) {
+			handPreflopString += Card.rankToMathString(hand.getCard(0).getRank());
+			handPreflopString += Card.rankToMathString(hand.getCard(1).getRank());
+			handPreflopStringReversed += Card.rankToMathString(hand.getCard(1).getRank());
+			handPreflopStringReversed += Card.rankToMathString(hand.getCard(0).getRank());
+			if (hand.getCard(0).getRank() == hand.getCard(1).getRank()) {
 			}
 			else if (isSuited) {
 				handPreflopString += "s";
@@ -477,7 +477,7 @@ public class Player {
 
 	public void ShowCards (Game game)
 	{
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
 			var card = handPreflop.getCard(i);
 			card.FaceUp = true;
 		}
