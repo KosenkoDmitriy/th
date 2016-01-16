@@ -66,18 +66,18 @@ public class Player {
 		return patternCurrent;
 	}
 
-	public Action GetFinalAction(double betToStayInGame, bool isCanToRaise) {
+	public Action GetFinalAction(double betMax, bool isCanToRaise) {
 		// summary:
 		// get pattern randomly
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
 
 		patternCurrent = GetAndSetCurrentPatternRandomly ();
-		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betToStayInGame, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
+		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMax, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
 		GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDx); // set actionTip get actionTipString (recommend action)
 
 		Action actionFinal = new Action();
-		double betDt = betToStayInGame - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
+		double betDt = betMax - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
 		if (betDt < 0) {
 //			Debug.LogWarning("betToStayInGame should be > 0 but:"+betToStayInGame);
 			betDt = 0;
@@ -86,7 +86,7 @@ public class Player {
 		double creditsAfterAction = betTotal - betDt;
 
 		if (actionTip.isRaise) {
-			betToStayInGame += patternCurrent.betMaxCallOrRaise;
+			betMax += patternCurrent.betMaxCallOrRaise;
 			betDt += patternCurrent.betMaxCallOrRaise;
 			actionFinal = new Raise (this, betDt);
 		} else if (actionTip.isCall) {
