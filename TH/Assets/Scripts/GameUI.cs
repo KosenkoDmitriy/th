@@ -185,7 +185,7 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 		
-		Settings.betCurrent += Settings.betDxMath * Settings.betCurrentMultiplier;
+		Settings.betCurrent += Settings.betMinMath * Settings.betCurrentMultiplier;
 		if (Settings.betCurrent > Settings.betMaxMath * Settings.betCurrentMultiplier)
 			Settings.betCurrent = Settings.betNull;
 
