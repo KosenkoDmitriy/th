@@ -32,7 +32,7 @@ public class AnteRound : BetRound {
 					}
 				} else {
 					player.actionFinal = new Call(player, betMax);
-
+					player.actionCurrentString = "CALL";
 //					player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
 //
 //					if (player.actionTip.isFold) { // always call in ante round
