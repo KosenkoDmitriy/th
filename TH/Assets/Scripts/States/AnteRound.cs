@@ -5,7 +5,6 @@ public class AnteRound : BetRound {
 	public AnteRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
-		this.betMin = Settings.betDxMath;
 		Settings.betCurrentMultiplier = Settings.betAnteMultiplier;
 	}
 
@@ -32,12 +31,14 @@ public class AnteRound : BetRound {
 						game.ui.panelInitBet.SetActive (true);
 					}
 				} else {
-					player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
+					player.actionFinal = new Call(player, betMax);
 
-					if (player.actionTip.isFold) { // always call in ante round
-						player.isFolded = false;
-						player.actionFinal = new Call(player, betMin);
-					}
+//					player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
+//
+//					if (player.actionTip.isFold) { // always call in ante round
+//						player.isFolded = false;
+//						player.actionFinal = new Call(player, betMin);
+//					}
 					player.actionFinal.Do (game);
 				}
 				game.ui.UpdatePlayerActionAndCredits(player);

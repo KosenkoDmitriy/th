@@ -14,7 +14,6 @@ public interface IBetRoundState
 public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
 	protected int subRoundCount;
-	protected double betMin;
 	public double betMax;
 	protected Game game;
 	protected double betToStayInGame, pot;

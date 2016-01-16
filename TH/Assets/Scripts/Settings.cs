@@ -18,22 +18,21 @@ static class Settings
 	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
 	
-	public static readonly double betPreflopFlopMultiplier = 1;//2
-	public static readonly double betAnteMultiplier = betPreflopFlopMultiplier; //2
-	public static readonly double betTurnRiverMultiplier = betPreflopFlopMultiplier * 2; //4
+	public static readonly double betAnteMultiplier = 2;
+	public static readonly double betPreflopFlopMultiplier = 2;
+	public static readonly double betTurnRiverMultiplier = 4;
+
+	public static readonly double betDxMath = 1;	// .25;	
+	public static readonly double betMaxMath = 2;	// 1.5;
+
 	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
-
-	public static readonly int betMaxMultiplier = 2;
-	public static readonly double betDxMath = 1;								// .25;	
-	public static readonly double betMaxMath = betDxMath * betMaxMultiplier;	// 1.5;
-
 	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
 
 	// bonus table
 	public static double betBonusMaxMultiplier = 10;
 	public static double betBonus = 0;
-	public static double betBonusMin = betDxMath;
-	public static double betBonusMax = betBonusMin * 5;
+	public static double betBonusMin = 1;
+	public static double betBonusMax = 5;
 
 	public static int paytableRowSize = 9; //rows
 	public static int paytableColumnSize = 6; //cols

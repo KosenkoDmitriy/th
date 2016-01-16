@@ -140,7 +140,7 @@ public class GameUI : MonoBehaviour
 		Double.TryParse (betAmountString, out game.betAmount);
 
 		if (game.betAmount > 0) {
-			game.betAmount /= Settings.betCreditsMultiplier; // * Settings.betCurrentMultiplier;
+			game.betAmount /= (Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
 		}
 		var player = game.player;
 		if (game.isGameRunning) {
@@ -155,7 +155,7 @@ public class GameUI : MonoBehaviour
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
 			game.isGameRunning = true;
-			game.player.actionFinal = new Raise(game.player, Settings.betAnteMultiplier);
+			game.player.actionFinal = new Raise(game.player, Settings.betCurrent);
 			game.player.actionFinal.Do (game);
 			if (lblBet) lblBet.text = Settings.betAnteMultiplier.to_s();
 		} else {
