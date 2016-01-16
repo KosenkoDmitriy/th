@@ -74,8 +74,9 @@ public class Game
 		return playerList;
 	}
 
-	public void WinInfo() {
+	public void WinInfo(List<Player> players) {
 		Game game = this; //TODO
+		game.winners = game.GetWinnersAndSetWinPercentage (players);
 
 		string winString = "";
 		double winAmount = game.potAmount;

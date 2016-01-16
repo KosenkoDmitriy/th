@@ -45,9 +45,7 @@ public class EndGame : BetRound {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			players.Add(player);
 		}
-		game.winners = game.GetWinnersAndSetWinPercentage (players);
-
-		game.WinInfo ();
+		game.WinInfo (players);
 
 //		LastAction ();
 //		game.state.isWaiting = true;
