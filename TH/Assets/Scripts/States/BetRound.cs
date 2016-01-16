@@ -102,10 +102,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				player.actionFinal.Do(game);
 			}
 
-			if (game.state.betMax < player.betAlreadyInvestedInCurrentSubRound) {
-				game.state.betMax = player.betAlreadyInvestedInCurrentSubRound;
-			}
-
 			game.ui.UpdatePlayerActionAndCredits(player);
 		}
 	}
