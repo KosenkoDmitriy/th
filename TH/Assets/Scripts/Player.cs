@@ -270,8 +270,8 @@ public class Player {
 			switch (x) {
 			case 0:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
@@ -279,8 +279,8 @@ public class Player {
 				break;
 			case 1:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [3]);
@@ -288,8 +288,8 @@ public class Player {
 				break;
 			case 2:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
@@ -297,8 +297,8 @@ public class Player {
 				break;
 			case 3:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
@@ -306,7 +306,7 @@ public class Player {
 				break;
 			case 4:
 			
-				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCard(0));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
@@ -315,7 +315,7 @@ public class Player {
 				break;
 			case 5:
 			
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
@@ -324,8 +324,8 @@ public class Player {
 				break;
 			case 6:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [4]);
@@ -333,8 +333,8 @@ public class Player {
 				break;
 			case 7:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [2]);
 				hand.Add (cards [4]);
@@ -342,8 +342,8 @@ public class Player {
 				break;
 			case 8:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
 				hand.Add (cards [4]);
@@ -351,7 +351,7 @@ public class Player {
 				break;
 			case 9:
 			
-				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCard(0));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
@@ -360,7 +360,7 @@ public class Player {
 				break;
 			case 10:
 			
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
@@ -369,8 +369,8 @@ public class Player {
 				break;
 			case 11:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [3]);
 				hand.Add (cards [4]);
@@ -378,8 +378,8 @@ public class Player {
 				break;
 			case 12:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [1]);
 				hand.Add (cards [3]);
 				hand.Add (cards [4]);
@@ -387,7 +387,7 @@ public class Player {
 				break;
 			case 13:
 
-				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCard(0));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [3]);
@@ -396,7 +396,7 @@ public class Player {
 				break;
 			case 14:
 			
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [1]);
 				hand.Add (cards [3]);
@@ -405,8 +405,8 @@ public class Player {
 				break;
 			case 15:
 			
-				hand.Add (this.hand.getCards() [0]);
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(0));
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
 				hand.Add (cards [4]);
@@ -414,7 +414,7 @@ public class Player {
 				break;
 			case 16:
 			
-				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCard(0));
 				hand.Add (cards [0]);
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
@@ -423,7 +423,7 @@ public class Player {
 				break;
 			case 17:
 			
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [0]);
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
@@ -432,7 +432,7 @@ public class Player {
 				break;
 			case 18:
 			
-				hand.Add (this.hand.getCards() [0]);
+				hand.Add (this.hand.getCard(0));
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
@@ -441,7 +441,7 @@ public class Player {
 				break;
 			case 19:
 			
-				hand.Add (this.hand.getCards() [1]);
+				hand.Add (this.hand.getCard(1));
 				hand.Add (cards [1]);
 				hand.Add (cards [2]);
 				hand.Add (cards [3]);
