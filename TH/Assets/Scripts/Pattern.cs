@@ -14,7 +14,7 @@ public class Pattern
 	public string actionPriority1;
 	
 	public int betMaxCallOrRaise;	// in number of bets
-	public double betDx;
+	public double betDt;
 	
 	public List<PatternBetRoundAndAction> betSubRounds;
 	public double percent;

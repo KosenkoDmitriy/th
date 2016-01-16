@@ -74,7 +74,7 @@ public class Player {
 
 		patternCurrent = GetAndSetCurrentPatternRandomly ();
 		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMax, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
-		GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDx); // set actionTip get actionTipString (recommend action)
+		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDt); // set actionTip get actionTipString (recommend action)
 
 		Action actionFinal = new Action();
 		double betDt = betMax - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
@@ -177,40 +177,38 @@ public class Player {
 		if (betToStayInGameTotal > 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound > 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
 
-		if (patternCurrent.betMaxCallOrRaise <= 0) patternCurrent.betMaxCallOrRaise = 1; //TODO check it
-		patternCurrent.betDx = patternCurrent.betMaxCallOrRaise;
-
 		string actionString = "";
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 				foreach (var betRound in patternCurrent.betSubRounds) {
 					if (betRound.costBet == betToStayInGameTotal && betRound.costBetTotal == betTotalInSubRound) {
-						patternCurrent.betDx = betRound.costBet - betRound.costBetTotal;
-						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
+						patternCurrent.betDt = betRound.costBet - betRound.costBetTotal;
+						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
 						actionString = betRound.name_action;
 						break;
 					}
 				}
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				patternCurrent.betDx = patternCurrent.betMaxCallOrRaise;
-				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
+				patternCurrent.betDt = patternCurrent.betMaxCallOrRaise;
+				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
 			}
 			if (string.IsNullOrEmpty (actionString)) {
 				if (patternCurrent.actionPriority2 != "OPEN") // unknown action
-					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDx);
+					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
 			}
 			if (patternCurrent != null)
 				if (string.IsNullOrEmpty (actionString))
-					actionString = GetAndSetActionTipByName(patternCurrent.actionDefault, patternCurrent.betDx);
+					actionString = GetAndSetActionTipByName(patternCurrent.actionDefault, patternCurrent.betDt);
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
-		if (patternCurrent.betDx > 0) patternCurrent.betDx *= Settings.betCurrentMultiplier;
+		if (patternCurrent.betDt > 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
 		if (betToStayInGameTotal > 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound > 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
 
 		actionCurrentString = actionString;
+
 		if (string.IsNullOrEmpty (actionCurrentString)) {
 			Debug.LogWarning ("actionCurrentString is empty patternCurrent.name:" + patternCurrent.name);
 		}
@@ -219,30 +217,22 @@ public class Player {
 	}
 	
 	private string GetAndSetActionTipByName(string action, double betToStayInGame) {
-
 		string actionFinalString = "";
+
 		actionTip = new ActionTip(this, betToStayInGame);
-//		double amountAfterAction = betTotal - betToStayInGame;
+
 		if (action == "CALL") {
-//			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
-				actionTip.isCall = true;
-				actionFinalString = action;
-//			}
+			actionTip.isCall = true;
+			actionFinalString = action;
 		} else if (action == "CHECK") {
-//			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
-				actionTip.isCheck = true;
-				actionFinalString = action;
-//			}
+			actionTip.isCheck = true;
+			actionFinalString = action;
 		} else if (action == "RAISE") {
-//			if (betToStayInGame <= amountAfterAction && amountAfterAction >= 0) {
-				actionTip.isRaise = true;
-				actionFinalString = action;
-//			}
+			actionTip.isRaise = true;
+			actionFinalString = action;
 		} else if (action == "FOLD") {
-//			if (betToStayInGame <= amountAfterAction && amountAfterAction < 0) {
-				actionTip.isFold = true;
-				actionFinalString = action;
-//			}
+			actionTip.isFold = true;
+			actionFinalString = action;
 		}
 		return actionFinalString;
 	}
@@ -473,6 +463,8 @@ public class Player {
 			if (hand.Count() == 5) {
 				hand = HandCombination.getBestHand(hand);
 				this.hands.Add (hand);
+			} else {
+				Debug.LogError("hand must have 5 cards instead of " + hand.Count());
 			}
 		}
 		
