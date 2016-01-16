@@ -33,35 +33,61 @@ public class AllInRound : BetRound {
 		}
 
 		// reorder players - first all in player
-		List<Player> playersAllIn = before;
+		List<Player> playersAllIn = new List<Player>();
+		playersAllIn.AddRange (before);
 		playersAllIn.AddRange (after);
 
-		do {
-			double minAllIn = GetMinBetTotal (playersAllIn);
-			Pot pot = new Pot();
-			foreach (var player in playersAllIn) {
-				player.betAlreadyInvestedInCurrentSubRound += minAllIn;
-				player.betTotal -= minAllIn;
-				pot.pot = game.potAmount + betTotal;
-				pot.maxWinIfWin += minAllIn;
+		game.winners = game.GetWinnersAndSetWinPercentage (playersAllIn);
 
-				if (player.betTotal <= 0) {
-					pot.players.Add(player);
-					playersAllIn.Remove (player);
-				}
-			}
-		} while (playersAllIn.Count > 0);
+		List<Player> players = playersAllIn;
+
+		double minAllIn = GetMinBetTotal (playersAllIn);
+
+		do {
+			var list = GetList(playersAllIn);
+			if (list.Count <= 0)
+				break;
+		} while (true);
 
 		//TODO: detect winners
 		foreach (var pot in pots) {
-			game.winners = game.GetWinnersAndSetWinPercentage (pot.players); 
+			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
+			double winAmount = pot.maxWinIfWin/tempWinners.Count;
+			foreach(var winer in game.winners) {
+				foreach(var player in tempWinners) {
+					if (winer.id == player.id) {
+						player.betTotal += winAmount;
+						player.lblCredits.text = player.betTotal.to_s();
+					}
+				}
+			}
 		}
 
 
 //		PlayerCollection coll = new PlayerCollection ();
 //		for(int i = 0; i < players
 	}
-
+	double minAllIn;
+	private List<Player> GetList(List<Player> playersAllIn) {
+		minAllIn = GetMinBetTotal (playersAllIn);
+		Pot pot = new Pot();
+		var players = new List<Player>();
+		foreach (var player in playersAllIn) {
+			player.betAlreadyInvestedInCurrentSubRound += minAllIn;
+			player.betTotal -= minAllIn;
+			pot.pot = game.potAmount + player.betTotal;
+			pot.maxWinIfWin += minAllIn;
+			
+			if (player.betTotal <= 0) {
+				pot.players.Add(player);
+			} else {
+				players.Add(player);
+			}
+		}
+		pots.Add (pot);
+		return players;
+	}
+	
 	private double GetMinBetTotal(List<Player> playersAllIn) {
 		// detect player with min credits/betTotal
 		double minAllIn = playerFirstToAllIn.betTotal;
