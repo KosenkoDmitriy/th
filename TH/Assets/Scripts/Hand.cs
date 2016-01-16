@@ -59,7 +59,7 @@ public class Hand {
 	public Card getCard(int index)
 	{
 		if (index >= cards.Count)
-			throw new ArgumentOutOfRangeException();
+			index = cards.Count - 1; //TODO: throw new ArgumentOutOfRangeException();
 		return cards[index];
 	}
 	List<Card> QuickSortRank(List<Card> myCards)
