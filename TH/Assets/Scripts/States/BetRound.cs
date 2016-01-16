@@ -44,7 +44,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		if (game != null && game.playerIterator != null)
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			player.betAlreadyInvestedInCurrentSubRound = 0;
-			player.bet = 0;
 		}
 	}
 	

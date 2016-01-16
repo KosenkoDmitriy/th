@@ -77,17 +77,15 @@ public class Player {
 		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDt); // set actionTip get actionTipString (recommend action)
 
 		Action actionFinal = new Action();
-		double betDt = betMax - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
+		double betDt = patternCurrent.betDt; // betMax - betAlreadyInvestedInCurrentSubRound;
 		if (betDt < 0) {
-//			Debug.LogWarning("betToStayInGame should be > 0 but:"+betToStayInGame);
+			Debug.LogWarning("betToStayInGame should be > 0 but:" + betDt);
 			betDt = 0;
 		}
 
 		double creditsAfterAction = betTotal - betDt;
 
 		if (actionTip.isRaise) {
-			betMax += patternCurrent.betMaxCallOrRaise;
-			betDt += patternCurrent.betMaxCallOrRaise;
 			actionFinal = new Raise (this, betDt);
 		} else if (actionTip.isCall) {
 			actionFinal = new Call (this, betDt);
@@ -498,7 +496,6 @@ public class Player {
 	public bool isFolded;
 	public bool isWinner;
 
-	public double bet;
 	public double betAlreadyInvestedInCurrentSubRound;
 
 //	public double credits; // credits/creditMultiplier

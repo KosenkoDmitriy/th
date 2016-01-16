@@ -62,24 +62,16 @@ public class Action : IAction {
 	#endregion
 
 	private void DoActive(Game game) {
-		if (betDx >= 0) {
-			p.bet = betDx;
-			p.betAlreadyInvestedInCurrentSubRound += betDx;
-			p.betTotal -= betDx;
+		p.betAlreadyInvestedInCurrentSubRound += betDx;
+		p.betTotal -= betDx;
 
-			if (p.isReal) { //raise after action
-				// call before action
-				game.ui.lblCall.text = betDx.to_s();
-//				double dt = betMax - player.betAlreadyInvestedInCurrentSubRound;
-//				if (dt > 0) {
-//					game.ui.lblCall.text = dt.to_s();
-//				}
-				double dt = p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
-				if (dt > 0) {
-					game.ui.lblRaise.text = dt.to_s();
-				} else {
-					game.ui.lblRaise.text = Settings.betNull.to_s();
-				}
+		if (p.isReal) {
+			game.ui.lblCall.text = betDx.to_s();
+
+			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
+				game.ui.lblRaise.text = p.betAlreadyInvestedInCurrentSubRound.to_s();
+			} else {
+				game.ui.lblRaise.text = Settings.betNull.to_s();
 			}
 		}
 	}
