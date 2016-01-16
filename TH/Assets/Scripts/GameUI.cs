@@ -80,9 +80,12 @@ public class GameUI : MonoBehaviour
 	public void btnRaiseClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.betAmount = 0;
+		Settings.betCurrent = game.betAmount = 0;
 		HideDynamicPanels ();
-		if (panelInitBet) panelInitBet.SetActive (true);
+		if (panelInitBet) {
+			panelInitBet.SetActive (true);
+			inputBetField.text = Settings.betCurrent.to_s();
+		}
 	}
 
 	public void btnFoldClick()
