@@ -15,7 +15,7 @@ public class ActionTip: Action {
 	public bool isFold;
 	public bool isCheck;
 	public bool isRaise;
-	//	public bool isAllIn;
+	public bool isAllIn;
 }
 
 public class Action : IAction {
@@ -130,5 +130,20 @@ public class Raise : Action
 	public override void Do(Game game) {
 		base.Do (game);
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
+	}
+}
+
+
+public class AllIn : Action
+{
+	public AllIn (Player player, double betToStayInGame)
+	{
+		this.p = player;
+		this.betDx = betToStayInGame;
+	}
+	
+	public override void Do(Game game) {
+		game.ui.audio.PlayOneShot(game.ui.soundRaise);
+		game.state = new AllInRound (game, this.p, this.betDx);
 	}
 }

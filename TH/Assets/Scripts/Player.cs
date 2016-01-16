@@ -101,8 +101,7 @@ public class Player {
 		if (betTotalAfterAction < 0) {
 			if (betTotal >= 0) {
 				if (Settings.isDev) actionCurrentString += "> ALL IN"; else actionCurrentString = "ALL IN";
-				//TODO: AllIn?
-//				actionFinal = new AllIn(this, betDt);
+				actionFinal = new AllIn(this, betDt);
 			} else {
 				if (Settings.isDev) actionCurrentString += "> FOLD"; else actionCurrentString = "FOLD";
 				actionFinal = new Fold (this, betDt);
@@ -125,6 +124,8 @@ public class Player {
 			}
 		} else if (actionTip.isCheck) {
 			actionFinal = new Check (this, betDt);
+		} else if (actionTip.isAllIn) {
+			actionFinal = new AllIn (this, betDt);
 		} else if (actionTip.isFold) {
 			if (isWinner) {
 				if (betTotalSubRoundAfterA == betMax) {
@@ -140,7 +141,7 @@ public class Player {
 					actionFinal = new Raise (this, betDt);
 				} else if (betTotalSubRoundAfterA < betMax) {
 					if (Settings.isDev) actionCurrentString += "> ALL IN (w)"; else actionCurrentString = "ALL IN (w)";
-//					actionFinal = new AllIn (this, betDt);
+					actionFinal = new AllIn (this, betDt);
 				}
 			} else if (betDt == 0) {
 				if (Settings.isDev) actionCurrentString += "> CHECK"; else actionCurrentString = "CHECK";
@@ -231,8 +232,7 @@ public class Player {
 				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				if (patternCurrent.actionPriority2 != "OPEN") // unknown action
-					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
+				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
 			}
 			if (patternCurrent != null)
 				if (string.IsNullOrEmpty (actionString))
@@ -269,6 +269,9 @@ public class Player {
 			actionFinalString = action;
 		} else if (action == "FOLD") {
 			actionTip.isFold = true;
+			actionFinalString = action;
+		} else if (action == "OPEN") {
+			actionTip.isAllIn = true;
 			actionFinalString = action;
 		}
 		return actionFinalString;
@@ -534,6 +537,7 @@ public class Player {
 	public bool isReal;
 	public bool isFolded;
 	public bool isWinner;
+	public bool isAllIn;
 
 	public double betAlreadyInvestedInCurrentSubRound;
 
