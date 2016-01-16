@@ -33,7 +33,7 @@ static class Settings
 	public static double betBonusMaxMultiplier = 10;
 	public static double betBonus = 0;
 	public static double betBonusMin = betDxMath;
-	public static double betBonusMax = betBonusMin * (betMaxMultiplier + 1);
+	public static double betBonusMax = betBonusMin * 5;
 
 	public static int paytableRowSize = 9; //rows
 	public static int paytableColumnSize = 6; //cols
