@@ -96,7 +96,6 @@ public class Player {
 				actionCurrentString += "> CHECK";
 				actionFinal = new Check (this, betDt);
 			} else {
-				isFolded = true;
 				actionFinal = new Fold (this, betDt);
 			}
 		}

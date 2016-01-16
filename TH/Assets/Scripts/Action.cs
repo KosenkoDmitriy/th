@@ -105,7 +105,6 @@ public class Check : Action
 
 public class Fold : Action
 {
-
 	public Fold (Player player, double betToStayInGame)
 	{
 		this.p = player;
@@ -113,6 +112,7 @@ public class Fold : Action
 	}
 
 	public override void Do(Game game) {
+		p.isFolded = true;
 		base.Do (game);
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}
