@@ -24,6 +24,10 @@ public class InitGame : BetRound {
 		if (game.ui.payTable != null) game.ui.payTable.SelectColumnByIndex(-1);
 		Settings.betBonus = 0;
 		game.betAmount = 0;
+		Settings.betCurrent = 0;
+
+		if (game.ui.inputBetField)
+			game.ui.inputBetField.text = game.betAmount.to_s ();
 
 		game.ui.ClearAll ();
 		
