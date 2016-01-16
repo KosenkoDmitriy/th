@@ -85,7 +85,12 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			
 			if (player.isReal) {
 				game.state.isWaiting = true;
-				game.ui.lblCall.text = betMax.to_s();
+
+				double dt = betMax - player.betAlreadyInvestedInCurrentSubRound;
+				if (dt > 0) {
+					game.ui.lblCall.text = dt.to_s();
+				}
+				game.ui.lblRaise.text = Settings.betNull.to_s();
 
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
@@ -95,6 +100,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			} else {
 				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise);
 				player.actionFinal.Do(game);
+			}
+
+			if (game.state.betMax < player.betAlreadyInvestedInCurrentSubRound) {
+				game.state.betMax = player.betAlreadyInvestedInCurrentSubRound;
 			}
 
 			game.ui.UpdatePlayerActionAndCredits(player);

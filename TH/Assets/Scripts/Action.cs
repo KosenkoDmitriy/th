@@ -9,7 +9,7 @@ public class ActionTip: Action {
 	public ActionTip (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.betToStayInGame = betToStayInGame;
+		this.betDx = betToStayInGame;
 	}
 	public bool isCall;
 	public bool isFold;
@@ -21,10 +21,10 @@ public class ActionTip: Action {
 public class Action : IAction {
 	public Action() {}
 
-	public Action (Player player, double betToStayInGame)
+	public Action (Player player, double betDx)
 	{
 		this.p = player;
-		this.betToStayInGame = betToStayInGame;
+		this.betDx = betDx;
 	}
 
 	#region IAction implementation
@@ -49,6 +49,10 @@ public class Action : IAction {
 				}
 			}
 
+			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
+				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
+			}
+
 			if (p.position == game.playerIterator.LastActive().position) { // last player
 				game.state.CheckForNextSubOrRound();
 			}
@@ -58,19 +62,30 @@ public class Action : IAction {
 	#endregion
 
 	private void DoActive(Game game) {
-		if (betToStayInGame >= 0) {
-			p.bet = betToStayInGame;
-			p.betAlreadyInvestedInCurrentSubRound += betToStayInGame;
-			p.betTotal -= betToStayInGame;
-			
-			if (game.state.betMax < p.betAlreadyInvestedInCurrentSubRound){
-				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
+		if (betDx >= 0) {
+			p.bet = betDx;
+			p.betAlreadyInvestedInCurrentSubRound += betDx;
+			p.betTotal -= betDx;
+
+			if (p.isReal) { //raise after action
+				// call before action
+				game.ui.lblCall.text = betDx.to_s();
+//				double dt = betMax - player.betAlreadyInvestedInCurrentSubRound;
+//				if (dt > 0) {
+//					game.ui.lblCall.text = dt.to_s();
+//				}
+				double dt = p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
+				if (dt > 0) {
+					game.ui.lblRaise.text = dt.to_s();
+				} else {
+					game.ui.lblRaise.text = Settings.betNull.to_s();
+				}
 			}
 		}
 	}
 
 	public Player p;
-	public double betToStayInGame;
+	public double betDx;
 }
 
 public class Call : Action
@@ -78,7 +93,7 @@ public class Call : Action
 	public Call (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.betToStayInGame = betToStayInGame;
+		this.betDx = betToStayInGame;
 	}
 	public override void Do(Game game) {
 		base.Do (game);
@@ -92,7 +107,7 @@ public class Check : Action
 	public Check (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.betToStayInGame = betToStayInGame;
+		this.betDx = betToStayInGame;
 	}
 }
 
@@ -102,7 +117,7 @@ public class Fold : Action
 	public Fold (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.betToStayInGame = betToStayInGame;
+		this.betDx = betToStayInGame;
 	}
 
 	public override void Do(Game game) {
@@ -117,7 +132,7 @@ public class Raise : Action
 	public Raise (Player player, double betToStayInGame)
 	{
 		this.p = player;
-		this.betToStayInGame = betToStayInGame;
+		this.betDx = betToStayInGame;
 	}
 
 	public override void Do(Game game) {

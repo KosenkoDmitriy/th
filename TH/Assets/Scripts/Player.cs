@@ -86,6 +86,8 @@ public class Player {
 		double creditsAfterAction = betTotal - betDt;
 
 		if (actionTip.isRaise) {
+			betToStayInGame += patternCurrent.betMaxCallOrRaise;
+			betDt += patternCurrent.betMaxCallOrRaise;
 			actionFinal = new Raise (this, betDt);
 		} else if (actionTip.isCall) {
 			actionFinal = new Call (this, betDt);
@@ -99,8 +101,6 @@ public class Player {
 				isFolded = true;
 				actionFinal = new Fold (this, betDt);
 			}
-		} else if (actionTip.isRaise) {
-			actionFinal = new Raise (this, betDt);
 		}
 		/*
 		if (!isCanToRaise) {
@@ -177,6 +177,9 @@ public class Player {
 		if (betToStayInGameTotal > 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound > 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
 
+		if (patternCurrent.betMaxCallOrRaise <= 0) patternCurrent.betMaxCallOrRaise = 1; //TODO check it
+		patternCurrent.betDx = patternCurrent.betMaxCallOrRaise;
+
 		string actionString = "";
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
@@ -203,11 +206,15 @@ public class Player {
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
-
+		if (patternCurrent.betDx > 0) patternCurrent.betDx *= Settings.betCurrentMultiplier;
 		if (betToStayInGameTotal > 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound > 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
 
 		actionCurrentString = actionString;
+		if (string.IsNullOrEmpty (actionCurrentString)) {
+			Debug.LogWarning ("actionCurrentString is empty patternCurrent.name:" + patternCurrent.name);
+		}
+
 		return actionString;
 	}
 	
