@@ -83,33 +83,73 @@ public class Player {
 			betDt = 0;
 		}
 
-		double creditsAfterAction = betTotal - betDt;
+		if (!isCanToRaise) {
+			// choosing between all available actions except raise
+			if (actionTip.isRaise) {
+				if (string.IsNullOrEmpty(actionCurrentString))
+					actionCurrentString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
+				if (string.IsNullOrEmpty(actionCurrentString))
+					GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
+				if (string.IsNullOrEmpty(actionCurrentString))
+					GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betDt);
+			}
+		}
 
+		double betTotalAfterAction = betTotal - betDt;
+		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
+
+		if (betTotalAfterAction < 0) {
+			if (betTotal >= 0) {
+				if (Settings.isDev) actionCurrentString += "> ALL IN"; else actionCurrentString = "ALL IN";
+				//TODO: AllIn?
+//				actionFinal = new AllIn(this, betDt);
+			} else {
+				if (Settings.isDev) actionCurrentString += "> FOLD"; else actionCurrentString = "FOLD";
+				actionFinal = new Fold (this, betDt);
+			}
+			return actionFinal;
+		} else
 		if (actionTip.isRaise) {
-			actionFinal = new Raise (this, betDt);
+			if (betTotalSubRoundAfterA > betMax) {
+				actionFinal = new Raise (this, betDt);
+			} else if (betTotalSubRoundAfterA == betMax) {
+				if (Settings.isDev) actionCurrentString += "> CALL"; else actionCurrentString = "CALL";
+				actionFinal = new Call (this, betDt);
+			}
 		} else if (actionTip.isCall) {
-			actionFinal = new Call (this, betDt);
+			if (betDt == 0) {
+				if (Settings.isDev) actionCurrentString += "> CHECK"; else actionCurrentString = "CHECK";
+				actionFinal = new Check (this, betDt);
+			} else {
+				actionFinal = new Call (this, betDt);
+			}
 		} else if (actionTip.isCheck) {
 			actionFinal = new Check (this, betDt);
 		} else if (actionTip.isFold) {
 			if (isWinner) {
-				actionCurrentString += "> CHECK";
+				if (betTotalSubRoundAfterA == betMax) {
+					if (betDt == 0) {
+						if (Settings.isDev) actionCurrentString += "> CHECK (w)"; else actionCurrentString = "CHECK (w)";
+						actionFinal = new Check (this, betDt);
+					} else {
+						if (Settings.isDev) actionCurrentString += "> CALL (w)"; else actionCurrentString = "CALL (w)";
+						actionFinal = new Call (this, betDt);
+					}
+				} else if (betTotalSubRoundAfterA > betMax) {
+					if (Settings.isDev) actionCurrentString += "> RAISE (w)"; else actionCurrentString = "RAISE (w)";
+					actionFinal = new Raise (this, betDt);
+				} else if (betTotalSubRoundAfterA < betMax) {
+					if (Settings.isDev) actionCurrentString += "> ALL IN (w)"; else actionCurrentString = "ALL IN (w)";
+//					actionFinal = new AllIn (this, betDt);
+				}
+			} else if (betDt == 0) {
+				if (Settings.isDev) actionCurrentString += "> CHECK"; else actionCurrentString = "CHECK";
 				actionFinal = new Check (this, betDt);
 			} else {
 				actionFinal = new Fold (this, betDt);
 			}
 		}
 		/*
-		if (!isCanToRaise) {
-			// choosing between all available actions except raise
-			if (actionTip.isRaise)
-				GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDx);
-			if (actionTip.isRaise)
-				GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDx);
-			if (actionTip.isRaise)
-				GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betDx);
-		}
-
 		Action actionFinal = new Action();
 
 		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
