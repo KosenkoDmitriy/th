@@ -79,7 +79,7 @@ public class Player {
 		Action actionFinal = new Action();
 		double betDt = betToStayInGame - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
 		if (betDt < 0) {
-			Debug.LogWarning("betToStayInGame should be > 0 but:"+betToStayInGame);
+//			Debug.LogWarning("betToStayInGame should be > 0 but:"+betToStayInGame);
 			betDt = 0;
 		}
 

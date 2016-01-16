@@ -399,11 +399,13 @@ public class GameUI : MonoBehaviour
 	private void UpdateInterval() {
 //		test ();
 //		return;
-
-		if (game.state != null && !game.state.isWaiting) {
-			game.state.SubRound ();
+		if (game == null) {
+			Debug.LogError ("game is null");
+		} else {
+			if (game.state != null && !game.state.isWaiting) {
+				game.state.SubRound ();
+			}
 		}
-
 	}
 
 	private void test() {
