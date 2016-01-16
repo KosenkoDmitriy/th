@@ -63,7 +63,6 @@ public class Constants {
 			} else {
 				Pattern lastPattern = patterns[patterns.Count-1];
 				PatternBetRoundAndAction betRound = new PatternBetRoundAndAction();
-
 				var betChars = arg0.ToCharArray();
 				betRound.name_action = arg1;
 				double costBet = 0;
@@ -89,9 +88,7 @@ public class Constants {
 	public List<PatternPreflop> GetPreflops() {
 		if (preflops.Count > 0) return preflops;
 
-//		var players = Settings.GetPlayers ();
 		int position = 0;
-//		var player = players[position];
 
 		foreach(var item in c_str_preflop) {
 
@@ -109,32 +106,21 @@ public class Constants {
 
 			if (arg0 == "POSITION") {
 				Int32.TryParse(arg1, out position);
-//				player = players[position];
-//				player.preflopBets = new List<PreFlop>();
 			} else if (arg0 == "HAND") {
 				var pf = new PatternPreflop();
 				pf.hand = arg1;
 				pf.position = position;
 				pf.pattern = GetPatternByName(arg2);
-//				if (pf.pattern == null) pf.pattern = new Pattern();
 				pf.pattern.percent = 100;
 				pf.alt_patterns = new List<Pattern>();
 				preflops.Add(pf);
-//				player.preflopBets.Add(pf);
 			} else if (arg0 == "ALT") {
-				var altPattern = new Pattern();
-				altPattern.name = arg1;
+				var altPattern = GetPatternByName(arg1);
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
 				altPattern.percent = percent;
 				preflops[preflops.Count-1].pattern.percent -= percent;
 				preflops[preflops.Count-1].alt_patterns.Add(altPattern);
-				var pl = preflops.Last();
-//				preflops.Last().pattern.percent -= percent;
-//				preflops.Last().alt_patterns.Add(altPattern);
-
-//				player.preflopBets.Last().pattern.percent -= percent;
-//				player.preflopBets.Last().alt_patterns.Add(altPattern);
 			}
 //		"POSITION	0	",
 //		"HAND	A3s	RAISE/CALL2",
@@ -191,13 +177,10 @@ public class Constants {
 				Double.TryParse(arg2, out max);
 				flop.winPercentMin = min;
 				flop.winPercentMin = max;
-				
 				flop.pattern = GetPatternByName(arg3);
-				
 				flop.pattern.percent = 100;
 			} else if (arg0 == "ALT") {
-				var altPattern = new Pattern();
-				altPattern.name = arg1;
+				var altPattern = GetPatternByName(arg1);
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
 				flop.pattern.percent -= percent;
