@@ -82,7 +82,14 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		// bet sub rounds
 		if (!game.state.isWaiting) {
 			var player = game.playerIterator.NextActive();
-			
+
+			if (IsOneActivePlayer()) { // if one active player then he is winner
+				game.winners = new List<Player>();
+				game.winners.Add(player);
+				game.state = new EndGame(game);
+				return;
+			}
+
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
@@ -122,6 +129,27 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			}
 		}
 		return isNextBetRound;
+	}
+
+	private bool IsOneActivePlayer() {
+		bool isOneActivePlayer = false;
+		var list = new List<Player> ();
+
+//		var iterator = new PlayerIterator (game.playerCollection);
+//		while (!iterator.IsDone) {
+//			var player = iterator.NextActive();
+//			list.Add(player);
+//		}
+
+		for (Player player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+			if (!player.isFolded)
+				list.Add(player);
+		}
+
+		if (list.Count <= 1)
+			isOneActivePlayer = true;
+
+		return isOneActivePlayer;
 	}
 
 	public void SetPatternAndHisAlternatives(List<PatternFTR> items) {
