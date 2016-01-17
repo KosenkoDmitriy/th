@@ -13,7 +13,7 @@ public class EndGame : BetRound {
 
 
 		// display all community cards
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < Settings.playerHandMaxSize; i++) {
 			var card = game.cards[i];
 //			if (!card.FaceUp)
 				card.FaceUp = true;

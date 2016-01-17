@@ -162,8 +162,8 @@ public class AllIn : Action
 				game.state.betMax = p.betTotal;
 			}
 			p.lblCredits.text = Settings.betNull.to_s ();
-			game.potAmount += p.betTotal;
-			game.ui.lblPot.text = game.potAmount.to_s ();
+//			game.potAmount += p.betTotal;
+//			game.ui.lblPot.text = game.potAmount.to_s ();
 		}
 
 

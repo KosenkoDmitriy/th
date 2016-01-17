@@ -135,7 +135,13 @@ public class AllInRound : BetRound {
 		game.winners = game.GetWinnersAndSetWinPercentage (playersAllIn);
 		
 		double minAllIn = GetMinBetTotal (playersAllIn);
-		
+
+		// display all community cards
+		for (int i = 0; i < Settings.playerHandMaxSize; i++) {
+			var card = game.cards[i];
+			card.FaceUp = true;
+		}
+
 		do {
 			var list = GetList (playersAllIn);
 			if (list.Count <= 0)
@@ -143,19 +149,31 @@ public class AllInRound : BetRound {
 		} while (true);
 		
 		//TODO: detect winners
-		string winInfo = "ALL IN";
+		string winInfo = "";
+
+//		foreach (var pot in pots) {
+//			pot.pot = game.potAmount - pot.maxWinIfWin;
+//		}
 
 		// main pot
 		double winPotAmount = game.potAmount/game.winners.Count;
+//		winInfo += "Main Pot:\n";
 		foreach(var player in game.winners) {
 			player.betTotal += winPotAmount;
 			player.lblCredits.text = player.betTotal.to_s();
+//			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.to_s());
 		}
 
+//		if (pots.Count > 0) {
+////			winInfo += "\nOther Pots:\n";
+//			winInfo += "\nmore info:\n";
+//		}
+
 		// others pots
+		int no = 1;
 		foreach (var pot in pots) {
 			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
-			double winAmount = pot.maxWinIfWin/tempWinners.Count;
+			double winAmount = pot.maxWinIfWin / tempWinners.Count;
 			foreach(var winer in game.winners) {
 				winer.ShowCards(game);
 
@@ -163,11 +181,17 @@ public class AllInRound : BetRound {
 					if (winer.id == player.id) {
 						player.betTotal += winAmount;
 						player.lblCredits.text = player.betTotal.to_s();
+//						winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.to_s(), no);
+//						winInfo += string.Format("{0} win {1}\n", player.name, winAmount.to_s());
+						no++;
 					}
 				}
 			}
 		}
 
+		foreach (var player in game.winners) {
+			winInfo += string.Format ("{0} win {1} credits\n", player.name, player.betTotal.to_s ());
+		}
 		
 		game.ui.panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
