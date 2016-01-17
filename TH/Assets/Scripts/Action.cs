@@ -144,6 +144,7 @@ public class AllIn : Action
 	
 	public override void Do(Game game) {
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
+
 		p.isAllIn = true;
 		if (game.state.playerFirstToAllIn == null) {
 			game.state = new AllInRound (game, p, game.state.betMax);
@@ -160,9 +161,7 @@ public class AllIn : Action
 			if (p.betTotal > game.state.betMax) {
 				game.state.betMax = p.betTotal;
 			}
-//			p.betTotal = 0;
 		}
-
 
 		game.ui.UpdatePlayerActionAndCredits(p);
 

@@ -31,6 +31,9 @@ public class AllInRound : BetRound {
 			player.betAlreadyInvestedInCurrentSubRound -= betBeforeAllIn;
 			player.betTotal += betBeforeAllIn;
 			game.potAmount += player.betAlreadyInvestedInCurrentSubRound;
+
+			player.lblCredits.text = player.betTotal.to_s();
+			game.ui.lblPot.text = game.potAmount.to_s();
 		}
 		
 		// reorder players - first all in player
