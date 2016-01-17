@@ -135,13 +135,15 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		bool isOneActivePlayer = false;
 		var list = new List<Player> ();
 
-//		var iterator = new PlayerIterator (game.playerCollection);
+		var iterator = new PlayerIterator (game.playerCollection);
+
 //		while (!iterator.IsDone) {
-//			var player = iterator.NextActive();
-//			list.Add(player);
+//			var player = iterator.Next();
+//			if (!player.isFolded)
+//				list.Add(player);
 //		}
 
-		for (Player player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+		for (Player player = iterator.First(); !iterator.IsDoneFor; player = iterator.Next()) {
 			if (!player.isFolded)
 				list.Add(player);
 		}
