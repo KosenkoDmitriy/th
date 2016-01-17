@@ -20,7 +20,7 @@ public class AllInRound : BetRound {
 			if (!player.isFolded) {
 				if(player.position < playerFirstToAllIn.position) {
 					before.Add(player);
-				} else if (player.position >= playerFirstToAllIn.position) {
+				} else if (player.position > playerFirstToAllIn.position) {
 					after.Add(player);
 				}
 			}
