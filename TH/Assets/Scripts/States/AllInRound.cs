@@ -189,10 +189,16 @@ public class AllInRound : BetRound {
 			}
 		}
 
-		foreach (var player in game.winners) {
-			winInfo += string.Format ("{0} win {1} credits\n", player.name, player.betTotal.to_s ());
-		}
+//		foreach (var player in game.winners) {
+//			winInfo += string.Format ("{0} win {1} credits\n", player.name, player.betTotal.to_s ());
+//		}
 		
+//		game.ui.panelWin.SetActive (true);
+//		game.ui.lblWinInfo.text = winInfo;
+
+		game.WinInfo (game.winners);
+
+
 		game.ui.panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
@@ -202,9 +208,6 @@ public class AllInRound : BetRound {
 		game.ui.panelGame.SetActive(false);
 
 		playerFirstToAllIn = null;
-
-		game.ui.panelWin.SetActive (true);
-		game.ui.lblWinInfo.text = winInfo;
 
 	}
 
