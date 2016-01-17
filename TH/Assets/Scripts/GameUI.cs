@@ -100,9 +100,10 @@ public class GameUI : MonoBehaviour
 
 	public void btnAllInClick()
 	{
-//		game.MathState.River (game);
-//		game.state = new AllInRound (game, game.player, game.player.betAlreadyInvestedInCurrentSubRound - game.state.betMax); //TODO
 		audio.PlayOneShot(soundBtnClicked);
+
+		game.player.actionFinal = new AllIn (game.player, game.state.betMax);
+		game.player.actionFinal.Do (game);
 	}
 
 	public void btnHelpClick()

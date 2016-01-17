@@ -144,6 +144,29 @@ public class AllIn : Action
 	
 	public override void Do(Game game) {
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
-		game.state = new AllInRound (game, this.p, this.betDx);
+		p.isAllIn = true;
+		if (game.state.playerFirstToAllIn == null) {
+			game.state = new AllInRound (game, p, game.state.betMax);
+		} else {
+			if (p.isReal) {
+
+			} else {
+//				game.player.actionFinal = new AllIn (game.player, game.state.betMax);
+//				game.player.actionFinal.Do (game);
+//				game.player.isAllIn = true;
+			}
+		}
+
+		if (p.isAllIn) {
+			game.state.playersAllIn.Add (p);
+			if (p.betTotal > game.state.betMax) {
+				game.state.betMax = p.betTotal;
+			}
+			p.betTotal = 0;
+		}
+		
+		game.ui.UpdatePlayerActionAndCredits(p);
+		
+		game.state.isWaiting = false;
 	}
 }

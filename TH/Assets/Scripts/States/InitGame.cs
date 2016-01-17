@@ -9,8 +9,8 @@ public class InitGame : BetRound {
 
 	public override void LastAction ()
 	{
-//		game.state = new AnteRound (game);
-		game.state = new AllInRound (game, game.players[0], 100); // TODO after test will remove
+		game.state = new AnteRound (game);
+//		game.state = new AllInRound (game, game.players[0], 100); // TODO after test will remove
 	}
 
 	public InitGame(Game game2) {
@@ -20,6 +20,8 @@ public class InitGame : BetRound {
 
 		game.isGameEnd = true;
 		game.isGameRunning = false;
+
+//		game.state.playerFirstToAllIn = null;
 
 		if (game.ui.payTable != null) game.ui.payTable.SelectColumnByIndex(-1);
 		Settings.betBonus = 0;
