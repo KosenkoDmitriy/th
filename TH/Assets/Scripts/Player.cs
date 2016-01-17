@@ -101,8 +101,8 @@ public class Player {
 		if (betTotalAfterAction < 0) {
 			if (betTotal >= 0 && isWinner) {
 				if (Settings.isDev) actionCurrentString += "> ALL IN (w)"; else actionCurrentString = "ALL IN (w)";
-				//actionFinal = new AllIn(this, betDt);
-				game.state = new AllInRound(game, this, betDt);
+				actionFinal = new AllIn(this, betDt);
+//				game.state = new AllInRound(game, this, betDt);
 			} else {
 				if (Settings.isDev) actionCurrentString += "> FOLD"; else actionCurrentString = "FOLD";
 				actionFinal = new Fold (this, betDt);
@@ -126,8 +126,8 @@ public class Player {
 		} else if (actionTip.isCheck) {
 			actionFinal = new Check (this, betDt);
 		} else if (actionTip.isAllIn) {
-//			actionFinal = new AllIn (this, betDt);
-			game.state = new AllInRound(game, this, betDt);
+			actionFinal = new AllIn (this, betDt);
+//			game.state = new AllInRound(game, this, betDt);
 		} else if (actionTip.isFold) {
 			if (isWinner) {
 				if (betTotalSubRoundAfterA == betMax) {
@@ -143,8 +143,8 @@ public class Player {
 					actionFinal = new Raise (this, betDt);
 				} else if (betTotalSubRoundAfterA < betMax) {
 					if (Settings.isDev) actionCurrentString += "> ALL IN (w)"; else actionCurrentString = "ALL IN (w)";
-//					actionFinal = new AllIn (this, betDt);
-					game.state = new AllInRound(game, this, betDt);
+					actionFinal = new AllIn (this, betDt);
+//					game.state = new AllInRound(game, this, betDt);
 				}
 			} else if (betDt == 0) {
 				if (Settings.isDev) actionCurrentString += "> CHECK"; else actionCurrentString = "CHECK";

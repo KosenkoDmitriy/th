@@ -77,6 +77,8 @@ public class AllInRound : BetRound {
 				game.ui.btnCall.GetComponent<Button>().interactable = false; 	//.SetActive(false);
 				game.ui.btnCheck.GetComponent<Button>().interactable = false;	//.SetActive(false);
 				game.ui.btnRaise.GetComponent<Button>().interactable = false;	//.SetActive(false);
+				game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
+				game.ui.btnFold.GetComponent<Button>().interactable = false;	//.SetActive(false);
 
 			} else {
 				if (player.isWinner) {
@@ -165,6 +167,8 @@ public class AllInRound : BetRound {
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.btnRaise.GetComponent<Button>().interactable = true;	//.SetActive(false);
 //		game.ui.btnFold.GetComponent<Button>().interactable = true;	//.SetActive(false);
+		game.ui.btnAllIn.GetComponentInChildren<Text>().text = "ALL IN";
+		game.ui.btnFold.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.panelGame.SetActive(false);
 
 
