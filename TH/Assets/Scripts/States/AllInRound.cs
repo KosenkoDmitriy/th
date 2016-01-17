@@ -198,7 +198,6 @@ public class AllInRound : BetRound {
 
 		game.WinInfo (game.winners);
 
-
 		game.ui.panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);

@@ -246,6 +246,7 @@ public class GameUI : MonoBehaviour
 			if (payTable != null) {
 				lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
 				game.player.betTotal -= Settings.betBonus;
+				game.player.lblCredits.text = game.player.betTotal.to_s();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
 				payTable.SetBet(Settings.betBonus);
 			}
