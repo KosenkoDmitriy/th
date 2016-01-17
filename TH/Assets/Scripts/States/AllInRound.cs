@@ -59,15 +59,13 @@ public class AllInRound : BetRound {
 		if (!game.state.isWaiting) {
 			player = playerIterator.Next();
 
-			if (player == null) {
+			if (player == null) { // || (player.id == playerFirstToAllIn.id && player.isReal && player.isAllIn)) {
 				subRoundCount++;
 //				LastAction();
 				return;
-			}
-
-			if (player.isReal) {
+			} else if (player.isReal) {
 				game.state.isWaiting = true;
-				game.player = player;
+//				game.player = player;
 
 				game.ui.HideDynamicPanels();
 				game.ui.panelGame.SetActive(true);
@@ -80,9 +78,13 @@ public class AllInRound : BetRound {
 			} else {
 				if (player.isWinner) {
 					if (Settings.isDev) player.actionCurrentString += "> ALL IN (w)"; else player.actionCurrentString = "ALL IN";
+					player.lblAction.text = player.actionCurrentString;
+
 					player.actionFinal = new AllIn(player, betMax);
 				} else {
 					player.actionCurrentString = "FOLD";
+					player.lblAction.text = player.actionCurrentString;
+
 					player.actionFinal = new Fold(player, betMax);
 				}
 				player.actionFinal.Do(game);
@@ -155,6 +157,8 @@ public class AllInRound : BetRound {
 			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
 			double winAmount = pot.maxWinIfWin/tempWinners.Count;
 			foreach(var winer in game.winners) {
+				winer.ShowCards(game);
+
 				foreach(var player in tempWinners) {
 					if (winer.id == player.id) {
 						player.betTotal += winAmount;

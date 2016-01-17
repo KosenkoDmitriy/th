@@ -161,9 +161,13 @@ public class AllIn : Action
 			if (p.betTotal > game.state.betMax) {
 				game.state.betMax = p.betTotal;
 			}
+			p.lblCredits.text = Settings.betNull.to_s ();
+			game.potAmount += p.betTotal;
+			game.ui.lblPot.text = game.potAmount.to_s ();
 		}
 
-		game.ui.UpdatePlayerActionAndCredits(p);
+
+//		game.ui.UpdatePlayerActionAndCredits(p);
 
 		game.state.isWaiting = false;
 	}
