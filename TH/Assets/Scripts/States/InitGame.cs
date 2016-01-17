@@ -21,8 +21,6 @@ public class InitGame : BetRound {
 		game.isGameEnd = true;
 		game.isGameRunning = false;
 
-//		game.state.playerFirstToAllIn = null;
-
 		if (game.ui.payTable != null) game.ui.payTable.SelectColumnByIndex(-1);
 		Settings.betBonus = 0;
 		game.betAmount = 0;

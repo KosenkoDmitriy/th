@@ -62,28 +62,24 @@ public class AllInRound : BetRound {
 				return;
 			}
 
-//			if (player.id == playerFirstToAllIn.id && player.isAllIn) {
-//				if (playersAllIn.Count > 0) {
-//					subRoundCount ++;
-//					LastAction();
-//				}
-//			}
-
 			if (player.isReal) {
 				game.state.isWaiting = true;
+				game.player = player;
 
 				game.ui.HideDynamicPanels();
 				game.ui.panelGame.SetActive(true);
 				game.ui.btnCall.GetComponent<Button>().interactable = false; 	//.SetActive(false);
 				game.ui.btnCheck.GetComponent<Button>().interactable = false;	//.SetActive(false);
 				game.ui.btnRaise.GetComponent<Button>().interactable = false;	//.SetActive(false);
-				game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
 				game.ui.btnFold.GetComponent<Button>().interactable = false;	//.SetActive(false);
+				game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
 
 			} else {
 				if (player.isWinner) {
+					if (Settings.isDev) player.actionCurrentString += "> ALL IN (w)"; else player.actionCurrentString = "ALL IN";
 					player.actionFinal = new AllIn(player, betMax);
 				} else {
+					player.actionCurrentString = "FOLD";
 					player.actionFinal = new Fold(player, betMax);
 				}
 				player.actionFinal.Do(game);
@@ -97,11 +93,8 @@ public class AllInRound : BetRound {
 		Pot pot = new Pot();
 		var players = new List<Player>();
 		foreach (var player in playersAllIn) {
-//			player.betAlreadyInvestedInCurrentSubRound += minAllIn;
 			player.betTotal -= minAllIn;
-//			pot.pot = game.potAmount + player.betTotal;
 			pot.maxWinIfWin += minAllIn;
-			
 			if (player.betTotal <= 0) {
 				pot.players.Add(player);
 			} else {
@@ -114,9 +107,16 @@ public class AllInRound : BetRound {
 	
 	private double GetMinBetTotal(List<Player> playersAllIn) {
 		// detect player with min credits/betTotal
-		double minAllIn = playerFirstToAllIn.betTotal;
+		double maxAllIn = 0;
 		foreach (var player in playersAllIn) {
-			if (player.betTotal < minAllIn) {
+			if (player.betTotal > maxAllIn) {
+				maxAllIn = player.betTotal;
+			}
+		}
+
+		double minAllIn = maxAllIn;
+		foreach (var player in playersAllIn) {
+			if (player.betTotal < minAllIn && player.betTotal > 0) {
 				minAllIn = player.betTotal;
 			}
 		}
@@ -166,11 +166,11 @@ public class AllInRound : BetRound {
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.btnRaise.GetComponent<Button>().interactable = true;	//.SetActive(false);
-//		game.ui.btnFold.GetComponent<Button>().interactable = true;	//.SetActive(false);
+		game.ui.btnFold.GetComponent<Button>().interactable = true;		//.SetActive(false);
 		game.ui.btnAllIn.GetComponentInChildren<Text>().text = "ALL IN";
-		game.ui.btnFold.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.panelGame.SetActive(false);
 
+		playerFirstToAllIn = null;
 
 		game.ui.panelWin.SetActive (true);
 		game.ui.lblWinInfo.text = winInfo;

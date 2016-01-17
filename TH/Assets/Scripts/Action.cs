@@ -151,9 +151,7 @@ public class AllIn : Action
 			if (p.isReal) {
 
 			} else {
-//				game.player.actionFinal = new AllIn (game.player, game.state.betMax);
-//				game.player.actionFinal.Do (game);
-//				game.player.isAllIn = true;
+
 			}
 		}
 
@@ -162,11 +160,12 @@ public class AllIn : Action
 			if (p.betTotal > game.state.betMax) {
 				game.state.betMax = p.betTotal;
 			}
-			p.betTotal = 0;
+//			p.betTotal = 0;
 		}
-		
+
+
 		game.ui.UpdatePlayerActionAndCredits(p);
-		
+
 		game.state.isWaiting = false;
 	}
 }
