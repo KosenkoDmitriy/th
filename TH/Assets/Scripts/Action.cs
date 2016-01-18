@@ -69,7 +69,7 @@ public class Action : IAction {
 			game.ui.lblCall.text = betDx.to_s();
 
 			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
-				game.ui.lblRaise.text = p.betAlreadyInvestedInCurrentSubRound.to_s();
+				game.ui.lblRaise.text = betDx.to_s ();// p.betAlreadyInvestedInCurrentSubRound.to_s();
 			} else {
 				game.ui.lblRaise.text = Settings.betNull.to_s();
 			}
