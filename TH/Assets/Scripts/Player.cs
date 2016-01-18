@@ -95,6 +95,7 @@ public class Player {
 			}
 		}
 
+		// from recommend to optimal
 		double betTotalAfterAction = betTotal - betDt;
 		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 
@@ -153,61 +154,7 @@ public class Player {
 				actionFinal = new Fold (this, betDt);
 			}
 		}
-		/*
-		Action actionFinal = new Action();
 
-		int betMaxCallOrRaiseInMathBets = patternCurrent.betMaxCallOrRaise;
-
-		double betDt = betToStayInGame - betAlreadyInvestedInCurrentSubRound; //patternCurrent.betMaxCallOrRaise;
-
-		if (betDt < 0) betDt = 0;
-		double creditsAfterAction = betTotal - betDt;
-		if (actionTip.isRaise) {
-			actionFinal = new Raise(this, betDt);
-		} else if (actionTip.isCall) {
-			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betDt);
-			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvestedInCurrentSubRound == betToStayInGame) {
-					actionFinal = new Check(this, betDt);
-				} else {
-					actionFinal = new Call(this, betDt);
-				}
-			}
-		} else if (actionTip.isCheck) {
-			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betDt);
-			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvestedInCurrentSubRound == betToStayInGame) {
-					actionFinal = new Check(this, betDt);
-				} else {
-					actionFinal = new Call(this, betDt);
-				}
-			}
-		} else if (actionTip.isFold) {
-			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betDt);
-			} else if (creditsAfterAction >= 0) {
-				if (betAlreadyInvestedInCurrentSubRound == betDt) {
-					actionFinal = new Check(this, betDt);
-				} else {
-					actionFinal = new Call(this, betDt);
-				}
-			}
-		} else if (actionTip.isRaise) {
-			if (creditsAfterAction < 0) {
-				actionFinal = new Fold(this, betDt);
-			} else if (creditsAfterAction >= 0) {
-				if (betMaxCallOrRaiseInMathBets <= betDt) {
-					actionFinal = new Raise(this, betMaxCallOrRaiseInMathBets);
-				} else if (betAlreadyInvestedInCurrentSubRound == betDt) {
-					actionFinal = new Check(this, betDt);
-				} else {
-					actionFinal = new Call(this, betDt);
-				}
-			}
-		}
-		*/
 		if (actionFinal == null)
 			Debug.LogError ("error: actionFinal is null");
 
