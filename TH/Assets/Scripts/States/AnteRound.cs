@@ -21,7 +21,6 @@ public class AnteRound : BetRound {
 			} else {
 				if (player.isReal) {
 					game.state.isWaiting = true;
-					game.player = player;
 
 					if (game.isGameRunning) {
 						game.ui.panelGame.SetActive (true);

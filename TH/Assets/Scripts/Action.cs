@@ -37,6 +37,7 @@ public class Action : IAction {
 					game.state = new InitGame(game);
 				} else {
 					DoActive(game);
+					game.player = p;
 				}
 				game.ui.lblCall.text = Settings.betNull.to_s();
 				game.ui.SetBalance(p.betTotal.to_s());
