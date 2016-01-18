@@ -153,18 +153,35 @@ public class GameUI : MonoBehaviour
 		if (game.betAmount > 0) {
 			game.betAmount /= (Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
 		}
-		var player = game.player;
+
+
+		// from recommend to optimal
+		double betTotalAfterAction = game.player.betTotal - game.betAmount;
+		double betTotalSubRoundAfterA = game.player.betAlreadyInvestedInCurrentSubRound + game.betAmount;
 		if (game.isGameRunning) {
-			if (player.betTotal - game.betAmount < 0) {
-				game.player.actionFinal = new Check(game.player, game.state.betMax);
-			} else 
-			if (player.betTotal - game.betAmount >= 0) {
-				game.player.actionFinal = new Raise(game.player, game.betAmount);
-				if (lblCall) lblCall.text = game.state.betMax.to_s();
-				if (lblRaise) lblRaise.text = game.betAmount.to_s();
+			if (betTotalAfterAction > 0) { //call or raise
+				if (betTotalSubRoundAfterA > game.state.betMax) {
+					game.player.actionFinal = new Raise (game.player, game.betAmount);
+				} else {
+					game.player.actionFinal = new Call (game.player, game.betAmount);
+				}
+			} else if (betTotalAfterAction == 0) { //check
+				game.player.actionFinal = new Check (game.player, game.betAmount);
 			}
+
+			if (lblCall) lblCall.text = game.state.betMax.to_s();
+			if (lblRaise) lblRaise.text = game.betAmount.to_s();
+
+//			if (betTotalAfterAction < 0) {
+//				game.player.actionFinal = new Check(game.player, game.state.betMax);
+//			} else 
+//			if (betTotalAfterAction >= 0) {
+//				game.player.actionFinal = new Raise(game.player, game.betAmount);
+//				if (lblCall) lblCall.text = game.state.betMax.to_s();
+//				if (lblRaise) lblRaise.text = game.betAmount.to_s();
+//			}
 			game.player.actionFinal.Do (game);
-		} else if (!game.isGameRunning && game.betAmount > 0 && player.betTotal - game.betAmount >= 0) {
+		} else if (!game.isGameRunning && game.betAmount > 0 && betTotalAfterAction >= 0) {
 			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, Settings.betCurrent);
 			game.player.actionFinal.Do (game);

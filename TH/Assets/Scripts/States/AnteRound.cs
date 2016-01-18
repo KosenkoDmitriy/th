@@ -14,10 +14,10 @@ public class AnteRound : BetRound {
 	{
 		//		base.BetSubRounds ();
 		if (!game.state.isWaiting) {
-			var player = game.player;
-			player = this.game.playerIterator.Next ();
+			player = game.playerIterator.Next ();
 			if (player == null) {
 				subRoundCount++; // or LastAction();
+				return;
 			} else {
 				if (player.isReal) {
 					game.state.isWaiting = true;
@@ -32,13 +32,6 @@ public class AnteRound : BetRound {
 					}
 				} else {
 					player.actionFinal = new Call(player, betMax);
-					player.actionCurrentString = "CALL";
-//					player.actionFinal = player.GetFinalAction (betMin, isCanToRaise);
-//
-//					if (player.actionTip.isFold) { // always call in ante round
-//						player.isFolded = false;
-//						player.actionFinal = new Call(player, betMin);
-//					}
 					player.actionFinal.Do (game);
 				}
 				game.ui.UpdatePlayerActionAndCredits(player);
@@ -51,5 +44,7 @@ public class AnteRound : BetRound {
 		base.LastAction ();
 		game.state = new PreflopRound (game);
 	}
+
 	
+	Player player;
 }

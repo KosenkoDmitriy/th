@@ -11,7 +11,7 @@ static class Settings
 	public static readonly int dealerIndex = playerSize - 1;
 	public static readonly int playerRealIndex = 0;
 
-	public static float updateInterval = 0.05f;
+	public static float updateInterval = 0.1f;
 
 	#region bets
 	public static readonly int betSubRoundMinSize = 0;

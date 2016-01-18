@@ -92,6 +92,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 			if (player.isReal) {
 				game.state.isWaiting = true;
+				game.player = player;
 
 				double dt = betMax - player.betAlreadyInvestedInCurrentSubRound;
 
