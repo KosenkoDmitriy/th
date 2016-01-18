@@ -148,16 +148,16 @@ public class AllInRound : BetRound {
 				break;
 		} while (true);
 		
-		//TODO: detect winners
+		// detect winners
 		string winInfo = "";
-
-//		foreach (var pot in pots) {
-//			pot.pot = game.potAmount - pot.maxWinIfWin;
-//		}
 
 		// main pot
 		double winPotAmount = game.potAmount/game.winners.Count;
 		List<Player> winList = new List<Player> ();
+
+		if (game.winners.Count > 0)
+			winInfo += string.Format("{0} \n\n", game.winners [0].GetHandStringFromHandObj () );
+
 		winInfo += "Main Pot:\n";
 		foreach(var player in game.winners) {
 			player.betTotal += winPotAmount;
@@ -166,68 +166,31 @@ public class AllInRound : BetRound {
 			winList.Add (player);
 		}
 
-		if (pots.Count > 0) {
-			winInfo += "\nOther Pots:\n";
-//			winInfo += "\nmore info:\n";
-		}
-
 		// others pots
+		if (pots.Count > 0)
+			winInfo += "\nOther Pots:\n";
+
 		int no = 1;
 		foreach (var pot in pots) {
 			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
 			double winAmount = pot.maxWinIfWin / tempWinners.Count;
-			foreach(var winer in game.winners) {
-				winer.ShowCards(game);
+			foreach(var player in tempWinners) {
+				player.ShowCards(game);
 
-				foreach(var player in tempWinners) {
-					if (winer.id == player.id) {
+//				foreach(var winer in game.winners) {
+//					if (winer.id == player.id) {
 						player.betTotal += winAmount;
 						player.lblCredits.text = player.betTotal.to_s();
-						winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.to_s(), no);
-//						winInfo += string.Format("{0} win {1}\n", player.name, winAmount.to_s());
+//					}
+//				}
 
-//						// who is win other pots
-//						bool isFound = false;
-//						foreach(var win in winList) {
-//							if (win.id == player.id) {
-//								win.betTotal += winAmount;
-//								isFound = true;
-//							}
-//						}
-//						if (!isFound)
-//							winList.Add (player);
-						no++;
-					}
-				}
+				winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.to_s(), no);
+				no++;
 			}
 		}
 
-//		foreach (var player in game.winners) {
-//			winInfo += string.Format ("{0} win {1} credits\n", player.name, player.betTotal.to_s ());
-//		}
-		
 		game.ui.panelWin.SetActive (true);
 		game.ui.lblWinInfo.text = winInfo;
-//
-//		// total win amount for each player
-//		var finalWinList = new List<Player> ();
-//		if (winList.Count > 0) {
-//			foreach (var player in winList) {
-//				int count = 0;
-//				foreach (var player2 in winList) {
-//					if (player.id == player2.id) {
-//						if (count > 0) { // if duplicates
-//							playerTemp.betTotal += player.betTotal;
-//							finalWinList.Add(playerTemp);
-//						}
-//						count++;
-//					}
-//
-//				}
-//			}
-//		}
-
-//		game.WinInfo (winList);
 
 		game.ui.panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
