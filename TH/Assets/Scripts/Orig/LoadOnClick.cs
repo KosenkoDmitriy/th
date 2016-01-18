@@ -5814,7 +5814,7 @@ public class LoadOnClick : MonoBehaviour
 
         Settings.betCurrent = Settings.betMax;
         
-            string b = FormatCreditsOrDollars(Settings.betCurrent);
+		string b = FormatCreditsOrDollars(Settings.betCurrent);
         inputBetField.text = b;
         panelInitBet.GetComponentInChildren<InputField>().text = b;
         //GameObject.Find("InputField").GetComponent<InputField>().text = b;

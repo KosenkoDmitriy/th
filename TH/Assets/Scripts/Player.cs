@@ -87,6 +87,7 @@ public class Player {
 		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDt); // set actionTip get actionTipString (recommend action)
 
 		Action actionFinal = new Action();
+
 		double betDt = patternCurrent.betDt; // betMax - betAlreadyInvestedInCurrentSubRound;
 		if (betDt < 0) {
 			Debug.LogWarning("betToStayInGame should be > 0 but:" + betDt);
