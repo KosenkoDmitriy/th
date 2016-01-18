@@ -51,6 +51,7 @@ public class Action : IAction {
 
 			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
 				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
+				game.betMax = game.state.betMax;
 			}
 
 			if (p.position == game.playerIterator.LastActive().position) { // last player
