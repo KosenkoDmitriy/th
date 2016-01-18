@@ -157,17 +157,19 @@ public class AllInRound : BetRound {
 
 		// main pot
 		double winPotAmount = game.potAmount/game.winners.Count;
-//		winInfo += "Main Pot:\n";
+		List<Player> winList = new List<Player> ();
+		winInfo += "Main Pot:\n";
 		foreach(var player in game.winners) {
 			player.betTotal += winPotAmount;
 			player.lblCredits.text = player.betTotal.to_s();
-//			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.to_s());
+			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.to_s());
+			winList.Add (player);
 		}
 
-//		if (pots.Count > 0) {
-////			winInfo += "\nOther Pots:\n";
+		if (pots.Count > 0) {
+			winInfo += "\nOther Pots:\n";
 //			winInfo += "\nmore info:\n";
-//		}
+		}
 
 		// others pots
 		int no = 1;
@@ -181,8 +183,19 @@ public class AllInRound : BetRound {
 					if (winer.id == player.id) {
 						player.betTotal += winAmount;
 						player.lblCredits.text = player.betTotal.to_s();
-//						winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.to_s(), no);
+						winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.to_s(), no);
 //						winInfo += string.Format("{0} win {1}\n", player.name, winAmount.to_s());
+
+//						// who is win other pots
+//						bool isFound = false;
+//						foreach(var win in winList) {
+//							if (win.id == player.id) {
+//								win.betTotal += winAmount;
+//								isFound = true;
+//							}
+//						}
+//						if (!isFound)
+//							winList.Add (player);
 						no++;
 					}
 				}
@@ -193,10 +206,28 @@ public class AllInRound : BetRound {
 //			winInfo += string.Format ("{0} win {1} credits\n", player.name, player.betTotal.to_s ());
 //		}
 		
-//		game.ui.panelWin.SetActive (true);
-//		game.ui.lblWinInfo.text = winInfo;
+		game.ui.panelWin.SetActive (true);
+		game.ui.lblWinInfo.text = winInfo;
+//
+//		// total win amount for each player
+//		var finalWinList = new List<Player> ();
+//		if (winList.Count > 0) {
+//			foreach (var player in winList) {
+//				int count = 0;
+//				foreach (var player2 in winList) {
+//					if (player.id == player2.id) {
+//						if (count > 0) { // if duplicates
+//							playerTemp.betTotal += player.betTotal;
+//							finalWinList.Add(playerTemp);
+//						}
+//						count++;
+//					}
+//
+//				}
+//			}
+//		}
 
-		game.WinInfo (game.winners);
+//		game.WinInfo (winList);
 
 		game.ui.panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
