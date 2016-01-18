@@ -104,6 +104,15 @@ public class GameUI : MonoBehaviour
 
 		game.player.actionFinal = new AllIn (game.player, game.state.betMax);
 		game.player.actionFinal.Do (game);
+
+		
+		game.ui.HideDynamicPanels();
+		game.ui.panelGame.SetActive(true);
+		game.ui.btnCall.GetComponent<Button>().interactable = false; 	//.SetActive(false);
+		game.ui.btnCheck.GetComponent<Button>().interactable = false;	//.SetActive(false);
+		game.ui.btnRaise.GetComponent<Button>().interactable = false;	//.SetActive(false);
+		game.ui.btnFold.GetComponent<Button>().interactable = false;	//.SetActive(false);
+		game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
 	}
 
 	public void btnHelpClick()

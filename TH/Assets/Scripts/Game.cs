@@ -105,14 +105,14 @@ public class Game
 		
 		string winBonusString = "";
 		if (game.player.isReal) {
-			winBonusString = GetAndSetBonusString(game.player, winAmount);
+			winBonusString = GetAndSetBonusString(game.player);
 			if (!string.IsNullOrEmpty (winBonusString)) {
 				winString += winBonusString;
 			}
 		}
 		
-		game.potAmount = 0;
-		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
+//		game.potAmount = 0;
+//		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
 		
 		game.ui.lblWinInfo.GetComponent<UnityEngine.UI.Text> ().text = winString;
 		
@@ -120,7 +120,7 @@ public class Game
 		game.ui.panelWin.SetActive (true);
 	}
 	
-	public string GetAndSetBonusString(Player player, double winAmount) {
+	public string GetAndSetBonusString(Player player) {
 		Game game = this; // TODO
 		// check for bet bonus
 		string winBonusString = "";

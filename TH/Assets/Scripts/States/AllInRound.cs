@@ -67,13 +67,6 @@ public class AllInRound : BetRound {
 				game.state.isWaiting = true;
 //				game.player = player;
 
-				game.ui.HideDynamicPanels();
-				game.ui.panelGame.SetActive(true);
-				game.ui.btnCall.GetComponent<Button>().interactable = false; 	//.SetActive(false);
-				game.ui.btnCheck.GetComponent<Button>().interactable = false;	//.SetActive(false);
-				game.ui.btnRaise.GetComponent<Button>().interactable = false;	//.SetActive(false);
-				game.ui.btnFold.GetComponent<Button>().interactable = false;	//.SetActive(false);
-				game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
 
 			} else {
 				if (player.isWinner) {
@@ -164,6 +157,14 @@ public class AllInRound : BetRound {
 			player.lblCredits.text = player.betTotal.to_s();
 			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.to_s());
 			winList.Add (player);
+//			if (player.isReal) {
+//				game.ui.audio.PlayOneShot (game.ui.soundWin);
+//				// check for bonus
+//				string winBonusString = game.GetAndSetBonusString(game.player);
+//				if (!string.IsNullOrEmpty (winBonusString)) {
+//					winInfo += winBonusString + '\n';
+//				}
+//			}
 		}
 
 		// others pots
