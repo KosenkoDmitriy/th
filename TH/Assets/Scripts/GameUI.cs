@@ -172,14 +172,6 @@ public class GameUI : MonoBehaviour
 			if (lblCall) lblCall.text = game.state.betMax.to_s();
 			if (lblRaise) lblRaise.text = game.betAmount.to_s();
 
-//			if (betTotalAfterAction < 0) {
-//				game.player.actionFinal = new Check(game.player, game.state.betMax);
-//			} else 
-//			if (betTotalAfterAction >= 0) {
-//				game.player.actionFinal = new Raise(game.player, game.betAmount);
-//				if (lblCall) lblCall.text = game.state.betMax.to_s();
-//				if (lblRaise) lblRaise.text = game.betAmount.to_s();
-//			}
 			game.player.actionFinal.Do (game);
 		} else if (!game.isGameRunning && game.betAmount > 0 && betTotalAfterAction >= 0) {
 			game.isGameRunning = true;

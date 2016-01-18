@@ -33,21 +33,22 @@ public class Action : IAction {
 	{
 		if (p != null) {
 			if (p.isReal) {
-				if (!p.isFolded) {
-					DoActive(game);
-				} else {
+				if (p.isFolded) {
 					game.state = new InitGame(game);
+				} else {
+					DoActive(game);
 				}
 				game.ui.lblCall.text = Settings.betNull.to_s();
-				game.state.isWaiting = false;
 				game.ui.SetBalance(p.betTotal.to_s());
+				game.state.isWaiting = false;
 			} else {
-				if (!p.isFolded) {
-					DoActive(game);
-				} else {
+				if (p.isFolded) {
 					p.ShowCards(game);
+				} else {
+					DoActive(game);
 				}
 			}
+			game.ui.UpdatePlayerActionAndCredits(p);
 
 			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
 				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;

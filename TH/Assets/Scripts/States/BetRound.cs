@@ -120,10 +120,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				player.actionFinal.Do(game);
 			}
 
-//			if (player.isAllIn) {
-//				game.state = new AllInRound(game);
-//			}
-			game.ui.UpdatePlayerActionAndCredits(player);
 		}
 	}
 

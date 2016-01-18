@@ -34,7 +34,6 @@ public class AnteRound : BetRound {
 					player.actionFinal = new Call(player, betMax);
 					player.actionFinal.Do (game);
 				}
-				game.ui.UpdatePlayerActionAndCredits(player);
 			}
 		}
 	}
