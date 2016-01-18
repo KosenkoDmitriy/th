@@ -86,11 +86,11 @@ public class Player {
 		if (!isCanToRaise) {
 			// choosing between all available actions except raise
 			if (actionTip.isRaise) {
-				if (string.IsNullOrEmpty(actionCurrentString))
+				if (actionCurrentString == "RAISE")
 					actionCurrentString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
-				if (string.IsNullOrEmpty(actionCurrentString))
+				if (actionCurrentString == "RAISE")
 					GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
-				if (string.IsNullOrEmpty(actionCurrentString))
+				if (actionCurrentString == "RAISE")
 					GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betDt);
 			}
 		}
