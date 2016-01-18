@@ -237,7 +237,7 @@ public class Player {
 	private string GetAndSetActionTipByName(string action, double betToStayInGame) {
 		string actionFinalString = "";
 
-		actionTip = new ActionTip(this, betToStayInGame);
+		actionTip = new ActionTip(betToStayInGame);
 
 		if (action == "CALL") {
 			actionTip.isCall = true;

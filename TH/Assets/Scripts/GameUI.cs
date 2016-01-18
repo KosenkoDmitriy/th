@@ -70,14 +70,14 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 		game.player.actionFinal = new Check(game.player, game.state.betMax);
-		game.player.actionFinal.Do (game);
+		game.player.actionFinal.Do (game, game.player);
 	}
 
 	public void btnCallClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
 		game.player.actionFinal = new Call(game.player, game.state.betMax);
-		game.player.actionFinal.Do (game);
+		game.player.actionFinal.Do (game, game.player);
 	}
 
 	public void btnRaiseClick()
@@ -103,7 +103,7 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 
 		game.player.actionFinal = new AllIn (game.player, game.state.betMax);
-		game.player.actionFinal.Do (game);
+		game.player.actionFinal.Do (game, game.player);
 
 		
 		game.ui.HideDynamicPanels();
@@ -172,11 +172,11 @@ public class GameUI : MonoBehaviour
 			if (lblCall) lblCall.text = game.state.betMax.to_s();
 			if (lblRaise) lblRaise.text = game.betAmount.to_s();
 
-			game.player.actionFinal.Do (game);
+			game.player.actionFinal.Do (game, game.player);
 		} else if (!game.isGameRunning && game.betAmount > 0 && betTotalAfterAction >= 0) {
 			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, Settings.betCurrent);
-			game.player.actionFinal.Do (game);
+			game.player.actionFinal.Do (game, game.player);
 			if (lblBet) lblBet.text = Settings.betAnteMultiplier.to_s();
 		} else {
 			return;

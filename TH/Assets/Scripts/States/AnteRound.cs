@@ -31,7 +31,7 @@ public class AnteRound : BetRound {
 					}
 				} else {
 					player.actionFinal = new Call(player, betMax);
-					player.actionFinal.Do (game);
+					player.actionFinal.Do (game, player);
 				}
 			}
 		}

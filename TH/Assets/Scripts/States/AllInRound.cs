@@ -80,7 +80,7 @@ public class AllInRound : BetRound {
 
 					player.actionFinal = new Fold(player, betMax);
 				}
-				player.actionFinal.Do(game);
+				player.actionFinal.Do(game, player);
 			}
 
 		}

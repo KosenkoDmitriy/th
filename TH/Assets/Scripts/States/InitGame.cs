@@ -121,7 +121,6 @@ public class InitGame : BetRound {
 		}
 		
 		game.playerIterator = new PlayerIterator(game.playerCollection);
-
 		isWaiting = false;
 	}
 	

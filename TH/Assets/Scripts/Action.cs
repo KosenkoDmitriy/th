@@ -2,13 +2,12 @@
 
 public interface IAction
 {
-	void Do (Game game);
+	void Do (Game game, Player player);
 }
 
 public class ActionTip: Action {
-	public ActionTip (Player player, double betToStayInGame)
+	public ActionTip (double betToStayInGame)
 	{
-		this.p = player;
 		this.betDx = betToStayInGame;
 	}
 	public bool isCall;
@@ -21,22 +20,21 @@ public class ActionTip: Action {
 public class Action : IAction {
 	public Action() {}
 
-	public Action (Player player, double betDx)
+	public Action (double betDx)
 	{
-		this.p = player;
 		this.betDx = betDx;
 	}
 
 	#region IAction implementation
 	
-	public virtual void Do (Game game)
+	public virtual void Do (Game game, Player p)
 	{
 		if (p != null) {
 			if (p.isReal) {
 				if (p.isFolded) {
 					game.state = new InitGame(game);
 				} else {
-					DoActive(game);
+					DoActive(game, p);
 					game.player = p;
 				}
 				game.ui.lblCall.text = Settings.betNull.to_s();
@@ -46,7 +44,7 @@ public class Action : IAction {
 				if (p.isFolded) {
 					p.ShowCards(game);
 				} else {
-					DoActive(game);
+					DoActive(game, p);
 				}
 			}
 			game.ui.UpdatePlayerActionAndCredits(p);
@@ -63,7 +61,7 @@ public class Action : IAction {
 	
 	#endregion
 
-	private void DoActive(Game game) {
+	private void DoActive(Game game, Player p) {
 		p.betAlreadyInvestedInCurrentSubRound += betDx;
 		p.betTotal -= betDx;
 
@@ -78,7 +76,6 @@ public class Action : IAction {
 		}
 	}
 
-	public Player p;
 	public double betDx;
 	public string name;
 }
@@ -89,11 +86,10 @@ public class Call : Action
 	{
 		this.name = "CALL";
 		player.UpdateActionCurrentString (this.name);
-		this.p = player;
 		this.betDx = betToStayInGame;
 	}
-	public override void Do(Game game) {
-		base.Do (game);
+	public override void Do(Game game, Player p) {
+		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
 	}
 }
@@ -104,7 +100,6 @@ public class Check : Action
 	{
 		this.name = "CHECK";
 		player.UpdateActionCurrentString (this.name);
-		this.p = player;
 		this.betDx = betToStayInGame;
 	}
 }
@@ -115,13 +110,12 @@ public class Fold : Action
 	{
 		this.name = "FOLD";
 		player.UpdateActionCurrentString (this.name);
-		this.p = player;
 		this.betDx = betToStayInGame;
 	}
 
-	public override void Do(Game game) {
-		p.isFolded = true;
-		base.Do (game);
+	public override void Do(Game game, Player p) {
+//		p.isFolded = true;
+		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}
 }
@@ -132,12 +126,11 @@ public class Raise : Action
 	{
 		this.name = "RAISE";
 		player.UpdateActionCurrentString (this.name);
-		this.p = player;
 		this.betDx = betToStayInGame;
 	}
 
-	public override void Do(Game game) {
-		base.Do (game);
+	public override void Do(Game game, Player p) {
+		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
 	}
 }
@@ -149,11 +142,10 @@ public class AllIn : Action
 	{
 		this.name = "ALL IN";
 		player.UpdateActionCurrentString (this.name);
-		this.p = player;
 		this.betDx = betToStayInGame;
 	}
 	
-	public override void Do(Game game) {
+	public override void Do(Game game, Player p) {
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
 
 		p.isAllIn = true;

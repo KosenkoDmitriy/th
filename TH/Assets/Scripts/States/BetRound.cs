@@ -122,7 +122,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 			} else {
 				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise, game);
-				player.actionFinal.Do(game);
+				player.actionFinal.Do(game, player);
 			}
 
 		}
