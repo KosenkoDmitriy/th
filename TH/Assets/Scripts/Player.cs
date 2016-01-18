@@ -16,6 +16,16 @@ public class Player {
 	{
 		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString);
 	}
+
+	public void UpdateActionCurrentString (string name)
+	{
+		string isWinString = this.isWinner ? "(w)" : "";
+		
+		if (Settings.isDev)
+			this.actionCurrentString = string.Format ("{0} {1} <{2}", name, isWinString, this.actionCurrentString);
+		else
+			this.actionCurrentString = string.Format("{0} {1}", name, isWinString);
+	}
 	
 	private void UpdateDealerImage ()
 	{
@@ -99,6 +109,26 @@ public class Player {
 		double betTotalAfterAction = betTotal - betDt;
 		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 
+		// evaluate
+		if (betTotalAfterAction < 0) { //fold
+			if (betTotal > 0) {
+				if (isWinner) {
+					actionFinal = new AllIn (this, betDt);
+					return actionFinal;
+				}
+			}
+			actionFinal = new Fold (this, betDt);
+		} else if (betTotalAfterAction > 0) { //call or raise
+			if (betTotalSubRoundAfterA > betMax) {
+				actionFinal = new Raise (this, betDt);
+			} else {
+				actionFinal = new Call (this, betDt);
+			}
+		} else if (betTotalAfterAction == 0) { //check
+			actionFinal = new Check (this, betDt);
+		}
+
+		/*
 		if (betTotalAfterAction < 0) {
 			if (betTotal >= 0 && isWinner) {
 				if (Settings.isDev) actionCurrentString += "> ALL IN (w)"; else actionCurrentString = "ALL IN (w)";
@@ -154,7 +184,7 @@ public class Player {
 				actionFinal = new Fold (this, betDt);
 			}
 		}
-
+		*/
 		if (actionFinal == null)
 			Debug.LogError ("error: actionFinal is null");
 

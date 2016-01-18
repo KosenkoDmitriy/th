@@ -97,13 +97,16 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 				if (dt > 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
-					game.ui.lblCall.text = dt.to_s();
 					game.ui.btnCheck.GetComponent<Button>().interactable = false;
-				} else {
+				} else if (dt == 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = false;
+					game.ui.btnCheck.GetComponent<Button>().interactable = true;
+				} else {
+					game.ui.btnCall.GetComponent<Button>().interactable = true;
 					game.ui.btnCheck.GetComponent<Button>().interactable = true;
 				}
 
+				game.ui.lblCall.text = dt.to_s();
 				game.ui.lblRaise.text = Settings.betNull.to_s();
 
 				if (isCanToRaise) {

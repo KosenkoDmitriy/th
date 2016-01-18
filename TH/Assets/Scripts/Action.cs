@@ -65,25 +65,28 @@ public class Action : IAction {
 		p.betAlreadyInvestedInCurrentSubRound += betDx;
 		p.betTotal -= betDx;
 
-		if (p.isReal) {
-			game.ui.lblCall.text = betDx.to_s();
-
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
-				game.ui.lblRaise.text = betDx.to_s ();// p.betAlreadyInvestedInCurrentSubRound.to_s();
-			} else {
-				game.ui.lblRaise.text = Settings.betNull.to_s();
-			}
-		}
+//		if (p.isReal) {
+//			game.ui.lblCall.text = betDx.to_s();
+//
+//			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
+//				game.ui.lblRaise.text = betDx.to_s ();// p.betAlreadyInvestedInCurrentSubRound.to_s();
+//			} else {
+//				game.ui.lblRaise.text = Settings.betNull.to_s();
+//			}
+//		}
 	}
 
 	public Player p;
 	public double betDx;
+	public string name;
 }
 
 public class Call : Action
 {
 	public Call (Player player, double betToStayInGame)
 	{
+		this.name = "CALL";
+		player.UpdateActionCurrentString (this.name);
 		this.p = player;
 		this.betDx = betToStayInGame;
 	}
@@ -95,9 +98,10 @@ public class Call : Action
 
 public class Check : Action
 {
-
 	public Check (Player player, double betToStayInGame)
 	{
+		this.name = "CHECK";
+		player.UpdateActionCurrentString (this.name);
 		this.p = player;
 		this.betDx = betToStayInGame;
 	}
@@ -107,6 +111,8 @@ public class Fold : Action
 {
 	public Fold (Player player, double betToStayInGame)
 	{
+		this.name = "FOLD";
+		player.UpdateActionCurrentString (this.name);
 		this.p = player;
 		this.betDx = betToStayInGame;
 	}
@@ -120,9 +126,10 @@ public class Fold : Action
 
 public class Raise : Action
 {
-
 	public Raise (Player player, double betToStayInGame)
 	{
+		this.name = "RAISE";
+		player.UpdateActionCurrentString (this.name);
 		this.p = player;
 		this.betDx = betToStayInGame;
 	}
@@ -138,6 +145,8 @@ public class AllIn : Action
 {
 	public AllIn (Player player, double betToStayInGame)
 	{
+		this.name = "ALL IN";
+		player.UpdateActionCurrentString (this.name);
 		this.p = player;
 		this.betDx = betToStayInGame;
 	}
