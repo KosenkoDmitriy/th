@@ -110,6 +110,7 @@ public class Fold : Action
 	public Fold (Player player, double betToStayInGame)
 	{
 		this.name = "FOLD";
+		player.isFolded = true;
 		player.UpdateActionCurrentString (this.name);
 		this.betDx = betToStayInGame;
 	}

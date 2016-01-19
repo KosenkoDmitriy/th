@@ -53,6 +53,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void SubRound ()
 	{
 		if (subRoundCount == 0) {
+			game.betMax = betMax = 0;
 			FirstAction ();
 			subRoundCount++;
 		} else if (subRoundCount <= subRoundMaxSize && subRoundMaxSize > 0) {
@@ -94,10 +95,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				game.state.isWaiting = true;
 
 				double dt = game.player.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
-				//player.actionTip.p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
-				//player.actionFinal.betDx;
-				//player.actionFinal.p.betAlreadyInvestedInCurrentSubRound - player.actionFinal.betDx - game.state.betMax;
-				//betMax - player.betAlreadyInvestedInCurrentSubRound;
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
 
 				if (dt > 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;

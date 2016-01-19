@@ -22,6 +22,8 @@ public class AnteRound : BetRound {
 				if (player.isReal) {
 					game.state.isWaiting = true;
 
+					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
+
 					if (game.isGameRunning) {
 						game.ui.panelGame.SetActive (true);
 						game.ui.panelInitBet.SetActive (false);

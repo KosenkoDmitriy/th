@@ -21,10 +21,12 @@ public class Player {
 	{
 		string isWinString = this.isWinner ? "(w)" : "";
 		
-		if (Settings.isDev)
+		if (Settings.isDev) {
 			this.actionCurrentString = string.Format ("{0} {1} <{2}", name, isWinString, this.actionCurrentString);
-		else
-			this.actionCurrentString = string.Format("{0} {1}", name, isWinString);
+			Debug.Log(this.actionCurrentString);
+		} else {
+			this.actionCurrentString = string.Format ("{0} {1}", name, isWinString);
+		}
 	}
 	
 	private void UpdateDealerImage ()
@@ -111,6 +113,56 @@ public class Player {
 		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 
 		// evaluate
+		if (isWinner) {
+			if (betDt == 0) {
+
+			} else {
+				actionFinal = new AllIn (this, betDt);
+				return actionFinal;
+			}
+		}
+
+		if (actionTip.isFold) {
+			if (betDt == 0) {
+				actionFinal = new Check (this, betDt);
+//			} else if (isWinner) {
+//				actionFinal = new AllIn (this, betDt);
+			} else {
+				actionFinal = new Fold (this, betDt);
+			}
+		} else if (actionTip.isCheck) {
+			if (betDt == 0) {
+				actionFinal = new Check (this, betDt);
+			} else {
+				actionFinal = new Fold (this, betDt);
+			}
+		} else if (actionTip.isCall) {
+			if (betTotalAfterAction < 0) {
+				if (betDt == 0) {
+					actionFinal = new Check (this, betDt);
+				} else {
+					actionFinal = new Fold (this, betDt);
+				}
+			} else {
+				actionFinal = new Call (this, betDt);
+			}
+		} else if (actionTip.isRaise) {
+			if (betTotalAfterAction < 0) {
+				if (betDt == 0) {
+					actionFinal = new Check (this, betDt);
+//				} else if (betDt > 0) {
+//					actionFinal = new Call (this, betDt); //TODO
+				} else {
+					actionFinal = new Fold (this, betDt);
+				}
+			} else {
+				actionFinal = new Raise (this, betDt);
+			}
+		} else if (actionTip.isAllIn) {
+			actionFinal = new AllIn(this, betDt);
+		}
+	
+		/*
 		if (betTotalAfterAction < 0) { //fold
 			if (betTotal > 0) {
 				if (isWinner) {
@@ -127,7 +179,7 @@ public class Player {
 			}
 		} else if (betTotalAfterAction == 0) { //check
 			actionFinal = new Check (this, betDt);
-		}
+		}*/
 
 		/*
 		if (betTotalAfterAction < 0) {
