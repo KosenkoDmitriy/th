@@ -91,6 +91,11 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				return;
 			}
 
+			if (Settings.isDev) {
+				Debug.Log("");
+				player.ToString();
+			}
+
 			if (player.isReal) {
 				game.state.isWaiting = true;
 

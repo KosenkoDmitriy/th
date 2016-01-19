@@ -14,18 +14,19 @@ public class Player {
 
 	public override string ToString ()
 	{
-		return string.Format ("{0} {1} {2} {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString);
+		string str = string.Format ("{0} {1} {2}({5}) {6}/{3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent, actionFinal.betDx);
+		if (Settings.isDev)	Debug.Log (str);
+		return str;
 	}
 
 	public void UpdateActionCurrentString (string name)
 	{
-		string isWinString = this.isWinner ? "(w)" : "";
-		
 		if (Settings.isDev) {
+			string isWinString = this.isWinner ? "(w)" : "";
 			this.actionCurrentString = string.Format ("{0} {1} <{2}", name, isWinString, this.actionCurrentString);
-			Debug.Log(this.actionCurrentString);
+//			Debug.Log(this.actionCurrentString);
 		} else {
-			this.actionCurrentString = string.Format ("{0} {1}", name, isWinString);
+			this.actionCurrentString = string.Format ("{0}", name);
 		}
 	}
 	
