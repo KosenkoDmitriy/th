@@ -1,12 +1,11 @@
 using System;
 
 public class AnteRound : BetRound {
-	Player firstToAct;
+
 	public AnteRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
 		Settings.betCurrentMultiplier = Settings.betAnteMultiplier;
-		firstToAct = game.playerCollection[0] as Player;
 	}
 
 	public override void FirstAction () {}
@@ -34,7 +33,7 @@ public class AnteRound : BetRound {
 						game.ui.panelInitBet.SetActive (true);
 					}
 				} else {
-					if (player.id == firstToAct.id && !player.isReal) {
+					if (player.position == 0 && !player.isReal) {
 						game.isGameRunning = true;
 						if (betMax <= 0) betMax = 1;
 						player.actionFinal = new Raise(player, betMax);
