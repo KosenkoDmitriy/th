@@ -33,6 +33,7 @@ public class AnteRound : BetRound {
 						game.ui.lblCall.text = Settings.betNull.to_s();
 						game.ui.lblRaise.text = Settings.betNull.to_s();
 					} else if (dt < 0) {
+						dt *= -1;
 						game.ui.lblCall.text = dt.to_s();
 					}
 

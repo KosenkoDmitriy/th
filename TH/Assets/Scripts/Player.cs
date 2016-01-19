@@ -118,7 +118,15 @@ public class Player {
 			if (betTotal < 0) {
 				actionFinal = new Fold (this, betDt);
 			} else {
-				actionFinal = new Raise (this, betDt);
+				if (isCanToRaise) {
+					actionFinal = new Raise (this, betDt);
+				} else {
+					if (betDt == 0) {
+						actionFinal = new Check (this, betDt);
+					} else {
+						actionFinal = new Call (this, betDt);
+					}
+				}
 			}
 //			if (betDt == 0) {
 //

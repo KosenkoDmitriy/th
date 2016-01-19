@@ -64,19 +64,23 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	#endregion
 	
 	public virtual void FirstAction() {
-		game.state.betMax = betMax = 0;
+//		game.state.betMax = betMax = 0;
 		
 		// clear betAlreadyInvestedInNumberOfBets for new bet round
-		if (game != null && game.playerIterator != null)
-		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-			player.betAlreadyInvestedInCurrentSubRound = 0;
-		}
+//		if (game != null && game.playerIterator != null)
+//		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+//			player.betAlreadyInvestedInCurrentSubRound = 0;
+//		}
+//		game.playerIterator = new PlayerIterator (game.playerCollection);
 	}
 
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			pot += player.betAlreadyInvestedInCurrentSubRound;
+			player.betAlreadyInvestedInCurrentSubRound = 0;
 		}
+		game.state.betMax = betMax = 0;
+	
 		game.potAmount = pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
 	}
