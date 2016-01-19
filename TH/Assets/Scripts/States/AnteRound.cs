@@ -23,7 +23,18 @@ public class AnteRound : BetRound {
 					game.state.isWaiting = true;
 					game.player = player;
 
+					double dt = player.betAlreadyInvestedInCurrentSubRound - game.betMax;
 					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
+					
+					if (dt > 0) {
+						game.ui.lblCall.text = Settings.betNull.to_s();
+						game.ui.lblRaise.text = dt.to_s ();
+					} else if (dt == 0) {
+						game.ui.lblCall.text = Settings.betNull.to_s();
+						game.ui.lblRaise.text = Settings.betNull.to_s();
+					} else if (dt < 0) {
+						game.ui.lblCall.text = dt.to_s();
+					}
 
 					if (game.isGameRunning) {
 						game.ui.panelGame.SetActive (true);

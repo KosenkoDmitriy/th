@@ -37,7 +37,6 @@ public class Action : IAction {
 					DoActive(game, p);
 					game.player = p;
 				}
-				game.ui.lblCall.text = Settings.betNull.to_s();
 				game.ui.SetBalance(p.betTotal.to_s());
 				game.state.isWaiting = false;
 			} else {
@@ -66,13 +65,16 @@ public class Action : IAction {
 		p.betAlreadyInvestedInCurrentSubRound += betDx;
 		p.betTotal -= betDx;
 
+		double dt = p.betAlreadyInvestedInCurrentSubRound - game.betMax;
 		if (p.isReal) {
-			game.ui.lblCall.text = betDx.to_s();
-
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
+			if (dt > 0) {
+				game.ui.lblCall.text = Settings.betNull.to_s();
 				game.ui.lblRaise.text = betDx.to_s ();// p.betAlreadyInvestedInCurrentSubRound.to_s();
-			} else {
+			} else if (dt == 0) {
+				game.ui.lblCall.text = Settings.betNull.to_s();
 				game.ui.lblRaise.text = Settings.betNull.to_s();
+			} else if (dt < 0) {
+				game.ui.lblCall.text = betDx.to_s();
 			}
 		}
 	}

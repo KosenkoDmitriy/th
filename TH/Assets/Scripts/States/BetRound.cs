@@ -74,7 +74,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			pot += player.betAlreadyInvestedInCurrentSubRound;
+			player.betAlreadyInvestedInCurrentSubRound = 0;
 		}
+		game.state.betMax = 0;
 		game.potAmount = pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
 	}
@@ -99,8 +101,18 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = game.player.betAlreadyInvestedInCurrentSubRound - game.betMax;
+				double dt = player.betAlreadyInvestedInCurrentSubRound - game.betMax;
 				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
+
+				if (dt > 0) {
+					game.ui.lblCall.text = Settings.betNull.to_s();
+					game.ui.lblRaise.text = dt.to_s ();
+				} else if (dt == 0) {
+					game.ui.lblCall.text = Settings.betNull.to_s();
+					game.ui.lblRaise.text = Settings.betNull.to_s();
+				} else if (dt < 0) {
+					game.ui.lblCall.text = dt.to_s();
+				}
 
 				if (dt > 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
@@ -108,7 +120,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				} else if (dt == 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = false;
 					game.ui.btnCheck.GetComponent<Button>().interactable = true;
-				} else {
+				} else if (dt < 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
 					game.ui.btnCheck.GetComponent<Button>().interactable = true;
 				}
