@@ -106,6 +106,10 @@ public class Player {
 					GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
 				if (actionCurrentString == "RAISE")
 					GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betDt);
+				if (string.IsNullOrEmpty(actionCurrentString))
+					GetAndSetActionTipByName ("CHECK", patternCurrent.betDt);
+				if (string.IsNullOrEmpty(actionCurrentString))
+					GetAndSetActionTipByName ("FOLD", patternCurrent.betDt);
 			}
 		}
 
@@ -134,6 +138,10 @@ public class Player {
 //				actionFinal = new AllIn (this, betDt);
 //				return actionFinal;
 //			}
+
+			if (actionFinal == null)
+				Debug.LogError ("error: actionFinal is null");
+
 			return actionFinal;
 		}
 
