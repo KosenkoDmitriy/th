@@ -114,12 +114,18 @@ public class Player {
 
 		// evaluate
 		if (isWinner) {
-			if (betDt == 0) {
-
+			if (betTotal < 0) {
+				actionFinal = new Fold (this, betDt);
 			} else {
-				actionFinal = new AllIn (this, betDt);
-				return actionFinal;
+				actionFinal = new Raise (this, betDt);
 			}
+//			if (betDt == 0) {
+//
+//			} else {
+//				actionFinal = new AllIn (this, betDt);
+//				return actionFinal;
+//			}
+			return actionFinal;
 		}
 
 		if (actionTip.isFold) {
