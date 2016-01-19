@@ -14,7 +14,7 @@ public class Player {
 
 	public override string ToString ()
 	{
-		string str = string.Format ("{0} {1} {2}({5}) {6}/{3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent, actionFinal.betDx);
+		string str = string.Format ("{0} {1} {2}({5}) {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent);
 		if (Settings.isDev)	Debug.Log (str);
 		return str;
 	}

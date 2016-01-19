@@ -1,11 +1,12 @@
 using System;
 
 public class AnteRound : BetRound {
-
+	Player firstToAct;
 	public AnteRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
 		Settings.betCurrentMultiplier = Settings.betAnteMultiplier;
+		firstToAct = game.playerCollection[0] as Player;
 	}
 
 	public override void FirstAction () {}
@@ -14,13 +15,14 @@ public class AnteRound : BetRound {
 	{
 		//		base.BetSubRounds ();
 		if (!game.state.isWaiting) {
-			player = game.playerIterator.Next ();
+			var player = game.playerIterator.Next ();
 			if (player == null) {
 				subRoundCount++; // or LastAction();
 				return;
 			} else {
 				if (player.isReal) {
 					game.state.isWaiting = true;
+					game.player = player;
 
 					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
 
@@ -32,10 +34,12 @@ public class AnteRound : BetRound {
 						game.ui.panelInitBet.SetActive (true);
 					}
 				} else {
-					if (game.isGameRunning) {
-						player.actionFinal = new Call(player, betMax);
-					} else {
+					if (player.id == firstToAct.id && !player.isReal) {
+						game.isGameRunning = true;
+						if (betMax <= 0) betMax = 1;
 						player.actionFinal = new Raise(player, betMax);
+					} else {
+						player.actionFinal = new Call(player, betMax);
 					}
 					player.actionFinal.Do (game, player);
 				}
@@ -48,7 +52,5 @@ public class AnteRound : BetRound {
 		base.LastAction ();
 		game.state = new PreflopRound (game);
 	}
-
 	
-	Player player;
 }
