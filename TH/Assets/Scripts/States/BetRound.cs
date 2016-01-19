@@ -40,7 +40,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.isCanToRaise = true;
 		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
-
 	}
 	
 	#region IBetRoundState implementation
@@ -153,10 +152,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		bool isNextBetRound = false;
 		while (!iterator.IsDone) {
 			var player = iterator.NextActive();
-			if (player.betAlreadyInvestedInCurrentSubRound != betMax) {
-				isNextBetRound = false;
-			} else {
+			if (player.betAlreadyInvestedInCurrentSubRound == betMax) {
 				isNextBetRound = true;
+			} else {
+				isNextBetRound = false;
 				break;
 			}
 		}
