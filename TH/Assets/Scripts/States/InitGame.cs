@@ -108,6 +108,12 @@ public class InitGame : BetRound {
 
 		if (Settings.isDev)
 		foreach(var player in game.players) {
+			if (player.position == 0) {
+				player.isFirstToAct = true;
+			}
+			if (player.position == game.players.Count - 1) {
+				player.isLastToAct = true;
+			} 
 			player.name += string.Format(" {0} {1}", player.winPercent, player.GetHandStringFromHandObj());
 			player.lblName.text = player.name;
 		}

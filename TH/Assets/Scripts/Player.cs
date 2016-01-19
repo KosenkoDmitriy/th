@@ -581,6 +581,9 @@ public class Player {
 	public bool isWinner;
 	public bool isAllIn;
 
+	public bool isFirstToAct;
+	public bool isLastToAct;
+
 	public double betAlreadyInvestedInCurrentSubRound;
 
 //	public double credits; // credits/creditMultiplier
