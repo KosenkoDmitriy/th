@@ -32,7 +32,11 @@ public class AnteRound : BetRound {
 						game.ui.panelInitBet.SetActive (true);
 					}
 				} else {
-					player.actionFinal = new Call(player, betMax);
+					if (game.isGameRunning) {
+						player.actionFinal = new Call(player, betMax);
+					} else {
+						player.actionFinal = new Raise(player, betMax);
+					}
 					player.actionFinal.Do (game, player);
 				}
 			}

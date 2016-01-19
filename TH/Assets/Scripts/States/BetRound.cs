@@ -94,7 +94,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = game.player.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
+				double dt = game.player.betAlreadyInvestedInCurrentSubRound - game.betMax;
 				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
 
 				if (dt > 0) {
