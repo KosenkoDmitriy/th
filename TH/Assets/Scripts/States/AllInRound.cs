@@ -73,12 +73,12 @@ public class AllInRound : BetRound {
 					if (Settings.isDev) player.actionCurrentString += "> ALL IN (w)"; else player.actionCurrentString = "ALL IN";
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new AllIn(player, betMax);
+					player.actionFinal = new AllIn(player, game.betMax);
 				} else {
 					player.actionCurrentString = "FOLD";
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new Fold(player, betMax);
+					player.actionFinal = new Fold(player, game.betMax);
 				}
 				player.actionFinal.Do(game, player);
 			}

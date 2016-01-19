@@ -49,9 +49,8 @@ public class Action : IAction {
 			}
 			game.ui.UpdatePlayerActionAndCredits(p);
 
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
-				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
-				game.betMax = game.state.betMax;
+			if (p.betAlreadyInvestedInCurrentSubRound > game.betMax) {
+				game.betMax = game.betMax;
 			}
 
 			if (p.position == game.playerIterator.LastActive().position) { // last player
@@ -69,7 +68,7 @@ public class Action : IAction {
 		if (p.isReal) {
 			game.ui.lblCall.text = betDx.to_s();
 
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
+			if (p.betAlreadyInvestedInCurrentSubRound > game.betMax) {
 				game.ui.lblRaise.text = betDx.to_s ();// p.betAlreadyInvestedInCurrentSubRound.to_s();
 			} else {
 				game.ui.lblRaise.text = Settings.betNull.to_s();
@@ -151,7 +150,7 @@ public class AllIn : Action
 
 		p.isAllIn = true;
 		if (game.state.playerFirstToAllIn == null) {
-			game.state = new AllInRound (game, p, game.state.betMax);
+			game.state = new AllInRound (game, p, game.betMax);
 		} else {
 			if (p.isReal) {
 
@@ -162,8 +161,8 @@ public class AllIn : Action
 
 		if (p.isAllIn) {
 			game.state.playersAllIn.Add (p);
-			if (p.betTotal > game.state.betMax) {
-				game.state.betMax = p.betTotal;
+			if (p.betTotal > game.betMax) {
+				game.betMax = p.betTotal;
 			}
 			p.lblCredits.text = Settings.betNull.to_s ();
 //			game.potAmount += p.betTotal;

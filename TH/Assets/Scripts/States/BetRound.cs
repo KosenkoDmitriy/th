@@ -14,7 +14,6 @@ public interface IBetRoundState
 public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
 	protected int subRoundCount;
-	public double betMax;
 	protected Game game;
 	protected double betToStayInGame, pot;
 }
@@ -22,7 +21,6 @@ public abstract class AbstractBetRound {
 public class BetRound : AbstractBetRound, IBetRoundState {
 	public bool isWaiting; // wait for corountine
 	public bool isCanToRaise;
-//	public bool isRaised;
 	public Player playerFirstToAllIn;
 	public List<Player> playersAllIn;
 
@@ -93,11 +91,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = game.player.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
-				//player.actionTip.p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
-				//player.actionFinal.betDx;
-				//player.actionFinal.p.betAlreadyInvestedInCurrentSubRound - player.actionFinal.betDx - game.state.betMax;
-				//betMax - player.betAlreadyInvestedInCurrentSubRound;
+				double dt = game.player.betAlreadyInvestedInCurrentSubRound - game.betMax;
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("bets: max: {1} cur: {0}", Settings.betCurrent, game.betMax);
 
 				if (dt > 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
@@ -121,7 +116,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 
 			} else {
-				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise, game);
+				player.actionFinal = player.GetFinalAction(game.betMax, isCanToRaise, game);
 				player.actionFinal.Do(game, player);
 			}
 
@@ -133,7 +128,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		bool isNextBetRound = false;
 		while (!iterator.IsDone) {
 			var player = iterator.NextActive();
-			if (player.betAlreadyInvestedInCurrentSubRound != betMax) {
+			if (player.betAlreadyInvestedInCurrentSubRound != game.betMax) {
 				isNextBetRound = false;
 			} else {
 				isNextBetRound = true;

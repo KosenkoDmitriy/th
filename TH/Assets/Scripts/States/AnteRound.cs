@@ -30,7 +30,7 @@ public class AnteRound : BetRound {
 						game.ui.panelInitBet.SetActive (true);
 					}
 				} else {
-					player.actionFinal = new Call(player, betMax);
+					player.actionFinal = new Call(player, game.betMax);
 					player.actionFinal.Do (game, player);
 				}
 			}
