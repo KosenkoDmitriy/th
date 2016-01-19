@@ -66,7 +66,7 @@ public class AllInRound : BetRound {
 			} else if (player.isReal) {
 				game.state.isWaiting = true;
 //				game.player = player;
-				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
 
 
 			} else {

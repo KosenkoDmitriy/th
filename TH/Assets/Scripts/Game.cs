@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class Game
 {
-	public double betMax;
+//	public double betMax;
 
 	public Game (GameUI ui)
 	{

@@ -50,7 +50,7 @@ public class Action : IAction {
 
 			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
 				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
-				game.betMax = game.state.betMax;
+//				game.betMax = game.state.betMax;
 			}
 
 			if (p.position == game.playerIterator.LastActive().position) { // last player
@@ -65,7 +65,7 @@ public class Action : IAction {
 		p.betAlreadyInvestedInCurrentSubRound += betDx;
 		p.betTotal -= betDx;
 
-		double dt = p.betAlreadyInvestedInCurrentSubRound - game.betMax;
+		double dt = p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
 		if (p.isReal) {
 			if (dt > 0) {
 				game.ui.lblCall.text = Settings.betNull.to_s();

@@ -41,11 +41,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		this.isCanToRaise = true;
 		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
 
-		// clear betAlreadyInvestedInNumberOfBets for new bet round
-		if (game != null && game.playerIterator != null)
-		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-			player.betAlreadyInvestedInCurrentSubRound = 0;
-		}
 	}
 	
 	#region IBetRoundState implementation
@@ -53,7 +48,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void SubRound ()
 	{
 		if (subRoundCount == 0) {
-			game.betMax = betMax = 0;
 			FirstAction ();
 			subRoundCount++;
 		} else if (subRoundCount <= subRoundMaxSize && subRoundMaxSize > 0) {
@@ -69,14 +63,20 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 	#endregion
 	
-	public virtual void FirstAction() {}
+	public virtual void FirstAction() {
+		game.state.betMax = betMax = 0;
+		
+		// clear betAlreadyInvestedInNumberOfBets for new bet round
+		if (game != null && game.playerIterator != null)
+		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+			player.betAlreadyInvestedInCurrentSubRound = 0;
+		}
+	}
 
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			pot += player.betAlreadyInvestedInCurrentSubRound;
-			player.betAlreadyInvestedInCurrentSubRound = 0;
 		}
-		game.state.betMax = 0;
 		game.potAmount = pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
 	}
@@ -101,8 +101,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = player.betAlreadyInvestedInCurrentSubRound - game.betMax;
-				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.betMax);
+				double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
 
 				if (dt > 0) {
 					game.ui.lblCall.text = Settings.betNull.to_s();
@@ -111,6 +111,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					game.ui.lblCall.text = Settings.betNull.to_s();
 					game.ui.lblRaise.text = Settings.betNull.to_s();
 				} else if (dt < 0) {
+					dt *= -1;
 					game.ui.lblCall.text = dt.to_s();
 				}
 
