@@ -69,13 +69,13 @@ public class Action : IAction {
 		if (p.isReal) {
 			if (dt > 0) {
 				game.ui.lblCall.text = Settings.betNull.to_s();
-				game.ui.lblRaise.text = betDx.to_s ();// p.betAlreadyInvestedInCurrentSubRound.to_s();
+				game.ui.lblRaise.text = dt.to_s(); //betDx.to_s ();
 			} else if (dt == 0) {
 				game.ui.lblCall.text = Settings.betNull.to_s();
 				game.ui.lblRaise.text = Settings.betNull.to_s();
 			} else if (dt < 0) {
-				dt *= 1;
-				game.ui.lblCall.text = betDx.to_s();
+				dt *= -1;
+				game.ui.lblCall.text = dt.to_s(); //betDx.to_s ();
 			}
 		}
 	}
