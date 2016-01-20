@@ -69,14 +69,14 @@ public class GameUI : MonoBehaviour
 	public void btnCheckClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.player.actionFinal = new Check(game.player, game.state.betMax);
+		game.player.actionFinal = new Check(game.player, game.state.betMaxToStayInGame);
 		game.player.actionFinal.Do (game, game.player);
 	}
 
 	public void btnCallClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.player.actionFinal = new Call(game.player, game.state.betMax);
+		game.player.actionFinal = new Call(game.player, game.state.betMaxToStayInGame);
 		game.player.actionFinal.Do (game, game.player);
 	}
 
@@ -102,7 +102,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
-		game.player.actionFinal = new AllIn (game.player, game.state.betMax);
+		game.player.actionFinal = new AllIn (game.player, game.state.betMaxToStayInGame);
 		game.player.actionFinal.Do (game, game.player);
 
 		
@@ -156,11 +156,13 @@ public class GameUI : MonoBehaviour
 
 
 		// from recommend to optimal
-		double betTotalAfterAction = game.player.betTotal - game.betAmount;
+		double betTotalAfterAction = Math.Abs(game.player.betTotal - game.betAmount);
 		double betTotalSubRoundAfterA = game.player.betAlreadyInvestedInCurrentSubRound + game.betAmount;
 		if (game.isGameRunning) {
+
+			/*
 			if (betTotalAfterAction > 0) { //call or raise
-				if (betTotalSubRoundAfterA > game.state.betMax) {
+				if (betTotalSubRoundAfterA > game.state.betMaxToStayInGame && betTotalSubRoundAfterA <= game.state.betMax) {
 					game.player.actionFinal = new Raise (game.player, game.betAmount);
 				} else {
 					game.player.actionFinal = new Call (game.player, game.betAmount);
@@ -168,8 +170,8 @@ public class GameUI : MonoBehaviour
 			} else if (betTotalAfterAction == 0) { //check
 				game.player.actionFinal = new Check (game.player, game.betAmount);
 			}
-
-			if (lblCall) lblCall.text = game.state.betMax.to_s();
+			*/
+			if (lblCall) lblCall.text = game.state.betMaxToStayInGame.to_s();
 			if (lblRaise) lblRaise.text = game.betAmount.to_s();
 
 			game.player.actionFinal.Do (game, game.player);

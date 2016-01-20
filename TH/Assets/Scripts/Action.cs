@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 public interface IAction
 {
@@ -48,8 +48,8 @@ public class Action : IAction {
 			}
 			game.ui.UpdatePlayerActionAndCredits(p);
 
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
-				game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
+			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMaxToStayInGame) {
+				game.state.betMaxToStayInGame = p.betAlreadyInvestedInCurrentSubRound;
 //				game.betMax = game.state.betMax;
 			}
 
@@ -65,17 +65,20 @@ public class Action : IAction {
 		p.betAlreadyInvestedInCurrentSubRound += betDx;
 		p.betTotal -= betDx;
 
-		double dt = p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
+		double dtRaise = p.betAlreadyInvestedInCurrentSubRound - game.state.betMaxToStayInGame;
 		if (p.isReal) {
-			if (dt > 0) {
-				game.ui.lblCall.text = Settings.betNull.to_s();
-				game.ui.lblRaise.text = dt.to_s(); //betDx.to_s ();
-			} else if (dt == 0) {
-				game.ui.lblCall.text = Settings.betNull.to_s();
-				game.ui.lblRaise.text = Settings.betNull.to_s();
-			} else if (dt < 0) {
-				dt *= -1;
-				game.ui.lblCall.text = dt.to_s(); //betDx.to_s ();
+			if (dtRaise > 0) {
+				if (game.state.betMaxToStayInGame > p.betAlreadyInvestedInCurrentSubRound)
+					game.ui.lblCall.text = betDx.to_s ();
+				else
+					game.ui.lblCall.text = Settings.betNull.to_s ();
+				game.ui.lblRaise.text = dtRaise.to_s();
+			} else if (dtRaise == 0) {
+				game.ui.lblCall.text = betDx.to_s ();
+				game.ui.lblRaise.text = dtRaise.to_s();
+			} else if (dtRaise < 0){
+				game.ui.lblCall.text = betDx.to_s ();
+				game.ui.lblRaise.text = Settings.betNull.to_s ();
 			}
 		}
 	}
@@ -131,6 +134,8 @@ public class Raise : Action
 	{
 		this.name = "RAISE";
 		player.UpdateActionCurrentString (this.name);
+		if (player.patternCurrent != null)
+			betToStayInGame += player.patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;//TODO
 		this.betDx = betToStayInGame;
 	}
 
@@ -155,7 +160,7 @@ public class AllIn : Action
 
 		p.isAllIn = true;
 		if (game.state.playerFirstToAllIn == null) {
-			game.state = new AllInRound (game, p, game.state.betMax);
+			game.state = new AllInRound (game, p, game.state.betMaxToStayInGame);
 		} else {
 			if (p.isReal) {
 
@@ -166,8 +171,8 @@ public class AllIn : Action
 
 		if (p.isAllIn) {
 			game.state.playersAllIn.Add (p);
-			if (p.betTotal > game.state.betMax) {
-				game.state.betMax = p.betTotal;
+			if (p.betTotal > game.state.betMaxToStayInGame) {
+				game.state.betMaxToStayInGame = p.betTotal;
 			}
 			p.lblCredits.text = Settings.betNull.to_s ();
 //			game.potAmount += p.betTotal;

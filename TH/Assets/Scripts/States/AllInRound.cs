@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -66,7 +66,7 @@ public class AllInRound : BetRound {
 			} else if (player.isReal) {
 				game.state.isWaiting = true;
 //				game.player = player;
-				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 
 
 			} else {
@@ -74,12 +74,12 @@ public class AllInRound : BetRound {
 					if (Settings.isDev) player.actionCurrentString += "> ALL IN (w)"; else player.actionCurrentString = "ALL IN";
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new AllIn(player, betMax);
+					player.actionFinal = new AllIn(player, betMaxToStayInGame);
 				} else {
 					player.actionCurrentString = "FOLD";
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new Fold(player, betMax);
+					player.actionFinal = new Fold(player, betMaxToStayInGame);
 				}
 				player.actionFinal.Do(game, player);
 			}

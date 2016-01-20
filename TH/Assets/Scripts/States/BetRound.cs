@@ -14,6 +14,7 @@ public interface IBetRoundState
 public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
 	protected int subRoundCount;
+	public double betMaxToStayInGame;
 	public double betMax;
 	protected Game game;
 	protected double betToStayInGame, pot;
@@ -40,6 +41,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.isCanToRaise = true;
 		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
+		this.betMax = Settings.betCurrentMultiplier * Settings.betMaxMath;
 	}
 	
 	#region IBetRoundState implementation
@@ -78,7 +80,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			pot += player.betAlreadyInvestedInCurrentSubRound;
 			player.betAlreadyInvestedInCurrentSubRound = 0;
 		}
-		game.state.betMax = betMax = 0;
+		game.state.betMaxToStayInGame = betMaxToStayInGame = 0;
 	
 		game.potAmount = pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
@@ -104,8 +106,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
-				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
+				double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMaxToStayInGame;
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 
 				if (dt > 0) {
 					game.ui.lblCall.text = Settings.betNull.to_s();
@@ -140,7 +142,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 
 			} else {
-				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise, game);
+				player.actionFinal = player.GetFinalAction(betMaxToStayInGame, isCanToRaise, game);
 				player.actionFinal.Do(game, player);
 			}
 
@@ -152,7 +154,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		bool isNextBetRound = false;
 		while (!iterator.IsDone) {
 			var player = iterator.NextActive();
-			if (player.betAlreadyInvestedInCurrentSubRound == betMax) {
+			if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame) {
 				isNextBetRound = true;
 			} else {
 				isNextBetRound = false;

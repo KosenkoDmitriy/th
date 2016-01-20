@@ -94,7 +94,7 @@ public class Player {
 		double betDt = patternCurrent.betDt; // betMax - betAlreadyInvestedInCurrentSubRound;
 		if (betDt < 0) {
 			Debug.LogWarning("betToStayInGame should be > 0 but:" + betDt);
-			betDt = 0;
+//			betDt = 0;
 		}
 
 		if (!isCanToRaise) {
@@ -268,8 +268,8 @@ public class Player {
 	}
 
 	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
-		if (betToStayInGameTotal > 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
-		if (betTotalInSubRound > 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
+		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
+		if (betTotalInSubRound != 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
 
 		string actionString = "";
 		if (patternCurrent != null) {
@@ -297,9 +297,9 @@ public class Player {
 		}
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
-		if (patternCurrent.betDt > 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
-		if (betToStayInGameTotal > 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
-		if (betTotalInSubRound > 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
+		if (patternCurrent.betDt != 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
+		if (betToStayInGameTotal != 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
+		if (betTotalInSubRound != 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
 
 		actionCurrentString = actionString;
 
