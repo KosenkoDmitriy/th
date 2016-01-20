@@ -134,8 +134,8 @@ public class Raise : Action
 	{
 		this.name = "RAISE";
 		player.UpdateActionCurrentString (this.name);
-		if (player.patternCurrent != null)
-			betToStayInGame += player.patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;//TODO
+//		if (player.patternCurrent != null)
+//			betToStayInGame += player.patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;//TODO
 		this.betDx = betToStayInGame;
 	}
 

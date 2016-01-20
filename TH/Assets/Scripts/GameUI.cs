@@ -160,7 +160,6 @@ public class GameUI : MonoBehaviour
 		double betTotalSubRoundAfterA = game.player.betAlreadyInvestedInCurrentSubRound + game.betAmount;
 		if (game.isGameRunning) {
 
-			/*
 			if (betTotalAfterAction > 0) { //call or raise
 				if (betTotalSubRoundAfterA > game.state.betMaxToStayInGame && betTotalSubRoundAfterA <= game.state.betMax) {
 					game.player.actionFinal = new Raise (game.player, game.betAmount);
@@ -170,7 +169,7 @@ public class GameUI : MonoBehaviour
 			} else if (betTotalAfterAction == 0) { //check
 				game.player.actionFinal = new Check (game.player, game.betAmount);
 			}
-			*/
+
 			if (lblCall) lblCall.text = game.state.betMaxToStayInGame.to_s();
 			if (lblRaise) lblRaise.text = game.betAmount.to_s();
 

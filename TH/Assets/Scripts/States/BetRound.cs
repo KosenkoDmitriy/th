@@ -154,7 +154,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		bool isNextBetRound = false;
 		while (!iterator.IsDone) {
 			var player = iterator.NextActive();
-			if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame) {
+			if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame || player.betAlreadyInvestedInCurrentSubRound > betMax) {
 				isNextBetRound = true;
 			} else {
 				isNextBetRound = false;
