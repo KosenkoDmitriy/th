@@ -23,7 +23,6 @@ public abstract class AbstractBetRound {
 public class BetRound : AbstractBetRound, IBetRoundState {
 	public bool isWaiting; // wait for corountine
 	public bool isCanToRaise;
-//	public bool isRaised;
 	public Player playerFirstToAllIn;
 	public List<Player> playersAllIn;
 
@@ -64,16 +63,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 	#endregion
 	
-	public virtual void FirstAction() {
-//		game.state.betMax = betMax = 0;
-		
-		// clear betAlreadyInvestedInNumberOfBets for new bet round
-//		if (game != null && game.playerIterator != null)
-//		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-//			player.betAlreadyInvestedInCurrentSubRound = 0;
-//		}
-//		game.playerIterator = new PlayerIterator (game.playerCollection);
-	}
+	public virtual void FirstAction() {	}
 
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
@@ -89,7 +79,25 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void BetSubRounds() {
 		// bet sub rounds
 		if (!game.state.isWaiting) {
-			var player = game.playerIterator.NextActive();
+			var player = game.playerIterator.Next();//Active();
+
+			if (player == null) {
+
+				CheckForNextSubOrRound(); // game.state.CheckForNextSubOrRound();
+
+				var playersActive = new PlayerCollection();
+
+				int i = 0;
+				for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+					if (!p.isFolded) {
+						playersActive[i] = p;
+						i++;
+					}
+				}
+				game.playerIterator = new PlayerIterator(playersActive);
+				player = game.playerIterator.Next();
+//				return;
+			}
 
 			if (IsOneActivePlayer()) { // if one active player then he is winner
 				game.winners = new List<Player>();

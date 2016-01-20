@@ -53,9 +53,9 @@ public class Action : IAction {
 //				game.betMax = game.state.betMax;
 			}
 
-			if (p.position == game.playerIterator.LastActive().position) { // last player
-				game.state.CheckForNextSubOrRound();
-			}
+//			if (p.position == game.playerIterator.LastActive().position) { // last player
+//				game.state.CheckForNextSubOrRound();
+//			}
 		}
 	}
 	
