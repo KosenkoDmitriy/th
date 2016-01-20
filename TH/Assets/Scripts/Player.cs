@@ -313,6 +313,7 @@ public class Player {
 	}
 
 	private string EvaluateRaise(string actionString) {
+		return actionString;//TODO will remove
 		if (actionTip.isRaise) {
 			// is raise possible?
 			double max = patternCurrent.betMaxCallOrRaise;
