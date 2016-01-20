@@ -47,8 +47,8 @@ public class Constants {
 				pattern.actionDefault = arg2;
 				var prefActions = arg1.Split('/'); //.Replace("*", "").Split('/');
 				if (prefActions.Length >= 2) {
-					pattern.actionPriority2 = prefActions[0];
-					pattern.actionPriority1 = new string(prefActions[1].TakeWhile(c => Char.IsLetter(c)).ToArray());
+					pattern.actionPriority1 = prefActions[0];
+					pattern.actionPriority2 = new string(prefActions[1].TakeWhile(c => Char.IsLetter(c)).ToArray());
 
 					int maxBetAmount = 0;
 					var maxBetStr = new String(prefActions[1].Where(Char.IsNumber).ToArray());

@@ -262,6 +262,26 @@ public class Player {
 		return actionFinal;
 	}
 
+	public string GetRecommendActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
+		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
+		if (betTotalInSubRound != 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
+		
+		string actionString = "";
+		
+		//TODO
+		// is in bet sub rounds?
+		
+		// is in priority 1 (1,2,3)?
+		// is in priority 2 ?
+		// is in default?
+		
+		if (patternCurrent.betDt != 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
+		if (betToStayInGameTotal != 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
+		if (betTotalInSubRound != 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
+		
+		return actionString;
+	}
+
 	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
 		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound != 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
