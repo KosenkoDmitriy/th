@@ -8,7 +8,7 @@ public interface IAction
 public class ActionTip: Action {
 	public ActionTip (double betToStayInGame)
 	{
-		this.betDx = betToStayInGame;
+		this.betCall = betToStayInGame;
 	}
 	public bool isCall;
 	public bool isFold;
@@ -22,7 +22,7 @@ public class Action : IAction {
 
 	public Action (double betDx)
 	{
-		this.betDx = betDx;
+		this.betCall = betDx;
 	}
 
 	#region IAction implementation
@@ -62,28 +62,28 @@ public class Action : IAction {
 	#endregion
 
 	private void DoActive(Game game, Player p) {
-		p.betAlreadyInvestedInCurrentSubRound += betDx;
-		p.betTotal -= betDx;
+		p.betAlreadyInvestedInCurrentSubRound += betCall;
+		p.betTotal -= betCall;
 
 		double dtRaise = p.betAlreadyInvestedInCurrentSubRound - game.state.betMaxToStayInGame;
 		if (p.isReal) {
 			if (dtRaise > 0) {
 				if (game.state.betMaxToStayInGame > p.betAlreadyInvestedInCurrentSubRound)
-					game.ui.lblCall.text = betDx.to_s ();
+					game.ui.lblCall.text = betCall.to_s ();
 				else
 					game.ui.lblCall.text = Settings.betNull.to_s ();
 				game.ui.lblRaise.text = dtRaise.to_s();
 			} else if (dtRaise == 0) {
-				game.ui.lblCall.text = betDx.to_s ();
+				game.ui.lblCall.text = betCall.to_s ();
 				game.ui.lblRaise.text = dtRaise.to_s();
 			} else if (dtRaise < 0){
-				game.ui.lblCall.text = betDx.to_s ();
+				game.ui.lblCall.text = betCall.to_s ();
 				game.ui.lblRaise.text = Settings.betNull.to_s ();
 			}
 		}
 	}
 
-	public double betDx;
+	public double betCall;
 	public string name;
 }
 
@@ -93,7 +93,7 @@ public class Call : Action
 	{
 		this.name = "CALL";
 		player.UpdateActionCurrentString (this.name);
-		this.betDx = betToStayInGame;
+		this.betCall = betToStayInGame;
 	}
 	public override void Do(Game game, Player p) {
 		base.Do (game, p);
@@ -107,7 +107,7 @@ public class Check : Action
 	{
 		this.name = "CHECK";
 		player.UpdateActionCurrentString (this.name);
-		this.betDx = betToStayInGame;
+		this.betCall = betToStayInGame;
 	}
 }
 
@@ -118,7 +118,7 @@ public class Fold : Action
 		this.name = "FOLD";
 		player.isFolded = true;
 		player.UpdateActionCurrentString (this.name);
-		this.betDx = betToStayInGame;
+		this.betCall = betToStayInGame;
 	}
 
 	public override void Do(Game game, Player p) {
@@ -136,7 +136,7 @@ public class Raise : Action
 		player.UpdateActionCurrentString (this.name);
 //		if (player.patternCurrent != null)
 //			betToStayInGame += player.patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;//TODO
-		this.betDx = betToStayInGame;
+		this.betCall = betToStayInGame;
 	}
 
 	public override void Do(Game game, Player p) {
@@ -152,7 +152,7 @@ public class AllIn : Action
 	{
 		this.name = "ALL IN";
 		player.UpdateActionCurrentString (this.name);
-		this.betDx = betToStayInGame;
+		this.betCall = betToStayInGame;
 	}
 	
 	public override void Do(Game game, Player p) {

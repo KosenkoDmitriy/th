@@ -87,11 +87,32 @@ public class Player {
 
 		patternCurrent = GetAndSetCurrentPatternRandomly ();
 		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMax, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
-		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDt); // set actionTip get actionTipString (recommend action)
+		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betCall); // set actionTip get actionTipString (recommend action)
 
+		/*if (actionTip.isRaise) {
+			for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
+//				double betTemp = patternCurrent.betDt + (patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier);
+
+				double betMaxTemp = betMax + (i * Settings.betCurrentMultiplier);
+				actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMaxTemp, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
+				actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDt); // set actionTip get actionTipString (recommend action)
+
+				double betTotalAfterAction2 = betTotal - patternCurrent.betDt;
+				double betTotalSubRoundAfterA2 = betAlreadyInvestedInCurrentSubRound + patternCurrent.betDt;
+
+				if (betTotalAfterAction2 <= game.state.betMax && betTotalAfterAction2 >= 0) {
+
+					break;
+				}
+//				if (string.IsNullOrEmpty(actionCurrentString)) {}
+			}
+//			double bet = patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;
+//			patternCurrent.betDt += bet;
+		}
+*/
 		Action actionFinal = new Action();
 
-		double betDt = patternCurrent.betDt; // betMax - betAlreadyInvestedInCurrentSubRound;
+		double betDt = patternCurrent.betCall; // betMax - betAlreadyInvestedInCurrentSubRound;
 		if (betDt < 0) {
 			Debug.LogWarning("betToStayInGame should be > 0 but:" + betDt);
 //			betDt = 0;
@@ -101,15 +122,15 @@ public class Player {
 			// choosing between all available actions except raise
 			if (actionTip.isRaise) {
 				if (actionCurrentString == "RAISE")
-					actionCurrentString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
+					actionCurrentString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
 				if (actionCurrentString == "RAISE")
-					GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
+					GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
 				if (actionCurrentString == "RAISE")
-					GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betDt);
+					GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betCall);
 				if (string.IsNullOrEmpty(actionCurrentString))
-					GetAndSetActionTipByName ("CHECK", patternCurrent.betDt);
+					GetAndSetActionTipByName ("CHECK", patternCurrent.betCall);
 				if (string.IsNullOrEmpty(actionCurrentString))
-					GetAndSetActionTipByName ("FOLD", patternCurrent.betDt);
+					GetAndSetActionTipByName ("FOLD", patternCurrent.betCall);
 			}
 		}
 
@@ -275,7 +296,7 @@ public class Player {
 		// is in priority 2 ?
 		// is in default?
 		
-		if (patternCurrent.betDt != 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
+		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
 		if (betToStayInGameTotal != 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound != 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
 		
@@ -291,27 +312,27 @@ public class Player {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 				foreach (var betRound in patternCurrent.betSubRounds) {
 					if (betRound.costBet == betToStayInGameTotal && betRound.costBetTotal == betTotalInSubRound) {
-						patternCurrent.betDt = betRound.costBet - betRound.costBetTotal;
+						patternCurrent.betCall = betRound.costBet - betRound.costBetTotal;
 						actionString = betRound.name_action;
 						break;
 					}
 				}
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
+				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
 				actionString = EvaluateRaise(actionString);
 			}
 			if (string.IsNullOrEmpty (actionString)) {
 				if (actionString != "OPEN") {
 //					if (patternCurrent.betDt <= patternCurrent.betMaxCallOrRaise) {
-						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
+						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
 						actionString = EvaluateRaise(actionString);
 //					}
 				}
 			}
 			if (patternCurrent != null) {
 				if (string.IsNullOrEmpty (actionString)) {
-					actionString = GetAndSetActionTipByName(patternCurrent.actionDefault, patternCurrent.betDt);
+					actionString = GetAndSetActionTipByName(patternCurrent.actionDefault, patternCurrent.betCall);
 					actionString = EvaluateRaise(actionString);
 				}
 			}
@@ -320,7 +341,7 @@ public class Player {
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
 
-		if (patternCurrent.betDt != 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
+		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
 		if (betToStayInGameTotal != 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound != 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
 
@@ -337,9 +358,9 @@ public class Player {
 			// is raise possible?
 			double max = patternCurrent.betMaxCallOrRaise;
 			while(max > 0) {
-				double betTemp = this.betAlreadyInvestedInCurrentSubRound + patternCurrent.betDt + max;
+				double betTemp = this.betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall + max;
 				if (betTemp <= Settings.betMaxMath) {
-					patternCurrent.betDt = betTemp;
+					patternCurrent.betCall = betTemp;
 					break;
 				} else { //can't raise
 					actionString = "";
@@ -348,16 +369,16 @@ public class Player {
 			}
 			// is call possible?
 			if (string.IsNullOrEmpty(actionString)) {
-				if (this.betAlreadyInvestedInCurrentSubRound + patternCurrent.betDt > Settings.betMaxMath) { //can't call
+				if (this.betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall > Settings.betMaxMath) { //can't call
 					actionString = "";
 				} else {
-					actionString = GetAndSetActionTipByName ("CALL", patternCurrent.betDt);
+					actionString = GetAndSetActionTipByName ("CALL", patternCurrent.betCall);
 				}
 			}
 			// is check possible?
 			if (string.IsNullOrEmpty(actionString)) {
 				if (this.betAlreadyInvestedInCurrentSubRound == Settings.betMaxMath || Settings.betMaxMath == 0) {
-					actionString = GetAndSetActionTipByName ("CHECK", patternCurrent.betDt);
+					actionString = GetAndSetActionTipByName ("CHECK", patternCurrent.betCall);
 				}
 			}
 			
