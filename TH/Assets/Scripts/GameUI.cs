@@ -49,7 +49,7 @@ public class GameUI : MonoBehaviour
 		lblCall.text = Settings.betNull.to_s();
 	}
 
-	// start win panel
+	#region win panel
 	public void btnWinPanelCloseClick()
 	{
 		ReInitGame ();
@@ -64,8 +64,9 @@ public class GameUI : MonoBehaviour
 		game.state = new InitGame (game);
 	}
 
-	// end win panel
-	// start game panel
+	#endregion win panel
+
+	#region game panel
 	public void btnCheckClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
@@ -129,9 +130,9 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
 		if (panelHelp) panelHelp.SetActive (false);
 	}
-	// end game panel
+	#endregion game panel
 
-	// start bet panel
+	#region bet panel
 	public void btnBetNowClick()
 	{
 		if (Settings.isDebug) Debug.Log("btnBetNowClick()");
@@ -224,7 +225,7 @@ public class GameUI : MonoBehaviour
 		inputBetField.text = Settings.betCurrent.to_s();
 	}
 	
-	// end bet panel
+	#endregion bet panel
 
 	public void btnInstructionClick()
 	{
@@ -254,7 +255,7 @@ public class GameUI : MonoBehaviour
 	}
 	#endregion add credits
 
-	#region bonus table
+	#region bonus pane/table
 	public void btnBetForBonusTableClick() {
 		if (Settings.isDebug) Debug.Log("btnBetForBonusTableClick()");
 		if (panelBonus) panelBonus.SetActive (true);
@@ -293,8 +294,7 @@ public class GameUI : MonoBehaviour
 		if (payTable != null) payTable.SetBet(Settings.betBonus);
 		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.ToString();
 	}
-	#endregion
-
+	#endregion bonus pane/table
 
 	public void Start ()
 	{
