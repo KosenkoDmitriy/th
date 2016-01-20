@@ -82,7 +82,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		}
 		game.state.betMaxToStayInGame = betMaxToStayInGame = 0;
 	
-		game.potAmount = pot;
+		game.potAmount += pot;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
 	}
 	
