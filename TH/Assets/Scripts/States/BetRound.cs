@@ -162,7 +162,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //					isNextBetRound = true; //TODO force quit 
 //					break;
 //				}
-				if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame) {
+				if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame || game.state.betMaxToStayInGame >= game.state.betMax) {
 					isNextBetRound = true;
 				} else {
 					isNextBetRound = false;
@@ -233,10 +233,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public void CheckForNextSubOrRound() {
 		isCanToRaise = false;
 		if (!isCanToRaise) {
-			if (subRoundCount < subRoundMaxSize) {
+			if (subRoundCount < subRoundMaxSize || game.state.betMaxToStayInGame < game.state.betMax) {
 				isCanToRaise = true;
 				subRoundCount++;
-			} else if (subRoundCount == subRoundMaxSize) {	// last subround
+			} else if (subRoundCount == subRoundMaxSize || game.state.betMaxToStayInGame == game.state.betMax) {	// last subround
 				if (IsNextBetRound()) {						// no any raise
 					subRoundCount++; // LastAction();		// next bet round
 				}			

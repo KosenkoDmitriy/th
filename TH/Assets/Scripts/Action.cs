@@ -48,9 +48,8 @@ public class Action : IAction {
 			}
 			game.ui.UpdatePlayerActionAndCredits(p);
 
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMaxToStayInGame) {
+			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMaxToStayInGame && game.state.betMaxToStayInGame <= game.state.betMax) {
 				game.state.betMaxToStayInGame = p.betAlreadyInvestedInCurrentSubRound;
-//				game.betMax = game.state.betMax;
 			}
 
 			if (p.position == game.playerIterator.LastActive().position) { // last player
