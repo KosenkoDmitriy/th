@@ -153,12 +153,21 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		var iterator = new PlayerIterator (game.playerCollection);
 		bool isNextBetRound = false;
 		while (!iterator.IsDone) {
-			var player = iterator.NextActive();
-			if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame || player.betAlreadyInvestedInCurrentSubRound > betMax) {
-				isNextBetRound = true;
-			} else {
-				isNextBetRound = false;
-				break;
+			var player = iterator.Next();
+			if (!player.isFolded) {
+//				if (player.betAlreadyInvestedInCurrentSubRound > betMax) {
+////					isCanToRaise = false;
+////					isNextBetRound = false;
+//
+//					isNextBetRound = true; //TODO force quit 
+//					break;
+//				}
+				if (player.betAlreadyInvestedInCurrentSubRound == betMaxToStayInGame) {
+					isNextBetRound = true;
+				} else {
+					isNextBetRound = false;
+					break;
+				}
 			}
 		}
 		return isNextBetRound;
