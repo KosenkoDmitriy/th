@@ -292,22 +292,21 @@ public class Player {
 				foreach (var betRound in patternCurrent.betSubRounds) {
 					if (betRound.costBet == betToStayInGameTotal && betRound.costBetTotal == betTotalInSubRound) {
 						patternCurrent.betDt = betRound.costBet - betRound.costBetTotal;
-						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
-						actionString = EvaluateRaise(actionString);
-//						actionString = betRound.name_action;
+						actionString = betRound.name_action;
 						break;
 					}
 				}
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				patternCurrent.betDt = patternCurrent.betMaxCallOrRaise;
 				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betDt);
 				actionString = EvaluateRaise(actionString);
 			}
 			if (string.IsNullOrEmpty (actionString)) {
 				if (actionString != "OPEN") {
-					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
-					actionString = EvaluateRaise(actionString);
+//					if (patternCurrent.betDt <= patternCurrent.betMaxCallOrRaise) {
+						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betDt);
+						actionString = EvaluateRaise(actionString);
+//					}
 				}
 			}
 			if (patternCurrent != null) {
@@ -317,13 +316,13 @@ public class Player {
 				}
 			}
 		}
+
 //		if (pattern != null)
 //			if (string.IsNullOrEmpty(action)) action = pattern.actionDefault;
+
 		if (patternCurrent.betDt != 0) patternCurrent.betDt *= Settings.betCurrentMultiplier;
 		if (betToStayInGameTotal != 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
 		if (betTotalInSubRound != 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
-
-//		actionCurrentString = actionString;
 
 		if (string.IsNullOrEmpty (actionCurrentString)) {
 			Debug.LogWarning ("actionCurrentString is empty patternCurrent.name:" + patternCurrent.name);
