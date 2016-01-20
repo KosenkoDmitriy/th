@@ -118,32 +118,75 @@ public class Player {
 //			betDt = 0;
 		}
 
-		if (!isCanToRaise) {
-			// choosing between all available actions except raise
-			if (actionTip.isRaise) {
-				if (actionCurrentString == "RAISE")
-					actionCurrentString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
-				if (actionCurrentString == "RAISE")
-					GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
-				if (actionCurrentString == "RAISE")
-					GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betCall);
-				if (string.IsNullOrEmpty(actionCurrentString))
-					GetAndSetActionTipByName ("CHECK", patternCurrent.betCall);
-				if (string.IsNullOrEmpty(actionCurrentString))
-					GetAndSetActionTipByName ("FOLD", patternCurrent.betCall);
-			}
-		}
-
 		// from recommend to optimal
 		double betTotalAfterAction = betTotal - betDt;
 		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 
+		if (isCanToRaise) {
+			if (actionTip.isRaise) {
+				double betRaiseTemp = 0;
+				for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
+					betRaiseTemp = i * Settings.betCurrentMultiplier;
+					double betInvestedAfterA = this.betAlreadyInvestedInCurrentSubRound + betRaiseTemp + betDt;
+					double balanceAfterA = this.betTotal - betDt - betRaiseTemp;
+					if (betInvestedAfterA <= game.state.betMax && balanceAfterA >= 0) {
+						patternCurrent.betRaise = betRaiseTemp;
+						betDt = patternCurrent.betCall + patternCurrent.betRaise;
+						isCanToRaise = true;
+						break;
+					} else { //if (betInvestedAfterA > game.state.betMax || balanceAfterA < 0 || (betInvestedAfterA > game.state.betMax && balanceAfterA < 0)) {
+						isCanToRaise = false;
+					}
+				}
+				patternCurrent.betRaise = betRaiseTemp;
+			}
+		}
+
+		if (!isCanToRaise) {
+			// choosing between all available actions except raise
+			if (actionTip.isRaise)
+				actionCurrentString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
+			if (actionTip.isRaise)
+				GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
+			if (actionTip.isRaise)
+				GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betCall);
+
+			if (string.IsNullOrEmpty(actionCurrentString))
+				GetAndSetActionTipByName ("CHECK", patternCurrent.betCall);
+			if (string.IsNullOrEmpty(actionCurrentString))
+				GetAndSetActionTipByName ("FOLD", patternCurrent.betCall);
+		}
+
+		actionFinal = ActionMath(betDt, betTotalAfterAction, isCanToRaise);
+//		actionFinal = ActionOptimal (betDt, betTotalAfterAction, isCanToRaise);
+
+		if (actionFinal == null)
+			Debug.LogError ("error: actionFinal is null");
+
+		return actionFinal;
+	}
+
+	public Action ActionMath(double betDt, double betTotalAfterAction, bool isCanToRaise) {
+		if (actionTip.isFold) {
+			actionFinal = new Fold (this, betDt);
+		} else if (actionTip.isCheck) {
+			actionFinal = new Check (this, betDt);
+		} else if (actionTip.isCall) {
+			actionFinal = new Call (this, betDt);
+		} else if (actionTip.isRaise) {
+			actionFinal = new Raise (this, betDt);
+		} else if (actionTip.isAllIn) {
+			actionFinal = new AllIn(this, betDt);
+		}
+		return actionFinal;
+	}
+
+	public Action ActionOptimal(double betDt, double betTotalAfterAction, bool isCanToRaise) {
 		// evaluate
 		if (isWinner) {
 			if (betTotal < 0) {
 				actionFinal = new Fold (this, betDt);
 			} else {
-
 				if (isCanToRaise) {
 					actionFinal = new Raise (this, betDt);
 				} else {
@@ -154,18 +197,18 @@ public class Player {
 					}
 				}
 			}
-
+			
 			if (actionFinal == null)
 				Debug.LogError ("error: actionFinal is null");
-
+			
 			return actionFinal;
 		}
-
+		
 		if (actionTip.isFold) {
 			if (betDt == 0) {
 				actionFinal = new Check (this, betDt);
-//			} else if (isWinner) {
-//				actionFinal = new AllIn (this, betDt);
+				//			} else if (isWinner) {
+				//				actionFinal = new AllIn (this, betDt);
 			} else {
 				actionFinal = new Fold (this, betDt);
 			}
@@ -189,8 +232,8 @@ public class Player {
 			if (betTotalAfterAction < 0) {
 				if (betDt == 0) {
 					actionFinal = new Check (this, betDt);
-//				} else if (betDt > 0) {
-//					actionFinal = new Call (this, betDt); //TODO
+					//				} else if (betDt > 0) {
+					//					actionFinal = new Call (this, betDt); //TODO
 				} else {
 					actionFinal = new Fold (this, betDt);
 				}
@@ -200,7 +243,7 @@ public class Player {
 		} else if (actionTip.isAllIn) {
 			actionFinal = new AllIn(this, betDt);
 		}
-	
+		
 		/*
 		if (betTotalAfterAction < 0) { //fold
 			if (betTotal > 0) {
@@ -219,7 +262,7 @@ public class Player {
 		} else if (betTotalAfterAction == 0) { //check
 			actionFinal = new Check (this, betDt);
 		}*/
-
+		
 		/*
 		if (betTotalAfterAction < 0) {
 			if (betTotal >= 0 && isWinner) {
@@ -277,8 +320,6 @@ public class Player {
 			}
 		}
 		*/
-		if (actionFinal == null)
-			Debug.LogError ("error: actionFinal is null");
 
 		return actionFinal;
 	}
