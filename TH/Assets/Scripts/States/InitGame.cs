@@ -123,9 +123,10 @@ public class InitGame : BetRound {
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
 		foreach (var p in game.players) {
+//			p.betAlreadyInvestedInCurrentSubRound = 0;
 			game.playerCollection[p.position] = p;
 		}
-		
+		game.potAmount = 0;
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 		isWaiting = false;
 	}
