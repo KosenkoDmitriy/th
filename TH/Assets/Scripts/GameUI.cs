@@ -193,8 +193,8 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
 		
 		audio.PlayOneShot(soundBtnClicked);
-		
-		Settings.betCurrent = Settings.betMaxMath * Settings.betCurrentMultiplier;
+		double betMax = (game.state.betMax - game.state.betMaxToStayInGame) * Settings.betCurrentMultiplier;
+		Settings.betCurrent = betMax;//Settings.betMaxMath * Settings.betCurrentMultiplier;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
@@ -208,7 +208,8 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 		
 		Settings.betCurrent += Settings.betMinMath * Settings.betCurrentMultiplier;
-		if (Settings.betCurrent > Settings.betMaxMath * Settings.betCurrentMultiplier)
+		double betMax = (game.state.betMax - game.state.betMaxToStayInGame) * Settings.betCurrentMultiplier;
+		if (Settings.betCurrent > betMax) //Settings.betMaxMath * Settings.betCurrentMultiplier)
 			Settings.betCurrent = Settings.betNull;
 
 		inputBetField.text = Settings.betCurrent.to_s();
