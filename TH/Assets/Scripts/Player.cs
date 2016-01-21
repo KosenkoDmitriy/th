@@ -131,6 +131,7 @@ public class Player {
 					double balanceAfterA = this.betTotal - betDt - betRaiseTemp;
 					if (betInvestedAfterA <= game.state.betMax && balanceAfterA >= 0) {
 						patternCurrent.betRaise = betRaiseTemp;
+						patternCurrent.betToStayInGame = patternCurrent.betRaise + patternCurrent.betCall;
 						betDt = patternCurrent.betCall + patternCurrent.betRaise;
 						isCanToRaise = true;
 						break;
@@ -150,11 +151,59 @@ public class Player {
 				GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
 			if (actionTip.isRaise)
 				GetAndSetActionTipByName (patternCurrent.actionDefault, patternCurrent.betCall);
-
+			if (string.IsNullOrEmpty(actionCurrentString))
+				GetAndSetActionTipByName ("CALL", patternCurrent.betCall);
 			if (string.IsNullOrEmpty(actionCurrentString))
 				GetAndSetActionTipByName ("CHECK", patternCurrent.betCall);
 			if (string.IsNullOrEmpty(actionCurrentString))
 				GetAndSetActionTipByName ("FOLD", patternCurrent.betCall);
+		}
+
+		// isCanToRaise()
+		betTotalAfterAction = betTotal - betDt;
+		betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
+		if (betTotalSubRoundAfterA <= game.state.betMax) {
+			if (betTotalSubRoundAfterA > game.state.betMaxToStayInGame) {
+				game.state.betMaxToStayInGame = betTotalSubRoundAfterA; // max bet to stay in the game
+			}
+		}
+
+		// prognose
+//		if (game.state.betMaxToStayInGame > game.state.betMax) { //handled in actionFinal.Do() (exceed bet max limit)
+//
+//		}
+		if (betTotalSubRoundAfterA > game.state.betMax) { // exceed bet max limit (allow only call or check)
+			if (actionTip.isRaise || patternCurrent.betRaise > 0) { // raise action
+				if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall > game.state.betMax) { // allow check
+					actionFinal = new Check(this, 0);
+					return actionFinal;
+				} else if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall <= game.state.betMax) { // allow call
+					actionFinal = new Call(this, patternCurrent.betCall);
+					return actionFinal;
+				}
+			}
+			if (betTotal < 0) {
+				actionFinal = new Fold(this, 0);
+			} else {
+				if (betAlreadyInvestedInCurrentSubRound < game.state.betMaxToStayInGame) {
+					actionFinal = new Call(this, patternCurrent.betCall);
+				} else {
+					if (game.state.betMaxToStayInGame > 0) {
+						actionFinal = new Call(this, patternCurrent.betCall);
+					} else {
+						actionFinal = new Check(this, 0);
+					}
+				}
+			}
+			return actionFinal;
+//			if (betTotalSubRoundAfterA < game.state.betMaxToStayInGame) { // call
+//				actionFinal = new Call(this, game.state.betMaxToStayInGame);
+//			} else if (betTotalSubRoundAfterA == game.state.betMaxToStayInGame) { // check
+//				actionFinal = new Check(this, 0);
+//			} else if (betTotalSubRoundAfterA > game.state.betMaxToStayInGame) { // raise
+//
+//			}
+
 		}
 
 		actionFinal = ActionMath(betDt, betTotalAfterAction, isCanToRaise);
@@ -165,6 +214,11 @@ public class Player {
 
 		return actionFinal;
 	}
+
+//	public bool isCanToRaise(Game game) {
+////		if (game.state <
+//		return true;
+//	}
 
 	public Action ActionMath(double betDt, double betTotalAfterAction, bool isCanToRaise) {
 		if (actionTip.isFold) {
