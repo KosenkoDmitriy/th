@@ -78,8 +78,9 @@ public class Player {
 		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
 
-	public Pattern GetAndSetCurrentPatternRandomly() {
+	public Pattern GetPatternRandomly() {
 		float percentOfTime = UnityEngine.Random.value * 100;
+		Pattern patternCurrent = null;
 		if (pattern != null) {
 //			if (percentOfTime <= pattern.percent) {
 				patternCurrent = pattern;
@@ -93,9 +94,6 @@ public class Player {
 			}
 		}
 
-		if (patternCurrent == null) {
-			patternCurrent = pattern;
-		}
 		return patternCurrent;
 	}
 
@@ -105,7 +103,7 @@ public class Player {
 		// preferred/recommend action from the pattern
 		// final optimal correct actual action
 
-		patternCurrent = GetAndSetCurrentPatternRandomly ();
+		patternCurrent = GetPatternRandomly ();
 		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMax, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
 		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betCall); // set actionTip get actionTipString (recommend action)
 
@@ -224,7 +222,86 @@ public class Player {
 		return actionFinal;
 	}
 
-	public Action ActionOptimal(Game game, double betTotalAfterAction_, bool isCanToRaise) {
+	public ActionTip GetActionRecommend(Game game) {//double betMaxToStayInGame, double betMaxLimit) {
+		double betMaxLimit = game.state.betMax;
+		double betMaxToStayInGameTotal = game.state.betMaxToStayInGame;
+//		double betDt = betMaxToStayInGameTotal-; 
+//		if (betAlreadyInvestedInCurrentSubRound != 0)
+//		double betToStayInGameTotal = betAlreadyInvestedInCurrentSubRound + ;
+
+		if (betMaxLimit != 0) betMaxLimit /= Settings.betCurrentMultiplier;
+		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
+
+		ActionTip actionT = new ActionTip (0);
+		string actionString = "";
+		
+		//TODO
+		// is in bet sub rounds?
+		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
+			foreach (var betRound in patternCurrent.betSubRounds) {
+				if (betRound.costBet == betMaxToStayInGameTotal && betRound.costBetTotal == betAlreadyInvestedInCurrentSubRound) {
+					patternCurrent.betCall = betRound.costBet - betRound.costBetTotal;
+					actionString = betRound.name_action;
+					break;
+				}
+			}
+		}
+
+		// is in priority 1 (1,2,3)?
+		// is in priority 2 ?
+		// is in default?
+		
+		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
+		if (betMaxLimit != 0) betMaxLimit *= Settings.betCurrentMultiplier;
+		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal *= Settings.betCurrentMultiplier;
+		
+		return actionT;
+	}
+
+	public Action ActionMath(Game game) {
+		ActionTip actionT = new ActionTip (0);
+		patternCurrent = GetPatternRandomly ();
+		double betTotalAfterAction = betTotal + game.state.betMaxToStayInGame;
+
+		actionT = GetActionRecommend (game);
+
+//		actionT.betCall
+//		patternCurrent.betToStayInGame;
+		if (betTotalAfterAction < 0) {
+			if (IsActionInSubrounds()) {
+
+			}
+			if (IsActionPriority1()) {
+				
+			}
+			if (IsActionPriority2()) {
+				
+			}
+			if (IsActionDefault()) {
+				
+			}
+		}
+		return actionT;
+	}
+
+	public bool IsActionInSubrounds() {
+		return false;
+	}
+
+	public bool IsActionPriority1() {
+		return false;
+	}
+
+	public bool IsActionPriority2() {
+		return false;
+	}
+	
+	public bool IsActionDefault() {
+		return false;
+	}
+
+
+	public Action ActionOptimal(Game game, double betTotalAfterAction, bool isCanToRaise) {
 		double betStayTotal = game.state.betMaxToStayInGame;
 		double betStay2 = patternCurrent.betToStayInGame;
 
@@ -235,7 +312,7 @@ public class Player {
 		double betWithRaise = patternCurrent.betCall + patternCurrent.betRaise;
 		double betCall = patternCurrent.betCall;
 
-		double betTotalAfterAction = betTotal - betWithRaise;
+		betTotalAfterAction = betTotal - betWithRaise;
 		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betWithRaise;
 
 		if (betTotal < betStayTotal) { // call/raise
@@ -429,26 +506,6 @@ public class Player {
 		return actionFinal;
 	}
 	#endregion action optimal 2
-
-	public string GetRecommendActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
-		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
-		if (betTotalInSubRound != 0) betTotalInSubRound /= Settings.betCurrentMultiplier;
-		
-		string actionString = "";
-		
-		//TODO
-		// is in bet sub rounds?
-		
-		// is in priority 1 (1,2,3)?
-		// is in priority 2 ?
-		// is in default?
-		
-		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
-		if (betToStayInGameTotal != 0) betToStayInGameTotal *= Settings.betCurrentMultiplier;
-		if (betTotalInSubRound != 0) betTotalInSubRound *= Settings.betCurrentMultiplier;
-		
-		return actionString;
-	}
 
 	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
 		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;

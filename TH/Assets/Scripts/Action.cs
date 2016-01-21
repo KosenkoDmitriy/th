@@ -86,6 +86,10 @@ public class Action : IAction {
 	}
 
 	public double betCall;
+	public double betRaise;
+	public double betToStay {
+		get { return betCall + betRaise; } 
+	}
 	public string name;
 }
 

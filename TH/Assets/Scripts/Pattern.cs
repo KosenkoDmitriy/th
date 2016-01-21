@@ -14,12 +14,13 @@ public class Pattern
 	public string actionPriority1;
 	
 	public int betMaxCallOrRaise;	// in number of bets
+
 	public double betCall;
 	public double betRaise;
 	public double betToStayInGame;
 
 	public List<PatternBetRoundAndAction> betSubRounds;
-	public double percent;
+	public double percent;	// of all time
 }
 
 public class PatternBetRoundAndAction
