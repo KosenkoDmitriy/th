@@ -35,6 +35,11 @@ public class Action : IAction {
 					game.state = new InitGame(game);
 				} else {
 					DoActive(game, p);
+					if (game.state.betMaxToStayInGame <= game.state.betMax) {
+						if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMaxToStayInGame) {
+							game.state.betMaxToStayInGame = p.betAlreadyInvestedInCurrentSubRound;
+						}
+					}
 					game.player = p;
 				}
 				game.ui.SetBalance(p.betTotal.to_s());
@@ -48,9 +53,6 @@ public class Action : IAction {
 			}
 			game.ui.UpdatePlayerActionAndCredits(p);
 
-			if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMaxToStayInGame && game.state.betMaxToStayInGame <= game.state.betMax) {
-				game.state.betMaxToStayInGame = p.betAlreadyInvestedInCurrentSubRound;
-			}
 
 			if (p.position == game.playerIterator.LastActive().position) { // last player
 				game.state.CheckForNextSubOrRound();
