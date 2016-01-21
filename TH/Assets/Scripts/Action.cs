@@ -52,11 +52,6 @@ public class Action : IAction {
 				}
 			}
 			game.ui.UpdatePlayerActionAndCredits(p);
-
-
-			if (p.position == game.playerIterator.LastActive().position) { // last player
-				game.state.CheckForNextSubOrRound();
-			}
 		}
 	}
 	

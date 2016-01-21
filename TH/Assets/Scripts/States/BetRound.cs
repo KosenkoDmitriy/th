@@ -89,14 +89,33 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void BetSubRounds() {
 		// bet sub rounds
 		if (!game.state.isWaiting) {
-			var player = game.playerIterator.NextActive();
+			var player = game.playerIterator.Next();
+			
+			if (player == null) {
 
-			if (IsOneActivePlayer()) { // if one active player then he is winner
-				game.winners = new List<Player>();
-				game.winners.Add(player);
-				game.state = new EndGame(game);
-				return;
+				if (IsOneActivePlayer()) { // if one active player then he is winner
+					game.winners = new List<Player>();
+					game.winners.Add(player);
+					game.state = new EndGame(game);
+					return;
+				}
+
+				CheckForNextSubOrRound(); // game.state.CheckForNextSubOrRound();
+				
+				var playersActive = new PlayerCollection();
+				
+				int i = 0;
+				for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+					if (!p.isFolded) {
+						playersActive[i] = p;
+						i++;
+					}
+				}
+				game.playerIterator = new PlayerIterator(playersActive);
+				player = game.playerIterator.Next();
+				//				return;
 			}
+
 
 			if (Settings.isDev) {
 				Debug.Log("");
