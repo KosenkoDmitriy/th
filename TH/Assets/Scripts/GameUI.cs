@@ -365,6 +365,7 @@ public class GameUI : MonoBehaviour
 			
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
+		audio.volume = 0.1f;
 		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/cardFan1");//pressed");
 		soundDeal = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
 		soundRaise = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
