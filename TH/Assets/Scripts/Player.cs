@@ -138,7 +138,6 @@ public class Player {
 				GetAndSetActionTipByName ("FOLD", patternCurrent.betCall);
 		}
 
-		// isCanToRaise()
 		betTotalAfterAction = betTotal - betDt;
 		betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 		if (betTotalSubRoundAfterA <= game.state.betMax) {
@@ -147,10 +146,6 @@ public class Player {
 			}
 		}
 
-		// prognose
-//		if (game.state.betMaxToStayInGame > game.state.betMax) { //handled in actionFinal.Do() (exceed bet max limit)
-//
-//		}
 		if (betTotalSubRoundAfterA > game.state.betMax) { // exceed bet max limit (allow only call or check)
 			if (actionTip.isRaise || patternCurrent.betRaise > 0) { // raise action
 				if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall > game.state.betMax) { // allow check
@@ -193,11 +188,6 @@ public class Player {
 
 		return actionFinal;
 	}
-
-//	public bool isCanToRaise(Game game) {
-////		if (game.state <
-//		return true;
-//	}
 
 	public Action ActionMath(double betDt, double betTotalAfterAction, bool isCanToRaise) {
 		if (actionTip.isFold) {
@@ -393,16 +383,14 @@ public class Player {
 				}
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
-				actionString = EvaluateRaise(actionString);
+				if (!actionString.Contains("OPEN")) { // skip if unknown action
+					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
+					actionString = EvaluateRaise(actionString);
+				}
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				if (actionString != "OPEN") {
-//					if (patternCurrent.betDt <= patternCurrent.betMaxCallOrRaise) {
-						actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
-						actionString = EvaluateRaise(actionString);
-//					}
-				}
+				actionString = GetAndSetActionTipByName (patternCurrent.actionPriority2, patternCurrent.betCall);
+				actionString = EvaluateRaise(actionString);
 			}
 			if (patternCurrent != null) {
 				if (string.IsNullOrEmpty (actionString)) {
