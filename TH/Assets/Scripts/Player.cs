@@ -89,27 +89,6 @@ public class Player {
 		actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMax, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
 		actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betCall); // set actionTip get actionTipString (recommend action)
 
-		/*if (actionTip.isRaise) {
-			for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
-//				double betTemp = patternCurrent.betDt + (patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier);
-
-				double betMaxTemp = betMax + (i * Settings.betCurrentMultiplier);
-				actionCurrentString = GetCurrentActionStringFromCurrentPattern (betMaxTemp, betAlreadyInvestedInCurrentSubRound); // best actionString from the patternCurrent
-				actionCurrentString = GetAndSetActionTipByName (actionCurrentString, patternCurrent.betDt); // set actionTip get actionTipString (recommend action)
-
-				double betTotalAfterAction2 = betTotal - patternCurrent.betDt;
-				double betTotalSubRoundAfterA2 = betAlreadyInvestedInCurrentSubRound + patternCurrent.betDt;
-
-				if (betTotalAfterAction2 <= game.state.betMax && betTotalAfterAction2 >= 0) {
-
-					break;
-				}
-//				if (string.IsNullOrEmpty(actionCurrentString)) {}
-			}
-//			double bet = patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;
-//			patternCurrent.betDt += bet;
-		}
-*/
 		Action actionFinal = new Action();
 
 		double betDt = patternCurrent.betCall; // betMax - betAlreadyInvestedInCurrentSubRound;
