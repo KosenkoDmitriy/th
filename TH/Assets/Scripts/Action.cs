@@ -77,6 +77,12 @@ public class Action : IAction {
 				game.ui.lblRaise.text = Settings.betNull.to_s ();
 			}
 		}
+
+		if (Settings.isDev) {
+			game.ui.DebugLog(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betAlreadyInvestedInCurrentSubRound, p.betTotal, game.state.betMaxToStayInGame, game.state.betMax));
+//			p.ToString();
+			p.DevInfo(p);
+		}
 	}
 
 	public double betCall;

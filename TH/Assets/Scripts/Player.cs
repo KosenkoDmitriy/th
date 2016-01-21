@@ -14,9 +14,29 @@ public class Player {
 
 	public override string ToString ()
 	{
-		string str = string.Format ("{0} {1} {2}({5}) {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent);
-		if (Settings.isDev)	Debug.Log (str);
+		string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent);
+		if (Settings.isDev) {
+			DevInfo(this);
+		}
+
 		return str;
+	}
+
+	public void DevInfo(Player player) {
+		if (Settings.isDev) {
+			string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", player.id, player.name, player.handPreflopString, player.betTotal, player.actionCurrentString, player.winPercent);
+			Debug.Log (str);
+
+			string str2 = "";
+			if (player.actionTip != null) {
+				str2 = string.Format ("action tip: {0} ({1}%): bet to stay:{2}", player.actionTip.name, player.winPercent, player.actionTip.betCall);
+				Debug.Log (str2);
+			}
+			if (player.patternCurrent != null) {
+				str2 = string.Format ("cur pattern ({8}%): n{0} p1{1} p2{2} d{3}\n bet: stay:{4} call:{5} raise:{6} max:{7} ", player.patternCurrent.name, player.patternCurrent.actionPriority1, player.patternCurrent.actionPriority2, player.patternCurrent.actionDefault, player.patternCurrent.betToStayInGame, player.patternCurrent.betCall, player.patternCurrent.betRaise, player.patternCurrent.betMaxCallOrRaise, player.patternCurrent.percent);
+				Debug.Log (str2);
+			}
+		}
 	}
 
 	public void UpdateActionCurrentString (string name)
@@ -383,7 +403,7 @@ public class Player {
 				}
 			}
 			if (string.IsNullOrEmpty (actionString)) {
-				if (!actionString.Contains("OPEN")) { // skip if unknown action
+				if (!actionString.Contains("OPEN")) { // unknown action
 					actionString = GetAndSetActionTipByName (patternCurrent.actionPriority1, patternCurrent.betCall);
 					actionString = EvaluateRaise(actionString);
 				}

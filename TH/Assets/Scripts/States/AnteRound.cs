@@ -24,7 +24,7 @@ public class AnteRound : BetRound {
 					game.player = player;
 
 					double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMaxToStayInGame;
-					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
+//					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 					
 					if (dt > 0) {
 						game.ui.lblCall.text = Settings.betNull.to_s();

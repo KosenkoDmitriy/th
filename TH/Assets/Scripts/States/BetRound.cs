@@ -92,7 +92,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			var player = game.playerIterator.Next();
 			
 			if (player == null) {
-
+				Debug.Log(string.Format("cur sub round:{0}/{1} isCanToRaise:{2}", subRoundCount, subRoundMaxSize, isCanToRaise));
 				if (IsOneActivePlayer()) { // if one active player then he is winner
 					game.winners = new List<Player>();
 					game.winners.Add(player);
@@ -116,17 +116,11 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				//				return;
 			}
 
-
-			if (Settings.isDev) {
-				Debug.Log("");
-				player.ToString();
-			}
-
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
 				double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMaxToStayInGame;
-				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
+//				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 
 				if (dt > 0) {
 					game.ui.lblCall.text = Settings.betNull.to_s();
