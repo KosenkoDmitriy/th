@@ -92,7 +92,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			var player = game.playerIterator.Next();
 			
 			if (player == null) {
-				Debug.Log(string.Format("cur sub round:{0}/{1} isCanToRaise:{2}", subRoundCount, subRoundMaxSize, isCanToRaise));
+				Debug.Log(string.Format("CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
 				if (IsOneActivePlayer()) { // if one active player then he is winner
 					game.winners = new List<Player>();
 					game.winners.Add(player);

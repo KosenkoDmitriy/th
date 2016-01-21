@@ -155,9 +155,8 @@ public class GameUI : MonoBehaviour
 			game.betAmount /= (Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
 		}
 
-
 		// from recommend to optimal
-		double betTotalAfterAction = Math.Abs(game.player.betTotal - game.betAmount);
+		double betTotalAfterAction = game.player.betTotal - game.betAmount;
 		double betTotalSubRoundAfterA = game.player.betAlreadyInvestedInCurrentSubRound + game.betAmount;
 		if (game.isGameRunning) {
 
@@ -169,6 +168,8 @@ public class GameUI : MonoBehaviour
 				}
 			} else if (betTotalAfterAction == 0) { //check
 				game.player.actionFinal = new Check (game.player, game.betAmount);
+			} else if (betTotalAfterAction < 0) { //fold
+				//TODO
 			}
 
 			if (lblCall) lblCall.text = game.state.betMaxToStayInGame.to_s();

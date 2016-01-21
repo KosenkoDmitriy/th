@@ -24,16 +24,16 @@ public class Player {
 
 	public void DevInfo(Player player) {
 		if (Settings.isDev) {
-			string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", player.id, player.name, player.handPreflopString, player.betTotal, player.actionCurrentString, player.winPercent);
+			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets: in_cur_bet_round:{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.betTotal, player.actionCurrentString, player.winPercent, player.position, player.betAlreadyInvestedInCurrentSubRound);
 			Debug.Log (str);
 
 			string str2 = "";
 			if (player.actionTip != null) {
-				str2 = string.Format ("action tip: {0} ({1}%): bet to stay:{2}", player.actionTip.name, player.winPercent, player.actionTip.betCall);
+				str2 = string.Format ("action tip: {0} ({1}% win): bet to stay:{2}", player.actionTip.name, player.winPercent, player.actionTip.betCall);
 				Debug.Log (str2);
 			}
 			if (player.patternCurrent != null) {
-				str2 = string.Format ("cur pattern ({8}%): n{0} p1{1} p2{2} d{3}\n bet: stay:{4} call:{5} raise:{6} max:{7} ", player.patternCurrent.name, player.patternCurrent.actionPriority1, player.patternCurrent.actionPriority2, player.patternCurrent.actionDefault, player.patternCurrent.betToStayInGame, player.patternCurrent.betCall, player.patternCurrent.betRaise, player.patternCurrent.betMaxCallOrRaise, player.patternCurrent.percent);
+				str2 = string.Format ("cur pattern: {0} ({8}% of all time): p1:{1} p2:{2} d:{3}\n bet: stay:{4} call:{5} raise:{6} max:{7} ", player.patternCurrent.name, player.patternCurrent.actionPriority1, player.patternCurrent.actionPriority2, player.patternCurrent.actionDefault, player.patternCurrent.betToStayInGame, player.patternCurrent.betCall, player.patternCurrent.betRaise, player.patternCurrent.betMaxCallOrRaise, player.patternCurrent.percent);
 				Debug.Log (str2);
 			}
 		}
@@ -111,7 +111,7 @@ public class Player {
 
 		Action actionFinal = new Action();
 
-		double betDt = patternCurrent.betCall; // betMax - betAlreadyInvestedInCurrentSubRound;
+		double betDt = patternCurrent.betCall;
 		if (betDt < 0) {
 			Debug.LogWarning("betToStayInGame should be > 0 but:" + betDt);
 //			betDt = 0;
@@ -200,8 +200,8 @@ public class Player {
 
 		}
 
-		actionFinal = ActionMath(betDt, betTotalAfterAction, isCanToRaise);
-//		actionFinal = ActionOptimal (betDt, betTotalAfterAction, isCanToRaise);
+//		actionFinal = ActionMath(betDt, betTotalAfterAction, isCanToRaise);
+		actionFinal = ActionOptimal (game, betTotalAfterAction, isCanToRaise);
 
 		if (actionFinal == null)
 			Debug.LogError ("error: actionFinal is null");
@@ -224,14 +224,76 @@ public class Player {
 		return actionFinal;
 	}
 
-	public Action ActionOptimal(double betDt, double betTotalAfterAction, bool isCanToRaise) {
+	public Action ActionOptimal(Game game, double betTotalAfterAction_, bool isCanToRaise) {
+		double betStayTotal = game.state.betMaxToStayInGame;
+		double betStay2 = patternCurrent.betToStayInGame;
+
+		double betStay = Math.Abs( betAlreadyInvestedInCurrentSubRound - betStayTotal );
+		if (patternCurrent.betCall <= 0)
+			patternCurrent.betCall = betStay; 
+
+		double betWithRaise = patternCurrent.betCall + patternCurrent.betRaise;
+		double betCall = patternCurrent.betCall;
+
+		double betTotalAfterAction = betTotal - betWithRaise;
+		double betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betWithRaise;
+
+		if (betTotal < betStayTotal) { // call/raise
+//			if (betTotalAfterAction > betStay && betTotalAfterAction < bet
+//			GetAndSetActionTipByName("CALL", betStayTotal);
+		} else if (betTotal == betStayTotal) { // check
+//			GetAndSetActionTipByName("CHECK", betStayTotal);
+		}
+
+		if (actionTip.isFold) {
+			if (betCall == 0) {
+				actionFinal = new Check (this, betCall);
+			} else {
+				actionFinal = new Fold (this, betCall);
+			}
+		} else if (actionTip.isCheck) {
+			if (betCall == 0) {
+				actionFinal = new Check (this, betCall);
+			} else {
+				actionFinal = new Fold (this, betCall);
+			}
+		} else if (actionTip.isCall) {
+			if (betTotalAfterAction < 0) {
+				if (betCall == 0) {
+					actionFinal = new Check (this, betCall);
+				} else {
+					actionFinal = new Fold (this, betCall);
+				}
+			} else {
+				actionFinal = new Call (this, betCall);
+			}
+		} else if (actionTip.isRaise) {
+			if (betTotalAfterAction < 0) {
+				if (betCall == 0) {
+					actionFinal = new Check (this, betCall);
+					//				} else if (betDt > 0) {
+					//					actionFinal = new Call (this, betDt); //TODO
+				} else {
+					actionFinal = new Fold (this, betCall);
+				}
+			} else {
+				actionFinal = new Raise (this, betWithRaise);
+			}
+		} else if (actionTip.isAllIn) {
+			actionFinal = new AllIn(this, betCall);
+		}
+		return actionFinal;
+	}
+
+	#region action optimal 2
+	public Action ActionOptimal2(double betDt, double betTotalAfterAction, bool isCanToRaise) {
 		// evaluate
 		if (isWinner) {
 			if (betTotal < 0) {
 				actionFinal = new Fold (this, betDt);
 			} else {
 				if (isCanToRaise) {
-					actionFinal = new Raise (this, betDt);
+					actionFinal = new Raise (this, patternCurrent.betCall + patternCurrent.betRaise);
 				} else {
 					if (betDt == 0) {
 						actionFinal = new Check (this, betDt);
@@ -281,7 +343,7 @@ public class Player {
 					actionFinal = new Fold (this, betDt);
 				}
 			} else {
-				actionFinal = new Raise (this, betDt);
+				actionFinal = new Raise (this, patternCurrent.betCall + patternCurrent.betRaise);
 			}
 		} else if (actionTip.isAllIn) {
 			actionFinal = new AllIn(this, betDt);
@@ -366,6 +428,7 @@ public class Player {
 
 		return actionFinal;
 	}
+	#endregion action optimal 2
 
 	public string GetRecommendActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
 		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
@@ -491,6 +554,7 @@ public class Player {
 			actionTip.isAllIn = true;
 			actionFinalString = action;
 		}*/
+		actionTip.name = action;
 		return actionFinalString;
 	}
 
