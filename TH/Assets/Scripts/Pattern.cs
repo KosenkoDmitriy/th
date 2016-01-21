@@ -27,8 +27,8 @@ public class PatternBetRoundAndAction
 {
 	public string name_action;
 	//	public double costBetDx;	// costBet - costBetTotal
-	public double costBet;		// in number of bets (1 credit = 1 bet * multiplier)
-	public double costBetTotal; // in number of bets (1 credit = 1 bet * multiplier)
+	public double costBetToStayInGame;		// in number of bets (1 credit = 1 bet * multiplier)
+	public double costBetAlreadyInvested; // in number of bets (1 credit = 1 bet * multiplier)
 }
 
 public class Oppontents

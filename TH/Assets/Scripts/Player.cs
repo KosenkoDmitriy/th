@@ -239,8 +239,8 @@ public class Player {
 		// is in bet sub rounds?
 		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 			foreach (var betRound in patternCurrent.betSubRounds) {
-				if (betRound.costBet == betMaxToStayInGameTotal && betRound.costBetTotal == betAlreadyInvestedInCurrentSubRound) {
-					patternCurrent.betCall = betRound.costBet - betRound.costBetTotal;
+				if (betRound.costBetToStayInGame == betMaxToStayInGameTotal && betRound.costBetAlreadyInvested == betAlreadyInvestedInCurrentSubRound) {
+					patternCurrent.betCall = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
 					actionString = betRound.name_action;
 					break;
 				}
@@ -515,8 +515,8 @@ public class Player {
 		if (patternCurrent != null) {
 			if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 				foreach (var betRound in patternCurrent.betSubRounds) {
-					if (betRound.costBet == betToStayInGameTotal && betRound.costBetTotal == betTotalInSubRound) {
-						patternCurrent.betCall = betRound.costBet - betRound.costBetTotal;
+					if (betRound.costBetToStayInGame == betToStayInGameTotal && betRound.costBetAlreadyInvested == betTotalInSubRound) {
+						patternCurrent.betCall = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
 						actionString = betRound.name_action;
 						break;
 					}
