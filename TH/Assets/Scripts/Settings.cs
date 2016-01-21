@@ -25,11 +25,11 @@ static class Settings
 	public static readonly double betMinMath = 1;	// .25;	
 	public static readonly double betMaxMath = 4;	// 1.5;
 
-	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 bets
-	public static readonly double betCreditsMultiplier = 25; // 1 bet = 25 credits
+	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 credits
+	public static readonly double betCreditsMultiplier = 10; // 1 bet = 10 credits
 
 	// bonus table
-	public static double betBonusMaxMultiplier = 10;
+	public static double betBonusMaxMultiplier = 25; // betCreditsMultiplier * 10 = 250
 	public static double betBonus = 0;
 	public static double betBonusMin = 1;
 	public static double betBonusMax = 5;
