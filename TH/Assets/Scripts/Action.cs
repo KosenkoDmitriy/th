@@ -10,11 +10,10 @@ public class ActionTip: Action {
 	{
 		this.betCall = betToStayInGame;
 	}
-	public bool isCall;
-	public bool isFold;
-	public bool isCheck;
-	public bool isRaise;
-	public bool isAllIn;
+	public bool isInBetSubrounds = true;
+	public bool isInPriority1 = true;
+	public bool isInPriority2 = true;
+	public bool isInDefault = true;
 }
 
 public class Action : IAction {
@@ -35,11 +34,6 @@ public class Action : IAction {
 					game.state = new InitGame(game);
 				} else {
 					DoActive(game, p);
-					if (game.state.betMax <= game.state.betMaxLimit) {
-						if (p.betInvested  > game.state.betMax) {
-							game.state.betMax = p.betInvested ;
-						}
-					}
 					game.player = p;
 				}
 				game.ui.SetBalance(p.betTotal.to_s());
@@ -58,8 +52,15 @@ public class Action : IAction {
 	#endregion
 
 	private void DoActive(Game game, Player p) {
-		p.betInvested  += betCall;
-		p.betTotal -= betCall;
+
+		if (game.state.betMax <= game.state.betMaxLimit) {
+			if (betToStay > game.state.betMax) {
+				game.state.betMax = betToStay;
+			}
+		}
+
+		p.betInvested += betToStay;
+		p.betTotal -= betToStay;
 
 		double dtRaise = p.betInvested  - game.state.betMax;
 		if (p.isReal) {
@@ -85,12 +86,31 @@ public class Action : IAction {
 		}
 	}
 
+	public string name;
 	public double betCall;
 	public double betRaise;
 	public double betToStay {
 		get { return betCall + betRaise; } 
 	}
-	public string name;
+
+	public bool isRaise {
+		get { return name.Contains ("RAISE"); }
+	}
+	public bool isCall {
+		get { return name.Contains ("CALL"); }
+	}
+	public bool isCheck {
+		get { return name.Contains ("CHECK"); }
+	}
+	public bool isFold {
+		get { return name.Contains ("FOLD"); }
+	}
+	public bool isAllIn {
+		get { return name.Contains ("ALL IN"); }
+	}
+	public bool isUnknown {
+		get { return name.Contains ("OPEN"); }
+	}
 }
 
 public class Call : Action

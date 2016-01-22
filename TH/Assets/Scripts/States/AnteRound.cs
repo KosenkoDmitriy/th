@@ -23,7 +23,7 @@ public class AnteRound : BetRound {
 					game.state.isWaiting = true;
 					game.player = player;
 
-					double dt = player.betInvested  - game.state.betMax;
+					double dt = player.betInvested - game.state.betMax;
 //					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 					
 					if (dt > 0) {

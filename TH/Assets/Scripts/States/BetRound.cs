@@ -119,7 +119,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = player.betInvested  - game.state.betMax;
+				double dt = player.betInvested - game.state.betMax;
 //				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 
 				if (dt > 0) {
@@ -155,7 +155,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 
 			} else {
-				player.actionFinal = player.GetFinalAction(betMax, isCanToRaise, game);
+				player.actionFinal = player.GetFinalActionNew(game);//(betMax, isCanToRaise, game);
 				player.actionFinal.Do(game, player);
 			}
 

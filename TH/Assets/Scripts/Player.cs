@@ -212,45 +212,193 @@ public class Player {
 	#endregion
 
 	#region new actions
-	
-	public ActionTip GetActionRecommend(Game game) {//double betMaxToStayInGame, double betMaxLimit) {
+	public Action GetFinalActionNew(Game game) {//(double betMax, bool isCanToRaise, Game game) {
+		actionFinal = new Check(this, 0); // by default
+
+		if (betTotal < 0) { // only fold
+			actionFinal = new Fold(this, 0);
+			return actionFinal;
+		}
+
+		if (game.state.betMax > game.state.betMaxLimit) { // next bet round
+			Debug.LogError("exceed bet max limit");
+			this.DevInfo(this);
+			Debug.LogError("end exceed bet max limit");
+		}
+
+		patternCurrent = GetPatternRandomly ();
+
+//		if (betInvested == game.state.betMax) { // check
+////			actionFinal = new Check(this, 0);
+//		} else if (betInvested < game.state.betMax) { // call or raise
+//
+//		} else if (betInvested > game.state.betMax) {
+//			Debug.LogError("betInvested > game.state.betMax");
+//		}
+
+		actionTip = GetActionRecommend (game);
+
+		// prognose
+		double balanceAfterAction = betTotal + actionTip.betToStay;
+
+		// start searching for new optimal math action
+		if (actionTip == null || (actionTip != null && actionTip.betToStay > game.state.betMaxLimit)) {
+			// don't allow exceed bet max limit
+
+//			if (actionTip.isInBetSubrounds) {
+//
+//			} else if (actionTip.isInPriority1) {
+//
+//			} else if (actionTip.isInPriority2) {
+//
+//			} else if (actionTip.isInDefault) {
+//
+//			}
+
+			actionTip = GetActionRecommendInSubrounds(game);
+			if (actionTip == null || (actionTip != null && actionTip.betToStay > game.state.betMaxLimit)) {
+				// don't allow exceed bet max limit
+
+				List<string> actionNames = new List<string> () {
+					patternCurrent.actionPriority1, patternCurrent.actionPriority2, patternCurrent.actionDefault
+				};
+				
+				foreach(string name in actionNames) {
+					actionTip = GetActionRecommendByName(game, name);
+					if (actionTip != null && actionTip.betToStay <= game.state.betMaxLimit) {
+						// optimal action was found
+						break;
+					}
+				}
+			}
+			
+			if (actionTip == null)
+				Debug.LogError("optimal action tip didn't found");
+
+			if (actionTip != null && actionTip.betToStay > game.state.betMaxLimit)
+				Debug.LogError("we can't exceed the bet max limit");
+		}
+		// end searching for new optimal math action
+
+
+		actionFinal = ActionMath (game);
+//		actionFinal = ActionOptimal (game);
+//		actionFinal = ActionOptimal2(game);
+
+//		if (actionTip.isRaise) {
+//			if (balanceAfterAction < 0) { // can't do current action
+//				
+//			}
+////			if (actionTip.betToStay > game.state.betMax) {
+////				game.state.betMax = actionTip.betToStay;
+////			}
+//		} else if (actionTip.isCall) {
+//
+//		} else if (actionTip.isCheck) {
+//			
+//		} else if (actionTip.isFold) {
+//			
+//		}
+
+		return actionFinal;
+	}
+
+	public ActionTip GetActionRecommendInSubrounds(Game game) {
 		double betMaxLimit = game.state.betMaxLimit;
 		double betMaxToStayInGameTotal = game.state.betMax;
-//		double betDt = betMaxToStayInGameTotal-; 
-//		if (betAlreadyInvestedInCurrentSubRound != 0)
-//		double betToStayInGameTotal = betAlreadyInvestedInCurrentSubRound + ;
+		
+		if (betMaxLimit != 0) betMaxLimit /= Settings.betCurrentMultiplier;
+		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
+		
+		ActionTip actionT = new ActionTip (0);
+		actionT.isInBetSubrounds = true;
+
+		// is in bet sub rounds?
+		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
+			foreach (var betRound in patternCurrent.betSubRounds) {
+				if (betRound.costBetToStayInGame == betMaxToStayInGameTotal && betRound.costBetAlreadyInvested == betInvested) {
+					if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
+					if (patternCurrent.betRaise != 0) patternCurrent.betRaise *= Settings.betCurrentMultiplier;
+
+					actionT.name = betRound.name_action;
+
+					if (actionT.isCall)
+						actionT.betCall = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;;
+
+					if (actionT.isRaise)
+						actionT.betRaise = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
+
+					return actionT;
+					break;
+				}
+			}
+		}
+		
+		return null;
+	}
+
+	public ActionTip GetActionRecommendByName(Game game, string name) {
+		double betMaxLimit = game.state.betMaxLimit;
+		double betMaxToStayInGameTotal = game.state.betMax;
+		
+		if (betMaxLimit != 0) betMaxLimit /= Settings.betCurrentMultiplier;
+		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
+		
+		ActionTip actionT = new ActionTip (0);
+		
+		actionT.name = name;
+		
+		if (actionT.isUnknown) {
+			return null;
+		}
+		
+		if (actionT.isCall)
+			actionT.betCall = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
+
+		if (actionT.isRaise) 
+			actionT.betRaise = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
+		
+		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
+		if (patternCurrent.betRaise != 0) patternCurrent.betRaise *= Settings.betCurrentMultiplier;
+		
+		return actionT;
+	}
+
+	public ActionTip GetActionRecommend(Game game) { //double betMaxToStayInGame, double betMaxLimit) {
+		double betMaxLimit = game.state.betMaxLimit;
+		double betMaxToStayInGameTotal = game.state.betMax;
 
 		if (betMaxLimit != 0) betMaxLimit /= Settings.betCurrentMultiplier;
 		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
 
 		ActionTip actionT = new ActionTip (0);
-		string actionString = "";
-		
-		//TODO
-		// is in bet sub rounds?
-		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
-			foreach (var betRound in patternCurrent.betSubRounds) {
-				if (betRound.costBetToStayInGame == betMaxToStayInGameTotal && betRound.costBetAlreadyInvested == betInvested ) {
-					patternCurrent.betCall = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
-					actionT.betCall = patternCurrent.betCall;
-//					patternCurrent.betRaise = 
-					actionT.betRaise = patternCurrent.betRaise;
 
-					//TODO call or raise (maxCallOrRaise 1-3)
-					actionString = betRound.name_action;
-					break;
-				}
-			}
-		}
+		// is in bet sub rounds?
+		actionT = GetActionRecommendInSubrounds (game);
 
 		// is in priority 1 (1,2,3)?
+		if (actionT == null) {
+			actionT = GetActionRecommendByName (game, patternCurrent.actionPriority1);
+			actionT.isInPriority1 = true;
+		}
+
 		// is in priority 2 ?
+		if (actionT == null) {
+			actionT = GetActionRecommendByName (game, patternCurrent.actionPriority2);
+			actionT.isInPriority2 = true;
+		}
+
 		// is in default?
+		if (actionT != null) {
+			actionT = GetActionRecommendByName (game, patternCurrent.actionDefault);
+			actionT.isInDefault = true;
+		}
 		
 		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
+		if (patternCurrent.betRaise != 0) patternCurrent.betRaise *= Settings.betCurrentMultiplier;
 		if (betMaxLimit != 0) betMaxLimit *= Settings.betCurrentMultiplier;
 		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal *= Settings.betCurrentMultiplier;
-		
+
 		return actionT;
 	}
 
@@ -591,16 +739,16 @@ public class Player {
 		actionTip = new ActionTip(betToStayInGame);
 
 		if (action == "CALL") {
-			actionTip.isCall = true;
+//			actionTip.isCall = true;
 			actionFinalString = action;
 		} else if (action == "CHECK") {
-			actionTip.isCheck = true;
+//			actionTip.isCheck = true;
 			actionFinalString = action;
 		} else if (action == "RAISE") {
-			actionTip.isRaise = true;
+//			actionTip.isRaise = true;
 			actionFinalString = action;
 		} else if (action == "FOLD") {
-			actionTip.isFold = true;
+//			actionTip.isFold = true;
 			actionFinalString = action;
 		} 
 		/*else if (action == "OPEN") {
@@ -892,7 +1040,7 @@ public class Player {
 	public bool isFirstToAct;
 	public bool isLastToAct;
 
-	public double betInvested ;
+	public double betInvested; // alredy invested in current subround
 
 //	public double credits; // credits/creditMultiplier
 	public double betTotal;	// betTotal * creditMulitplier
