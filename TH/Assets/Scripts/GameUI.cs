@@ -152,7 +152,7 @@ public class GameUI : MonoBehaviour
 		Double.TryParse (betAmountString, out game.betAmount);
 
 		if (game.betAmount > 0) {
-			game.betAmount /= Settings.betCurrentMultiplier; //(Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
+			game.betAmount /= (Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
 		}
 
 		// from recommend to optimal

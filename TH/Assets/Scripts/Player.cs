@@ -278,9 +278,13 @@ public class Player {
 		// end searching for new optimal math action
 
 		double balanceAfterAction = betTotal + actionTip.betToStay;
+//		if (actionTip.betToStay > game.state.betMax) {
+//			game.state.betMax = actionTip.betToStay;
+//		}
 
-		actionFinal = ActionMath (actionTip.betToStay, balanceAfterAction, true);
-//		actionFinal = ActionOptimal (game);
+
+		actionFinal = ActionMath (game.state.betMax, balanceAfterAction, true);
+//		actionFinal = ActionOptimal(game, actionTip.betToStay, true);
 //		actionFinal = ActionOptimal2(game);
 
 //		if (actionTip.isRaise) {
@@ -387,7 +391,7 @@ public class Player {
 		}
 
 		// is in default?
-		if (actionT != null) {
+		if (actionT == null) {
 			actionT = GetActionRecommendByName (game, patternCurrent.actionDefault);
 			actionT.isInDefault = true;
 		}
