@@ -48,7 +48,7 @@ public class AnteRound : BetRound {
 					if (player.position == 0 && !player.isReal) {
 						game.isGameRunning = true;
 						if (betMaxToStayInGame <= 0) {
-							betMaxToStayInGame = (double)new Random().Next(1, (int)(Settings.betMaxMath * Settings.betCurrentMultiplier + 1));
+							betMaxToStayInGame = (double)new Random().Next(1, (int)(betMax * Settings.betCurrentMultiplier + 1));
 						}
 						player.actionFinal = new Raise(player, betMaxToStayInGame);
 					} else {

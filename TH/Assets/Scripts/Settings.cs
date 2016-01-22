@@ -18,15 +18,63 @@ static class Settings
 	public static readonly int betAnteSubRoundMinSize = 1;
 	public static readonly int betSubRoundMaxSize = 4;
 	
-	public static readonly double betAnteMultiplier = 1;
-	public static readonly double betPreflopFlopMultiplier = betAnteMultiplier;
-	public static readonly double betTurnRiverMultiplier = 2;
+	public static readonly double betAnteMultiplier = 2; // 1 bet = 2 credits
+	public static readonly double betPreflopFlopMultiplier = betAnteMultiplier; // 1 bet = 2 credits
+	public static readonly double betTurnRiverMultiplier = 4; // 1 bet = 4 credits
 
 	public static readonly double betMinMath = 1;	// .25;	
 	public static readonly double betMaxMath = 4;	// 1.5;
-
+	
+	public static readonly double betLimitPreflopFlop = 2;
+	public static readonly double betLimitTurnRiver = 4;
+	
 	public static double betCurrentMultiplier = betAnteMultiplier; // 2 or 4 credits
 	public static readonly double betCreditsMultiplier = 10; // 1 bet = 10 credits
+
+	public static class Bet
+	{
+		public static double _inBet = 0;
+		public static double inBet {
+			get {
+				return _inBetMath;
+			}
+			set {
+				_inBet = value;
+				if (_inBet != 0) {
+					_inBetMath = _inBet * betCurrentMultiplier;
+					_inCredits = _inBet * betCurrentMultiplier * betCreditsMultiplier;
+				}
+			}
+		}
+
+		public static double _inBetMath = 0;
+		public static double inBetMath {
+			get {
+				return _inBetMath;
+			}
+			set {
+				_inBetMath = value;
+//				if (_inBetMath != 0) {
+//					_inBetMath /= betCurrentMultiplier;
+//				}
+			}
+		}
+		
+		public static double _inCredits = 0;
+		public static double inCredits {
+			get {
+				return _inCredits;
+			}
+			set {
+				_inCredits = value;
+//				if (_inCredits != 0) {
+//					_inCredits *= (betCurrentMultiplier * betCreditsMultiplier);
+//				}
+			}
+		}
+	}
+
+
 
 	// bonus table
 	public static double betBonusMaxMultiplier = 25; // betCreditsMultiplier * 10 = 250

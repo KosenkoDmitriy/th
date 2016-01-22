@@ -152,7 +152,7 @@ public class GameUI : MonoBehaviour
 		Double.TryParse (betAmountString, out game.betAmount);
 
 		if (game.betAmount > 0) {
-			game.betAmount /= (Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
+			game.betAmount /= Settings.betCurrentMultiplier; //(Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
 		}
 
 		// from recommend to optimal
@@ -194,7 +194,7 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
 		
 		audio.PlayOneShot(soundBtnClicked);
-		double betMax = (game.state.betMax - game.state.betMaxToStayInGame) * Settings.betCurrentMultiplier;
+		double betMax = (game.state.betMax - game.state.betMaxToStayInGame);// * Settings.betCurrentMultiplier;
 		Settings.betCurrent = betMax;//Settings.betMaxMath * Settings.betCurrentMultiplier;
 		
 		string b = Settings.betCurrent.to_s();
@@ -209,8 +209,8 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 		
 		Settings.betCurrent += Settings.betMinMath * Settings.betCurrentMultiplier;
-		double betMax = (game.state.betMax - game.state.betMaxToStayInGame) * Settings.betCurrentMultiplier;
-		if (Settings.betCurrent > betMax) //Settings.betMaxMath * Settings.betCurrentMultiplier)
+		double betMax = (game.state.betMax - game.state.betMaxToStayInGame);// * Settings.betCurrentMultiplier;
+		if (Settings.betCurrent > betMax)
 			Settings.betCurrent = Settings.betNull;
 
 		inputBetField.text = Settings.betCurrent.to_s();

@@ -5,6 +5,7 @@ public class RiverRound : BetRound {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		Settings.betCurrentMultiplier = Settings.betTurnRiverMultiplier;
+		this.betMax = Settings.betCurrentMultiplier * Settings.betLimitTurnRiver;
 
 		// rivers bet rounds
 		var rivers = game.source.GetRivers ();
