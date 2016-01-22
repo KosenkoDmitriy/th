@@ -238,9 +238,6 @@ public class Player {
 
 		actionTip = GetActionRecommend (game);
 
-		// prognose
-		double balanceAfterAction = betTotal + actionTip.betToStay;
-
 		// start searching for new optimal math action
 		if (actionTip == null || (actionTip != null && actionTip.betToStay > game.state.betMaxLimit)) {
 			// don't allow exceed bet max limit
@@ -280,8 +277,9 @@ public class Player {
 		}
 		// end searching for new optimal math action
 
+		double balanceAfterAction = betTotal + actionTip.betToStay;
 
-		actionFinal = ActionMath (game);
+		actionFinal = ActionMath (actionTip.betToStay, balanceAfterAction, true);
 //		actionFinal = ActionOptimal (game);
 //		actionFinal = ActionOptimal2(game);
 
@@ -400,48 +398,6 @@ public class Player {
 		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal *= Settings.betCurrentMultiplier;
 
 		return actionT;
-	}
-
-	public Action ActionMath(Game game) {
-		ActionTip actionT = new ActionTip (0);
-		patternCurrent = GetPatternRandomly ();
-		double betTotalAfterAction = betTotal + game.state.betMax;
-
-		actionT = GetActionRecommend (game);
-
-//		actionT.betCall
-//		patternCurrent.betToStayInGame;
-		if (betTotalAfterAction < 0) {
-			if (IsActionInSubrounds()) {
-
-			}
-			if (IsActionPriority1()) {
-				
-			}
-			if (IsActionPriority2()) {
-				
-			}
-			if (IsActionDefault()) {
-				
-			}
-		}
-		return actionT;
-	}
-
-	public bool IsActionInSubrounds() {
-		return false;
-	}
-
-	public bool IsActionPriority1() {
-		return false;
-	}
-
-	public bool IsActionPriority2() {
-		return false;
-	}
-	
-	public bool IsActionDefault() {
-		return false;
 	}
 	#endregion new
 
