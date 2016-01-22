@@ -36,8 +36,8 @@ public class Action : IAction {
 				} else {
 					DoActive(game, p);
 					if (game.state.betMax <= game.state.betMaxLimit) {
-						if (p.betAlreadyInvestedInCurrentSubRound > game.state.betMax) {
-							game.state.betMax = p.betAlreadyInvestedInCurrentSubRound;
+						if (p.betInvested  > game.state.betMax) {
+							game.state.betMax = p.betInvested ;
 						}
 					}
 					game.player = p;
@@ -58,13 +58,13 @@ public class Action : IAction {
 	#endregion
 
 	private void DoActive(Game game, Player p) {
-		p.betAlreadyInvestedInCurrentSubRound += betCall;
+		p.betInvested  += betCall;
 		p.betTotal -= betCall;
 
-		double dtRaise = p.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
+		double dtRaise = p.betInvested  - game.state.betMax;
 		if (p.isReal) {
 			if (dtRaise > 0) {
-				if (game.state.betMax > p.betAlreadyInvestedInCurrentSubRound)
+				if (game.state.betMax > p.betInvested )
 					game.ui.lblCall.text = betCall.to_s ();
 				else
 					game.ui.lblCall.text = Settings.betNull.to_s ();
@@ -79,7 +79,7 @@ public class Action : IAction {
 		}
 
 		if (Settings.isDev) {
-			game.ui.DebugLog(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betAlreadyInvestedInCurrentSubRound, p.betTotal, game.state.betMax, game.state.betMaxLimit));
+			game.ui.DebugLog(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betInvested , p.betTotal, game.state.betMax, game.state.betMaxLimit));
 //			p.ToString();
 			p.DevInfo(p);
 		}

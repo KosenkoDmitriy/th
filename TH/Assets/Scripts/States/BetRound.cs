@@ -77,8 +77,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-			pot += player.betAlreadyInvestedInCurrentSubRound;
-			player.betAlreadyInvestedInCurrentSubRound = 0;
+			pot += player.betInvested ;
+			player.betInvested  = 0;
 		}
 		game.state.betMax = betMax = 0;
 	
@@ -119,7 +119,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMax;
+				double dt = player.betInvested  - game.state.betMax;
 //				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 
 				if (dt > 0) {
@@ -168,7 +168,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		while (!iterator.IsDone) {
 			var player = iterator.Next();
 			if (!player.isFolded) {
-				if (player.betAlreadyInvestedInCurrentSubRound == betMax || game.state.betMax > game.state.betMaxLimit) {
+				if (player.betInvested  == betMax || game.state.betMax > game.state.betMaxLimit) {
 					isNextBetRound = true;
 				} else {
 					isNextBetRound = false;

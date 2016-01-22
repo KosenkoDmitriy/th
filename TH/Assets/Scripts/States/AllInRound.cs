@@ -28,9 +28,9 @@ public class AllInRound : BetRound {
 		
 		//return back last betToStayInGame
 		foreach (var player in before) {
-			player.betAlreadyInvestedInCurrentSubRound -= betBeforeAllIn;
+			player.betInvested  -= betBeforeAllIn;
 			player.betTotal += betBeforeAllIn;
-			game.potAmount += player.betAlreadyInvestedInCurrentSubRound;
+			game.potAmount += player.betInvested ;
 
 			player.lblCredits.text = player.betTotal.to_s();
 			game.ui.lblPot.text = game.potAmount.to_s();
