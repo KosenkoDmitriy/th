@@ -213,12 +213,7 @@ public class Player {
 
 	#region new actions
 	public Action GetFinalActionNew(Game game) {//(double betMax, bool isCanToRaise, Game game) {
-		actionFinal = new Check(this, 0); // by default
-
-		if (betTotal < 0) { // only fold
-			actionFinal = new Fold(this, 0);
-			return actionFinal;
-		}
+//		actionFinal = new Check(this, 0); // by default
 
 		if (game.state.betMax > game.state.betMaxLimit) { // next bet round
 			Debug.LogError("exceed bet max limit");
@@ -228,29 +223,11 @@ public class Player {
 
 		patternCurrent = GetPatternRandomly ();
 
-//		if (betInvested == game.state.betMax) { // check
-////			actionFinal = new Check(this, 0);
-//		} else if (betInvested < game.state.betMax) { // call or raise
-//
-//		} else if (betInvested > game.state.betMax) {
-//			Debug.LogError("betInvested > game.state.betMax");
-//		}
-
 		actionTip = GetActionRecommend (game);
 
 		// start searching for new optimal math action
 		if (actionTip == null || (actionTip != null && actionTip.betToStay > game.state.betMaxLimit)) {
 			// don't allow exceed bet max limit
-
-//			if (actionTip.isInBetSubrounds) {
-//
-//			} else if (actionTip.isInPriority1) {
-//
-//			} else if (actionTip.isInPriority2) {
-//
-//			} else if (actionTip.isInDefault) {
-//
-//			}
 
 			actionTip = GetActionRecommendInSubrounds(game);
 			if (actionTip == null || (actionTip != null && actionTip.betToStay > game.state.betMaxLimit)) {
@@ -282,25 +259,38 @@ public class Player {
 //			game.state.betMax = actionTip.betToStay;
 //		}
 
+		
+		if (betTotal < 0) { // only fold
+			actionFinal = new Fold (this, 0);
+		} else {
+			if (betInvested == game.state.betMax) { // check
+//			actionFinal = new Check(this, 0);
+			} else if (betInvested < game.state.betMax) { // call or raise
+				if (actionTip.isRaise) {
+					if (balanceAfterAction < 0) { // can't do current action
+					}
+				}
+			} else if (betInvested > game.state.betMax) {
+				Debug.LogError ("betInvested > game.state.betMax");
+			}
 
-		actionFinal = ActionMath (game.state.betMax, balanceAfterAction, true);
-//		actionFinal = ActionOptimal(game, actionTip.betToStay, true);
-//		actionFinal = ActionOptimal2(game);
+			actionFinal = ActionMath (game.state.betMax, balanceAfterAction, true);
+	//		actionFinal = ActionOptimal(game, actionTip.betToStay, true);
+	//		actionFinal = ActionOptimal2(game);
 
-//		if (actionTip.isRaise) {
-//			if (balanceAfterAction < 0) { // can't do current action
-//				
-//			}
-////			if (actionTip.betToStay > game.state.betMax) {
-////				game.state.betMax = actionTip.betToStay;
-////			}
-//		} else if (actionTip.isCall) {
-//
-//		} else if (actionTip.isCheck) {
-//			
-//		} else if (actionTip.isFold) {
-//			
-//		}
+			
+				
+	//		if (actionTip.isRaise) {
+	//			if (balanceAfterAction < 0) { // can't do current action
+	//			}
+	//		} else if (actionTip.isCall) {
+	//
+	//		} else if (actionTip.isCheck) {
+	//			
+	//		} else if (actionTip.isFold) {
+	//			
+	//		}
+		}
 
 		return actionFinal;
 	}
