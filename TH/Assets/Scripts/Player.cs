@@ -129,7 +129,7 @@ public class Player {
 					betRaiseTemp = i * Settings.betCurrentMultiplier;
 					double betInvestedAfterA = this.betAlreadyInvestedInCurrentSubRound + betRaiseTemp + betDt;
 					double balanceAfterA = this.betTotal - betDt - betRaiseTemp;
-					if (betInvestedAfterA <= game.state.betMax && balanceAfterA >= 0) {
+					if (betInvestedAfterA <= game.state.betMaxLimit && balanceAfterA >= 0) {
 						patternCurrent.betRaise = betRaiseTemp;
 						patternCurrent.betToStayInGame = patternCurrent.betRaise + patternCurrent.betCall;
 						betDt = patternCurrent.betCall + patternCurrent.betRaise;
@@ -161,18 +161,18 @@ public class Player {
 
 		betTotalAfterAction = betTotal - betDt;
 		betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
-		if (betTotalSubRoundAfterA <= game.state.betMax) {
-			if (betTotalSubRoundAfterA > game.state.betToStayInGameTotal) {
-				game.state.betToStayInGameTotal = betTotalSubRoundAfterA; // max bet to stay in the game
+		if (betTotalSubRoundAfterA <= game.state.betMaxLimit) {
+			if (betTotalSubRoundAfterA > game.state.betMax) {
+				game.state.betMax = betTotalSubRoundAfterA; // max bet to stay in the game
 			}
 		}
 
-		if (betTotalSubRoundAfterA > game.state.betMax) { // exceed bet max limit (allow only call or check)
+		if (betTotalSubRoundAfterA > game.state.betMaxLimit) { // exceed bet max limit (allow only call or check)
 			if (actionTip.isRaise || patternCurrent.betRaise > 0) { // raise action
-				if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall > game.state.betMax) { // allow check
+				if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall > game.state.betMaxLimit) { // allow check
 					actionFinal = new Check(this, 0);
 					return actionFinal;
-				} else if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall <= game.state.betMax) { // allow call
+				} else if (betAlreadyInvestedInCurrentSubRound + patternCurrent.betCall <= game.state.betMaxLimit) { // allow call
 					actionFinal = new Call(this, patternCurrent.betCall);
 					return actionFinal;
 				}
@@ -180,10 +180,10 @@ public class Player {
 			if (betTotal < 0) {
 				actionFinal = new Fold(this, 0);
 			} else {
-				if (betAlreadyInvestedInCurrentSubRound < game.state.betToStayInGameTotal) {
+				if (betAlreadyInvestedInCurrentSubRound < game.state.betMax) {
 					actionFinal = new Call(this, patternCurrent.betCall);
 				} else {
-					if (game.state.betToStayInGameTotal > 0) {
+					if (game.state.betMax > 0) {
 						actionFinal = new Call(this, patternCurrent.betCall);
 					} else {
 						actionFinal = new Check(this, 0);
@@ -214,8 +214,8 @@ public class Player {
 	#region new actions
 	
 	public ActionTip GetActionRecommend(Game game) {//double betMaxToStayInGame, double betMaxLimit) {
-		double betMaxLimit = game.state.betMax;
-		double betMaxToStayInGameTotal = game.state.betToStayInGameTotal;
+		double betMaxLimit = game.state.betMaxLimit;
+		double betMaxToStayInGameTotal = game.state.betMax;
 //		double betDt = betMaxToStayInGameTotal-; 
 //		if (betAlreadyInvestedInCurrentSubRound != 0)
 //		double betToStayInGameTotal = betAlreadyInvestedInCurrentSubRound + ;
@@ -257,7 +257,7 @@ public class Player {
 	public Action ActionMath(Game game) {
 		ActionTip actionT = new ActionTip (0);
 		patternCurrent = GetPatternRandomly ();
-		double betTotalAfterAction = betTotal + game.state.betToStayInGameTotal;
+		double betTotalAfterAction = betTotal + game.state.betMax;
 
 		actionT = GetActionRecommend (game);
 
@@ -299,7 +299,7 @@ public class Player {
 
 	#region actions
 	public Action ActionOptimal(Game game, double betTotalAfterAction, bool isCanToRaise) {
-		double betStayTotal = game.state.betToStayInGameTotal;
+		double betStayTotal = game.state.betMax;
 		double betStay2 = patternCurrent.betToStayInGame;
 
 		double betStay = Math.Abs( betAlreadyInvestedInCurrentSubRound - betStayTotal );
