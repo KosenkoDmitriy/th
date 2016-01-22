@@ -309,8 +309,6 @@ public class Player {
 		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 			foreach (var betRound in patternCurrent.betSubRounds) {
 				if (betRound.costBetToStayInGame == betMaxToStayInGameTotal && betRound.costBetAlreadyInvested == betInvested) {
-					if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
-					if (patternCurrent.betRaise != 0) patternCurrent.betRaise *= Settings.betCurrentMultiplier;
 
 					actionT.name = betRound.name_action;
 
@@ -319,6 +317,9 @@ public class Player {
 
 					if (actionT.isRaise)
 						actionT.betRaise = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
+
+					if (actionT.betCall != 0) actionT.betCall *= Settings.betCurrentMultiplier;
+					if (actionT.betRaise != 0) actionT.betRaise *= Settings.betCurrentMultiplier;
 
 					return actionT;
 					break;

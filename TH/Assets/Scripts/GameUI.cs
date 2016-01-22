@@ -195,7 +195,7 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
-		Settings.betCurrent = betMax;//Settings.betMaxMath * Settings.betCurrentMultiplier;
+		Settings.betCurrent = betMax;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
