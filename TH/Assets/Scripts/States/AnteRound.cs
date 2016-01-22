@@ -23,7 +23,7 @@ public class AnteRound : BetRound {
 					game.state.isWaiting = true;
 					game.player = player;
 
-					double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betMaxToStayInGame;
+					double dt = player.betAlreadyInvestedInCurrentSubRound - game.state.betToStayInGameTotal;
 //					if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
 					
 					if (dt > 0) {
@@ -47,12 +47,12 @@ public class AnteRound : BetRound {
 				} else {
 					if (player.position == 0 && !player.isReal) {
 						game.isGameRunning = true;
-						if (betMaxToStayInGame <= 0) {
-							betMaxToStayInGame = (double)new Random().Next(1, (int)(betMax * Settings.betCurrentMultiplier + 1));
+						if (betToStayInGameTotal <= 0) {
+							betToStayInGameTotal = (double)new Random().Next(1, (int)(betMax * Settings.betCurrentMultiplier + 1));
 						}
-						player.actionFinal = new Raise(player, betMaxToStayInGame);
+						player.actionFinal = new Raise(player, betToStayInGameTotal);
 					} else {
-						player.actionFinal = new Call(player, betMaxToStayInGame);
+						player.actionFinal = new Call(player, betToStayInGameTotal);
 					}
 					player.actionFinal.Do (game, player);
 				}

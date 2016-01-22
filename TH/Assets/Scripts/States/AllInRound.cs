@@ -66,7 +66,7 @@ public class AllInRound : BetRound {
 			} else if (player.isReal) {
 				game.state.isWaiting = true;
 //				game.player = player;
-				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
+				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betToStayInGameTotal);
 
 
 			} else {
@@ -74,12 +74,12 @@ public class AllInRound : BetRound {
 					if (Settings.isDev) player.actionCurrentString += "> ALL IN (w)"; else player.actionCurrentString = "ALL IN";
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new AllIn(player, betMaxToStayInGame);
+					player.actionFinal = new AllIn(player, betToStayInGameTotal);
 				} else {
 					player.actionCurrentString = "FOLD";
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new Fold(player, betMaxToStayInGame);
+					player.actionFinal = new Fold(player, betToStayInGameTotal);
 				}
 				player.actionFinal.Do(game, player);
 			}

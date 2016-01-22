@@ -11,7 +11,7 @@ public class Player {
 		hand = new Hand ();
 		alt_patterns = new List<Pattern> ();
 	}
-
+	#region print
 	public override string ToString ()
 	{
 		string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent);
@@ -77,7 +77,9 @@ public class Player {
 		int index = UnityEngine.Random.Range(0,chipSpriteList.Count);
 		if (this.chip != null) this.chip.sprite = chipSpriteList [index];
 	}
+	#endregion print
 
+	#region get pattern and final action
 	public Pattern GetPatternRandomly() {
 		float percentOfTime = UnityEngine.Random.value * 100;
 		Pattern patternCurrent = null;
@@ -96,6 +98,7 @@ public class Player {
 
 		return patternCurrent;
 	}
+
 
 	public Action GetFinalAction(double betMax, bool isCanToRaise, Game game) {
 		// summary:
@@ -159,8 +162,8 @@ public class Player {
 		betTotalAfterAction = betTotal - betDt;
 		betTotalSubRoundAfterA = betAlreadyInvestedInCurrentSubRound + betDt;
 		if (betTotalSubRoundAfterA <= game.state.betMax) {
-			if (betTotalSubRoundAfterA > game.state.betMaxToStayInGame) {
-				game.state.betMaxToStayInGame = betTotalSubRoundAfterA; // max bet to stay in the game
+			if (betTotalSubRoundAfterA > game.state.betToStayInGameTotal) {
+				game.state.betToStayInGameTotal = betTotalSubRoundAfterA; // max bet to stay in the game
 			}
 		}
 
@@ -177,10 +180,10 @@ public class Player {
 			if (betTotal < 0) {
 				actionFinal = new Fold(this, 0);
 			} else {
-				if (betAlreadyInvestedInCurrentSubRound < game.state.betMaxToStayInGame) {
+				if (betAlreadyInvestedInCurrentSubRound < game.state.betToStayInGameTotal) {
 					actionFinal = new Call(this, patternCurrent.betCall);
 				} else {
-					if (game.state.betMaxToStayInGame > 0) {
+					if (game.state.betToStayInGameTotal > 0) {
 						actionFinal = new Call(this, patternCurrent.betCall);
 					} else {
 						actionFinal = new Check(this, 0);
@@ -206,25 +209,13 @@ public class Player {
 
 		return actionFinal;
 	}
+	#endregion
 
-	public Action ActionMath(double betDt, double betTotalAfterAction, bool isCanToRaise) {
-		if (actionTip.isFold) {
-			actionFinal = new Fold (this, betDt);
-		} else if (actionTip.isCheck) {
-			actionFinal = new Check (this, betDt);
-		} else if (actionTip.isCall) {
-			actionFinal = new Call (this, betDt);
-		} else if (actionTip.isRaise) {
-			actionFinal = new Raise (this, betDt);
-		} else if (actionTip.isAllIn) {
-			actionFinal = new AllIn(this, betDt);
-		}
-		return actionFinal;
-	}
-
+	#region new actions
+	
 	public ActionTip GetActionRecommend(Game game) {//double betMaxToStayInGame, double betMaxLimit) {
 		double betMaxLimit = game.state.betMax;
-		double betMaxToStayInGameTotal = game.state.betMaxToStayInGame;
+		double betMaxToStayInGameTotal = game.state.betToStayInGameTotal;
 //		double betDt = betMaxToStayInGameTotal-; 
 //		if (betAlreadyInvestedInCurrentSubRound != 0)
 //		double betToStayInGameTotal = betAlreadyInvestedInCurrentSubRound + ;
@@ -241,6 +232,11 @@ public class Player {
 			foreach (var betRound in patternCurrent.betSubRounds) {
 				if (betRound.costBetToStayInGame == betMaxToStayInGameTotal && betRound.costBetAlreadyInvested == betAlreadyInvestedInCurrentSubRound) {
 					patternCurrent.betCall = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
+					actionT.betCall = patternCurrent.betCall;
+//					patternCurrent.betRaise = 
+					actionT.betRaise = patternCurrent.betRaise;
+
+					//TODO call or raise (maxCallOrRaise 1-3)
 					actionString = betRound.name_action;
 					break;
 				}
@@ -261,7 +257,7 @@ public class Player {
 	public Action ActionMath(Game game) {
 		ActionTip actionT = new ActionTip (0);
 		patternCurrent = GetPatternRandomly ();
-		double betTotalAfterAction = betTotal + game.state.betMaxToStayInGame;
+		double betTotalAfterAction = betTotal + game.state.betToStayInGameTotal;
 
 		actionT = GetActionRecommend (game);
 
@@ -299,10 +295,11 @@ public class Player {
 	public bool IsActionDefault() {
 		return false;
 	}
+	#endregion new
 
-
+	#region actions
 	public Action ActionOptimal(Game game, double betTotalAfterAction, bool isCanToRaise) {
-		double betStayTotal = game.state.betMaxToStayInGame;
+		double betStayTotal = game.state.betToStayInGameTotal;
 		double betStay2 = patternCurrent.betToStayInGame;
 
 		double betStay = Math.Abs( betAlreadyInvestedInCurrentSubRound - betStayTotal );
@@ -362,7 +359,7 @@ public class Player {
 		return actionFinal;
 	}
 
-	#region action optimal 2
+
 	public Action ActionOptimal2(double betDt, double betTotalAfterAction, bool isCanToRaise) {
 		// evaluate
 		if (isWinner) {
@@ -505,7 +502,6 @@ public class Player {
 
 		return actionFinal;
 	}
-	#endregion action optimal 2
 
 	public string GetCurrentActionStringFromCurrentPattern(double betToStayInGameTotal, double betTotalInSubRound) {
 		if (betToStayInGameTotal != 0) betToStayInGameTotal /= Settings.betCurrentMultiplier;
@@ -614,6 +610,22 @@ public class Player {
 		actionTip.name = action;
 		return actionFinalString;
 	}
+
+	public Action ActionMath(double betDt, double betTotalAfterAction, bool isCanToRaise) {
+		if (actionTip.isFold) {
+			actionFinal = new Fold (this, betDt);
+		} else if (actionTip.isCheck) {
+			actionFinal = new Check (this, betDt);
+		} else if (actionTip.isCall) {
+			actionFinal = new Call (this, betDt);
+		} else if (actionTip.isRaise) {
+			actionFinal = new Raise (this, betDt);
+		} else if (actionTip.isAllIn) {
+			actionFinal = new AllIn(this, betDt);
+		}
+		return actionFinal;
+	}
+	#endregion actions
 
 	public string GetHandPreflopString() {
 		handPreflopString = "";
