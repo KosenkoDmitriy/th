@@ -158,7 +158,7 @@ public class GameUI : MonoBehaviour
 //		}
 
 		// from recommend to optimal
-		double betTotalAfterAction = game.player.betTotal.inBet - game.betAmount.inBet;
+		double betTotalAfterAction = game.player.balanceInCredits - game.betAmount.inCredits;
 		double betTotalSubRoundAfterA = game.player.betInvested.inBet + game.betAmount.inBet;
 		if (game.isGameRunning) {
 
@@ -270,8 +270,8 @@ public class GameUI : MonoBehaviour
 		if (Settings.betBonus > 0) {
 			if (payTable != null) {
 				lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
-				game.player.betTotal -= Settings.betBonus;
-				game.player.lblCredits.text = game.player.betTotal.inCredits.f();
+				game.player.balanceInCredits -= Settings.betBonus;
+				game.player.lblCredits.text = game.player.balanceInCredits.f();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
 				payTable.SetBet(Settings.betBonus);
 			}
@@ -426,7 +426,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void UpdatePlayerActionAndCredits(Player player) {
-		player.lblCredits.text = player.betTotal.inCredits.f();
+		player.lblCredits.text = player.balanceInCredits.f();
 		player.lblAction.text = player.actionCurrentString;
 	}
 
@@ -605,7 +605,7 @@ public class GameUI : MonoBehaviour
 			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = www.text;
 			Double.TryParse(www.text, out credits);
 			if (credits >= 0) {
-				game.player.betTotal.inBet = credits/Settings.betCreditsMultiplier;
+				game.player.balanceInCredits = credits;///Settings.betCreditsMultiplier;
 			}
 			if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
 		}

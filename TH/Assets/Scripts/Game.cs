@@ -34,7 +34,7 @@ public class Game
 			} else {
 				player.isReal = false;
 			}
-			player.betTotal = new Bet(Settings.playerCreditsInNumberOfBets);
+			player.balanceInCredits = Settings.playerCredits;
 
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
 			//			player.SetChipRandomly();
@@ -79,7 +79,7 @@ public class Game
 		game.winners = game.GetWinnersAndSetWinPercentage (players);
 
 		string winString = "";
-		Bet winAmount = game.potAmount;
+		double winAmount = game.potAmount;
 		
 		// virtual players
 		if (game.winners.Count > 1) {
@@ -87,20 +87,20 @@ public class Game
 			
 			winString += game.winners[0].GetHandStringFromHandObj() + '\n';
 			winString += string.Format("the pot was split in {0} ways\n".ToUpper(), game.winners.Count);
-			winString += string.Format("(each player win {0} credits):\n".ToLower(), winAmount.inCredits.f());
+			winString += string.Format("(each player win {0} credits):\n".ToLower(), winAmount.f());
 			int no = 0;
 			foreach(var player in game.winners) {
 				no++;
-				player.betTotal.inBet += winAmount.inBet;
-				player.lblCredits.text = player.betTotal.inCredits.f();
+				player.balanceInCredits += winAmount;
+				player.lblCredits.text = player.balanceInCredits.f();
 				winString += string.Format ("{0}) {1}\n", no, player.name);
 			}
 		} else if (game.winners.Count == 1) { // one win player
 			Player player = game.winners[0];
 			if (player.isReal) game.ui.audio.PlayOneShot (game.ui.soundWin);
-			player.betTotal += winAmount;
-			player.lblCredits.text = player.betTotal.inCredits.f();
-			winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, winAmount.inCredits.f(), player.GetHandStringFromHandObj ());
+			player.balanceInCredits += winAmount;
+			player.lblCredits.text = player.balanceInCredits.f();
+			winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, winAmount.f(), player.GetHandStringFromHandObj ());
 		}
 		
 		string winBonusString = "";
@@ -129,8 +129,8 @@ public class Game
 				double winBonus = game.ui.payTable.GetAndSelectBonusWin (player);
 				if (winBonus > 0) {
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
-					player.betTotal.inBet += winBonus;
-					player.lblCredits.text = player.betTotal.inCredits.f();
+					player.balanceInCredits += winBonus;
+					player.lblCredits.text = player.balanceInCredits.f();
 					winBonusString = string.Format ("\n{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
 				}
 			}
@@ -187,7 +187,8 @@ public class Game
 	public States states;
 	public BetRound state;
 
-	public Bet betAmountAnt, betAmount, potAmount;
+	public Bet betAmountAnt, betAmount;
+	public double potAmount;
 
 	public PlayerIterator playerIterator;
 	public PlayerCollection playerCollection;

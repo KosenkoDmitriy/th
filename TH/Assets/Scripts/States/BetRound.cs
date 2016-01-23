@@ -82,8 +82,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		}
 		game.state.betMax.inBet = betMax.inBet = 0;
 	
-		game.potAmount += pot;
-		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.inCredits.f();
+		game.potAmount += pot.inCredits;
+		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();
 	}
 	
 	public virtual void BetSubRounds() {

@@ -48,7 +48,7 @@ public class InitGame : BetRound {
 		foreach (var player in game.players) {
 			player.SetChipRandomly();
 			player.lblName.text = player.name;
-			player.lblCredits.text = player.betTotal.inCredits.f();
+			player.lblCredits.text = player.balanceInCredits.f();
 			player.lblAction.text = "";
 		}
 		
@@ -125,7 +125,7 @@ public class InitGame : BetRound {
 //			p.betAlreadyInvestedInCurrentSubRound = 0;
 			game.playerCollection[p.position] = p;
 		}
-		game.potAmount = new Bet(0);
+		game.potAmount = 0;
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 		isWaiting = false;
 	}

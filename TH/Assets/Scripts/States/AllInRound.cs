@@ -30,11 +30,11 @@ public class AllInRound : BetRound {
 		//return back last betToStayInGame
 		foreach (var player in before) {
 			player.betInvested  -= betBeforeAllIn;
-			player.betTotal += betBeforeAllIn;
-			game.potAmount += player.betInvested ;
+			player.balanceInCredits += betBeforeAllIn;
+			game.potAmount += player.betInvested.inCredits;
 
-			player.lblCredits.text = player.betTotal.inCredits.f();
-			game.ui.lblPot.text = game.potAmount.inCredits.f();
+			player.lblCredits.text = player.balanceInCredits.f();
+			game.ui.lblPot.text = game.potAmount.f();
 		}
 		
 		// reorder players - first all in player
@@ -93,9 +93,9 @@ public class AllInRound : BetRound {
 		Pot pot = new Pot();
 		var players = new List<Player>();
 		foreach (var player in playersAllIn) {
-			player.betTotal -= minAllIn;
+			player.balanceInCredits -= minAllIn;
 			pot.maxWinIfWin += minAllIn;
-			if (player.betTotal <= 0) {
+			if (player.balanceInCredits <= 0) {
 				pot.players.Add(player);
 			} else {
 				players.Add(player);
@@ -109,15 +109,15 @@ public class AllInRound : BetRound {
 		// detect player with min credits/betTotal
 		double maxAllIn = 0;
 		foreach (var player in playersAllIn) {
-			if (player.betTotal > maxAllIn) {
-				maxAllIn = player.betTotal.inBet;
+			if (player.balanceInCredits > maxAllIn) {
+				maxAllIn = player.balanceInCredits;
 			}
 		}
 
 		double minAllIn = maxAllIn;
 		foreach (var player in playersAllIn) {
-			if (player.betTotal < minAllIn && player.betTotal > 0) {
-				minAllIn = player.betTotal.inBet;
+			if (player.balanceInCredits < minAllIn && player.balanceInCredits > 0) {
+				minAllIn = player.balanceInCredits;
 			}
 		}
 		return minAllIn;
@@ -147,7 +147,7 @@ public class AllInRound : BetRound {
 		string winInfo = "";
 
 		// main pot
-		Bet winPotAmount = game.potAmount/game.winners.Count;
+		double winPotAmount = game.potAmount/game.winners.Count;
 		List<Player> winList = new List<Player> ();
 
 		if (game.winners.Count > 0)
@@ -155,9 +155,9 @@ public class AllInRound : BetRound {
 
 		winInfo += "Main Pot:\n";
 		foreach(var player in game.winners) {
-			player.betTotal += winPotAmount;
-			player.lblCredits.text = player.betTotal.inCredits.f();
-			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.inCredits.f());
+			player.balanceInCredits += winPotAmount;
+			player.lblCredits.text = player.balanceInCredits.f();
+			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.f());
 			winList.Add (player);
 			//TODO
 //			if (player.isReal) {
@@ -177,19 +177,19 @@ public class AllInRound : BetRound {
 		int no = 1;
 		foreach (var pot in pots) {
 			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
-			Bet winAmount = new Bet(0);
-			winAmount.inBet = pot.maxWinIfWin / tempWinners.Count;
+			double winAmount = 0;
+			winAmount = pot.maxWinIfWin / tempWinners.Count;
 			foreach(var player in tempWinners) {
 				player.ShowCards(game);
 
 //				foreach(var winer in game.winners) {
 //					if (winer.id == player.id) {
-						player.betTotal += winAmount;
-						player.lblCredits.text = player.betTotal.inCredits.f();
+						player.balanceInCredits += winAmount;
+						player.lblCredits.text = player.balanceInCredits.f();
 //					}
 //				}
 
-				winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.inCredits.f(), no);
+				winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.f(), no);
 				no++;
 			}
 		}

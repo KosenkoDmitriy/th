@@ -11,12 +11,12 @@ public class Player {
 		hand = new Hand ();
 		alt_patterns = new List<Pattern> ();
 		betInvested = new Bet (0);
-		betTotal = new Bet (0);
+//		balanceInCredits = new Bet (0);
 	}
 	#region print
 	public override string ToString ()
 	{
-		string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", id, name, handPreflopString, betTotal, actionCurrentString, winPercent);
+		string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", id, name, handPreflopString, balanceInCredits, actionCurrentString, winPercent);
 		if (Settings.isDev) {
 			DevInfo(this);
 		}
@@ -26,7 +26,7 @@ public class Player {
 
 	public void DevInfo(Player player) {
 		if (Settings.isDev) {
-			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets: in_cur_bet_round:{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.betTotal, player.actionCurrentString, player.winPercent, player.position, player.betInvested );
+			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets: in_cur_bet_round:{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.balanceInCredits, player.actionCurrentString, player.winPercent, player.position, player.betInvested );
 			Debug.Log (str);
 
 			string str2 = "";
@@ -261,7 +261,7 @@ public class Player {
 		}
 		// end searching for new optimal math action
 */
-		double balanceAfterAction = betTotal.inBet + actionTip.betToStay.inBet;
+		double balanceAfterAction = balanceInCredits + actionTip.betToStay.inCredits;
 		double betInvestedAfterAction = betInvested.inBet + actionTip.betToStay.inBet;
 //		if (actionTip.betToStay > game.state.betMax) {
 //			game.state.betMax = actionTip.betToStay;
@@ -303,7 +303,7 @@ public class Player {
 						} else if (actionTip.isCheck || actionTip.isFold) {
 							// desired actions
 							actionTip = new ActionTip(0);
-							if (betInvested == game.state.betMax && betTotal >= 0.0d && game.state.betMax <= game.state.betMaxLimit) {
+							if (betInvested == game.state.betMax && balanceInCredits >= 0.0d && game.state.betMax <= game.state.betMaxLimit) {
 								actionTip.name = "CHECK";
 							} else { // fold
 								actionTip.name = "FOLD";	
@@ -316,7 +316,7 @@ public class Player {
 				if (actionTip == null) { // force call or raise
 					actionTip = new ActionTip(0);
 					// check
-					if (betTotal < 0) {
+					if (balanceInCredits < 0) {
 						actionTip.name = "FOLD";
 					} else { // fold
 						actionTip.name = "CHECK";	
@@ -1084,7 +1084,7 @@ public class Player {
 	public Bet betInvested; // already invested in current subround
 
 //	public double credits; // credits/creditMultiplier
-	public Bet betTotal;	// betTotal * creditMulitplier
+	public double balanceInCredits;	// *= creditMulitplier
 
 	public int id;			// for ui
 	public int position;	// first to act (player after dealer)

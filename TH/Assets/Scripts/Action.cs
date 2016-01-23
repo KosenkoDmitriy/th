@@ -42,7 +42,7 @@ public class Action : IAction {
 					DoActive(game, p);
 					game.player = p;
 				}
-				game.ui.SetBalance(p.betTotal.inCredits.f());
+				game.ui.SetBalance(p.balanceInCredits.f());
 				game.state.isWaiting = false;
 			} else {
 				if (p.isFolded) {
@@ -66,7 +66,7 @@ public class Action : IAction {
 		}
 
 		p.betInvested += betToStay;
-		p.betTotal -= betToStay;
+		p.balanceInCredits -= betToStay.inCredits;
 
 //		double dtRaise = p.betInvested.inBet - game.state.betMax.inBet;
 		if (p.isReal) {
@@ -86,7 +86,7 @@ public class Action : IAction {
 		}
 
 		if (Settings.isDev) {
-			game.ui.DebugLog(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betInvested , p.betTotal, game.state.betMax, game.state.betMaxLimit));
+			game.ui.DebugLog(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betInvested , p.balanceInCredits, game.state.betMax, game.state.betMaxLimit));
 //			p.ToString();
 			p.DevInfo(p);
 		}
@@ -203,8 +203,8 @@ public class AllIn : Action
 
 		if (p.isAllIn) {
 			game.state.playersAllIn.Add (p);
-			if (p.betTotal > game.state.betMax) {
-				game.state.betMax = p.betTotal;
+			if (p.balanceInCredits > game.state.betMax.inCredits) {
+				game.state.betMax.inCredits = p.balanceInCredits;
 			}
 			p.lblCredits.text = Settings.betNull.f ();
 //			game.potAmount += p.betTotal;
