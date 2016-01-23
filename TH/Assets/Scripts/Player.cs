@@ -422,7 +422,8 @@ public class Player {
 //		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
 		
 		ActionTip actionT = new ActionTip (0);
-		
+
+		if (string.IsNullOrEmpty(name)) name = "";
 		actionT.name = name;
 		
 		if (actionT.isUnknown) {
