@@ -78,9 +78,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			pot += player.betInvested;
-			player.betInvested.inBet = 0;
+			player.betInvested.inCredits = 0;
 		}
-		game.state.betMax.inBet = betMax.inBet = 0;
+		game.state.betMax.inCredits = betMax.inCredits = 0;
 	
 		game.potAmount += pot.inCredits;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();

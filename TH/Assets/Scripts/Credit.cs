@@ -29,26 +29,28 @@ public class Bet
 {
 	public Bet(double bet) {
 		reset (bet);
-		inBet = bet;
+		inCredits = bet;
 	}
+
 	private void reset(double bet) {
 		if (bet == 0) {
-			_inBet = 0;
+			_inCreditsNoM = 0;
 			_inBetMath = 0;
 			_inCredits = 0;
 		}
 	}
-	private double _inBet;
-	public double inBet {
+
+	private double _inCredits;
+	public double inCredits {
 		get {
-			return _inBet;
+			return _inCredits;
 		}
 		set {
 			reset (value);
-			_inBet = value;
-			if (_inBet != 0) {
-				_inBetMath = _inBet / Settings.betCurrentMultiplier;
-				_inCredits = _inBet * Settings.betCurrentMultiplier * Settings.betCreditsMultiplier;
+			_inCredits = value;
+			if (_inCredits != 0) {
+				_inCreditsNoM = _inCredits / Settings.betCreditsMultiplier;
+				_inBetMath = _inCreditsNoM / Settings.betCurrentMultiplier;
 			}
 		}
 	}
@@ -62,115 +64,115 @@ public class Bet
 			reset (value);
 			_inBetMath = value;
 			if (_inBetMath != 0) {
-				_inBet = _inBetMath * Settings.betCurrentMultiplier;
-				_inCredits = _inBet * Settings.betCreditsMultiplier;
+				_inCreditsNoM = _inBetMath * Settings.betCurrentMultiplier;
+				_inCredits = _inCreditsNoM * Settings.betCreditsMultiplier;
 			}
 		}
 	}
 	
-	private double _inCredits;
-	public double inCredits {
+	private double _inCreditsNoM;
+	public double inCreditsNoM {
 		get {
-			return _inCredits;
+			return _inCreditsNoM;
 		}
 		set {
 			reset (value);
-			_inCredits = value;
-			if (_inCredits != 0) {
-				_inBet = _inCredits / Settings.betCreditsMultiplier;
-				_inBetMath = _inBet / Settings.betCurrentMultiplier;
+			_inCreditsNoM = value;
+			if (_inCreditsNoM != 0) {
+				_inBetMath = _inCreditsNoM / Settings.betCurrentMultiplier;
+				_inCredits = _inCreditsNoM * Settings.betCurrentMultiplier * Settings.betCreditsMultiplier;
 			}
 		}
 	}
 
 	public static Bet operator +(Bet a, Bet b) {
-		a.inBet += b.inBet;
+		a.inCredits += b.inCredits;
 		return a;
 	}
 
 	public static Bet operator -(Bet a, Bet b) {
-		a.inBet -= b.inBet;
+		a.inCredits -= b.inCredits;
 		return a;
 	}
 
 	public static Bet operator *(Bet a, Bet b) {
-		a.inBet *= b.inBet;
+		a.inCredits *= b.inCredits;
 		return a;
 	}
 
 	public static Bet operator /(Bet a, Bet b) {
-		a.inBet /= b.inBet;
+		a.inCredits /= b.inCredits;
 		return a;
 	}
 
 	public static bool operator <=(Bet a, Bet b) {
-		return a.inBet <= b.inBet;
+		return a.inCredits <= b.inCredits;
 	}
 
 	public static bool operator >=(Bet a, Bet b) {
-		return a.inBet >= b.inBet;
+		return a.inCredits >= b.inCredits;
 	}
 
 	public static bool operator <(Bet a, Bet b) {
-		return a.inBet < b.inBet;
+		return a.inCredits < b.inCredits;
 	}
 	
 	public static bool operator >(Bet a, Bet b) {
-		return a.inBet > b.inBet;
+		return a.inCredits > b.inCredits;
 	}
 
 	public static bool operator ==(Bet a, Bet b) {
-		return a.inBet == b.inBet;
+		return a.inCredits == b.inCredits;
 	}
 
 	public static bool operator !=(Bet a, Bet b) {
-		return a.inBet != b.inBet;
+		return a.inCredits != b.inCredits;
 	}
 
 	// bet and double
 	public static Bet operator +(Bet a, double b) {
-		a.inBet += b;
+		a.inCredits += b;
 		return a;
 	}
 	
 	public static Bet operator -(Bet a, double b) {
-		a.inBet -= b;
+		a.inCredits -= b;
 		return a;
 	}
 	
 	public static Bet operator *(Bet a, double b) {
-		a.inBet *= b;
+		a.inCredits *= b;
 		return a;
 	}
 	
 	public static Bet operator /(Bet a, double b) {
-		a.inBet /= b;
+		a.inCredits /= b;
 		return a;
 	}
 
 
 	public static bool operator <=(Bet a, double b) {
-		return a.inBet <= b;
+		return a.inCredits <= b;
 	}
 	
 	public static bool operator >=(Bet a, double b) {
-		return a.inBet >= b;
+		return a.inCredits >= b;
 	}
 	
 	public static bool operator <(Bet a, double b) {
-		return a.inBet < b;
+		return a.inCredits < b;
 	}
 	
 	public static bool operator >(Bet a, double b) {
-		return a.inBet > b;
+		return a.inCredits > b;
 	}
 	
 	public static bool operator ==(Bet a, double b) {
-		return a.inBet == b;
+		return a.inCredits == b;
 	}
 	
 	public static bool operator !=(Bet a, double b) {
-		return a.inBet != b;
+		return a.inCredits != b;
 	}
 
 }

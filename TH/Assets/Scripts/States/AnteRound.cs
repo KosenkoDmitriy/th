@@ -48,7 +48,7 @@ public class AnteRound : BetRound {
 					if (player.position == 0 && !player.isReal) {
 						game.isGameRunning = true;
 						if (betMax <= 0) {
-							betMax.inBet = (double)new Random().Next(1, (int)(betMaxLimit.inBet + 1));
+							betMax.inCredits = (double)new Random().Next(1, (int)(betMaxLimit.inCredits + 1));
 						}
 						player.actionFinal = new Raise(player, betMax);
 					} else {

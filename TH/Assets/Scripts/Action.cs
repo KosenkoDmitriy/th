@@ -8,7 +8,7 @@ public interface IAction
 public class ActionTip: Action {
 	public ActionTip (double betToStayInGame)
 	{
-		this.betCall.inBet = betToStayInGame;
+		this.betCall.inCredits = betToStayInGame;
 	}
 	public bool isInBetSubrounds;
 	public bool isInPriority1;
@@ -24,7 +24,7 @@ public class Action : IAction {
 	public Action (double betDx)
 	{
 		Init ();
-		this.betCall.inBet = betDx;
+		this.betCall.inCredits = betDx;
 	}
 
 	private void Init() {
@@ -70,16 +70,16 @@ public class Action : IAction {
 
 //		double dtRaise = p.betInvested.inBet - game.state.betMax.inBet;
 		if (p.isReal) {
-			if (betRaise.inBet > 0) {
+			if (betRaise.inCredits > 0) {
 				if (game.state.betMax > p.betInvested)
 					game.ui.lblCall.text = betCall.inCredits.f ();
 				else
 					game.ui.lblCall.text = Settings.betNull.f ();
 				game.ui.lblRaise.text = betRaise.inCredits.f();
-			} else if (betRaise.inBet == 0) {
+			} else if (betRaise.inCredits == 0) {
 				game.ui.lblCall.text = betCall.inCredits.f ();
 				game.ui.lblRaise.text = betRaise.inCredits.f();
-			} else if (betRaise.inBet < 0) {
+			} else if (betRaise.inCredits < 0) {
 				game.ui.lblCall.text = betCall.inCredits.f ();
 				game.ui.lblRaise.text = Settings.betNull.f ();
 			}
@@ -192,7 +192,7 @@ public class AllIn : Action
 
 		p.isAllIn = true;
 		if (game.state.playerFirstToAllIn == null) {
-			game.state = new AllInRound (game, p, game.state.betMax.inBet);
+			game.state = new AllInRound (game, p, game.state.betMax.inCredits);
 		} else {
 			if (p.isReal) {
 

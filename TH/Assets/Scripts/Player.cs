@@ -262,11 +262,11 @@ public class Player {
 		// end searching for new optimal math action
 */
 		double balanceAfterAction = balanceInCredits + actionTip.betToStay.inCredits;
-		double betInvestedAfterAction = betInvested.inBet + actionTip.betToStay.inBet;
+		double betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
 //		if (actionTip.betToStay > game.state.betMax) {
 //			game.state.betMax = actionTip.betToStay;
 //		}
-		if (betInvestedAfterAction > game.state.betMaxLimit.inBet) {
+		if (betInvestedAfterAction > game.state.betMaxLimit.inCredits) {
 			// exceed bet limit > decrease bet call or raise
 			Bet maxBet = new Bet(0);
 			int max = 1;
@@ -279,8 +279,8 @@ public class Player {
 					actionTip.betRaise = maxBet;
 				}
 
-				betInvestedAfterAction = betInvested.inBet + actionTip.betToStay.inBet;
-				if (betInvestedAfterAction <= game.state.betMaxLimit.inBet) {
+				betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
+				if (betInvestedAfterAction <= game.state.betMaxLimit.inCredits) {
 					// optimal action was found
 					break;
 				}
@@ -289,7 +289,7 @@ public class Player {
 			// end decrease bet call or raise
 
 			// exceed bet limit > selecting another action (check, fold)
-			if (betInvestedAfterAction > game.state.betMaxLimit.inBet) {
+			if (betInvestedAfterAction > game.state.betMaxLimit.inCredits) {
 				List<string> actionNames = new List<string> () {
 					patternCurrent.actionPriority1, patternCurrent.actionPriority2, patternCurrent.actionDefault
 				};
