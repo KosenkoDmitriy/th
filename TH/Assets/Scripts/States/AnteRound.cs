@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.UI;
 
 public class AnteRound : BetRound {
 
@@ -24,26 +25,38 @@ public class AnteRound : BetRound {
 					game.state.isWaiting = true;
 					game.player = player;
 
+					if (game.isGameRunning) {
+						game.ui.panelGame.SetActive (true);
+						game.ui.btnRaise.GetComponent<Button>().interactable = false;
+						game.ui.panelInitBet.SetActive (false);
+					} else {
+						game.ui.btnRaise.GetComponent<Button>().interactable = true;
+						game.ui.panelGame.SetActive (false);
+						game.ui.panelInitBet.SetActive (true);
+					}
+
 					Bet dt = player.betInvested - game.state.betMax;
 
 					if (dt > 0) {
 						game.ui.lblCall.text = Settings.betNull.f();
 						game.ui.lblRaise.text = dt.inCredits.f();
+						
+						game.ui.btnCall.GetComponent<Button>().interactable = true;
+						game.ui.btnCheck.GetComponent<Button>().interactable = false;
 					} else if (dt == 0) {
 						game.ui.lblCall.text = Settings.betNull.f();
 						game.ui.lblRaise.text = Settings.betNull.f();
+						
+						game.ui.btnCall.GetComponent<Button>().interactable = false;
+						game.ui.btnCheck.GetComponent<Button>().interactable = true;
 					} else if (dt < 0) {
 						dt *= -1;
 						game.ui.lblCall.text = dt.inCredits.f();
+						
+						game.ui.btnCall.GetComponent<Button>().interactable = true;
+						game.ui.btnCheck.GetComponent<Button>().interactable = false;
 					}
 
-					if (game.isGameRunning) {
-						game.ui.panelGame.SetActive (true);
-						game.ui.panelInitBet.SetActive (false);
-					} else {
-						game.ui.panelGame.SetActive (false);
-						game.ui.panelInitBet.SetActive (true);
-					}
 				} else {
 					if (player.position == 0 && !player.isReal) {
 						game.isGameRunning = true;

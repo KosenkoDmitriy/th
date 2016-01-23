@@ -124,27 +124,25 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				if (dt > 0) {
 					game.ui.lblCall.text = Settings.betNull.f();
 					game.ui.lblRaise.text = dt.inCredits.f();
-				} else if (dt == 0) {
-					game.ui.lblCall.text = Settings.betNull.f();
-					game.ui.lblRaise.text = Settings.betNull.f();
-				} else if (dt < 0) {
-					dt *= -1;
-					game.ui.lblCall.text = dt.inCredits.f();
-				}
 
-				if (dt > 0) {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
 					game.ui.btnCheck.GetComponent<Button>().interactable = false;
 				} else if (dt == 0) {
+					game.ui.lblCall.text = Settings.betNull.f();
+					game.ui.lblRaise.text = Settings.betNull.f();
+
 					game.ui.btnCall.GetComponent<Button>().interactable = false;
 					game.ui.btnCheck.GetComponent<Button>().interactable = true;
 				} else if (dt < 0) {
+					dt *= -1;
+					game.ui.lblCall.text = dt.inCredits.f();
+
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
-					game.ui.btnCheck.GetComponent<Button>().interactable = true;
+					game.ui.btnCheck.GetComponent<Button>().interactable = false;
 				}
 
-				game.ui.lblCall.text = dt.inCredits.f();
-				game.ui.lblRaise.text = Settings.betNull.f();
+//				game.ui.lblCall.text = dt.inCredits.f();
+//				game.ui.lblRaise.text = Settings.betNull.f();
 
 
 				if (isCanToRaise) {
