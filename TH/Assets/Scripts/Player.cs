@@ -280,21 +280,12 @@ public class Player {
 		if (betInvestedAfterAction > game.state.betMaxLimit.inCredits) {
 
 			// exceed bet limit > decrease bet call or raise
-			Bet maxBet = new Bet(0);
 			int max = 1;
 			while (max <= patternCurrent.betMaxCallOrRaise) {
 				if (Settings.isDev) this.Log(false, true, string.Format("in subrounds: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
 
-				maxBet.inBetMath = max;
-				if (actionTip.isCall)
-					actionTip.betCall = maxBet;
-				if (actionTip.isRaise) {
-					actionTip.betCall = maxBet;
-					actionTip.betRaise = maxBet;
-				}
-
-				betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
-				if (betInvestedAfterAction <= game.state.betMaxLimit.inCredits) {
+				actionTip = ActionTipCallOrRaise(game, actionTip.name, max);
+				if (actionTip != null) {
 					// optimal action was found
 					break;
 				}
@@ -302,12 +293,38 @@ public class Player {
 			}
 			// end decrease bet call or raise
 
+			if (actionTip != null)
+				betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
+			else
+				betInvestedAfterAction = betInvested.inCredits;
 			// exceed bet limit > selecting another action (check, fold)
-			if (betInvestedAfterAction > game.state.betMaxLimit.inCredits) {
+
+			if (actionTip == null || betInvestedAfterAction > game.state.betMaxLimit.inCredits) {
 				List<string> actionNames = new List<string> () {
 					patternCurrent.actionPriority1, patternCurrent.actionPriority2, patternCurrent.actionDefault
 				};
-				
+
+				max = 1;
+				while (max <= patternCurrent.betMaxCallOrRaise) {
+					foreach(string actionName in actionNames) {
+//						actionTip = GetActionRecommendByName(game, name);
+						actionTip = ActionTipCallOrRaise(game, actionName, max);
+
+						if (actionTip != null) {
+							betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
+
+							if (betInvestedAfterAction <= game.state.betMaxLimit.inCredits)
+								break; // optimal action was found
+						}
+
+					}
+
+					if (actionTip != null)
+						break; // optimal action was found
+
+					max++;
+				}
+				/*
 				foreach(string name in actionNames) {
 					actionTip = GetActionRecommendByName(game, name);
 					if (Settings.isDev) this.Log(false, true, string.Format("in actionNames: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
@@ -328,16 +345,19 @@ public class Player {
 						}
 					}
 				}
-
+*/
 				if (actionTip == null) { // force call or raise
-					if (Settings.isDev) this.Log(false, true, string.Format("in force call or raise: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
+					if (Settings.isDev) this.Log(true, false, string.Format("in force call or raise: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
 
+//					actionTip = GetActionRecommendByName(game, patternCurrent.actionDefault);
 					actionTip = new ActionTip(0);
 					// check
 					if (balanceInCredits < 0) {
 						actionTip.name = "FOLD";
 					} else { // fold
 						actionTip.name = "CHECK";	
+						actionTip.betCall.inCredits = 0;
+						actionTip.betRaise.inCredits = 0;
 					}
 
 				}
@@ -400,6 +420,41 @@ public class Player {
 		return actionFinal;
 	}
 
+	public ActionTip ActionTipCallOrRaise(Game game, string actionName, int max) {
+		Bet maxBet = new Bet(0);
+		double betInvestedAfterAction = 0;
+
+		maxBet.inBetMath = max;
+		ActionTip actionTip = new ActionTip (0);
+		actionTip.name = actionName;
+
+		if (actionTip.isCall)
+			actionTip.betCall = maxBet;
+		
+		if (actionTip.isRaise) {
+			actionTip.betCall = maxBet;
+			actionTip.betRaise = maxBet;
+			
+			betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
+			if (betInvested.inCredits < game.state.betMax.inCredits) {
+				// call or raise
+				if (betInvestedAfterAction > actionTip.betToStay.inCredits) {
+					//call without raise
+					actionTip.name = "CALL";
+					actionTip.betRaise.inCredits = 0d;
+				}
+			}
+		}
+		
+		betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
+		
+		if (betInvestedAfterAction <= game.state.betMaxLimit.inCredits) {
+			// optimal action was found
+			return actionTip;
+		}
+		return null;
+	}
+
 	public ActionTip GetActionRecommendInSubrounds(Game game) {
 		double betMaxLimit = game.state.betMaxLimit.inBetMath;
 		double betMaxToStayInGameTotal = game.state.betMax.inBetMath;
@@ -417,8 +472,10 @@ public class Player {
 
 					actionT.name = betRound.name_action;
 
-					if (actionT.isCall)
+					if (actionT.isCall) {
 						actionT.betCall.inBetMath = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
+						actionT.betRaise.inBetMath = 0;
+					}
 
 					if (actionT.isRaise) {
 						actionT.betCall.inBetMath = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;;
@@ -438,8 +495,8 @@ public class Player {
 	}
 
 	public ActionTip GetActionRecommendByName(Game game, string name) {
-		double betMaxLimit = game.state.betMaxLimit.inBetMath;
-		double betMaxToStayInGameTotal = game.state.betMax.inBetMath;
+//		double betMaxLimit = game.state.betMaxLimit.inBetMath;
+//		double betMaxToStayInGameTotal = game.state.betMax.inBetMath;
 		
 //		if (betMaxLimit != 0) betMaxLimit /= Settings.betCurrentMultiplier;
 //		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
@@ -453,8 +510,10 @@ public class Player {
 			return null;
 		}
 		
-		if (actionT.isCall)
+		if (actionT.isCall) {
 			actionT.betCall.inBetMath = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
+			actionT.betRaise.inBetMath = 0;
+		}
 
 		if (actionT.isRaise) {
 			actionT.betCall.inBetMath = patternCurrent.betMaxCallOrRaise;

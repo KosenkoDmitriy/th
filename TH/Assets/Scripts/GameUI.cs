@@ -72,6 +72,7 @@ public class GameUI : MonoBehaviour
 	public void btnCheckClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
+
 		game.player.actionFinal = new Check(game.player, game.state.betMax);
 		game.player.actionFinal.Do (game, game.player);
 	}

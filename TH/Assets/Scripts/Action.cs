@@ -126,6 +126,7 @@ public class Call : Action
 		this.name = "CALL";
 		player.UpdateActionCurrentString (this.name);
 		this.betCall = betToStayInGame;
+		this.betRaise.inCredits = 0;
 	}
 	public override void Do(Game game, Player p) {
 		base.Do (game, p);
@@ -140,6 +141,7 @@ public class Check : Action
 		this.name = "CHECK";
 		player.UpdateActionCurrentString (this.name);
 		this.betCall = betToStayInGame;
+		this.betRaise.inCredits = 0;
 	}
 }
 

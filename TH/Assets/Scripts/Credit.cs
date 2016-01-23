@@ -39,11 +39,11 @@ public class Bet
 	}
 
 	private void reset(double bet) {
-		if (bet == 0) {
+//		if (bet == 0) {
 			_inCreditsNoM = 0;
 			_inBetMath = 0;
 			_inCredits = 0;
-		}
+//		}
 	}
 
 	private double _inCredits;
@@ -86,7 +86,7 @@ public class Bet
 			_inCreditsNoM = value;
 			if (_inCreditsNoM != 0) {
 				_inBetMath = _inCreditsNoM / Settings.betCurrentMultiplier;
-				_inCredits = _inCreditsNoM * Settings.betCurrentMultiplier * Settings.betCreditsMultiplier;
+				_inCredits = _inCreditsNoM * Settings.betCreditsMultiplier;
 			}
 		}
 	}
