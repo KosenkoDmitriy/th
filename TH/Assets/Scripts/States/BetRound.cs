@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,10 +14,9 @@ public interface IBetRoundState
 public abstract class AbstractBetRound {
 	protected int subRoundMaxSize;
 	protected int subRoundCount;
-	public double betMax;
-	public double betMaxLimit;
 	protected Game game;
-	protected double betToStayInGame, pot;
+	public Bet betMax, betMaxLimit;
+	protected Bet betToStayInGame, pot;
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
@@ -40,8 +39,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		this.subRoundCount = 0;
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.isCanToRaise = true;
-		Settings.betCurrentMultiplier = Settings.betPreflopFlopMultiplier;
-		this.betMaxLimit = Settings.betCurrentMultiplier * Settings.betLimitPreflopFlop;
+		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
+		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
+		this.betToStayInGame = this.pot = this.betMax = new Bet (0);
 	}
 	
 	#region IBetRoundState implementation
@@ -77,13 +77,13 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 	public virtual void LastAction() {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-			pot += player.betInvested ;
-			player.betInvested  = 0;
+			pot += player.betInvested;
+			player.betInvested.inBet = 0;
 		}
-		game.state.betMax = betMax = 0;
+		game.state.betMax.inBet = betMax.inBet = 0;
 	
 		game.potAmount += pot;
-		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.to_s ();
+		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.inCredits.f();
 	}
 	
 	public virtual void BetSubRounds() {
@@ -119,18 +119,17 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				double dt = player.betInvested - game.state.betMax;
-//				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMaxToStayInGame);
+				Bet dt = player.betInvested - game.state.betMax;
 
 				if (dt > 0) {
-					game.ui.lblCall.text = Settings.betNull.to_s();
-					game.ui.lblRaise.text = dt.to_s ();
+					game.ui.lblCall.text = Settings.betNull.f();
+					game.ui.lblRaise.text = dt.inCredits.f();
 				} else if (dt == 0) {
-					game.ui.lblCall.text = Settings.betNull.to_s();
-					game.ui.lblRaise.text = Settings.betNull.to_s();
+					game.ui.lblCall.text = Settings.betNull.f();
+					game.ui.lblRaise.text = Settings.betNull.f();
 				} else if (dt < 0) {
 					dt *= -1;
-					game.ui.lblCall.text = dt.to_s();
+					game.ui.lblCall.text = dt.inCredits.f();
 				}
 
 				if (dt > 0) {
@@ -144,8 +143,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					game.ui.btnCheck.GetComponent<Button>().interactable = true;
 				}
 
-				game.ui.lblCall.text = dt.to_s();
-				game.ui.lblRaise.text = Settings.betNull.to_s();
+				game.ui.lblCall.text = dt.inCredits.f();
+				game.ui.lblRaise.text = Settings.betNull.f();
 
 
 				if (isCanToRaise) {

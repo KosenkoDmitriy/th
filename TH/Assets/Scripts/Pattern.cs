@@ -15,9 +15,9 @@ public class Pattern
 	
 	public int betMaxCallOrRaise;	// in number of bets
 
-	public double betCall;
-	public double betRaise;
-	public double betToStayInGame;
+//	public double betCall;
+//	public double betRaise;
+//	public double betToStayInGame;
 
 	public List<PatternBetRoundAndAction> betSubRounds;
 	public double percent;	// of all time

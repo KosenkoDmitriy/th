@@ -2,24 +2,29 @@ using System;
 
 public static class Extension {
 
-	public static string f(this Credit c, double d) {
+//	public static string f(this Credit c, double d) {
+//		string res = String.Format("{0:N2}", d);
+//		return res;
+//	}
+
+	public static string f(this double d) {
 		string res = String.Format("{0:N2}", d);
 		return res;
 	}
 
-	public static string to_s(this double d) {
-		string res = String.Format("{0:N2}", d * Settings.betCreditsMultiplier);
-//		string res = String.Format("{0:N2}", d * Settings.betCurrentMultiplier * Settings.betCreditsMultiplier);
-		return res;
-	}
+//	public static string to_s(this double d) {
+//		string res = String.Format("{0:N2}", d * Settings.betCreditsMultiplier);
+////		string res = String.Format("{0:N2}", d * Settings.betCurrentMultiplier * Settings.betCreditsMultiplier);
+//		return res;
+//	}
 
 	public static string to_b(this double d) {
 		string res = String.Format("{0:N2}", d * Settings.betCreditsMultiplier);
 		return res;
 	}
 
-	public static string to_s_only(this double d) {
-		string res = String.Format("{0:N2}", d); // amount.ToString("#,#", System.Globalization.CultureInfo.CurrentCulture);
-		return res;
-	}
+//	public static string to_s_only(this double d) {
+//		string res = String.Format("{0:N2}", d); // amount.ToString("#,#", System.Globalization.CultureInfo.CurrentCulture);
+//		return res;
+//	}
 }

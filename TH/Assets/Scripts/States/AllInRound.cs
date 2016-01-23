@@ -9,6 +9,7 @@ public class AllInRound : BetRound {
 		this.playerFirstToAllIn = playerFirstToAllIn;
 		this.betBeforeAllIn = betDx;
 		this.subRoundMaxSize = 1;
+		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
 
 		pots = new List<Pot>();
 //		playerFirstToAllIn.isAllIn = true;
@@ -32,8 +33,8 @@ public class AllInRound : BetRound {
 			player.betTotal += betBeforeAllIn;
 			game.potAmount += player.betInvested ;
 
-			player.lblCredits.text = player.betTotal.to_s();
-			game.ui.lblPot.text = game.potAmount.to_s();
+			player.lblCredits.text = player.betTotal.inCredits.f();
+			game.ui.lblPot.text = game.potAmount.inCredits.f();
 		}
 		
 		// reorder players - first all in player
@@ -109,14 +110,14 @@ public class AllInRound : BetRound {
 		double maxAllIn = 0;
 		foreach (var player in playersAllIn) {
 			if (player.betTotal > maxAllIn) {
-				maxAllIn = player.betTotal;
+				maxAllIn = player.betTotal.inBet;
 			}
 		}
 
 		double minAllIn = maxAllIn;
 		foreach (var player in playersAllIn) {
 			if (player.betTotal < minAllIn && player.betTotal > 0) {
-				minAllIn = player.betTotal;
+				minAllIn = player.betTotal.inBet;
 			}
 		}
 		return minAllIn;
@@ -146,7 +147,7 @@ public class AllInRound : BetRound {
 		string winInfo = "";
 
 		// main pot
-		double winPotAmount = game.potAmount/game.winners.Count;
+		Bet winPotAmount = game.potAmount/game.winners.Count;
 		List<Player> winList = new List<Player> ();
 
 		if (game.winners.Count > 0)
@@ -155,8 +156,8 @@ public class AllInRound : BetRound {
 		winInfo += "Main Pot:\n";
 		foreach(var player in game.winners) {
 			player.betTotal += winPotAmount;
-			player.lblCredits.text = player.betTotal.to_s();
-			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.to_s());
+			player.lblCredits.text = player.betTotal.inCredits.f();
+			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.inCredits.f());
 			winList.Add (player);
 			//TODO
 //			if (player.isReal) {
@@ -176,18 +177,19 @@ public class AllInRound : BetRound {
 		int no = 1;
 		foreach (var pot in pots) {
 			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
-			double winAmount = pot.maxWinIfWin / tempWinners.Count;
+			Bet winAmount = new Bet(0);
+			winAmount.inBet = pot.maxWinIfWin / tempWinners.Count;
 			foreach(var player in tempWinners) {
 				player.ShowCards(game);
 
 //				foreach(var winer in game.winners) {
 //					if (winer.id == player.id) {
 						player.betTotal += winAmount;
-						player.lblCredits.text = player.betTotal.to_s();
+						player.lblCredits.text = player.betTotal.inCredits.f();
 //					}
 //				}
 
-				winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.to_s(), no);
+				winInfo += string.Format("{2}) {0} win {1}\n", player.name, winAmount.inCredits.f(), no);
 				no++;
 			}
 		}

@@ -5,7 +5,7 @@ public class TurnRound : BetRound {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		Settings.betCurrentMultiplier = Settings.betTurnRiverMultiplier;
-		this.betMaxLimit = Settings.betCurrentMultiplier * Settings.betLimitTurnRiver;
+		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
 
 		// turn bet rounds
 		var turns = game.source.GetTurns ();

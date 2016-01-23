@@ -8,7 +8,7 @@ public interface IAction
 public class ActionTip: Action {
 	public ActionTip (double betToStayInGame)
 	{
-		this.betCall = betToStayInGame;
+		this.betCall.inBet = betToStayInGame;
 	}
 	public bool isInBetSubrounds;
 	public bool isInPriority1;
@@ -17,13 +17,19 @@ public class ActionTip: Action {
 }
 
 public class Action : IAction {
-	public Action() {}
+	public Action() {
+		Init ();
+	}
 
 	public Action (double betDx)
 	{
-		this.betCall = betDx;
+		Init ();
+		this.betCall.inBet = betDx;
 	}
 
+	private void Init() {
+		betRaise = betCall = new Bet(0);
+	}
 	#region IAction implementation
 	
 	public virtual void Do (Game game, Player p)
@@ -36,7 +42,7 @@ public class Action : IAction {
 					DoActive(game, p);
 					game.player = p;
 				}
-				game.ui.SetBalance(p.betTotal.to_s());
+				game.ui.SetBalance(p.betTotal.inCredits.f());
 				game.state.isWaiting = false;
 			} else {
 				if (p.isFolded) {
@@ -62,20 +68,20 @@ public class Action : IAction {
 		p.betInvested += betToStay;
 		p.betTotal -= betToStay;
 
-		double dtRaise = p.betInvested  - game.state.betMax;
+//		double dtRaise = p.betInvested.inBet - game.state.betMax.inBet;
 		if (p.isReal) {
-			if (dtRaise > 0) {
-				if (game.state.betMax > p.betInvested )
-					game.ui.lblCall.text = betCall.to_s ();
+			if (betRaise.inBet > 0) {
+				if (game.state.betMax > p.betInvested)
+					game.ui.lblCall.text = betCall.inCredits.f ();
 				else
-					game.ui.lblCall.text = Settings.betNull.to_s ();
-				game.ui.lblRaise.text = dtRaise.to_s();
-			} else if (dtRaise == 0) {
-				game.ui.lblCall.text = betCall.to_s ();
-				game.ui.lblRaise.text = dtRaise.to_s();
-			} else if (dtRaise < 0){
-				game.ui.lblCall.text = betCall.to_s ();
-				game.ui.lblRaise.text = Settings.betNull.to_s ();
+					game.ui.lblCall.text = Settings.betNull.f ();
+				game.ui.lblRaise.text = betRaise.inCredits.f();
+			} else if (betRaise.inBet == 0) {
+				game.ui.lblCall.text = betCall.inCredits.f ();
+				game.ui.lblRaise.text = betRaise.inCredits.f();
+			} else if (betRaise.inBet < 0) {
+				game.ui.lblCall.text = betCall.inCredits.f ();
+				game.ui.lblRaise.text = Settings.betNull.f ();
 			}
 		}
 
@@ -87,9 +93,9 @@ public class Action : IAction {
 	}
 
 	public string name;
-	public double betCall;
-	public double betRaise;
-	public double betToStay {
+	public Bet betCall;
+	public Bet betRaise;
+	public Bet betToStay {
 		get { return betCall + betRaise; } 
 	}
 
@@ -115,7 +121,7 @@ public class Action : IAction {
 
 public class Call : Action
 {
-	public Call (Player player, double betToStayInGame)
+	public Call (Player player, Bet betToStayInGame)
 	{
 		this.name = "CALL";
 		player.UpdateActionCurrentString (this.name);
@@ -129,7 +135,7 @@ public class Call : Action
 
 public class Check : Action
 {
-	public Check (Player player, double betToStayInGame)
+	public Check (Player player, Bet betToStayInGame)
 	{
 		this.name = "CHECK";
 		player.UpdateActionCurrentString (this.name);
@@ -139,7 +145,7 @@ public class Check : Action
 
 public class Fold : Action
 {
-	public Fold (Player player, double betToStayInGame)
+	public Fold (Player player, Bet betToStayInGame)
 	{
 		this.name = "FOLD";
 		player.isFolded = true;
@@ -156,7 +162,7 @@ public class Fold : Action
 
 public class Raise : Action
 {
-	public Raise (Player player, double betToStayInGame)
+	public Raise (Player player, Bet betToStayInGame)
 	{
 		this.name = "RAISE";
 		player.UpdateActionCurrentString (this.name);
@@ -174,7 +180,7 @@ public class Raise : Action
 
 public class AllIn : Action
 {
-	public AllIn (Player player, double betToStayInGame)
+	public AllIn (Player player, Bet betToStayInGame)
 	{
 		this.name = "ALL IN";
 		player.UpdateActionCurrentString (this.name);
@@ -186,7 +192,7 @@ public class AllIn : Action
 
 		p.isAllIn = true;
 		if (game.state.playerFirstToAllIn == null) {
-			game.state = new AllInRound (game, p, game.state.betMax);
+			game.state = new AllInRound (game, p, game.state.betMax.inBet);
 		} else {
 			if (p.isReal) {
 
@@ -200,7 +206,7 @@ public class AllIn : Action
 			if (p.betTotal > game.state.betMax) {
 				game.state.betMax = p.betTotal;
 			}
-			p.lblCredits.text = Settings.betNull.to_s ();
+			p.lblCredits.text = Settings.betNull.f ();
 //			game.potAmount += p.betTotal;
 //			game.ui.lblPot.text = game.potAmount.to_s ();
 		}

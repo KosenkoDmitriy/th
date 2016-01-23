@@ -23,11 +23,10 @@ public class InitGame : BetRound {
 
 		if (game.ui.payTable != null) game.ui.payTable.SelectColumnByIndex(-1);
 		Settings.betBonus = 0;
-		game.betAmount = 0;
-		Settings.betCurrent = 0;
+		Settings.betCurrent = game.betAmount = new Bet(0);
 
 		if (game.ui.inputBetField)
-			game.ui.inputBetField.text = game.betAmount.to_s ();
+			game.ui.inputBetField.text = game.betAmount.inCredits.f ();
 
 		game.ui.ClearAll ();
 		
@@ -49,7 +48,7 @@ public class InitGame : BetRound {
 		foreach (var player in game.players) {
 			player.SetChipRandomly();
 			player.lblName.text = player.name;
-			player.lblCredits.text = player.betTotal.to_s();
+			player.lblCredits.text = player.betTotal.inCredits.f();
 			player.lblAction.text = "";
 		}
 		
@@ -126,7 +125,7 @@ public class InitGame : BetRound {
 //			p.betAlreadyInvestedInCurrentSubRound = 0;
 			game.playerCollection[p.position] = p;
 		}
-		game.potAmount = 0;
+		game.potAmount = new Bet(0);
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 		isWaiting = false;
 	}
