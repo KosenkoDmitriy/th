@@ -25,15 +25,26 @@ public class InitGame : BetRound {
 		Settings.betBonus = 0;
 		Settings.betCurrent = game.betAmount = new Bet(0);
 
-		if (game.ui.inputBetField)
-			game.ui.inputBetField.text = game.betAmount.inCredits.f ();
+		if (game.ui.inputBetField) game.ui.inputBetField.text = game.betAmount.inCredits.f ();
 
-		game.ui.ClearAll ();
+//		game.ui.ClearAll ();
+		game.ui.lblPot.text = Settings.betNull.f();
+		game.ui.lblBet.text = Settings.betNull.f();
+		game.ui.lblBetBonus.text = Settings.betNull.f();
+		game.ui.lblRaise.text = Settings.betNull.f();
+		game.ui.lblCall.text = Settings.betNull.f();
 		
 		game.ui.HideDynamicPanels ();
 		game.ui.panelInitBet.SetActive (true);
 		
 		game.players = game.InitPlayers ();
+
+		// public cards clearing
+		if (game.cards != null)
+		foreach (var cardPublic in game.cards) {
+			cardPublic.isHidden = true;
+		}
+
 		game.cards = new List<Card> ();
 		
 		Card card = null;
@@ -58,10 +69,11 @@ public class InitGame : BetRound {
 				var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
 				if (cardImg) {
 					card.setImage (cardImg.GetComponent<Image> ());
-					//						if (player.id == Settings.playerRealIndex || Settings.isDebug)
-					//							card.FaceUp = true;
-					//						else
-					//							card.FaceUp = false;
+					card.isHidden = true;
+//					if (player.id == Settings.playerRealIndex || Settings.isDebug)
+//						card.FaceUp = true;
+//					else
+//						card.FaceUp = false;
 				}
 				player.hand.Add (card);
 			}

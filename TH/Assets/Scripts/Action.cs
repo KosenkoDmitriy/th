@@ -92,7 +92,7 @@ public class Action : IAction {
 		}
 	}
 
-	public string name;
+	public string name = "";
 	public Bet betCall;
 	public Bet betRaise;
 	public Bet betToStay {
