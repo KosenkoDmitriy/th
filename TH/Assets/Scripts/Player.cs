@@ -413,7 +413,7 @@ public class Player {
 		// is in bet sub rounds?
 		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 			foreach (var betRound in patternCurrent.betSubRounds) {
-				if (betRound.costBetToStayInGame == betMaxToStayInGameTotal && betInvested == betRound.costBetAlreadyInvested) {
+				if (0 < betMaxToStayInGameTotal && betMaxToStayInGameTotal <= betRound.costBetToStayInGame && 0 < betMaxLimit && betMaxLimit <= betRound.costBetAlreadyInvested) {
 
 					actionT.name = betRound.name_action;
 
