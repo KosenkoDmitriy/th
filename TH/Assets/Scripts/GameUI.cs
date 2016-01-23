@@ -176,11 +176,12 @@ public class GameUI : MonoBehaviour
 			if (lblRaise) lblRaise.text = game.betAmount.to_s();
 
 			game.player.actionFinal.Do (game, game.player);
+			if (lblBet) lblBet.text = (game.betAmount).to_s();
 		} else if (!game.isGameRunning && game.betAmount > 0 && betTotalAfterAction >= 0) {
 			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, Settings.betCurrent);
 			game.player.actionFinal.Do (game, game.player);
-			if (lblBet) lblBet.text = Settings.betAnteMultiplier.to_s();
+			if (lblBet) lblBet.text = (game.betAmount).to_s();
 		} else {
 			return;
 		}
@@ -194,8 +195,8 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
 		
 		audio.PlayOneShot(soundBtnClicked);
-		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
-		Settings.betCurrent = betMax;
+//		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
+		Settings.betCurrent = game.state.betMaxLimit;
 		
 		string b = Settings.betCurrent.to_s();
 		inputBetField.text = b;
@@ -209,8 +210,8 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 		
 		Settings.betCurrent += Settings.betMinMath * Settings.betCurrentMultiplier;
-		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
-		if (Settings.betCurrent > betMax)
+//		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
+		if (Settings.betCurrent > game.state.betMaxLimit)
 			Settings.betCurrent = Settings.betNull;
 
 		inputBetField.text = Settings.betCurrent.to_s();

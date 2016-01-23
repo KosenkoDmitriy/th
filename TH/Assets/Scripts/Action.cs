@@ -10,10 +10,10 @@ public class ActionTip: Action {
 	{
 		this.betCall = betToStayInGame;
 	}
-	public bool isInBetSubrounds = true;
-	public bool isInPriority1 = true;
-	public bool isInPriority2 = true;
-	public bool isInDefault = true;
+	public bool isInBetSubrounds;
+	public bool isInPriority1;
+	public bool isInPriority2;
+	public bool isInDefault;
 }
 
 public class Action : IAction {
