@@ -33,7 +33,7 @@ static class Settings
 	public static readonly double betCreditsMultiplier = 1; // 1 bet = 10 credits
 	
 	// bonus table
-	public static double betBonusMaxMultiplier = 25; // betCreditsMultiplier * 10 hand combination = 250
+	public static double betBonusMaxMultiplier = 250; // betCreditsMultiplier * 10 hand combination = 250
 	public static double betBonus = 0;
 	public static double betBonusMin = 1;
 	public static double betBonusMax = 5;
