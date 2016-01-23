@@ -22,7 +22,6 @@ public abstract class AbstractBetRound {
 public class BetRound : AbstractBetRound, IBetRoundState {
 	public bool isWaiting; // wait for corountine
 	public bool isCanToRaise;
-//	public bool isRaised;
 	public Player playerFirstToAllIn;
 	public List<Player> playersAllIn;
 
@@ -80,10 +79,11 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			pot += player.betInvested;
 			player.betInvested.inCredits = 0;
 		}
-		game.state.betMax.inCredits = betMax.inCredits = 0;
 	
 		game.potAmount += pot.inCredits;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();
+
+		game.state.betMax.inCredits = betMax.inCredits = 0;
 	}
 	
 	public virtual void BetSubRounds() {

@@ -15,6 +15,7 @@ public class GameUI : MonoBehaviour
 
 	}
 
+	#region clear all deprecated
 	public void ClearAll() {
 		if (Settings.isDebug) DebugLog("ClearAll()");
 		var bg = Resources.Load<Sprite> (Settings.cardBg);
@@ -48,6 +49,7 @@ public class GameUI : MonoBehaviour
 		lblRaise.text = Settings.betNull.f();
 		lblCall.text = Settings.betNull.f();
 	}
+	#endregion clear all deprecated
 
 	#region win panel
 	public void btnWinPanelCloseClick()
