@@ -25,11 +25,12 @@ public class EndGame : BetRound {
 		// display/hide cards
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			foreach (var card in player.handPreflop.getCards()) {
-				if (player.id != Settings.playerRealIndex)
-				if (player.isFolded) {
-					card.isHidden = true;
-				} else {
-					card.FaceUp = true;
+				if (player.id != Settings.playerRealIndex) {
+					if (player.isFolded) {
+						card.isHidden = true;
+					} else {
+						card.FaceUp = true;
+					}
 				}
 			}
 		}

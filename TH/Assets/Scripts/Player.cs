@@ -18,28 +18,41 @@ public class Player {
 	{
 		string str = string.Format ("{0} {1} {2}({5}%) {3} {4}", id, name, handPreflopString, balanceInCredits, actionCurrentString, winPercent);
 		if (Settings.isDev) {
-			DevInfo(this);
+			LogDevInfo(this, false, false);
 		}
 
 		return str;
 	}
 
-	public void DevInfo(Player player) {
-		if (Settings.isDev) {
-			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets: in_cur_bet_round:{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.balanceInCredits, player.actionCurrentString, player.winPercent, player.position, player.betInvested );
+	public void Log(bool isError, bool isWarning, string str ) {
+		Log (str, isWarning, isError);
+	}
+
+	public void Log(string str, bool isWarning, bool isError) {
+		if (isError)
+			Debug.LogError (str);
+		else if (isWarning)
+			Debug.LogWarning (str);
+		else
 			Debug.Log (str);
+	}
+
+	public void LogDevInfo(Player player, bool isWarning, bool isError) {
+		if (Settings.isDev) {
+			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets: in_cur_bet_round (credits):{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.balanceInCredits, player.actionCurrentString, player.winPercent, player.position, player.betInvested.inCredits);
+			Log(str, isWarning, isError);
 
 			string str2 = "";
 			if (player.actionTip != null) {
-				str2 = string.Format ("action tip: {0} ({1}% win): bet to stay:{2}", player.actionTip.name, player.winPercent, player.actionTip.betCall);
-				Debug.Log (str2);
+				str2 = string.Format ("action tip: {0} ({1}% win): bet to stay: {2}(math) {3}(credits)", player.actionTip.name, player.winPercent, player.actionTip.betCall.inBetMath, player.actionTip.betCall.inCredits);
+				Log(str2, isWarning, isError);
 			}
 			if (player.patternCurrent != null) {
 				str2 = string.Format (
 					"cur pattern: {0} ({8}% of all time): p1:{1} p2:{2} d:{3}\n {4} {5} {6} max:{7} ",
                       player.patternCurrent.name, player.patternCurrent.actionPriority1, player.patternCurrent.actionPriority2, player.patternCurrent.actionDefault, 
                       "", "", "", player.patternCurrent.betMaxCallOrRaise, player.patternCurrent.percent);
-				Debug.Log (str2);
+				Log(str2, isWarning, isError);
 			}
 		}
 	}
@@ -223,13 +236,13 @@ public class Player {
 
 		if (game.state.betMax > game.state.betMaxLimit) { // next bet round
 			Debug.LogError("exceed bet max limit");
-			this.DevInfo(this);
-			Debug.LogError("end exceed bet max limit");
+			this.LogDevInfo(this, false, true);
 		}
 
 		patternCurrent = GetPatternRandomly ();
 
 		actionTip = GetActionRecommend (game);
+		if (Settings.isDev) this.Log(false, true, string.Format("after GetActionRecommend: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
 
 		/*
 		// start searching for new optimal math action
@@ -263,14 +276,15 @@ public class Player {
 */
 		double balanceAfterAction = balanceInCredits + actionTip.betToStay.inCredits;
 		double betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
-//		if (actionTip.betToStay > game.state.betMax) {
-//			game.state.betMax = actionTip.betToStay;
-//		}
+
 		if (betInvestedAfterAction > game.state.betMaxLimit.inCredits) {
+
 			// exceed bet limit > decrease bet call or raise
 			Bet maxBet = new Bet(0);
 			int max = 1;
 			while (max <= patternCurrent.betMaxCallOrRaise) {
+				if (Settings.isDev) this.Log(false, true, string.Format("in subrounds: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
+
 				maxBet.inBetMath = max;
 				if (actionTip.isCall)
 					actionTip.betCall = maxBet;
@@ -296,6 +310,8 @@ public class Player {
 				
 				foreach(string name in actionNames) {
 					actionTip = GetActionRecommendByName(game, name);
+					if (Settings.isDev) this.Log(false, true, string.Format("in actionNames: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
+
 					if (actionTip != null) {
 						if (actionTip.isCall || actionTip.isRaise) {
 							actionTip = null;
@@ -314,6 +330,8 @@ public class Player {
 				}
 
 				if (actionTip == null) { // force call or raise
+					if (Settings.isDev) this.Log(false, true, string.Format("in force call or raise: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
+
 					actionTip = new ActionTip(0);
 					// check
 					if (balanceInCredits < 0) {
@@ -332,6 +350,11 @@ public class Player {
 		} else if (game.state.betMaxLimit > betInvestedAfterAction) {
 			this.isCanToRaise = true;
 			// any action
+		}
+
+
+		if (actionTip.betToStay > game.state.betMax) {
+			game.state.betMax = actionTip.betToStay;
 		}
 
 		actionFinal = ActionMath (game.state.betMax, balanceAfterAction, true);
@@ -473,7 +496,7 @@ public class Player {
 			actionT = GetActionRecommendByName (game, patternCurrent.actionDefault);
 			actionT.isInDefault = true;
 		}
-		
+
 //		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
 //		if (patternCurrent.betRaise != 0) patternCurrent.betRaise *= Settings.betCurrentMultiplier;
 //		if (betMaxLimit != 0) betMaxLimit *= Settings.betCurrentMultiplier;

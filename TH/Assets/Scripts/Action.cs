@@ -86,9 +86,9 @@ public class Action : IAction {
 		}
 
 		if (Settings.isDev) {
-			game.ui.DebugLog(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betInvested , p.balanceInCredits, game.state.betMax, game.state.betMaxLimit));
+			p.Log(string.Format("bet: p_invested:{0}/{1} stay:{2}/max:{3}", p.betInvested, p.balanceInCredits, game.state.betMax, game.state.betMaxLimit), true, false);
 //			p.ToString();
-			p.DevInfo(p);
+			p.LogDevInfo(p, false, false);
 		}
 	}
 
