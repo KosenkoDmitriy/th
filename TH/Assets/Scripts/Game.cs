@@ -201,5 +201,4 @@ public class Game
 	public bool isGameRunning;
 	public bool isGameEnd;
 	public IBetRoundState BetRound { get; private set; }
-	public IGameState GameState { get; private set; }
 }
