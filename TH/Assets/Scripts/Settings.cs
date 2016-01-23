@@ -30,7 +30,7 @@ static class Settings
 	public static readonly double betTurnRiverMultiplier = 4;	//1 bet = 4 credits (turn, river)	
 	
 	public static double betCurrentMultiplier = bePreflopFlopMultiplier; // 2 or 4 credits
-	public static readonly double betCreditsMultiplier = 10; // 1 bet = 10 credits
+	public static readonly double betCreditsMultiplier = 1; // 1 bet = 10 credits
 	
 	// bonus table
 	public static double betBonusMaxMultiplier = 25; // betCreditsMultiplier * 10 hand combination = 250
