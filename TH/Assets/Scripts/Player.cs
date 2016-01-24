@@ -231,7 +231,119 @@ public class Player {
 	#endregion
 
 	#region new actions
-	public Action GetFinalActionNew(Game game) {//(double betMax, bool isCanToRaise, Game game) {
+	public bool IsActionPossible(ActionTip actionTipTemp, Bet betMax, Bet betMaxLimit) {
+		bool isOk = false;
+		if (actionTipTemp == null) {
+			if (Settings.isDev)	this.Log(false, true, "actioTip is null IsActionPossible()");
+			return isOk;
+		}
+
+//		if (betInvested > 0 && betInvested > betMax) {
+//			betMax = betInvested;
+//		}
+
+		Bet betMaxPossible = betMaxLimit;
+		Bet betToContinue = betMax;
+
+		if (betMaxLimit - betInvested > 0) betMaxPossible = betMaxLimit - betInvested;
+		if (betMax - betInvested > 0) betToContinue = betMax - betInvested;
+
+		Bet betInvestedAfterA = betInvested + actionTipTemp.betToStay; // don't allow exceed the bet max limit
+
+		if (betMaxPossible < 0)
+			if (Settings.isDev)	this.Log(true, false, string.Format("exceed max bet limit (betInvested > game.state.betMaxLimit) : p_invested:{0}/{1}(total) stay:{2}/max:{3}", betInvested, balanceInCredits, betMax, betMaxLimit));
+		
+		if (betToContinue < 0)
+			if (Settings.isDev) this.Log(true, false, string.Format("exceed bet_to_continue (betInvested > game.state.betMax): p_invested:{0}/{1}(total) stay:{2}/max:{3}", betInvested, balanceInCredits, betMax, betMaxLimit));
+		
+		if (betMax > betMaxLimit)
+			if (Settings.isDev) this.Log(true, false, string.Format("(betMax > betMaxLimit): p_invested:{0}/{1}(total) stay:{2}/max:{3}", betInvested, balanceInCredits, betMax, betMaxLimit));
+
+		
+//		if (betMaxPossible == 0) { // only check
+//
+//		} else if (betMaxPossible > 0) { // call or raise
+//
+//		}
+
+		int max = 1;
+		while (max <= patternCurrent.betMaxCallOrRaise) {
+			Bet betMaxTemp = new Bet(0);
+			betMaxTemp.inBetMath = max;
+			
+			if (betMaxTemp <= betMaxPossible) {
+//				actionTipTemp.betCall.inBetMath = max;
+				
+				if (actionTipTemp.isCall) {
+					actionTipTemp.betCall = betToContinue;
+//					if (betInvestedAfterA > betMaxLimit) { // TODO call > check
+//						//				actionTipTemp.isCall = betMax;
+//					}
+				} else if (actionTipTemp.isRaise) {
+					actionTipTemp.betCall = betToContinue;
+					if (betMaxTemp - betToContinue > 0)
+						actionTipTemp.betRaise = betMaxTemp - betToContinue;
+
+//					if (betInvestedAfterA > betMaxLimit) { // TODO raise > call > check
+//						//				actionTipTemp.isCall = betMax;
+//					}
+				}
+				
+				if (actionTipTemp != null && betInvestedAfterA <= betMaxLimit) {
+					isOk = true;
+					actionTip = actionTipTemp;
+					break;
+				}
+
+			}
+			max++;
+		}
+
+		return isOk;
+	}
+
+	public Action GetFinalActionNew(Game game) {
+
+		patternCurrent = GetPatternRandomly ();
+		var actionTipTemp = GetActionRecommendInSubrounds (game);
+
+		if (!IsActionPossible (actionTipTemp, game.state.betMax, game.state.betMaxLimit)) { // no any action in bet subrounds
+			// exceed bet limit > decrease bet call or raise
+
+			if (Settings.isDev) this.Log(false, true, string.Format("in actionNames: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
+			List<string> actionNames = new List<string> () {
+				patternCurrent.actionPriority1, patternCurrent.actionPriority2, patternCurrent.actionDefault
+			};
+
+			foreach(var actionName in actionNames) {
+				actionTipTemp = GetActionRecommendByName(game, actionName); // detecting raise and call amounts
+				if (IsActionPossible(actionTipTemp, game.state.betMax, game.state.betMaxLimit))
+					break;
+			}
+
+		}
+
+//		if (actionTipTemp.isRaise) {
+//		} else if (actionTipTemp.isCall) {
+//		} else if (actionTipTemp.isCheck) {
+//		} else if (actionTipTemp.isFold) {
+//		}
+
+		Action actioFinalTemp = null;
+		if (actionTip == null) {
+			if (betInvested < 0) {
+				actioFinalTemp = new Fold (this, new Bet (0));
+			} else {
+				actioFinalTemp = new Check (this, new Bet (0));
+			}
+		} else {
+			 actioFinalTemp = ActionMath (game.state.betMax, actionTip.betToStay.inCredits, true);
+		}
+
+		return actioFinalTemp;
+	}
+
+	public Action GetFinalActionNew2(Game game) {//(double betMax, bool isCanToRaise, Game game) {
 //		actionFinal = new Check(this, 0); // by default
 
 		if (game.state.betMax > game.state.betMaxLimit) { // next bet round
@@ -428,10 +540,10 @@ public class Player {
 		ActionTip actionTip = new ActionTip (0);
 		actionTip.name = actionName;
 
-		if (actionTip.isCall)
+		if (actionTip.isCall) {
 			actionTip.betCall = maxBet;
-		
-		if (actionTip.isRaise) {
+			actionTip.betCall.inCredits = 0;
+		} else if (actionTip.isRaise) {
 			actionTip.betCall = maxBet;
 			actionTip.betRaise = maxBet;
 			
@@ -444,6 +556,8 @@ public class Player {
 					actionTip.betRaise.inCredits = 0d;
 				}
 			}
+		} else {
+			actionTip.betRaise.inCredits = actionTip.betCall.inCredits = 0;
 		}
 		
 		betInvestedAfterAction = betInvested.inCredits + actionTip.betToStay.inCredits;
@@ -468,19 +582,23 @@ public class Player {
 		// is in bet sub rounds?
 		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
 			foreach (var betRound in patternCurrent.betSubRounds) {
-				if (0 < betMaxToStayInGameTotal && betMaxToStayInGameTotal <= betRound.costBetToStayInGame && 0 < betMaxLimit && betMaxLimit <= betRound.costBetAlreadyInvested) {
-
+				if (betMaxToStayInGameTotal == betRound.costBetToStayInGame && betMaxLimit == betRound.costBetAlreadyInvested) {
+//				if (0 < betMaxToStayInGameTotal && betMaxToStayInGameTotal <= betRound.costBetToStayInGame && 0 < betMaxLimit && betMaxLimit <= betRound.costBetAlreadyInvested) {
+					actionT = new ActionTip (0);
 					actionT.name = betRound.name_action;
 
 					if (actionT.isCall) {
 						actionT.betCall.inBetMath = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
-						actionT.betRaise.inBetMath = 0;
-					}
+//						actionT.betRaise.inBetMath = 0;
+					} else if (actionT.isRaise) {
+//						if (betInvested + game.state.betMax > game.state.betMaxLimit);
+//						actionT.betCall.inBetMath = game.state.betMax;
 
-					if (actionT.isRaise) {
-						actionT.betCall.inBetMath = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;;
-						actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
+						actionT.betRaise.inBetMath = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
 					}
+//					else {
+//						actionT.betCall.inCredits = actionT.betRaise.inCredits = 0;
+//					}
 
 //					if (actionT.betCall != 0) actionT.betCall *= Settings.betCurrentMultiplier;
 //					if (actionT.betRaise != 0) actionT.betRaise *= Settings.betCurrentMultiplier;
@@ -495,15 +613,9 @@ public class Player {
 	}
 
 	public ActionTip GetActionRecommendByName(Game game, string name) {
-//		double betMaxLimit = game.state.betMaxLimit.inBetMath;
-//		double betMaxToStayInGameTotal = game.state.betMax.inBetMath;
-		
-//		if (betMaxLimit != 0) betMaxLimit /= Settings.betCurrentMultiplier;
-//		if (betMaxToStayInGameTotal != 0) betMaxToStayInGameTotal /= Settings.betCurrentMultiplier;
-		
+
 		ActionTip actionT = new ActionTip (0);
 
-		if (string.IsNullOrEmpty(name)) name = "";
 		actionT.name = name;
 		
 		if (actionT.isUnknown) {
@@ -511,18 +623,16 @@ public class Player {
 		}
 		
 		if (actionT.isCall) {
-			actionT.betCall.inBetMath = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
-			actionT.betRaise.inBetMath = 0;
+			actionT.betCall = game.state.betMax;
+		} else if (actionT.isRaise) {
+			actionT.betCall = game.state.betMax;
+			if (patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath > 0)
+				actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath;
 		}
+//		else {
+//			actionT.betCall.inCredits = actionT.betRaise.inCredits = 0;
+//		}
 
-		if (actionT.isRaise) {
-			actionT.betCall.inBetMath = patternCurrent.betMaxCallOrRaise;
-			actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise; //TODO: min betCallOrRaise first
-		}
-		
-//		if (patternCurrent.betCall != 0) patternCurrent.betCall *= Settings.betCurrentMultiplier;
-//		if (patternCurrent.betRaise != 0) patternCurrent.betRaise *= Settings.betCurrentMultiplier;
-//		
 		return actionT;
 	}
 

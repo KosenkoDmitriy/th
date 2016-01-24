@@ -73,7 +73,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
-		game.player.actionFinal = new Check(game.player, game.state.betMax);
+		game.player.actionFinal = new Check(game.player, new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
 	}
 
@@ -169,10 +169,10 @@ public class GameUI : MonoBehaviour
 				if (betTotalSubRoundAfterA > game.state.betMax.inCredits && betTotalSubRoundAfterA <= game.state.betMaxLimit.inCredits) {
 					game.player.actionFinal = new Raise (game.player, game.betAmount);
 				} else {
-					game.player.actionFinal = new Call (game.player, game.betAmount);
+					game.player.actionFinal = new Call (game.player, game.state.betMax);
 				}
 			} else if (betTotalAfterAction == 0) { //check
-				game.player.actionFinal = new Check (game.player, game.betAmount);
+				game.player.actionFinal = new Check (game.player, new Bet(0));
 			} else if (betTotalAfterAction < 0) { //fold
 				//TODO
 			}
