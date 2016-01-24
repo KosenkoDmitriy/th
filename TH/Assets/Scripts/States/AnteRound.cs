@@ -7,7 +7,6 @@ public class AnteRound : BetRound {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betAnteSubRoundMinSize;
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
-		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
 	}
 
 	public override void FirstAction () {}

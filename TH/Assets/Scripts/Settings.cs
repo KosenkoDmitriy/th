@@ -16,16 +16,11 @@ static class Settings
 	#region bets
 	public static readonly int betSubRoundMinSize = 0;
 	public static readonly int betAnteSubRoundMinSize = 1;
-	public static readonly int betSubRoundMaxSize = 4;
-	
-//	public static readonly double betAnteMultiplier = 2; // 1 bet = 2 credits
-//	public static readonly double betPreflopFlopMultiplier = betAnteMultiplier; // 1 bet = 2 credits
-//	public static readonly double betTurnRiverMultiplier = 4; // 1 bet = 4 credits
+	public static readonly int betSubRoundMaxSize = 1;//4
 
-	public static readonly double betMinMath = 1;		//1 math bet = 2 credits (preflop, flop)	// .25;
-	public static readonly double betLimit2Math = 2;
-	public static readonly double betLimit4Math = 4;	//1 math bet = 4 credits (turn, river)		// 1.5;
-	
+	public static readonly double betMinMath = 1;
+	public static readonly double betMathLimit = 4;
+
 	public static readonly double bePreflopFlopMultiplier = 2;	//1 bet = 2 credits (preflop, flop)
 	public static readonly double betTurnRiverMultiplier = 4;	//1 bet = 4 credits (turn, river)	
 	

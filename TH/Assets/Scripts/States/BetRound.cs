@@ -39,7 +39,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		this.subRoundMaxSize = Settings.betSubRoundMinSize;
 		this.isCanToRaise = true;
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
-		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
+		this.betMaxLimit = new Bet(0);
+		this.betMaxLimit.inBetMath = Settings.betMathLimit;
 		this.betToStayInGame = this.pot = this.betMax = new Bet (0);
 	}
 	

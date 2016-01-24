@@ -201,7 +201,7 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 //		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
-		Settings.betCurrent.inCredits = game.state.betMaxLimit.inCredits;
+		Settings.betCurrent.inBetMath = game.state.betMaxLimit.inBetMath;
 		
 		string b = Settings.betCurrent.inCredits.f();
 		inputBetField.text = b;
@@ -214,10 +214,10 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 		
-		Settings.betCurrent += Settings.betMinMath;// * Settings.betCurrentMultiplier;
+		Settings.betCurrent.inBetMath += Settings.betMinMath;// * Settings.betCurrentMultiplier;
 //		double betMax = (game.state.betMaxLimit - game.state.betMax);// * Settings.betCurrentMultiplier;
 		if (Settings.betCurrent > game.state.betMaxLimit)
-			Settings.betCurrent.inCredits = Settings.betNull;
+			Settings.betCurrent.inBetMath = Settings.betNull;
 
 		inputBetField.text = Settings.betCurrent.inCredits.f();
 	}

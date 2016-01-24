@@ -5,7 +5,6 @@ public class FlopRound : BetRound {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
-		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
 
 		// flop bet rounds
 		var flops = game.source.GetFlops ();
