@@ -231,29 +231,22 @@ public class Player {
 	#endregion
 
 	#region new actions
-	public bool IsActionPossible(ActionTip actionTipTemp, Bet betMax, Bet betMaxLimit) {
-		bool isOk = false;
+	public ActionTip GetActionPossible(ActionTip actionTipTemp, Bet betMax, Bet betMaxLimit) {
+//		bool isOk = false;
 		if (actionTipTemp == null) {
 			if (Settings.isDev)	this.Log(false, true, "actioTip is null IsActionPossible()");
-			return isOk;
+			return actionTipTemp;
 		}
 
-//		if (betInvested > 0 && betInvested > betMax) {
-//			betMax = betInvested;
-//		}
-
-		Bet betMaxPossible = betMaxLimit;
-		Bet betToContinue = betMax;
-
-		if (betMaxLimit - betInvested > 0) betMaxPossible = betMaxLimit - betInvested;
-		if (betMax - betInvested > 0) betToContinue = betMax - betInvested;
+		if (betMaxLimit - betInvested > 0) betMaxLimit = betMaxLimit - betInvested;
+		if (betMax - betInvested > 0) betMax = betMax - betInvested;
 
 		Bet betInvestedAfterA = betInvested + actionTipTemp.betToStay; // don't allow exceed the bet max limit
 
-		if (betMaxPossible < 0)
+		if (betMaxLimit < 0)
 			if (Settings.isDev)	this.Log(true, false, string.Format("exceed max bet limit (betInvested > game.state.betMaxLimit) : p_invested:{0}/{1}(total) stay:{2}/max:{3}", betInvested, balanceInCredits, betMax, betMaxLimit));
 		
-		if (betToContinue < 0)
+		if (betMax < 0)
 			if (Settings.isDev) this.Log(true, false, string.Format("exceed bet_to_continue (betInvested > game.state.betMax): p_invested:{0}/{1}(total) stay:{2}/max:{3}", betInvested, balanceInCredits, betMax, betMaxLimit));
 		
 		if (betMax > betMaxLimit)
@@ -271,18 +264,18 @@ public class Player {
 			Bet betMaxTemp = new Bet(0);
 			betMaxTemp.inBetMath = max;
 			
-			if (betMaxTemp <= betMaxPossible) {
+			if (betMaxTemp <= betMaxLimit) {
 //				actionTipTemp.betCall.inBetMath = max;
 				
 				if (actionTipTemp.isCall) {
-					actionTipTemp.betCall = betToContinue;
+					actionTipTemp.betCall = betMax;
 //					if (betInvestedAfterA > betMaxLimit) { // TODO call > check
 //						//				actionTipTemp.isCall = betMax;
 //					}
 				} else if (actionTipTemp.isRaise) {
-					actionTipTemp.betCall = betToContinue;
-					if (betMaxTemp - betToContinue > 0)
-						actionTipTemp.betRaise = betMaxTemp - betToContinue;
+					actionTipTemp.betCall = betMax;
+					if (betMaxTemp - betMax > 0)
+						actionTipTemp.betRaise = betMaxTemp - betMax;
 
 //					if (betInvestedAfterA > betMaxLimit) { // TODO raise > call > check
 //						//				actionTipTemp.isCall = betMax;
@@ -290,8 +283,8 @@ public class Player {
 				}
 				
 				if (actionTipTemp != null && betInvestedAfterA <= betMaxLimit) {
-					isOk = true;
-					actionTip = actionTipTemp;
+//					isOk = true;
+					return actionTipTemp;
 					break;
 				}
 
@@ -299,15 +292,16 @@ public class Player {
 			max++;
 		}
 
-		return isOk;
+		return null;
 	}
 
 	public Action GetFinalActionNew(Game game) {
 
 		patternCurrent = GetPatternRandomly ();
 		var actionTipTemp = GetActionRecommendInSubrounds (game);
-
-		if (!IsActionPossible (actionTipTemp, game.state.betMax, game.state.betMaxLimit)) { // no any action in bet subrounds
+		if (actionTipTemp == null) { // no any action in bet subrounds
+			actionTipTemp = GetActionPossible (actionTipTemp, game.state.betMax, game.state.betMaxLimit);
+//		if (!IsActionPossible (actionTipTemp, game.state.betMax, game.state.betMaxLimit)) { 
 			// exceed bet limit > decrease bet call or raise
 
 			if (Settings.isDev) this.Log(false, true, string.Format("in actionNames: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit));
@@ -317,27 +311,43 @@ public class Player {
 
 			foreach(var actionName in actionNames) {
 				actionTipTemp = GetActionRecommendByName(game, actionName); // detecting raise and call amounts
-				if (IsActionPossible(actionTipTemp, game.state.betMax, game.state.betMaxLimit))
+				if (Settings.isDev) this.Log(false, true, string.Format("+before IsActionPossible() action_name:{4}: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit, actionName));
+				actionTipTemp = GetActionPossible(actionTipTemp, game.state.betMax, game.state.betMaxLimit);
+				if (actionTipTemp != null) { // optimal action tip was found
+					if (Settings.isDev) this.Log(false, true, string.Format("+after IsActionPossible() action_name:{4}: p_invested:{0}/{1} stay:{2}/max:{3}", betInvested, balanceInCredits, game.state.betMax, game.state.betMaxLimit, actionName));
 					break;
+				}
 			}
 
 		}
 
-//		if (actionTipTemp.isRaise) {
-//		} else if (actionTipTemp.isCall) {
-//		} else if (actionTipTemp.isCheck) {
-//		} else if (actionTipTemp.isFold) {
-//		}
+		// final action
 
 		Action actioFinalTemp = null;
-		if (actionTip == null) {
-			if (betInvested < 0) {
+		if (actionTipTemp == null) {
+//			if (betInvested < 0) {
 				actioFinalTemp = new Fold (this, new Bet (0));
-			} else {
-				actioFinalTemp = new Check (this, new Bet (0));
-			}
+//			} else {
+//				actioFinalTemp = new Check (this, new Bet (0));
+//			}
 		} else {
-			 actioFinalTemp = ActionMath (game.state.betMax, actionTip.betToStay.inCredits, true);
+			actionTip = actionTipTemp;
+			if (actionTip.isFold) {
+				actioFinalTemp = new Fold (this, new Bet(0));
+			} else if (actionTip.isCheck) {
+				if (betInvested < game.state.betMax) {
+					actioFinalTemp = new Call (this, game.state.betMax);
+				} else {
+					actioFinalTemp = new Check (this, new Bet(0));
+				}
+			} else if (actionTip.isCall) {
+				actioFinalTemp = new Call (this, actionTip.betCall);
+			} else if (actionTip.isRaise) {
+				actioFinalTemp = new Raise (this, actionTip.betToStay);
+			} else if (actionTip.isAllIn) {
+				actioFinalTemp = new AllIn(this, actionTip.betToStay);
+			}
+//			 actioFinalTemp = ActionMath (game.state.betMax, 0, true);
 		}
 
 		return actioFinalTemp;
@@ -485,9 +495,9 @@ public class Player {
 		}
 
 
-		if (actionTip.betToStay > game.state.betMax) {
-			game.state.betMax = actionTip.betToStay;
-		}
+//		if (actionTip.betToStay > game.state.betMax) {
+//			game.state.betMax = actionTip.betToStay;
+//		}
 
 		actionFinal = ActionMath (game.state.betMax, balanceAfterAction, true);
 
@@ -623,15 +633,18 @@ public class Player {
 		}
 		
 		if (actionT.isCall) {
-			actionT.betCall = game.state.betMax;
+			actionT.betCall.inBetMath = 1;
+//			actionT.betCall = game.state.betMax;
 		} else if (actionT.isRaise) {
-			actionT.betCall = game.state.betMax;
-			if (patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath > 0)
-				actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath;
+			actionT.betCall.inBetMath = 1;
+			actionT.betCall.inBetMath = patternCurrent.betMaxCallOrRaise;
+//			actionT.betCall = game.state.betMax;
+//			if (patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath > 0)
+//				actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath;
 		}
-//		else {
-//			actionT.betCall.inCredits = actionT.betRaise.inCredits = 0;
-//		}
+		else {
+			actionT.betCall = actionT.betRaise = new Bet(0);
+		}
 
 		return actionT;
 	}

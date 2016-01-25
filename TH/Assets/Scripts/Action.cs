@@ -59,15 +59,23 @@ public class Action : IAction {
 
 	private void DoActive(Game game, Player p) {
 
+//		if (game.state.betMax > game.state.betMaxLimit) {
+//			game.state.betMax = game.state.betMaxLimit;
+//		}
+
 		if (game.state.betMax <= game.state.betMaxLimit) {
 			if (betToStay > game.state.betMax) {
-				game.state.betMax = betToStay;
+				if (betToStay >= 0) {
+					game.state.betMax = betToStay;
+				} else {
+					p.Log(true, false, "betToStay < 0 in DoActive()");
+				}
 			}
 		}
-
-		p.betInvested += betToStay;
-		p.balanceInCredits -= betToStay.inCredits;
-
+		if (betToStay > 0) {
+			p.betInvested += betToStay;
+			p.balanceInCredits -= betToStay.inCredits;
+		}
 //		double dtRaise = p.betInvested.inBet - game.state.betMax.inBet;
 		if (p.isReal) {
 			if (betRaise.inCredits > 0) {
@@ -96,7 +104,12 @@ public class Action : IAction {
 	public Bet betCall;
 	public Bet betRaise;
 	public Bet betToStay {
-		get { return betCall + betRaise; } 
+		get {
+			var sum = betCall + betRaise;
+//			if (sum < 0)
+//				return new Bet(0); 
+			return sum;
+		}
 	}
 
 	public bool isRaise {

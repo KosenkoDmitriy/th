@@ -84,7 +84,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		game.potAmount += pot.inCredits;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();
 
-		game.state.betMax.inCredits = betMax.inCredits = 0;
+		game.state.betMax = betMax = new Bet(0);
 	}
 	
 	public virtual void BetSubRounds() {
@@ -120,8 +120,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			if (player.isReal) {
 				game.state.isWaiting = true;
 
-				Bet dt = player.betInvested - game.state.betMax;
-
+				Bet dt = new Bet(0);
+				dt.inCredits = player.betInvested.inCredits - game.state.betMax.inCredits;
 				if (dt > 0) {
 					game.ui.lblCall.text = Settings.betNull.f();
 					game.ui.lblRaise.text = dt.inCredits.f();
@@ -153,6 +153,14 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 
 			} else {
+
+				//TODO will find why betmax and betmaxlimit sometimes are negative?
+				if (game.state.betMax < 0)
+					game.state.betMax *= -1;
+				if (game.state.betMaxLimit < 0)
+					game.state.betMaxLimit *= -1;
+				//TODO will find why betmax and betmaxlimit sometimes are negative?
+
 				player.actionFinal = player.GetFinalActionNew(game);//(betMax, isCanToRaise, game);
 				player.actionFinal.Do(game, player);
 			}
