@@ -44,8 +44,14 @@ public class Constants {
 				Pattern pattern = new Pattern();
 				pattern.betSubRounds = new List<PatternBetRoundAndAction>();
 				pattern.name = arg1;
+				bool isMax = false;
+				if (arg1.Contains("*")) {
+					arg1 = arg1.Replace("*", "");
+					isMax = true;
+					pattern.betMaxCallOrRaise = (int) Settings.betMathLimit;
+				} 
 				pattern.actionDefault = arg2;
-				var prefActions = arg1.Split('/'); //.Replace("*", "").Split('/');
+				var prefActions = arg1.Split('/');
 				if (prefActions.Length >= 2) {
 					pattern.actionPriority3 = prefActions[0];
 					pattern.actionPriority2 = new string(prefActions[1].TakeWhile(c => Char.IsLetter(c)).ToArray());
@@ -54,12 +60,15 @@ public class Constants {
 					var maxBetStr = new String(prefActions[1].Where(Char.IsNumber).ToArray());
 //					var maxBetStr = new String(prefActions[1].Where(Char.IsDigit).ToArray());
 					Int32.TryParse(maxBetStr, out maxBetAmount);
-					if (maxBetAmount > 0) {
-						pattern.betMaxCallOrRaise = maxBetAmount;
-					} else {
-						pattern.betMaxCallOrRaise = 1;
+					if (!isMax) {
+						if (maxBetAmount > 0) {
+							pattern.betMaxCallOrRaise = maxBetAmount;
+						} else {
+							pattern.betMaxCallOrRaise = 1;
+						}
 					}
 				}
+
 				patterns.Add (pattern);
 			} else {
 				Pattern lastPattern = patterns[patterns.Count-1];
