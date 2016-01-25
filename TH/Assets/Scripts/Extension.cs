@@ -27,4 +27,24 @@ public static class Extension {
 //		string res = String.Format("{0:N2}", d); // amount.ToString("#,#", System.Globalization.CultureInfo.CurrentCulture);
 //		return res;
 //	}
+
+	
+	public static bool isRaise(this string name) {
+		return name.Contains ("RAISE");
+	}
+	public static bool isCall(this string name) {
+		return name.Contains ("CALL");
+	}
+	public static bool isCheck(this string name) {
+		return name.Contains ("CHECK");
+	}
+	public static bool isFold(this string name) {
+		return name.Contains ("FOLD");
+	}
+	public static bool isAllIn(this string name) {
+		return name.Contains ("ALL IN");
+	}
+	public static bool isUnknown(this string name) {
+		return name.Contains ("OPEN");
+	}
 }

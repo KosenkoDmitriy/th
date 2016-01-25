@@ -113,22 +113,22 @@ public class Action : IAction {
 	}
 
 	public bool isRaise {
-		get { return name.Contains ("RAISE"); }
+		get { return name.isRaise (); }
 	}
 	public bool isCall {
-		get { return name.Contains ("CALL"); }
+		get { return name.isCall (); }
 	}
 	public bool isCheck {
-		get { return name.Contains ("CHECK"); }
+		get { return name.isCheck (); }
 	}
 	public bool isFold {
-		get { return name.Contains ("FOLD"); }
+		get { return name.isFold (); }
 	}
 	public bool isAllIn {
-		get { return name.Contains ("ALL IN"); }
+		get { return name.isAllIn (); }
 	}
 	public bool isUnknown {
-		get { return name.Contains ("OPEN"); }
+		get { return name.isUnknown(); }
 	}
 }
 

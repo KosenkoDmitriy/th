@@ -126,7 +126,19 @@ public class Player {
 		Bet betMax = game.state.betMax;
 		Bet betMaxLimit = game.state.betMaxLimit;
 
-		var actioTipTemp = GetActionRecommendInSubrounds (game);
+		var actionTipTemp = GetActionRecommendInSubrounds (game); // action with priority 1
+
+		if (actionTipTemp == null) {
+			// actions with priority 2-4
+			var actionNames = new List<String> () {
+				patternCurrent.actionPriority2,
+				patternCurrent.actionPriority3,
+				patternCurrent.actionDefault,
+			};
+			foreach (var actionName in actionNames) {
+				actionTipTemp = GetActionRecommendByName (game, actionName);
+			}
+		}
 
 		if (betMax >= 0 && betMaxLimit >= 0) {
 			if (betMax < betMaxLimit) {	// any action allowed
@@ -135,8 +147,10 @@ public class Player {
 				}
 
 				if (betInvested < betMax) {	// call (required) or raise (optional)
+
 					// find action required in math tip/recommend actions
 				} else if (betInvested == betMax) {	// check required
+
 					// find action required in math tip/recommend actions
 				} else if (betInvested > betMax) {	// choose another possible action (decrease bet/raise amount)
 					if (Settings.isDev) Log(true, false, string.Format("betInvested {0} > betMax {1}", betInvested, betMax) );
@@ -185,14 +199,11 @@ public class Player {
 	public ActionTip GetActionRecommendByName(Game game, string name) {
 
 		ActionTip actionT = new ActionTip (0);
-
 		actionT.name = name;
-		
+
 		if (actionT.isUnknown) {
-			return null;
-		}
-		
-		if (actionT.isCall) {
+			actionT = null;
+		} else if (actionT.isCall) {
 			actionT.betCall.inBetMath = 1;
 //			actionT.betCall = game.state.betMax;
 		} else if (actionT.isRaise) {
@@ -201,8 +212,7 @@ public class Player {
 //			actionT.betCall = game.state.betMax;
 //			if (patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath > 0)
 //				actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath;
-		}
-		else {
+		} else {
 			actionT.betCall = actionT.betRaise = new Bet(0);
 		}
 
