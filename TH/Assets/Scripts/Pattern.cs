@@ -9,17 +9,12 @@ public class Pattern
 	}
 
 	public string name;
-	public string actionDefault;
-	public string actionPriority2;
-	public string actionPriority1;
-	
+	public List<PatternBetRoundAndAction> betSubRounds; // priority 1
+	public string actionPriority2;	// priority 2
+	public string actionPriority3;	// priority 3
+	public string actionDefault;	// priority 4
+
 	public int betMaxCallOrRaise;	// in number of bets
-
-//	public double betCall;
-//	public double betRaise;
-//	public double betToStayInGame;
-
-	public List<PatternBetRoundAndAction> betSubRounds;
 	public double percent;	// of all time
 }
 

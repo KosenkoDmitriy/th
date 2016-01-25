@@ -16,7 +16,8 @@ public abstract class AbstractBetRound {
 	protected int subRoundCount;
 	protected Game game;
 	public Bet betMax, betMaxLimit;
-	protected Bet betToStayInGame, pot;
+//	protected Bet betToStayInGame;
+	protected Bet pot;
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
@@ -41,7 +42,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
 		this.betMaxLimit = new Bet(0);
 		this.betMaxLimit.inBetMath = Settings.betMathLimit;
-		this.betToStayInGame = this.pot = this.betMax = new Bet (0);
+		this.pot = this.betMax = new Bet (0);
 	}
 	
 	#region IBetRoundState implementation
@@ -154,14 +155,14 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 			} else {
 
-				//TODO will find why betmax and betmaxlimit sometimes are negative?
-				if (game.state.betMax < 0)
-					game.state.betMax *= -1;
-				if (game.state.betMaxLimit < 0)
-					game.state.betMaxLimit *= -1;
-				//TODO will find why betmax and betmaxlimit sometimes are negative?
+//				//TODO will find why betmax and betmaxlimit sometimes are negative?
+//				if (game.state.betMax < 0)
+//					game.state.betMax *= -1;
+//				if (game.state.betMaxLimit < 0)
+//					game.state.betMaxLimit *= -1;
+//				//TODO will find why betmax and betmaxlimit sometimes are negative?
 
-				player.actionFinal = player.GetFinalActionNew(game);//(betMax, isCanToRaise, game);
+				player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
 				player.actionFinal.Do(game, player);
 			}
 
@@ -174,7 +175,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		while (!iterator.IsDone) {
 			var player = iterator.Next();
 			if (!player.isFolded) {
-				if (player.betInvested  == betMax || game.state.betMax > game.state.betMaxLimit) {
+				if (player.betInvested == betMax) {// || game.state.betMax > game.state.betMaxLimit) {
 					isNextBetRound = true;
 				} else {
 					isNextBetRound = false;
