@@ -189,74 +189,7 @@ public class Player {
 		return actionFinal;
 	}
 
-	public ActionTip GetActionRecommendInSubrounds(Game game) {
-//		double betMaxLimit = game.state.betMaxLimit.inBetMath;
-		double betMaxToStayInGameTotal = betInvested.inBetMath + game.state.betMax.inBetMath;
-		double betAlreadyInvestedInMath = betInvested.inBetMath;
-		double betToStay = game.state.betMax.inBetMath;
-		double maxPossibleRaise = game.state.betMaxLimit.inBetMath - game.state.betMax.inBetMath;
-
-		// is in bet sub rounds?
-		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
-			foreach (var betRound in patternCurrent.betSubRounds) {
-				if (betMaxToStayInGameTotal == betRound.costBetToStayInGame && betAlreadyInvestedInMath == betRound.costBetAlreadyInvested) {
-
-					ActionTip actionT = new ActionTip (0);
-					actionT.isInBetSubrounds = true;
-					actionT.name = betRound.name_action;
-
-					var dt = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
-					if (actionT.isCall) {
-						if (dt >= 0 && dt <= patternCurrent.betMaxCallOrRaise) {
-							actionT.betCall.inBetMath = dt;
-						} else {
-							actionT = null;
-						}
-					} else if (actionT.isRaise) {
-						if (isCanToRaise) {
-							if (betToStay > 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
-								actionT.betCall.inBetMath = betToStay;
-								double betForRaise = patternCurrent.betMaxCallOrRaise - betToStay;
-								if (betForRaise <= patternCurrent.betMaxCallOrRaise) {
-									if (betForRaise > 0 && betForRaise <= maxPossibleRaise && maxPossibleRaise >= 0) {
-										actionT.betRaise.inBetMath = betForRaise;
-									} else {
-										actionT = null;
-									}
-								} else {
-									actionT = null;
-								}
-							} else {
-								actionT = null;
-							}
-
-//							if (dt >= 0 && dt <= patternCurrent.betMaxCallOrRaise) {
-//								actionT.betCall.inBetMath = dt;
-//								if (isCanToRaise) {
-//									actionT.betRaise.inBetMath = dt;
-//								}
-//							} else {
-//								actionT = null;
-//							}
-						} else {
-							actionT = null;
-						}
-					}
-
-					return actionT;
-					break;
-				}
-			}
-		}
-		
-		return null;
-	}
-
-	public ActionTip GetActionRecommendByName(Game game, string name) {
-
-		ActionTip actionT = new ActionTip (0);
-		actionT.name = name;
-
+	public ActionTip GetOptimalActionTip(Game game, ActionTip actionT) {
 		double maxPossibleRaise = game.state.betMaxLimit.inBetMath - game.state.betMax.inBetMath;
 		double betToStay = game.state.betMax.inBetMath;
 //		double maxPossibleRaise2 = game.state.betMaxLimit.inBetMath - (betInvested.inBetMath + betToStay);
@@ -264,13 +197,8 @@ public class Player {
 		if (actionT.isUnknown) {
 			actionT = null;
 		} else if (actionT.isCall) {
-
 			if (betToStay > 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
 				actionT.betCall.inBetMath = betToStay;
-//			} else if (betInvested < betToStay) { // > fold
-//				//can't call
-//				actionT = new ActionTip (0);
-//				actionT.name = "FOLD";
 			} else {
 				actionT = null;
 			}
@@ -294,12 +222,9 @@ public class Player {
 			} else {
 				actionT = null;
 			}
-
-//			if (patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath > 0)
-//				actionT.betRaise.inBetMath = patternCurrent.betMaxCallOrRaise - game.state.betMax.inBetMath;
 		} else {
-			actionT.betCall = actionT.betRaise = new Bet(0);
-
+			actionT.betCall = actionT.betRaise = new Bet (0);
+			
 			if (actionT.isCheck) {
 				if (betInvested < betToStay) { // > fold
 					//can't call
@@ -307,9 +232,43 @@ public class Player {
 					actionT.name = "FOLD";
 				} 
 			} else if (actionT.isFold) {
-
+				
 			}
 		}
+
+		return actionT;
+	}
+
+	public ActionTip GetActionRecommendInSubrounds(Game game) {
+		double betMaxToStayInGameTotal = betInvested.inBetMath + game.state.betMax.inBetMath;
+		double betAlreadyInvestedInMath = betInvested.inBetMath;
+		ActionTip actionT = null;
+
+		// is in bet sub rounds?
+		if (patternCurrent.betSubRounds != null && patternCurrent.betSubRounds.Count > 0) {
+			foreach (var betRound in patternCurrent.betSubRounds) {
+				if (betMaxToStayInGameTotal == betRound.costBetToStayInGame && betAlreadyInvestedInMath == betRound.costBetAlreadyInvested) {
+
+					actionT = new ActionTip (0);
+					actionT.isInBetSubrounds = true;
+					actionT.name = betRound.name_action;
+
+//					var dt = betRound.costBetToStayInGame - betRound.costBetAlreadyInvested;
+					actionT = GetOptimalActionTip(game, actionT);
+
+					break;
+				}
+			}
+		}
+		
+		return actionT;
+	}
+
+	public ActionTip GetActionRecommendByName(Game game, string name) {
+
+		ActionTip actionT = new ActionTip (0);
+		actionT.name = name;
+		actionT = GetOptimalActionTip(game, actionT);
 
 		return actionT;
 	}
