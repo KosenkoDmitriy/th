@@ -160,7 +160,7 @@ public class Player {
 		if (betMax >= 0 && betMaxLimit >= 0) {
 			if (betMax < betMaxLimit) {	// any action allowed
 				if (betMax == betMaxLimit) {	// can't raise
-					isCanToRaise = false;
+					game.state.isCanToRaise = false;
 				}
 
 				if (betInvested < betMax) {	// call (required) or raise (optional)
@@ -184,7 +184,7 @@ public class Player {
 		if (actionFinal == null) {
 			actionFinal = new Fold (this, actionTipTemp.betToStay);
 		} else {
-			actionFinal = ActionMath(actionTipTemp, 0, isCanToRaise);
+			actionFinal = ActionMath(actionTipTemp, 0, game.state.isCanToRaise);
 		}
 		return actionFinal;
 	}
@@ -203,7 +203,7 @@ public class Player {
 				actionT = null;
 			}
 		} else if (actionT.isRaise) {
-			if (isCanToRaise) {
+			if (game.state.isCanToRaise ) {
 				if (betToStay > 0 && betToStay <= patternCurrent.betMaxCallOrRaise && maxPossibleRaise >= 0) {
 					actionT.betCall.inBetMath = betToStay;
 					double betForRaise = patternCurrent.betMaxCallOrRaise - betToStay;
@@ -571,7 +571,6 @@ public class Player {
 
 	public bool isFirstToAct;
 	public bool isLastToAct;
-	public bool isCanToRaise = true;
 
 	public Bet betInvested; // already invested in current subround
 
