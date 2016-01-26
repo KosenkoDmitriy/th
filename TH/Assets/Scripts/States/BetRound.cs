@@ -54,9 +54,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			subRoundCount++;
 		} else if (subRoundCount <= subRoundMaxSize && subRoundMaxSize > 0) {
 			BetSubRounds ();
-		} else {
-			LastAction(); //next state (preflop, turn, river)
-			subRoundCount = 0;
+		} else if (subRoundCount == subRoundMaxSize + 1) {
+			LastAction(); // next state (preflop, turn, river)
+//			subRoundCount = 0;
 		}
 	}
 
@@ -73,7 +73,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 //			player.betAlreadyInvestedInCurrentSubRound = 0;
 //		}
-//		game.playerIterator = new PlayerIterator (game.playerCollection);
+		game.playerIterator = new PlayerIterator (game.playerCollection);
 	}
 
 	public virtual void LastAction() {
@@ -85,7 +85,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		game.potAmount += pot.inCredits;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();
 
-		game.state.betMax = betMax = new Bet(0);
+		game.state.betMax = new Bet(0);
+//		game.playerIterator = new PlayerIterator (game.playerCollection);
 	}
 	
 	public virtual void BetSubRounds() {
@@ -94,7 +95,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			var player = game.playerIterator.Next();
 			
 			if (player == null) {
-				Debug.Log(string.Format("CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
+				Debug.Log(string.Format("end player iterator CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
 				if (IsOneActivePlayer()) { // if one active player then he is winner
 					game.winners = new List<Player>();
 					game.winners.Add(player);
@@ -102,7 +103,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					return;
 				}
 
-				CheckForNextSubOrRound(); // game.state.CheckForNextSubOrRound();
+				game.state.CheckForNextSubOrRound();
 				
 				var playersActive = new PlayerCollection();
 				
@@ -114,9 +115,11 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					}
 				}
 				game.playerIterator = new PlayerIterator(playersActive);
-				player = game.playerIterator.Next();
-				//				return;
+//				player = game.playerIterator.Next();
+				return;
 			}
+			if (Settings.isDev) player.Log(false, false, "BetRound>SubRounds()");
+			if (Settings.isDev) player.LogDevInfo(player, false, false);
 
 			if (player.isReal) {
 				game.state.isWaiting = true;
@@ -172,10 +175,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	private bool IsNextBetRound() {
 		var iterator = new PlayerIterator (game.playerCollection);
 		bool isNextBetRound = false;
-		while (!iterator.IsDone) {
-			var player = iterator.Next();
+		for(var player = iterator.First(); !iterator.IsDoneFor; player = iterator.Next()) {
 			if (!player.isFolded) {
-				if (player.betInvested == betMax) {// || game.state.betMax > game.state.betMaxLimit) {
+				if (player.betInvested == game.state.betMax) { // && game.state.betMax > 0) {// || game.state.betMax > game.state.betMaxLimit) {
 					isNextBetRound = true;
 				} else {
 					isNextBetRound = false;
@@ -246,14 +248,16 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public void CheckForNextSubOrRound() {
 		isCanToRaise = false;
 		if (!isCanToRaise) {
-			if (subRoundCount < subRoundMaxSize || game.state.betMax < game.state.betMaxLimit) {
+			if (subRoundCount < subRoundMaxSize) { // || game.state.betMax < game.state.betMaxLimit) {
 				isCanToRaise = true;
 				subRoundCount++;
-			} else if (subRoundCount == subRoundMaxSize || game.state.betMax == game.state.betMaxLimit) {	// last subround
+			} else if (subRoundCount == subRoundMaxSize) { // last subround
 				if (IsNextBetRound()) {						// no any raise
 					subRoundCount++; // LastAction();		// next bet round
-				}			
+				}
 				isCanToRaise = false; // repeat last subround with disabled raise action
+//			} else if (game.state.betMax > 0 && (game.state.betMax == game.state.betMaxLimit || game.state.betMax > game.state.betMaxLimit)) {
+//				isCanToRaise = false;
 			}
 			if (IsNextBetRound()) { // no any raise
 				LastAction(); // next bet round if no any raise in any subround

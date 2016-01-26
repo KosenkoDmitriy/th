@@ -11,7 +11,9 @@ public class PreflopRound : BetRound {
 	
 	public override void FirstAction ()
 	{
-		if (Settings.isDev) game.player.Log(true, false, "Preflop");
+//		game.ui.DealPreflopCards (); // without waiting
+//		base.FirstAction (); or game.playerIterator = new PlayerIterator (game.playerCollection); // reset playerIterator after DealCards();
+
 		game.state.isWaiting = true;
 		game.ui.StartCoroutine (game.ui.DealCards ());	// game.state.isWaiting = false (must be in the end line of coroutine)
 	}
@@ -23,6 +25,7 @@ public class PreflopRound : BetRound {
 	}
 
 	public override void BetSubRounds () {
+		if (Settings.isDev) game.player.Log(true, false, string.Format("Preflop BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 		base.BetSubRounds ();
 	}
 }

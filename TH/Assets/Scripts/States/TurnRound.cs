@@ -15,8 +15,7 @@ public class TurnRound : BetRound {
 	}
 	
 	public override void FirstAction() {
-		if (Settings.isDev) game.player.Log(true, false, "Turn");
-
+		base.FirstAction ();
 		game.ui.audio.PlayOneShot(game.ui.soundDeal);
 		game.cards [3].FaceUp = true;
 	}
@@ -29,6 +28,7 @@ public class TurnRound : BetRound {
 
 	public override void BetSubRounds ()
 	{
+		if (Settings.isDev) game.player.Log(true, false, string.Format("Turn BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 		base.BetSubRounds ();
 	}
 }

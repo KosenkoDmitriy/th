@@ -12,7 +12,7 @@ public class FlopRound : BetRound {
 	}
 
 	public override void FirstAction() {
-		if (Settings.isDev) game.player.Log(true, false, "Flop");
+		base.FirstAction ();
 		game.ui.audio.PlayOneShot(game.ui.soundDeal);
 		game.cards [0].FaceUp = true;
 		game.cards [1].FaceUp = true;
@@ -27,6 +27,7 @@ public class FlopRound : BetRound {
 
 	public override void BetSubRounds ()
 	{
+		if (Settings.isDev) game.player.Log(true, false, string.Format("Flop BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 		base.BetSubRounds ();
 	}
 }

@@ -9,10 +9,14 @@ public class AnteRound : BetRound {
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
 	}
 
-	public override void FirstAction () {}
+	public override void FirstAction () {
+		base.FirstAction ();
+	}
 
 	public override void BetSubRounds ()
 	{
+		if (Settings.isDev) game.player.Log(true, false, string.Format("AnteRound BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
+
 		//		base.BetSubRounds ();
 		if (!game.state.isWaiting) {
 			var player = game.playerIterator.Next ();
