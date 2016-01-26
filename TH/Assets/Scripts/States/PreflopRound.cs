@@ -11,6 +11,7 @@ public class PreflopRound : BetRound {
 	
 	public override void FirstAction ()
 	{
+		if (Settings.isDev) game.player.Log(true, false, "Preflop");
 		game.state.isWaiting = true;
 		game.ui.StartCoroutine (game.ui.DealCards ());	// game.state.isWaiting = false (must be in the end line of coroutine)
 	}

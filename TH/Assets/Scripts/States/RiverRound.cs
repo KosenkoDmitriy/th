@@ -15,6 +15,8 @@ public class RiverRound : BetRound {
 	}
 	
 	public override void FirstAction() {
+		if (Settings.isDev) game.player.Log(true, false, "River");
+
 		game.ui.audio.PlayOneShot(game.ui.soundDeal);
 		game.cards [4].FaceUp = true;
 	}

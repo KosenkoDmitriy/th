@@ -15,6 +15,8 @@ public class TurnRound : BetRound {
 	}
 	
 	public override void FirstAction() {
+		if (Settings.isDev) game.player.Log(true, false, "Turn");
+
 		game.ui.audio.PlayOneShot(game.ui.soundDeal);
 		game.cards [3].FaceUp = true;
 	}

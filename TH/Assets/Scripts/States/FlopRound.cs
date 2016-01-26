@@ -12,6 +12,7 @@ public class FlopRound : BetRound {
 	}
 
 	public override void FirstAction() {
+		if (Settings.isDev) game.player.Log(true, false, "Flop");
 		game.ui.audio.PlayOneShot(game.ui.soundDeal);
 		game.cards [0].FaceUp = true;
 		game.cards [1].FaceUp = true;
