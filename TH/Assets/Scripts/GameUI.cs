@@ -434,6 +434,20 @@ public class GameUI : MonoBehaviour
 		player.lblAction.text = player.actionCurrentString;
 	}
 
+	public void DealPreflopCards() { // without any delay
+		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
+			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+				var card = player.handPreflop.getCard (i);
+				if (player.id == Settings.playerRealIndex || Settings.isDebug) {
+					card.FaceUp = true;
+				} else {
+					card.FaceUp = false;
+				}
+				audio.PlayOneShot(soundDeal);
+			}
+		}
+	}
+
 	private void UpdateInterval() {
 //		test ();
 //		return;
