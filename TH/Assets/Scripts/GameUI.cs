@@ -426,6 +426,7 @@ public class GameUI : MonoBehaviour
 		}
 	
 		game.state.isWaiting = false;
+		game.playerIterator = new PlayerIterator (game.playerCollection);
 	}
 
 	public void UpdatePlayerActionAndCredits(Player player) {
