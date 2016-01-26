@@ -193,7 +193,7 @@ public class Player {
 //		double maxPossibleRaise2 = game.state.betMaxLimit.inBetMath - (betInvested.inBetMath + betToStay);
 
 		if (actionT.isUnknown) {
-			actionT = null;
+			actionT = null; // will choose another action
 		} else if (actionT.isCall) {
 			if (betToStay >= 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
 				if (betToStay == 0) { // check
@@ -202,7 +202,7 @@ public class Player {
 					actionT.betCall.inBetMath = betToStay;
 				}
 			} else {
-				actionT = null;
+				actionT = null; // will choose another action
 			}
 		} else if (actionT.isRaise) {
 			if (game.state.isCanToRaise ) {
@@ -213,17 +213,17 @@ public class Player {
 						if (betForRaise > 0 && betForRaise <= maxPossibleRaise) {
 							actionT.betRaise.inBetMath = betForRaise;
 						} else {
-							actionT = null;
+							actionT = null; // will choose another action
 						}
 					} else {
-						actionT = null;
+						actionT = null; // will choose another action
 					}
 				} else {
 //					if (betInvested < betToStay) {
 //						actionT.isCall = true;
 //						actionT.betCall.inBetMath = betToStay;
 //					} else {
-						actionT = null;
+					actionT = null; // will choose another action
 //					}
 				}
 			} else { // call or raise
@@ -231,12 +231,12 @@ public class Player {
 //					actionT.isCall = true;
 //					actionT.betCall.inBetMath = betToStay;
 //				} else {
-					actionT = null;
+				actionT = null; // will choose another action
 //				}
 			}
 		} else if (actionT.isCheck) { // check
 			if (betInvested < betToStay) { // can't call
-				actionT = null;
+				actionT = null; // will choose another action
 			}  else {
 				actionT.isCheck = true;
 			}
