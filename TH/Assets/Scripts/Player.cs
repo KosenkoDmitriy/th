@@ -198,8 +198,9 @@ public class Player {
 			if (betToStay >= 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
 				if (betToStay == 0) { // check
 					actionT.isCheck = true;
+				} else { // call
+					actionT.betCall.inBetMath = betToStay;
 				}
-				actionT.betCall.inBetMath = betToStay;
 			} else {
 				actionT = null;
 			}
@@ -225,7 +226,7 @@ public class Player {
 						actionT = null;
 //					}
 				}
-			} else {
+			} else { // call or raise
 //				if (betInvested < betToStay) {
 //					actionT.isCall = true;
 //					actionT.betCall.inBetMath = betToStay;
@@ -233,18 +234,14 @@ public class Player {
 					actionT = null;
 //				}
 			}
-		} else {
-			actionT.betCall = actionT.betRaise = new Bet (0);
-			
-			if (actionT.isCheck) {
-				if (betInvested < betToStay) { // > fold
-					//can't call
-					actionT = new ActionTip (0);
-					actionT.isFold = true;
-				} 
-			} else if (actionT.isFold) {
-				
+		} else if (actionT.isCheck) { // check
+			if (betInvested < betToStay) { // can't call
+				actionT = null;
+			}  else {
+				actionT.isCheck = true;
 			}
+		} else if (actionT.isFold) { // fold
+			actionT.isFold = true;
 		}
 
 		return actionT;

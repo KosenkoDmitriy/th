@@ -127,13 +127,21 @@ public class Action : IAction {
 	public bool isCheck {
 		get { return name.isCheck (); }
 		set {
-			if (value) name = Settings.aCheck;
+			if (value) {
+				name = Settings.aCheck;
+				betCall = new Bet(0);
+				betRaise = new Bet(0);
+			}
 		}
 	}
 	public bool isFold {
 		get { return name.isFold (); }
 		set {
-			if (value) name = Settings.aFold;
+			if (value) {
+				name = Settings.aFold;
+				betCall = new Bet(0);
+				betRaise = new Bet(0);
+			}
 		}
 	}
 	public bool isAllIn {
