@@ -184,8 +184,8 @@ public class Player {
 			Log(true, false, "actionFinal is null > fold");
 			actionFinal = new Fold (this, actionTipTemp.betToStay);
 		} else {
-			actionFinal = ActionFinal(actionTipTemp, game.state.isCanToRaise);
-//			actionFinal = ActionMath(actionTipTemp, game.state.isCanToRaise);
+			actionFinal = GetActionReal(actionTipTemp, game.state.isCanToRaise);
+//			actionFinal = GetActionMath(actionTipTemp, game.state.isCanToRaise);
 		}
 		return actionFinal;
 	}
@@ -292,7 +292,7 @@ public class Player {
 
 	#region actions
 
-	public Action ActionMath(ActionTip actionT, bool isCanToRaise) {
+	public Action GetActionMath(ActionTip actionT, bool isCanToRaise) {
 		this.actionTip = actionT;
 		Bet betDt = actionTip.betToStay;
 		if (actionTip.isFold) {
@@ -309,7 +309,7 @@ public class Player {
 		return actionFinal;
 	}
 
-	public Action ActionFinal(ActionTip actionT, bool isCanToRaise) {
+	public Action GetActionReal(ActionTip actionT, bool isCanToRaise) {
 //		double betTotalAfterAction = bet
 		this.actionTip = actionT;
 		var betToStay = actionTip.betToStay;
