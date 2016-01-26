@@ -2,6 +2,13 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static readonly string aCheck = "CHECK";
+	public static readonly string aCall = "CALL";
+	public static readonly string aFold = "FOLD";
+	public static readonly string aRaise = "RAISE";
+	public static readonly string aAllIn = "ALL IN";
+	public static readonly string aUnknown = "OPEN";
+
 	public static bool isDev = true;
 	public static bool isDebug = false;
 	public static int levelGame = 2;

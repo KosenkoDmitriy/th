@@ -114,21 +114,39 @@ public class Action : IAction {
 
 	public bool isRaise {
 		get { return name.isRaise (); }
+		set {
+			if (value) name = Settings.aRaise;
+		}
 	}
 	public bool isCall {
 		get { return name.isCall (); }
+		set {
+			if (value) name = Settings.aCall;
+		}
 	}
 	public bool isCheck {
 		get { return name.isCheck (); }
+		set {
+			if (value) name = Settings.aCheck;
+		}
 	}
 	public bool isFold {
 		get { return name.isFold (); }
+		set {
+			if (value) name = Settings.aFold;
+		}
 	}
 	public bool isAllIn {
 		get { return name.isAllIn (); }
+		set {
+			if (value) name = Settings.aAllIn;
+		}
 	}
 	public bool isUnknown {
 		get { return name.isUnknown(); }
+		set {
+			if (value) name = Settings.aUnknown;
+		}
 	}
 }
 
@@ -136,7 +154,7 @@ public class Call : Action
 {
 	public Call (Player player, Bet betToStayInGame)
 	{
-		this.name = "CALL";
+		this.name = Settings.aCall;
 		player.UpdateActionCurrentString (this.name);
 		this.betCall = betToStayInGame;
 		this.betRaise.inCredits = 0;
@@ -151,7 +169,7 @@ public class Check : Action
 {
 	public Check (Player player, Bet betToStayInGame)
 	{
-		this.name = "CHECK";
+		this.name = Settings.aCheck;
 		player.UpdateActionCurrentString (this.name);
 		this.betCall = betToStayInGame;
 		this.betRaise.inCredits = 0;
@@ -162,7 +180,7 @@ public class Fold : Action
 {
 	public Fold (Player player, Bet betToStayInGame)
 	{
-		this.name = "FOLD";
+		this.name = Settings.aFold;
 		player.isFolded = true;
 		player.UpdateActionCurrentString (this.name);
 		this.betCall = betToStayInGame;
@@ -179,7 +197,7 @@ public class Raise : Action
 {
 	public Raise (Player player, Bet betToStayInGame)
 	{
-		this.name = "RAISE";
+		this.name = Settings.aRaise;
 		player.UpdateActionCurrentString (this.name);
 //		if (player.patternCurrent != null)
 //			betToStayInGame += player.patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;//TODO
@@ -197,7 +215,7 @@ public class AllIn : Action
 {
 	public AllIn (Player player, Bet betToStayInGame)
 	{
-		this.name = "ALL IN";
+		this.name = Settings.aAllIn;
 		player.UpdateActionCurrentString (this.name);
 		this.betCall = betToStayInGame;
 	}

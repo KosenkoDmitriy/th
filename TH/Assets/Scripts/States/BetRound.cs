@@ -118,8 +118,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //				player = game.playerIterator.Next();
 				return;
 			}
-			if (Settings.isDev) player.Log(false, false, "BetRound>SubRounds()");
-			if (Settings.isDev) player.LogDevInfo(player, false, false);
+//			if (Settings.isDev) player.Log(false, false, "BetRound>SubRounds()");
+//			if (Settings.isDev) player.LogDevInfo(player, false, false);
 
 			if (player.isReal) {
 				game.state.isWaiting = true;

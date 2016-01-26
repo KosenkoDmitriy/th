@@ -31,26 +31,26 @@ public static class Extension {
 	
 	public static bool isRaise(this string name) {
 		if (string.IsNullOrEmpty(name)) return false;
-		return name.Contains ("RAISE");
+		return name.Contains (Settings.aRaise);
 	}
 	public static bool isCall(this string name) {
 		if (string.IsNullOrEmpty(name)) return false;
-		return name.Contains ("CALL");
+		return name.Contains (Settings.aCall);
 	}
 	public static bool isCheck(this string name) {
 		if (string.IsNullOrEmpty(name)) return false;
-		return name.Contains ("CHECK");
+		return name.Contains (Settings.aCheck);
 	}
 	public static bool isFold(this string name) {
 		if (string.IsNullOrEmpty(name)) return false;
-		return name.Contains ("FOLD");
+		return name.Contains (Settings.aFold);
 	}
 	public static bool isAllIn(this string name) {
 		if (string.IsNullOrEmpty(name)) return false;
-		return name.Contains ("ALL IN");
+		return name.Contains (Settings.aAllIn);
 	}
 	public static bool isUnknown(this string name) {
 		if (string.IsNullOrEmpty(name)) return false;
-		return name.Contains ("OPEN");
+		return name.Contains (Settings.aUnknown);
 	}
 }

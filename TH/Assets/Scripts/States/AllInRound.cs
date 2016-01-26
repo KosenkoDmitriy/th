@@ -72,12 +72,12 @@ public class AllInRound : BetRound {
 
 			} else {
 				if (player.isWinner) {
-					if (Settings.isDev) player.actionCurrentString += "> ALL IN (w)"; else player.actionCurrentString = "ALL IN";
+					if (Settings.isDev) player.actionCurrentString += "> " + Settings.aAllIn + " (w)"; else player.actionCurrentString = Settings.aAllIn;
 					player.lblAction.text = player.actionCurrentString;
 
 					player.actionFinal = new AllIn(player, betMax);
 				} else {
-					player.actionCurrentString = "FOLD";
+					player.actionCurrentString = Settings.aFold;
 					player.lblAction.text = player.actionCurrentString;
 
 					player.actionFinal = new Fold(player, betMax);
@@ -202,7 +202,7 @@ public class AllInRound : BetRound {
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.btnRaise.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.btnFold.GetComponent<Button>().interactable = true;		//.SetActive(false);
-		game.ui.btnAllIn.GetComponentInChildren<Text>().text = "ALL IN";
+		game.ui.btnAllIn.GetComponentInChildren<Text>().text = Settings.aAllIn;
 		game.ui.panelGame.SetActive(false);
 
 		playerFirstToAllIn = null;

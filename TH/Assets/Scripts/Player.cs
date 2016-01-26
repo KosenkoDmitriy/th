@@ -152,9 +152,7 @@ public class Player {
 		
 		if (actionTipTemp == null) { // force action
 			actionTipTemp = new ActionTip(0);
-			actionTipTemp.name = "FOLD";
-
-//			actionTip = actionTipTemp;
+			actionTipTemp.name = Settings.aFold;
 		}
 
 		if (betMax >= 0 && betMaxLimit >= 0) {
@@ -197,7 +195,10 @@ public class Player {
 		if (actionT.isUnknown) {
 			actionT = null;
 		} else if (actionT.isCall) {
-			if (betToStay > 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
+			if (betToStay >= 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
+				if (betToStay == 0) { // check
+					actionT.isCheck = true;
+				}
 				actionT.betCall.inBetMath = betToStay;
 			} else {
 				actionT = null;
@@ -218,7 +219,7 @@ public class Player {
 					}
 				} else {
 //					if (betInvested < betToStay) {
-//						actionT.name = "CALL";
+//						actionT.isCall = true;
 //						actionT.betCall.inBetMath = betToStay;
 //					} else {
 						actionT = null;
@@ -226,7 +227,7 @@ public class Player {
 				}
 			} else {
 //				if (betInvested < betToStay) {
-//					actionT.name = "CALL";
+//					actionT.isCall = true;
 //					actionT.betCall.inBetMath = betToStay;
 //				} else {
 					actionT = null;
@@ -239,7 +240,7 @@ public class Player {
 				if (betInvested < betToStay) { // > fold
 					//can't call
 					actionT = new ActionTip (0);
-					actionT.name = "FOLD";
+					actionT.isFold = true;
 				} 
 			} else if (actionT.isFold) {
 				
