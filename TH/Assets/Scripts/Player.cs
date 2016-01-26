@@ -241,7 +241,8 @@ public class Player {
 				actionT.isCheck = true;
 			}
 		} else if (actionT.isFold) { // fold
-			actionT.isFold = true;
+			if (betToStay == 0) actionT.isCheck = true;
+			else actionT.isFold = true;
 		}
 
 		return actionT;
