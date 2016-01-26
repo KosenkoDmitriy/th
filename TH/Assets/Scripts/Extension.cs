@@ -30,21 +30,27 @@ public static class Extension {
 
 	
 	public static bool isRaise(this string name) {
+		if (string.IsNullOrEmpty(name)) return false;
 		return name.Contains ("RAISE");
 	}
 	public static bool isCall(this string name) {
+		if (string.IsNullOrEmpty(name)) return false;
 		return name.Contains ("CALL");
 	}
 	public static bool isCheck(this string name) {
+		if (string.IsNullOrEmpty(name)) return false;
 		return name.Contains ("CHECK");
 	}
 	public static bool isFold(this string name) {
+		if (string.IsNullOrEmpty(name)) return false;
 		return name.Contains ("FOLD");
 	}
 	public static bool isAllIn(this string name) {
+		if (string.IsNullOrEmpty(name)) return false;
 		return name.Contains ("ALL IN");
 	}
 	public static bool isUnknown(this string name) {
+		if (string.IsNullOrEmpty(name)) return false;
 		return name.Contains ("OPEN");
 	}
 }

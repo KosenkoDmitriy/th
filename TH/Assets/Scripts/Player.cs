@@ -217,10 +217,20 @@ public class Player {
 						actionT = null;
 					}
 				} else {
-					actionT = null;
+//					if (betInvested < betToStay) {
+//						actionT.name = "CALL";
+//						actionT.betCall.inBetMath = betToStay;
+//					} else {
+						actionT = null;
+//					}
 				}
 			} else {
-				actionT = null;
+//				if (betInvested < betToStay) {
+//					actionT.name = "CALL";
+//					actionT.betCall.inBetMath = betToStay;
+//				} else {
+					actionT = null;
+//				}
 			}
 		} else {
 			actionT.betCall = actionT.betRaise = new Bet (0);
