@@ -49,11 +49,7 @@ public class Action : IAction {
 	#endregion
 
 	private void DoActive(Game game, Player p) {
-
-//		if (game.state.betMax > game.state.betMaxLimit) {
-//			game.state.betMax = game.state.betMaxLimit;
-//		}
-
+		/*
 		if (game.state.betMax <= game.state.betMaxLimit) {
 			if (betToStay > game.state.betMax) {
 				if (betToStay >= 0) {
@@ -63,9 +59,13 @@ public class Action : IAction {
 				}
 			}
 		}
+		*/
 		if (betToStay > 0 && p.betInvested <= game.state.betMaxLimit) {
 			p.betInvested += betToStay;
 			p.balanceInCredits -= betToStay.inCredits;
+			if (p.betInvested > game.state.betMax) {
+				game.state.betMax = p.betInvested;
+			}
 		}
 
 //		double dtRaise = p.betInvested.inBet - game.state.betMax.inBet;
@@ -86,7 +86,7 @@ public class Action : IAction {
 				game.ui.lblCall.text = betCall.inCredits.f ();
 				game.ui.lblRaise.text = Settings.betNull.f ();
 			}
-		*/	
+		*/
 		}
 
 		if (Settings.isDev) {
