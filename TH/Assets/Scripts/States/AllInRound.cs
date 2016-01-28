@@ -69,18 +69,17 @@ public class AllInRound : BetRound {
 //				game.player = player;
 				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
 
-
 			} else {
 				if (player.isWinner) {
 					if (Settings.isDev) player.actionCurrentString += "> " + Settings.aAllIn + " (w)"; else player.actionCurrentString = Settings.aAllIn;
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new AllIn(player, betMax);
+					player.actionFinal = new AllIn(player, betMax, new Bet(0));
 				} else {
 					player.actionCurrentString = Settings.aFold;
 					player.lblAction.text = player.actionCurrentString;
 
-					player.actionFinal = new Fold(player, betMax);
+					player.actionFinal = new Fold(player, betMax, new Bet(0));
 				}
 				player.actionFinal.Do(game, player);
 			}

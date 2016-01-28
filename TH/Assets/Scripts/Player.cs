@@ -151,7 +151,7 @@ public class Player {
 		}
 		
 		if (actionTipTemp == null) { // force tip action
-			actionTipTemp = new ActionTip(0);
+			actionTipTemp = new ActionTip();
 			actionTipTemp.isFold = true;
 		}
 
@@ -182,7 +182,7 @@ public class Player {
 		// final action
 		if (actionFinal == null) {
 			Log(true, false, "actionFinal is null > fold");
-			actionFinal = new Fold (this, actionTipTemp.betToStay);
+			actionFinal = new Fold (this, new Bet(0), new Bet(0));
 		} else {
 			actionFinal = GetActionReal(actionTipTemp, game.state.isCanToRaise);
 //			actionFinal = GetActionMath(actionTipTemp, game.state.isCanToRaise);
@@ -264,7 +264,7 @@ public class Player {
 			foreach (var betRound in patternCurrent.betSubRounds) {
 				if (betMaxToStayInGameTotal == betRound.costBetToStayInGame && betAlreadyInvestedInMath == betRound.costBetAlreadyInvested) {
 
-					actionT = new ActionTip (0);
+					actionT = new ActionTip ();
 					actionT.isInBetSubrounds = true;
 					actionT.name = betRound.name_action;
 
@@ -281,7 +281,7 @@ public class Player {
 
 	public ActionTip GetActionRecommendByName(Game game, string name) {
 
-		ActionTip actionT = new ActionTip (0);
+		ActionTip actionT = new ActionTip ();
 		actionT.name = name;
 		actionT = GetOptimalActionTip(game, actionT);
 
@@ -294,17 +294,16 @@ public class Player {
 
 	public Action GetActionMath(ActionTip actionT, bool isCanToRaise) {
 		this.actionTip = actionT;
-		Bet betDt = actionTip.betToStay;
 		if (actionTip.isFold) {
-			actionFinal = new Fold (this, betDt);
+			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 		} else if (actionTip.isCheck) {
-			actionFinal = new Check (this, betDt);
+			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 		} else if (actionTip.isCall) {
-			actionFinal = new Call (this, betDt);
+			actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
 		} else if (actionTip.isRaise) {
-			actionFinal = new Raise (this, betDt);
+			actionFinal = new Raise (this, actionTip.betCall, actionTip.betRaise);
 		} else if (actionTip.isAllIn) {
-			actionFinal = new AllIn(this, betDt);
+			actionFinal = new AllIn(this, actionTip.betCall, actionTip.betRaise);
 		}
 		return actionFinal;
 	}
@@ -314,38 +313,38 @@ public class Player {
 		this.actionTip = actionT;
 		var betToStay = actionTip.betToStay;
 		if (actionTip.isFold) {
-			actionFinal = new Fold (this, actionTip.betToStay);
+			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 			if (betToStay == 0) {
 				actionT.isCheck = true;
-				actionFinal = new Check (this, actionTip.betToStay);
+				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (actionTip.isCheck) {
-			actionFinal = new Check (this, actionTip.betToStay);
+			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 		} else if (actionTip.isCall) {
-			actionFinal = new Call (this, actionTip.betToStay);
+			actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
 
 			if (betToStay == 0) {
 				actionT.isCheck = true;
-				actionFinal = new Check (this, actionTip.betToStay);
+				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (actionTip.isRaise) {
 			//TODO raise > call > check
-			actionFinal = new Raise (this, actionTip.betToStay);
+			actionFinal = new Raise (this, actionTip.betCall, actionTip.betRaise);
 			if (betToStay > patternCurrent.betMaxCallOrRaise) { // call
 				actionT.isCall = true;
 				actionT.betRaise = new Bet(0);
-				actionFinal = new Check (this, actionTip.betToStay);
+				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			} else if (betToStay == 0) {
 				actionT.isCheck = true;
-				actionFinal = new Check (this, actionTip.betToStay);
+				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (actionTip.isAllIn) {
-			actionFinal = new AllIn(this, actionTip.betToStay);
+			actionFinal = new AllIn(this, actionTip.betCall, actionTip.betRaise);
 		}
 
 		if (balanceInCredits < 0) {
 			actionT.isFold = true;
-			actionFinal = new Fold (this, actionTip.betToStay);
+			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 		}
 
 		return actionFinal;

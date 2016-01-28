@@ -66,9 +66,9 @@ public class AnteRound : BetRound {
 						if (betMax <= 0) {
 							betMax.inBetMath = (double)new Random().Next(1, (int)(betMaxLimit.inBetMath + 1));
 						}
-						player.actionFinal = new Raise(player, betMax);
+						player.actionFinal = new Raise(player, betMax, new Bet(0));
 					} else {
-						player.actionFinal = new Call(player, betMax);
+						player.actionFinal = new Call(player, betMax, new Bet(0));
 					}
 					player.actionFinal.Do (game, player);
 				}

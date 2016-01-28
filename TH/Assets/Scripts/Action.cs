@@ -6,10 +6,11 @@ public interface IAction
 }
 
 public class ActionTip: Action {
-	public ActionTip (double betToStayInGame)
-	{
-		this.betCall.inCredits = betToStayInGame;
-	}
+	public ActionTip () {}
+//	public ActionTip (double betToStayInGame)
+//	{
+//		this.betCall.inCredits = betToStayInGame;
+//	}
 	public bool isInBetSubrounds;
 	public bool isInPriority1;
 	public bool isInPriority2;
@@ -17,19 +18,19 @@ public class ActionTip: Action {
 }
 
 public class Action : IAction {
-	public Action() {
-		Init ();
-	}
-
-	public Action (double betDx)
-	{
-		Init ();
-		this.betCall.inCredits = betDx;
-	}
-
-	private void Init() {
-		betRaise = betCall = new Bet(0);
-	}
+//	public Action() {
+//		Init ();
+//	}
+//
+//	public Action (double betDx)
+//	{
+//		Init ();
+//		this.betCall.inCredits = betDx;
+//	}
+//
+//	private void Init() {
+//		betRaise = betCall = new Bet(0);
+//	}
 	#region IAction implementation
 	
 	public virtual void Do (Game game, Player p)
@@ -72,7 +73,7 @@ public class Action : IAction {
 				}
 			}
 		}
-		if (betToStay > 0) {
+		if (betToStay > 0 && p.betInvested <= game.state.betMaxLimit) {
 			p.betInvested += betToStay;
 			p.balanceInCredits -= betToStay.inCredits;
 		}
@@ -160,12 +161,15 @@ public class Action : IAction {
 
 public class Call : Action
 {
-	public Call (Player player, Bet betToStayInGame)
+	public Call (Player player, Bet betCall, Bet betRaise)
 	{
 		this.name = Settings.aCall;
 		player.UpdateActionCurrentString (this.name);
-		this.betCall = betToStayInGame;
-		this.betRaise.inCredits = 0;
+//		this.betCall = betToStayInGame;
+//		this.betRaise.inCredits = 0;
+
+		this.betCall = betCall;
+		this.betRaise = betRaise;
 	}
 	public override void Do(Game game, Player p) {
 		base.Do (game, p);
@@ -175,23 +179,26 @@ public class Call : Action
 
 public class Check : Action
 {
-	public Check (Player player, Bet betToStayInGame)
+	public Check (Player player, Bet betCall, Bet betRaise)
 	{
 		this.name = Settings.aCheck;
 		player.UpdateActionCurrentString (this.name);
-		this.betCall = betToStayInGame;
-		this.betRaise.inCredits = 0;
+
+		this.betCall = betCall;
+		this.betRaise = betRaise;
 	}
 }
 
 public class Fold : Action
 {
-	public Fold (Player player, Bet betToStayInGame)
+	public Fold (Player player, Bet betCall, Bet betRaise)
 	{
 		this.name = Settings.aFold;
 		player.isFolded = true;
 		player.UpdateActionCurrentString (this.name);
-		this.betCall = betToStayInGame;
+
+		this.betCall = betCall;
+		this.betRaise = betRaise;
 	}
 
 	public override void Do(Game game, Player p) {
@@ -203,13 +210,13 @@ public class Fold : Action
 
 public class Raise : Action
 {
-	public Raise (Player player, Bet betToStayInGame)
+	public Raise (Player player, Bet betCall, Bet betRaise)
 	{
 		this.name = Settings.aRaise;
 		player.UpdateActionCurrentString (this.name);
-//		if (player.patternCurrent != null)
-//			betToStayInGame += player.patternCurrent.betMaxCallOrRaise * Settings.betCurrentMultiplier;//TODO
-		this.betCall = betToStayInGame;
+
+		this.betCall = betCall;
+		this.betRaise = betRaise;
 	}
 
 	public override void Do(Game game, Player p) {
@@ -221,11 +228,13 @@ public class Raise : Action
 
 public class AllIn : Action
 {
-	public AllIn (Player player, Bet betToStayInGame)
+	public AllIn (Player player, Bet betCall, Bet betRaise)
 	{
 		this.name = Settings.aAllIn;
 		player.UpdateActionCurrentString (this.name);
-		this.betCall = betToStayInGame;
+
+		this.betCall = betCall;
+		this.betRaise = betRaise;
 	}
 	
 	public override void Do(Game game, Player p) {

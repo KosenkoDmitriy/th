@@ -73,14 +73,14 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
-		game.player.actionFinal = new Check(game.player, new Bet(0));
+		game.player.actionFinal = new Check(game.player, new Bet(0),  new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
 	}
 
 	public void btnCallClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.player.actionFinal = new Call(game.player, game.state.betMax);
+		game.player.actionFinal = new Call(game.player, game.state.betMax, new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
 	}
 
@@ -106,7 +106,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
-		game.player.actionFinal = new AllIn (game.player, game.state.betMax);
+		game.player.actionFinal = new AllIn (game.player, game.state.betMax, new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
 
 		
@@ -163,16 +163,19 @@ public class GameUI : MonoBehaviour
 		// from recommend to optimal
 		double betTotalAfterAction = game.player.balanceInCredits - game.betAmount.inCredits;
 		double betTotalSubRoundAfterA = game.player.betInvested.inCredits + game.betAmount.inCredits;
+
+//		double betRaise = game.state.betMax - game.betAmount.inCredits;
+
 		if (game.isGameRunning) {
 
 			if (betTotalAfterAction > 0) { //call or raise
 				if (betTotalSubRoundAfterA > game.state.betMax.inCredits && betTotalSubRoundAfterA <= game.state.betMaxLimit.inCredits) {
-					game.player.actionFinal = new Raise (game.player, game.betAmount);
+					game.player.actionFinal = new Raise (game.player, game.state.betMax, game.betAmount);
 				} else {
-					game.player.actionFinal = new Call (game.player, game.state.betMax);
+					game.player.actionFinal = new Call (game.player, game.state.betMax, new Bet(0));
 				}
 			} else if (betTotalAfterAction == 0) { //check
-				game.player.actionFinal = new Check (game.player, new Bet(0));
+				game.player.actionFinal = new Check (game.player, new Bet(0), new Bet(0));
 			} else if (betTotalAfterAction < 0) { //fold
 				//TODO
 			}
@@ -184,7 +187,7 @@ public class GameUI : MonoBehaviour
 			if (lblBet) lblBet.text = game.betAmount.inCredits.f();
 		} else if (!game.isGameRunning && game.betAmount.inCredits > 0 && betTotalAfterAction >= 0) {
 			game.isGameRunning = true;
-			game.player.actionFinal = new Raise(game.player, Settings.betCurrent);
+			game.player.actionFinal = new Raise(game.player, game.state.betMax, Settings.betCurrent);
 			game.player.actionFinal.Do (game, game.player);
 			if (lblBet) lblBet.text = game.betAmount.inCredits.f();
 		} else {
