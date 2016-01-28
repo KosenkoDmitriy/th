@@ -227,22 +227,10 @@ public class Player {
 						actionT = null; // will choose another action
 					}
 				} else { // call or raise
-					//TODO try to decrease bet
-
-//					if (betInvested < betToStay) {
-//						actionT.isCall = true;
-//						actionT.betCall.inBetMath = betToStay;
-//					} else {
 					actionT = null; // will choose another action
-//					}
 				}
 			} else { // call or check
-//				if (betInvested < betToStay) {
-//					actionT.isCall = true;
-//					actionT.betCall.inBetMath = betToStay;
-//				} else {
 				actionT = null; // will choose another action
-//				}
 			}
 		} else if (actionT.isCheck) { // check
 			if (betInvested < betToStay) { // can't call
@@ -347,11 +335,13 @@ public class Player {
 		}
 
 
+		// real actions
 		if (betInvestedAfterAction == betInvested) { // > check
 			actionTip.isCheck = true;
 			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-		} else if (betInvestedAfterAction > betInvested) { // > call
-			if (betInvestedAfterAction <= betMaxLimit) {
+		} 
+		else if (betInvestedAfterAction > betInvested) { // > call
+			if (betInvestedAfterAction <= betMaxLimit) { // && isWinner) {
 				actionFinal = new Call (this, betMax, new Bet(0));
 			}
 		}
