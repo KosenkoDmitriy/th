@@ -35,7 +35,7 @@ public class Bet
 	public override string ToString ()
 	{
 //		return string.Format ("[Bet: inCredits={0}, inBetMath={1}, inCreditsNoM={2}]", inCredits, inBetMath, inCreditsNoM);
-		return string.Format ("[Bet: inCredits={0}, inBetMath={1}]", inCredits, inBetMath);
+		return string.Format ("[Bet: {0} credits | {1} math]", inCredits, inBetMath);
 	}
 
 	private void reset(double bet) {

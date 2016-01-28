@@ -39,12 +39,12 @@ public class Player {
 
 	public void LogDevInfo(Player player, bool isWarning, bool isError) {
 		if (Settings.isDev) {
-			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets: in_cur_bet_round (credits):{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.balanceInCredits, player.actionCurrentString, player.winPercent, player.position, player.betInvested.inCredits);
+			string str = string.Format ("#{0} {1} pos: {6} hand:{2}({5}% win) bets (credits): invested:{7}/total:{3} cur_action: {4}", player.id, player.name, player.handPreflopString, player.balanceInCredits, player.actionCurrentString, player.winPercent, player.position, player.betInvested.inCredits);
 			Log(str, isWarning, isError);
 
 			string str2 = "";
 			if (player.actionTip != null) {
-				str2 = string.Format ("action tip: {0} ({1}% win): bet to stay: {2}(math) {3}(credits)", player.actionTip.name, player.winPercent, player.actionTip.betCall.inBetMath, player.actionTip.betCall.inCredits);
+				str2 = string.Format ("action tip: {0} ({1}% win): bet to stay: call:{2} raise:{3}(credits)", player.actionTip.name, player.winPercent, player.actionTip.betCall.inBetMath, player.actionTip.betRaise.inCredits);
 				Log(str2, isWarning, isError);
 			}
 			if (player.patternCurrent != null) {
