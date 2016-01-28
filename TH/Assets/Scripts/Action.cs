@@ -19,7 +19,8 @@ public class Action : IAction {
 	}
 
 	private void Init() {
-		betRaise = betCall = new Bet(0);
+		betRaise = new Bet(0);
+		betCall = new Bet(0);
 	}
 	#region IAction implementation
 	
