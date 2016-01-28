@@ -193,28 +193,29 @@ public class Player {
 		return actionFinal;
 	}
 
+	/*
+	 * set call and raise amounts
+	*/
 	public ActionTip GetOptimalActionTip(Game game, ActionTip actionT) {
 		double maxPossibleRaise = game.state.betMaxLimit.inBetMath - game.state.betMax.inBetMath;
+		if (maxPossibleRaise < 0) maxPossibleRaise = 0;
 		double betToStay = game.state.betMax.inBetMath;
-//		double maxPossibleRaise2 = game.state.betMaxLimit.inBetMath - (betInvested.inBetMath + betToStay);
-
+//		actionT = null;
 		if (actionT.isUnknown) {
 			actionT = null; // will choose another action
 		} else if (actionT.isCall) {
 			if (betToStay >= 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
-				if (betToStay == 0) { // check
+				if (betToStay == betInvested.inBetMath) { // check
 					actionT.isCheck = true;
 				} else { // call
 					actionT.betCall.inBetMath = betToStay;
 				}
 			} else {
-				//TODO try to decrease bet
 				actionT = null; // will choose another action
 			}
 		} else if (actionT.isRaise) { // raise, call or check
 			if (game.state.isCanToRaise) {
-				if (betToStay > 0 && betToStay <= patternCurrent.betMaxCallOrRaise && maxPossibleRaise >= 0) {
-					actionT.betCall.inBetMath = betToStay;
+				if (betToStay >= 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
 					double betForRaise = patternCurrent.betMaxCallOrRaise - betToStay;
 					if (betForRaise <= patternCurrent.betMaxCallOrRaise) {
 						if (betForRaise > 0 && betForRaise <= maxPossibleRaise) {
@@ -233,10 +234,10 @@ public class Player {
 				actionT = null; // will choose another action
 			}
 		} else if (actionT.isCheck) { // check
-			if (betInvested < betToStay) { // can't call
-				actionT = null; // will choose another action
-			}  else {
+			if (betToStay == betInvested.inBetMath) {
 				actionT.isCheck = true;
+			} else {
+				actionT = null; // will choose another action
 			}
 		} else if (actionT.isFold) { // fold
 			actionT.isFold = true;
@@ -246,7 +247,7 @@ public class Player {
 	}
 
 	public ActionTip GetActionRecommendInSubrounds(Game game) {
-		double betMaxToStayInGameTotal = betInvested.inBetMath + game.state.betMax.inBetMath;
+		double betMaxToStayInGameTotal = game.state.betMax.inBetMath;
 		double betAlreadyInvestedInMath = betInvested.inBetMath;
 		ActionTip actionT = null;
 
@@ -314,6 +315,7 @@ public class Player {
 			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 
 		} else if (actionTip.isCall) {
+
 			actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
 
 //			if (betInvestedAfterAction >= 0 && betInvestedAfterAction <= betMaxLimit) {
@@ -328,23 +330,30 @@ public class Player {
 			if (actionTip.betToStay.inBetMath > patternCurrent.betMaxCallOrRaise) { // > call
 				actionTip.isCall = true;
 				actionTip.betRaise = new Bet(0);
-				actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
+
+				if (actionTip.betToStay.inBetMath > patternCurrent.betMaxCallOrRaise) { // > check
+					actionTip.isCheck = true;
+					actionTip.betCall = new Bet(0);
+					actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+				} else { // call
+					actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
+				}
 			}
 		} else if (actionTip.isAllIn) {
 			actionFinal = new AllIn(this, actionTip.betCall, actionTip.betRaise);
 		}
 
 
-		// real actions
-		if (betInvestedAfterAction == betInvested) { // > check
-			actionTip.isCheck = true;
-			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-		} 
-		else if (betInvestedAfterAction > betInvested) { // > call
-			if (betInvestedAfterAction <= betMaxLimit) { // && isWinner) {
-				actionFinal = new Call (this, betMax, new Bet(0));
-			}
-		}
+//		// real actions
+//		if (betInvestedAfterAction == betInvested) { // > check
+//			actionTip.isCheck = true;
+//			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+//		}
+//		else if (betInvestedAfterAction > betInvested) { // > call
+//			if (betInvestedAfterAction <= betMaxLimit) { // && isWinner) {
+//				actionFinal = new Call (this, betMax, new Bet(0));
+//			}
+//		}
 
 		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
 			actionTip.isFold = true;
