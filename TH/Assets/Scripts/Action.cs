@@ -189,7 +189,6 @@ public class Fold : Action
 	public Fold (Player player, Bet betCall, Bet betRaise)
 	{
 		this.name = Settings.aFold;
-		player.isFolded = true;
 		player.UpdateActionCurrentString (this.name);
 
 		this.betCall = betCall;
@@ -197,7 +196,7 @@ public class Fold : Action
 	}
 
 	public override void Do(Game game, Player p) {
-//		p.isFolded = true;
+		p.isFolded = true;
 		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}
