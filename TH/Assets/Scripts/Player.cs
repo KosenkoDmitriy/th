@@ -200,18 +200,20 @@ public class Player {
 		double maxPossibleRaise = game.state.betMaxLimit.inBetMath - game.state.betMax.inBetMath;
 		if (maxPossibleRaise < 0) maxPossibleRaise = 0;
 		double betToStay = game.state.betMax.inBetMath;
-//		actionT = null;
+		ActionTip actionIemp = null;
 		if (actionT.isUnknown) {
 			actionT = null; // will choose another action
 		} else if (actionT.isCall) {
 			if (betToStay >= 0 && betToStay <= patternCurrent.betMaxCallOrRaise) {
+//				double betForRaise = patternCurrent.betMaxCallOrRaise - betToStay;
+//				if (betForRaise > 0 && betForRaise <= maxPossibleRaise) {
+//				}
 				if (betToStay == betInvested.inBetMath) { // check
 					actionT.isCheck = true;
 				} else { // call
 					actionT.betCall.inBetMath = betToStay;
 				}
-			} else {
-				actionT = null; // will choose another action
+				actionIemp = actionT;
 			}
 		} else if (actionT.isRaise) { // raise, call or check
 			if (game.state.isCanToRaise) {
@@ -221,29 +223,28 @@ public class Player {
 						if (betForRaise > 0 && betForRaise <= maxPossibleRaise) {
 							actionT.betRaise.inBetMath = betForRaise;
 							actionT.betCall.inBetMath = betToStay;
-						} else {
-							actionT = null; // will choose another action
+
+//							actionIemp = actionT;
+//							actionIemp.betCall = new Bet(0);
+//							actionIemp.betRaise.inBetMath = betForRaise;
+//							actionIemp.betCall.inBetMath = betToStay;
+//							actionIemp = actionT;
+//							var actionIemp2 = actionT;
 						}
-					} else {
-						actionT = null; // will choose another action
 					}
-				} else { // call or raise
-					actionT = null; // will choose another action
 				}
-			} else { // call or check
-				actionT = null; // will choose another action
 			}
 		} else if (actionT.isCheck) { // check
 			if (betToStay == betInvested.inBetMath) {
 				actionT.isCheck = true;
-			} else {
-				actionT = null; // will choose another action
+				actionIemp = actionT;
 			}
 		} else if (actionT.isFold) { // fold
 			actionT.isFold = true;
+			actionIemp = actionT;
 		}
 
-		return actionT;
+		return actionIemp;
 	}
 
 	public ActionTip GetActionRecommendInSubrounds(Game game) {
