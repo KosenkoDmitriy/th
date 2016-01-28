@@ -6,11 +6,7 @@ public interface IAction
 }
 
 public class ActionTip: Action {
-	public ActionTip () {}
-//	public ActionTip (double betToStayInGame)
-//	{
-//		this.betCall.inCredits = betToStayInGame;
-//	}
+
 	public bool isInBetSubrounds;
 	public bool isInPriority1;
 	public bool isInPriority2;
@@ -18,19 +14,13 @@ public class ActionTip: Action {
 }
 
 public class Action : IAction {
-//	public Action() {
-//		Init ();
-//	}
-//
-//	public Action (double betDx)
-//	{
-//		Init ();
-//		this.betCall.inCredits = betDx;
-//	}
-//
-//	private void Init() {
-//		betRaise = betCall = new Bet(0);
-//	}
+	public Action() {
+		Init ();
+	}
+
+	private void Init() {
+		betRaise = betCall = new Bet(0);
+	}
 	#region IAction implementation
 	
 	public virtual void Do (Game game, Player p)
@@ -77,8 +67,12 @@ public class Action : IAction {
 			p.betInvested += betToStay;
 			p.balanceInCredits -= betToStay.inCredits;
 		}
+
 //		double dtRaise = p.betInvested.inBet - game.state.betMax.inBet;
 		if (p.isReal) {
+			game.ui.lblCall.text = betCall.inCredits.f ();
+			game.ui.lblRaise.text = betRaise.inCredits.f();
+			/*
 			if (betRaise.inCredits > 0) {
 				if (game.state.betMax > p.betInvested)
 					game.ui.lblCall.text = betCall.inCredits.f ();
@@ -92,6 +86,7 @@ public class Action : IAction {
 				game.ui.lblCall.text = betCall.inCredits.f ();
 				game.ui.lblRaise.text = Settings.betNull.f ();
 			}
+		*/	
 		}
 
 		if (Settings.isDev) {
