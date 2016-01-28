@@ -123,7 +123,26 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 			if (player.isReal) {
 				game.state.isWaiting = true;
+				var bet = new Bet(player.betInvested.inCredits - game.state.betMax.inCredits);
+				if (bet > 0) { // raise amount ?
+					game.ui.lblRaise.text = bet.inCredits.f ();
+					game.ui.lblCall.text = Settings.betNull.f();
+				} else 
+				if (bet == 0) { // check
+					game.ui.lblRaise.text = Settings.betNull.f();
+					game.ui.lblCall.text = Settings.betNull.f();
 
+					game.ui.btnCall.GetComponent<Button>().interactable = false;
+					game.ui.btnCheck.GetComponent<Button>().interactable = true;
+				} else { // call amount
+					bet *= -1;
+					game.ui.lblCall.text = bet.inCredits.f ();
+					game.ui.lblRaise.text = Settings.betNull.f();
+
+					game.ui.btnCall.GetComponent<Button>().interactable = true;
+					game.ui.btnCheck.GetComponent<Button>().interactable = false;
+				}
+				/*
 				Bet dt = new Bet(0);
 				dt.inCredits = player.betInvested.inCredits - game.state.betMax.inCredits;
 				if (dt > 0) {
@@ -148,7 +167,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 //				game.ui.lblCall.text = dt.inCredits.f();
 //				game.ui.lblRaise.text = Settings.betNull.f();
-
+*/
 
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;

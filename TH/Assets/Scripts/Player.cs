@@ -149,11 +149,7 @@ public class Player {
 				}
 			}
 		}
-		
-		if (actionTipTemp == null) { // force tip action
-			actionTipTemp = new ActionTip();
-			actionTipTemp.isFold = true;
-		}
+
 
 		if (betMax >= 0 && betMaxLimit >= 0) {
 			if (betMax < betMaxLimit) {	// any action allowed
@@ -179,14 +175,21 @@ public class Player {
 			if (Settings.isDev) Log(true, false, string.Format("betMax {0} and betMaxLimit {1} can't be negative", betMax, betMaxLimit));
 		}
 
+		
+		if (actionTipTemp == null) { // force tip action
+			actionTipTemp = new ActionTip();
+			actionTipTemp.isFold = true;
+		}
+
 		// final action
+		actionFinal = GetActionReal(actionTipTemp, game.state.betMax, game.state.betMaxLimit, game.state.isCanToRaise);
+//		actionFinal = GetActionMath(actionTipTemp, game.state.isCanToRaise);
+
 		if (actionFinal == null) {
 			Log(true, false, "actionFinal is null > fold");
 			actionFinal = new Fold (this, new Bet(0), new Bet(0));
-		} else {
-			actionFinal = GetActionReal(actionTipTemp, game.state.isCanToRaise);
-//			actionFinal = GetActionMath(actionTipTemp, game.state.isCanToRaise);
 		}
+
 		return actionFinal;
 	}
 
@@ -308,42 +311,53 @@ public class Player {
 		return actionFinal;
 	}
 
-	public Action GetActionReal(ActionTip actionT, bool isCanToRaise) {
-//		double betTotalAfterAction = bet
+	public Action GetActionReal(ActionTip actionT, Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
+
 		this.actionTip = actionT;
-		var betToStay = actionTip.betToStay;
+		var betPossibleMaxRaiseOrCall = betMaxLimit - betMax;
+
+//		var balanceInCreditsAfterAction = this.balanceInCredits - betMax.inCredits;
+		var betInvestedAfterAction = betInvested + betMax;
+
 		if (actionTip.isFold) {
 			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
-			if (betToStay == 0) {
-				actionT.isCheck = true;
-				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-			}
+
 		} else if (actionTip.isCheck) {
 			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+
 		} else if (actionTip.isCall) {
 			actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
 
-			if (betToStay == 0) {
-				actionT.isCheck = true;
-				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-			}
+//			if (betInvestedAfterAction >= 0 && betInvestedAfterAction <= betMaxLimit) {
+//				if (betInvestedAfterAction > betInvested) { // call
+//				}
+//			} else {
+//				actionFinal = new Call (this, betMax, new Bet(0));
+//			}
 		} else if (actionTip.isRaise) {
-			//TODO raise > call > check
 			actionFinal = new Raise (this, actionTip.betCall, actionTip.betRaise);
-			if (betToStay > patternCurrent.betMaxCallOrRaise) { // call
-				actionT.isCall = true;
-				actionT.betRaise = new Bet(0);
-				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-			} else if (betToStay == 0) {
-				actionT.isCheck = true;
-				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+
+			if (actionTip.betToStay.inBetMath > patternCurrent.betMaxCallOrRaise) { // > call
+				actionTip.isCall = true;
+				actionTip.betRaise = new Bet(0);
+				actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (actionTip.isAllIn) {
 			actionFinal = new AllIn(this, actionTip.betCall, actionTip.betRaise);
 		}
 
-		if (balanceInCredits < 0) {
-			actionT.isFold = true;
+
+		if (betInvestedAfterAction == betInvested) { // > check
+			actionTip.isCheck = true;
+			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+		} else if (betInvestedAfterAction > betInvested) { // > call
+			if (betInvestedAfterAction <= betMaxLimit) {
+				actionFinal = new Call (this, betMax, new Bet(0));
+			}
+		}
+
+		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
+			actionTip.isFold = true;
 			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 		}
 
