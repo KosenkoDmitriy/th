@@ -1,62 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 
-//public class Credit
-//{
-//	double item;
-//
-//	public Credit() {
-//
-//	}
-//
-//	public double Get()
-//	{
-//		return this.item;
-//	}
-//	public void Set(double value)
-//	{
-//		this.item = value;
-////		string dollarAmount = FormatCreditsOrDollars(potAmount);
-////		lblPot.GetComponent<Text>().text = dollarAmount;
-//	}
-//	public override string ToString ()
-//	{
-//		return this.f (this.item);
-//	}
-//}
-
 public class Bet
 {
 	public Bet(double bet) {
-		reset (bet);
-		inCredits = bet;
+		this.inCredits = bet;
 	}
 
 	public override string ToString ()
 	{
 //		return string.Format ("[Bet: inCredits={0}, inBetMath={1}, inCreditsNoM={2}]", inCredits, inBetMath, inCreditsNoM);
-		return string.Format ("[Bet: {0} credits | {1} math]", inCredits, inBetMath);
+		return string.Format ("[Bet: {0} credits | {1} math]", this.inCredits, this.inBetMath);
 	}
 
-	private void reset(double bet) {
-//		if (bet == 0) {
-			_inCreditsNoM = 0;
-			_inBetMath = 0;
-			_inCredits = 0;
-//		}
+	private void reset() {
+		this._inCreditsNoM = 0;
+		this._inBetMath = 0;
+		this._inCredits = 0;
 	}
 
 	private double _inCredits;
 	public double inCredits {
 		get {
-			return _inCredits;
+			return this._inCredits;
 		}
 		set {
-			reset (value);
-			_inCredits = value;
-			if (_inCredits != 0) {
-				_inCreditsNoM = _inCredits / Settings.betCreditsMultiplier;
-				_inBetMath = _inCreditsNoM / Settings.betCurrentMultiplier;
+			reset ();
+			this._inCredits = value;//(double)value;
+			if (this._inCredits != 0) {
+				this._inCreditsNoM = this._inCredits / Settings.betCreditsMultiplier;
+				this._inBetMath = this._inCreditsNoM / Settings.betCurrentMultiplier;
 			}
 		}
 	}
@@ -67,11 +40,11 @@ public class Bet
 			return _inBetMath;
 		}
 		set {
-			reset (value);
-			_inBetMath = value;
-			if (_inBetMath != 0) {
-				_inCreditsNoM = _inBetMath * Settings.betCurrentMultiplier;
-				_inCredits = _inCreditsNoM * Settings.betCreditsMultiplier;
+			reset ();
+			this._inBetMath = value;//(double)value;
+			if (this._inBetMath != 0) {
+				this._inCreditsNoM = this._inBetMath * Settings.betCurrentMultiplier;
+				this._inCredits = this._inCreditsNoM * Settings.betCreditsMultiplier;
 			}
 		}
 	}
@@ -82,11 +55,11 @@ public class Bet
 			return _inCreditsNoM;
 		}
 		set {
-			reset (value);
-			_inCreditsNoM = value;
-			if (_inCreditsNoM != 0) {
-				_inBetMath = _inCreditsNoM / Settings.betCurrentMultiplier;
-				_inCredits = _inCreditsNoM * Settings.betCreditsMultiplier;
+			reset ();
+			this._inCreditsNoM = value;//(double)value;
+			if (this._inCreditsNoM != 0) {
+				this._inBetMath = this._inCreditsNoM / Settings.betCurrentMultiplier;
+				this._inCredits = this._inCreditsNoM * Settings.betCreditsMultiplier;
 			}
 		}
 	}
