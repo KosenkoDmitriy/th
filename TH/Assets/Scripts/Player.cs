@@ -11,7 +11,6 @@ public class Player {
 		hand = new Hand ();
 		alt_patterns = new List<Pattern> ();
 		betInvested = new Bet (0);
-//		balanceInCredits = new Bet (0);
 	}
 	#region print
 	public override string ToString ()
@@ -224,12 +223,7 @@ public class Player {
 							actionT.betRaise.inBetMath = betForRaise;
 							actionT.betCall.inBetMath = betToStay;
 
-//							actionIemp = actionT;
-//							actionIemp.betCall = new Bet(0);
-//							actionIemp.betRaise.inBetMath = betForRaise;
-//							actionIemp.betCall.inBetMath = betToStay;
-//							actionIemp = actionT;
-//							var actionIemp2 = actionT;
+							actionIemp = actionT;
 						}
 					}
 				}
