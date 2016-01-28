@@ -92,23 +92,23 @@ public class Bet
 	}
 
 	public static Bet operator +(Bet a, Bet b) {
-		a.inCredits += b.inCredits;
-		return a;
+		var c = a.inCredits + b.inCredits;
+		return new Bet(c);
 	}
 
 	public static Bet operator -(Bet a, Bet b) {
-		a.inCredits -= b.inCredits;
-		return a;
+		var c = a.inCredits - b.inCredits;
+		return new Bet(c);
 	}
 
 	public static Bet operator *(Bet a, Bet b) {
-		a.inCredits *= b.inCredits;
-		return a;
+		var c = a.inCredits * b.inCredits;
+		return new Bet(c);
 	}
 
 	public static Bet operator /(Bet a, Bet b) {
-		a.inCredits /= b.inCredits;
-		return a;
+		var c = a.inCredits / b.inCredits;
+		return new Bet(c);
 	}
 
 	public static bool operator <=(Bet a, Bet b) {
@@ -137,23 +137,23 @@ public class Bet
 
 	// bet and double
 	public static Bet operator +(Bet a, double b) {
-		a.inCredits += b;
-		return a;
+		var c = a.inCredits + b;
+		return new Bet(c);
 	}
 	
 	public static Bet operator -(Bet a, double b) {
-		a.inCredits -= b;
-		return a;
+		var c = a.inCredits - b;
+		return new Bet(c);
 	}
 	
 	public static Bet operator *(Bet a, double b) {
-		a.inCredits *= b;
-		return a;
+		var c = a.inCredits * b;
+		return new Bet(c);
 	}
 	
 	public static Bet operator /(Bet a, double b) {
-		a.inCredits /= b;
-		return a;
+		var c = a.inCredits / b;
+		return new Bet(c);
 	}
 
 
