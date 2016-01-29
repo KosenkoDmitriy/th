@@ -119,7 +119,10 @@ public class Action : IAction {
 	public bool isCall {
 		get { return name.isCall (); }
 		set {
-			if (value) name = Settings.aCall;
+			if (value) {
+				name = Settings.aCall;
+				betRaise = new Bet(0);
+			}
 		}
 	}
 	public bool isCheck {
