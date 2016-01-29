@@ -16,7 +16,6 @@ public abstract class AbstractBetRound {
 	protected int subRoundCount;
 	protected Game game;
 	public Bet betMax, betMaxLimit;
-//	protected Bet betToStayInGame;
 	protected Bet pot;
 }
 
@@ -95,8 +94,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			var player = game.playerIterator.Next();
 			
 			if (player == null) {
-				Debug.Log(string.Format("end player iterator CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
+				if (Settings.isDev) Debug.Log(string.Format("end player iterator CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
 				if (IsOneActivePlayer()) { // if one active player then he is winner
+					if (Settings.isDev) Debug.Log ("one active player > EndGame()");
 					game.winners = new List<Player>();
 					game.winners.Add(player);
 					game.state = new EndGame(game);
@@ -142,48 +142,13 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					game.ui.btnCall.GetComponent<Button>().interactable = true;
 					game.ui.btnCheck.GetComponent<Button>().interactable = false;
 				}
-				/*
-				Bet dt = new Bet(0);
-				dt.inCredits = player.betInvested.inCredits - game.state.betMax.inCredits;
-				if (dt > 0) {
-					game.ui.lblCall.text = Settings.betNull.f();
-					game.ui.lblRaise.text = dt.inCredits.f();
-
-					game.ui.btnCall.GetComponent<Button>().interactable = true;
-					game.ui.btnCheck.GetComponent<Button>().interactable = false;
-				} else if (dt == 0) {
-					game.ui.lblCall.text = Settings.betNull.f();
-					game.ui.lblRaise.text = Settings.betNull.f();
-
-					game.ui.btnCall.GetComponent<Button>().interactable = false;
-					game.ui.btnCheck.GetComponent<Button>().interactable = true;
-				} else if (dt < 0) {
-					dt *= -1;
-					game.ui.lblCall.text = dt.inCredits.f();
-
-					game.ui.btnCall.GetComponent<Button>().interactable = true;
-					game.ui.btnCheck.GetComponent<Button>().interactable = false;
-				}
-
-//				game.ui.lblCall.text = dt.inCredits.f();
-//				game.ui.lblRaise.text = Settings.betNull.f();
-*/
 
 				if (isCanToRaise) {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
 				} else {
 					game.ui.btnRaise.GetComponent<Button>().interactable = false;
 				}
-
 			} else {
-
-//				//TODO will find why betmax and betmaxlimit sometimes are negative?
-//				if (game.state.betMax < 0)
-//					game.state.betMax *= -1;
-//				if (game.state.betMaxLimit < 0)
-//					game.state.betMaxLimit *= -1;
-//				//TODO will find why betmax and betmaxlimit sometimes are negative?
-
 				player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
 				player.actionFinal.Do(game, player);
 			}

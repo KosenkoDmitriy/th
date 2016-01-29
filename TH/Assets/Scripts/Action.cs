@@ -61,6 +61,7 @@ public class Action : IAction {
 			}
 		}
 		*/
+
 		if (betToStay > 0 && p.betInvested <= game.state.betMaxLimit) {
 			p.betInvested += betToStay;
 			p.balanceInCredits -= betToStay.inCredits;
@@ -198,6 +199,7 @@ public class Fold : Action
 
 	public override void Do(Game game, Player p) {
 		p.isFolded = true;
+		if (Settings.isDev) p.Log(false, true, string.Format("{0} folded", p.name));
 		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}
