@@ -91,7 +91,9 @@ public class GameUI : MonoBehaviour
 		HideDynamicPanels ();
 		if (panelInitBet) {
 			panelInitBet.SetActive (true);
-			if (btnRepeatBet) btnRepeatBet.GetComponent<Button>().interactable = false;
+
+//			if (Settings.betRepeat > 0) if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
+//			else if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
 			if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
 
 			inputBetField.text = Settings.betCurrent.inCredits.f();
@@ -120,6 +122,19 @@ public class GameUI : MonoBehaviour
 		game.ui.btnRaise.GetComponent<Button>().interactable = false;	//.SetActive(false);
 		game.ui.btnFold.GetComponent<Button>().interactable = false;	//.SetActive(false);
 		game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
+	}
+
+	public void btnRepeatBetClick() {
+		if (Settings.betRepeat > 0) {
+			if (game.ui.btnRepeatBet)
+				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
+			game.player.actionFinal = new Raise (game.player, new Bet (0), new Bet (Settings.betRepeat));
+			game.player.actionFinal.Do (game, game.player);
+			game.ui.panelInitBet.SetActive (false);
+			game.ui.panelGame.SetActive (true);
+		} else {
+			if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+		}
 	}
 
 	public void btnHelpClick()
@@ -185,8 +200,9 @@ public class GameUI : MonoBehaviour
 			return;
 		}
 
-		
-		if (btnRepeatBet) btnRepeatBet.GetComponent<Button>().interactable = false;
+		Settings.betRepeat = game.betAmount.inCredits;
+//		if (Settings.betRepeat > 0) if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
+//		else if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
 		if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
 
 		if (panelInitBet) panelInitBet.SetActive(false);

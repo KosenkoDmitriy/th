@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static double betRepeat = 0;
 	public static readonly string aCheck = "CHECK";
 	public static readonly string aCall = "CALL";
 	public static readonly string aFold = "FOLD";
