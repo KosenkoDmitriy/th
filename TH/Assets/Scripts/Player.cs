@@ -346,36 +346,17 @@ public class Player {
 		if (betInvestedAfterAction == betInvested) { // > check
 			actionTip.isCheck = true;
 			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-		}
-		else if (betInvestedAfterAction > betInvested) { // > call or raise
+		} else if (betInvestedAfterAction > betInvested) { // > call or raise
 			if (betInvestedAfterAction.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
-				actionFinal = new Call (this, betMax, new Bet(0));
+				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
 			} else {
 				actionFinal = new Fold (this, new Bet(0), new Bet(0));
 			}
 
 			if (isWinner) {
-				bool isOk = false;
-				if (isCanToRaise) {
-					for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
-						var betRaise = new Bet(0);
-						betRaise.inBetMath = i;
-						if (betMax + betRaise <= betMaxLimit) {
-							actionFinal = new Raise (this, betMax - betInvested, betRaise);
-							isOk = true;
-							break;
-						}
-					}
-					if (!isOk) {
-						actionFinal = new Call (this, betMax - betInvested, new Bet(0));
-					}
-				} else {
-					actionFinal = new Call (this, betMax - betInvested, new Bet(0));
-
-				}
+				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
 			}
 		}
-
 
 
 		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
@@ -383,6 +364,27 @@ public class Player {
 			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 		}
 
+		return actionFinal;
+	}
+
+	public Action RaiseOrCall(Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
+		bool isOk = false;
+		if (isCanToRaise) {
+			for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
+				var betRaise = new Bet(0);
+				betRaise.inBetMath = i;
+				if (betMax + betRaise <= betMaxLimit) {
+					actionFinal = new Raise (this, betMax - betInvested, betRaise);
+					isOk = true;
+					break;
+				}
+			}
+			if (!isOk) {
+				actionFinal = new Call (this, betMax - betInvested, new Bet(0));
+			}
+		} else {
+			actionFinal = new Call (this, betMax - betInvested, new Bet(0));
+		}
 		return actionFinal;
 	}
 	#endregion actions
