@@ -80,7 +80,7 @@ public class GameUI : MonoBehaviour
 	public void btnCallClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.player.actionFinal = new Call(game.player, game.state.betMax, new Bet(0));
+		game.player.actionFinal = new Call(game.player, game.state.betMax - game.player.betInvested, new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
 	}
 
