@@ -344,8 +344,12 @@ public class Player {
 			isCanToRaise = false;
 
 		if (betInvestedAfterAction == betInvested) { // > check
-			actionTip.isCheck = true;
-			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+			if (actionT.isRaise) {
+				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+			} else {
+				actionTip.isCheck = true;
+				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+			}
 		} else if (betInvestedAfterAction > betInvested) { // > call or raise
 			if (betInvestedAfterAction.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
 				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
