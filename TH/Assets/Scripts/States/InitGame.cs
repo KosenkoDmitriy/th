@@ -140,6 +140,21 @@ public class InitGame : BetRound {
 		game.potAmount = 0;
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 		isWaiting = false;
+
+		if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(true);
+		if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button>().interactable = true;
+		if (game.ui.btnStartGame) game.ui.btnStartGame.GetComponentInChildren<Text>().text = "START GAME";
+		// if (btnStartGame) btnStartGame.GetComponent<Button>().onClick.Invoke();
+		// if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
+		if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
+
+		if (game.players [0].isReal) {
+			if (game.ui.panelInitBet) game.ui.panelGame.SetActive(false);
+			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(true);
+		} else {
+			if (game.ui.panelInitBet) game.ui.panelGame.SetActive(true);
+			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
+		}
 	}
 	
 }

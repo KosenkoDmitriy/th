@@ -91,6 +91,9 @@ public class GameUI : MonoBehaviour
 		HideDynamicPanels ();
 		if (panelInitBet) {
 			panelInitBet.SetActive (true);
+			if (btnRepeatBet) btnRepeatBet.GetComponent<Button>().interactable = false;
+			if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
+
 			inputBetField.text = Settings.betCurrent.inCredits.f();
 		}
 	}
@@ -142,20 +145,6 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 
-		if (game.isGameEnd) {
-			if (panelInitBet) panelInitBet.SetActive(true);
-			if (btnRepeatBet) btnRepeatBet.SetActive(true);
-			if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "Start Game";
-			//if (btnStartGame) btnStartGame.GetComponent<Button>().onClick.Invoke();
-//			if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
-		} else {
-			if (panelInitBet) panelInitBet.SetActive(true);
-			if (btnRepeatBet) btnRepeatBet.SetActive(true);
-			if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
-			//if (btnStartGame) btnStartGame.GetComponent<Button>().onClick.Invoke();
-//			if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";
-		}
-
 //		betAmount = 0;
 		string betAmountString = "0";
 		if (inputBetField)
@@ -164,15 +153,9 @@ public class GameUI : MonoBehaviour
 		Double.TryParse (betAmountString, out bet);
 		game.betAmount.inCredits = bet;
 
-//		if (game.betAmount.inBet > 0) {
-//			game.betAmount /= (Settings.betCreditsMultiplier * Settings.betCurrentMultiplier);
-//		}
-
 		// from recommend to optimal
 		double betTotalAfterAction = game.player.balanceInCredits - game.betAmount.inCredits;
 		double betTotalSubRoundAfterA = game.player.betInvested.inCredits + game.betAmount.inCredits;
-
-//		double betRaise = game.state.betMax - game.betAmount.inCredits;
 
 		if (game.isGameRunning) {
 
@@ -201,6 +184,10 @@ public class GameUI : MonoBehaviour
 		} else {
 			return;
 		}
+
+		
+		if (btnRepeatBet) btnRepeatBet.GetComponent<Button>().interactable = false;
+		if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
 
 		if (panelInitBet) panelInitBet.SetActive(false);
 		if (panelGame) panelGame.SetActive(true);
