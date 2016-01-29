@@ -339,16 +339,24 @@ public class Player {
 		}
 
 
-//		// real actions
-//		if (betInvestedAfterAction == betInvested) { // > check
-//			actionTip.isCheck = true;
-//			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
-//		}
-//		else if (betInvestedAfterAction > betInvested) { // > call
-//			if (betInvestedAfterAction <= betMaxLimit) { // && isWinner) {
-//				actionFinal = new Call (this, betMax, new Bet(0));
-//			}
-//		}
+		// real actions
+		if (betInvestedAfterAction == betInvested) { // > check
+			actionTip.isCheck = true;
+			actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+		}
+		else if (betInvestedAfterAction > betInvested) { // > call
+			if (betInvestedAfterAction.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
+				actionFinal = new Call (this, betMax, new Bet(0));
+			} else {
+				actionFinal = new Fold (this, new Bet(0), new Bet(0));
+			}
+
+			if (isWinner) { //TODO raise
+				actionFinal = new Call (this, betMax, new Bet(0));
+			}
+		}
+
+
 
 		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
 			actionTip.isFold = true;
