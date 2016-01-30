@@ -337,6 +337,10 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug)
 			Debug.Log ("Start()");
+
+		if (Settings.isLogined)
+			this.GetBalance ();
+
 		Settings.betCurrent = new Bet(0);
 			
 		panelAddCredits = GameObject.Find ("PanelAddCredits");
@@ -652,7 +656,8 @@ public class GameUI : MonoBehaviour
 			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = www.text;
 			Double.TryParse(www.text, out credits);
 			if (credits >= 0) {
-				game.player.balanceInCredits = credits;///Settings.betCreditsMultiplier;
+				Settings.playerCredits = credits;
+				game.player.balanceInCredits = credits;
 			}
 			if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
 		}

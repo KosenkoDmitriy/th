@@ -62,8 +62,8 @@ public class Game
 		}
 
 		var playerList = new List<Player> ();
-		playerList.AddRange (playersAfterDealer);
-		playerList.AddRange( playersBeforeDealer);
+		playerList.AddRange(playersAfterDealer);
+		playerList.AddRange(playersBeforeDealer);
 
 		int j = 0;
 		foreach (var player in playerList) {
