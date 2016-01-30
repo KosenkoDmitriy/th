@@ -298,11 +298,7 @@ public class Player {
 	public Action GetActionReal(ActionTip actionT, Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
 
 		this.actionTip = actionT;
-		var betPossibleMaxRaiseOrCall = betMaxLimit - betMax;
-
-//		var balanceInCreditsAfterAction = this.balanceInCredits - betMax.inCredits;
-		var betInvestedAfterAction = betInvested + betMax;
-
+/*
 		if (actionTip.isFold) {
 			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 
@@ -338,20 +334,39 @@ public class Player {
 			actionFinal = new AllIn(this, actionTip.betCall, actionTip.betRaise);
 		}
 
+*/
+		var betPossibleMaxRaiseOrCall = betMaxLimit - betMax;
+//		var balanceInCreditsAfterAction = this.balanceInCredits - betMax.inCredits;
+		
+		var betInvestedAfterAction = betInvested;
+		var dt = betMax - betInvested;
+		if (dt > 0) { // call required
+			betInvestedAfterAction += dt;
+		} else if (dt < 0) { // raised already
+			
+		}
 
 		// real actions
 		if (betInvested >= betMaxLimit)
 			isCanToRaise = false;
 
 		if (betInvestedAfterAction == betInvested) { // > check
-			if (actionT.isRaise) {
+			if (actionTip.isRaise) {
 				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+			} else if (actionTip.isCall) {
+				if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) { // call
+					actionTip.isCall = true;
+					actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
+				} else { // can't call (check)
+					actionTip.isCheck = true;
+					actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
+				}
 			} else {
 				actionTip.isCheck = true;
 				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (betInvestedAfterAction > betInvested) { // > call or raise
-			if (betInvestedAfterAction.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
+			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
 				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
 			} else {
 				actionFinal = new Fold (this, new Bet(0), new Bet(0));
@@ -371,7 +386,7 @@ public class Player {
 		return actionFinal;
 	}
 
-	public Action RaiseOrCall(Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
+		public Action RaiseOrCall(Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
 		bool isOk = false;
 		if (isCanToRaise) {
 			for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
