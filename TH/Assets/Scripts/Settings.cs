@@ -10,7 +10,7 @@ static class Settings
 	public static readonly string aAllIn = "ALL IN";
 	public static readonly string aUnknown = "OPEN";
 
-	public static bool isDev = true;
+	public static bool isDev = false;
 	public static bool isDebug = false;
 	public static int levelGame = 2;
 	public static int levelMainMenu = 0;
@@ -19,7 +19,7 @@ static class Settings
 	public static readonly int dealerIndex = playerSize - 1;
 	public static readonly int playerRealIndex = 0;
 
-	public static float updateInterval = 0.1f;
+	public static float updateInterval = 0.25f;
 
 	#region bets
 	public static readonly int betSubRoundMinSize = 0;

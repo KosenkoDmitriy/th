@@ -149,8 +149,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					game.ui.btnRaise.GetComponent<Button>().interactable = false;
 				}
 			} else {
-				player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
 				if (!player.isFolded) {
+					player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
 					player.actionFinal.Do(game, player);
 				}
 			}
