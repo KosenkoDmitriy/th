@@ -178,6 +178,7 @@ public class Player {
 		if (actionTipTemp == null) { // force tip action
 			actionTipTemp = new ActionTip();
 			actionTipTemp.isFold = true;
+			Log(true, false, "actionTipTemp is null > fold");
 		}
 
 		// final action
@@ -380,10 +381,13 @@ public class Player {
 //			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 //		}
 
+		if (isFolded) {
+			actionFinal = new Fold (this, new Bet(0), new Bet(0));
+		}
 		return actionFinal;
 	}
 
-		public Action RaiseOrCall(Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
+	public Action RaiseOrCall(Bet betMax, Bet betMaxLimit, bool isCanToRaise) {
 		bool isOk = false;
 		if (isCanToRaise) {
 			for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
