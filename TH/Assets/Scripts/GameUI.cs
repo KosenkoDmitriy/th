@@ -302,7 +302,7 @@ public class GameUI : MonoBehaviour
 		if (Settings.betBonus > 0) {
 			if (payTable != null) {
 				lblPot.GetComponent<Text>().text = Settings.betBonus.to_b ();
-				game.player.balanceInCredits -= Settings.betBonus;
+				game.player.balanceInCredits -= Settings.betBonus * Settings.betCreditsMultiplier;
 				game.player.lblCredits.text = game.player.balanceInCredits.f();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
 				payTable.SetBet(Settings.betBonus);

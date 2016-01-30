@@ -131,7 +131,7 @@ public class Game
 				double winBonus = game.ui.payTable.GetAndSelectBonusWin (player);
 				if (winBonus > 0) {
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
-					player.balanceInCredits += winBonus;
+					player.balanceInCredits += winBonus * Settings.betCreditsMultiplier;
 					player.lblCredits.text = player.balanceInCredits.f();
 					winBonusString = string.Format ("\n{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
 				}
