@@ -173,17 +173,40 @@ public class GameUI : MonoBehaviour
 		double betTotalSubRoundAfterA = game.player.betInvested.inCredits + game.betAmount.inCredits;
 
 		if (game.isGameRunning) {
+			/*
+			if (betTotalSubRoundAfterA > game.state.betMaxLimit.inCredits) { // can't raise (exceed bet max limit)
 
-			if (betTotalAfterAction > 0) { //call or raise
-				if (betTotalSubRoundAfterA > game.state.betMax.inCredits && betTotalSubRoundAfterA <= game.state.betMaxLimit.inCredits) {
-					game.player.actionFinal = new Raise (game.player, game.player.betInvested - game.state.betMax, game.betAmount);
-				} else {
-					game.player.actionFinal = new Call (game.player, game.player.betInvested - game.state.betMax, new Bet(0));
+			} else {
+				if (betTotalAfterAction > game.player.balanceInCredits) { // call or raise
+					if (betTotalSubRoundAfterA > game.state.betMax.inCredits) {
+						game.player.actionFinal = new Raise (game.player, game.state.betMax - game.player.betInvested, game.betAmount);
+					} else {
+						game.player.actionFinal = new Call (game.player, game.state.betMax - game.player.betInvested, new Bet(0));
+					}
+				} else if (betTotalAfterAction == game.player.balanceInCredits) { // check
+					game.player.actionFinal = new Check (game.player, new Bet(0), new Bet(0));
+				} else if (betTotalAfterAction < 0) { // TODO can't raise
+					if (game.player.betInvested < 0) { // TODO fold
+						
+					}
 				}
-			} else if (betTotalAfterAction == 0) { //check
-				game.player.actionFinal = new Check (game.player, new Bet(0), new Bet(0));
-			} else if (betTotalAfterAction < 0) { //fold
-				//TODO
+			}*/
+
+			var betCall = game.state.betMax - game.player.betInvested;
+			if (betCall < 0) { // raised already
+				betCall.inCredits = 0; // should be positive
+			}
+			if (betTotalSubRoundAfterA > game.state.betMaxLimit.inCredits) {
+				if (betCall > game.state.betMaxLimit) {
+					game.player.actionFinal = new Check (game.player, new Bet(0), new Bet(0));
+
+				} else {
+					game.player.actionFinal = new Call (game.player, betCall, new Bet(0));
+
+				}
+			} else {
+				game.player.actionFinal = new Raise (game.player, betCall, game.betAmount);
+
 			}
 
 			if (lblCall) lblCall.text = game.state.betMax.inCredits.f();

@@ -372,6 +372,7 @@ public class Player {
 
 		if (isWinner) {
 			actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+			//TODO check when the player will exceed the bet max limit
 		}
 
 //		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
