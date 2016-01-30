@@ -103,7 +103,6 @@ public class GameUI : MonoBehaviour
 	public void btnFoldClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-
 		game.state = new InitGame (game);
 	}
 
@@ -653,12 +652,13 @@ public class GameUI : MonoBehaviour
 		if (www.error == null)
 		{
 			double credits = 0;
-			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = www.text;
 			Double.TryParse(www.text, out credits);
-			if (credits >= 0) {
-				Settings.playerCredits = credits;
-				game.player.balanceInCredits = credits;
-			}
+
+			Settings.playerCredits = credits;
+			game.player.balanceInCredits = credits;
+			game.player.lblCredits.text = credits.f();
+			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = credits.f();
+
 			if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
 		}
 		else

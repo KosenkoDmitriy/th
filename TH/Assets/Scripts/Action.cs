@@ -34,7 +34,8 @@ public class Action : IAction {
 					DoActive(game, p);
 					game.player = p;
 				}
-				game.ui.SetBalance(p.balanceInCredits.f());
+				game.ui.SetBalance(p.balanceInCredits.ToString());
+				Settings.playerCredits = p.balanceInCredits;
 				game.state.isWaiting = false;
 			} else {
 				if (p.isFolded) {
