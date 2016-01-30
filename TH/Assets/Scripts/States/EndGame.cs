@@ -11,19 +11,14 @@ public class EndGame : BetRound {
 		game.isGameRunning = false;
 		game.isGameEnd = true;
 
-
 		// display all community cards
 		for (int i = 0; i < Settings.playerHandMaxSize; i++) {
 			var card = game.cards[i];
-//			if (!card.FaceUp)
 				card.FaceUp = true;
 		}
 
-		//		roundCount = subRoundCount = 0;
-		//		betCurrentToStayInGame = betTotalInThisRound = 0;
-
-		// display/hide cards
-		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
+		// hide cards for folded players, show cards for active players
+		foreach(var player in game.players) {
 			foreach (var card in player.handPreflop.getCards()) {
 				if (player.id != Settings.playerRealIndex) {
 					if (player.isFolded) {
@@ -35,21 +30,22 @@ public class EndGame : BetRound {
 			}
 		}
 
-		// display hand combinations for any player
-		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-			string winHandString = player.GetHandStringFromHandObj();
-			player.lblAction.text = winHandString; // show player's hand
+		// display hand combination for active players only
+		foreach(var player in game.players) {
+			if (!player.isFolded || Settings.isDev) {
+				string winHandString = player.GetHandStringFromHandObj();
+				player.lblAction.text = winHandString; // show player's hand
+			} else {
+				player.lblAction.text = "";
+			}
 		}
 
-		// split the pot between win players
+		// preparation active players for winners detection
 		var players = new List<Player> ();
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			players.Add(player);
 		}
 		game.WinInfo (players);
-
-//		LastAction ();
-//		game.state.isWaiting = true;
 	}
 
 
