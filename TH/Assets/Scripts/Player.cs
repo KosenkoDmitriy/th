@@ -352,12 +352,9 @@ public class Player {
 
 		if (betInvestedAfterAction == betInvested) { // > check
 			if (actionTip.isRaise) {
-				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
-			} else if (actionTip.isCall) {
-				if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) { // call
-					actionTip.isCall = true;
-					actionFinal = new Call (this, actionTip.betCall, actionTip.betRaise);
-				} else { // can't call (check)
+				if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) { // raise
+					actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+				} else { // can't raise (check)
 					actionTip.isCheck = true;
 					actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 				}
@@ -371,17 +368,16 @@ public class Player {
 			} else {
 				actionFinal = new Fold (this, new Bet(0), new Bet(0));
 			}
-
-			if (isWinner) {
-				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
-			}
 		}
 
-
-		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
-			actionTip.isFold = true;
-			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
+		if (isWinner) {
+			actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
 		}
+
+//		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
+//			actionTip.isFold = true;
+//			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
+//		}
 
 		return actionFinal;
 	}
