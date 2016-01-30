@@ -51,7 +51,7 @@ static class Settings
 	public static readonly double betNull = 0.00;
 	public static Bet betCurrent;
 
-	public static double playerCredits = 500;
+	public static double playerCredits = 25000;
 	public static string credits = " credits ";// { get; internal set; }
 
 	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
