@@ -173,24 +173,6 @@ public class GameUI : MonoBehaviour
 		double betTotalSubRoundAfterA = game.player.betInvested.inCredits + game.betAmount.inCredits;
 
 		if (game.isGameRunning) {
-			/*
-			if (betTotalSubRoundAfterA > game.state.betMaxLimit.inCredits) { // can't raise (exceed bet max limit)
-
-			} else {
-				if (betTotalAfterAction > game.player.balanceInCredits) { // call or raise
-					if (betTotalSubRoundAfterA > game.state.betMax.inCredits) {
-						game.player.actionFinal = new Raise (game.player, game.state.betMax - game.player.betInvested, game.betAmount);
-					} else {
-						game.player.actionFinal = new Call (game.player, game.state.betMax - game.player.betInvested, new Bet(0));
-					}
-				} else if (betTotalAfterAction == game.player.balanceInCredits) { // check
-					game.player.actionFinal = new Check (game.player, new Bet(0), new Bet(0));
-				} else if (betTotalAfterAction < 0) { // TODO can't raise
-					if (game.player.betInvested < 0) { // TODO fold
-						
-					}
-				}
-			}*/
 
 			var betCall = game.state.betMax - game.player.betInvested;
 			if (betCall < 0) { // raised already
@@ -199,14 +181,11 @@ public class GameUI : MonoBehaviour
 			if (betTotalSubRoundAfterA > game.state.betMaxLimit.inCredits) {
 				if (betCall > game.state.betMaxLimit) {
 					game.player.actionFinal = new Check (game.player, new Bet(0), new Bet(0));
-
 				} else {
 					game.player.actionFinal = new Call (game.player, betCall, new Bet(0));
-
 				}
 			} else {
 				game.player.actionFinal = new Raise (game.player, betCall, game.betAmount);
-
 			}
 
 			if (lblCall) lblCall.text = game.state.betMax.inCredits.f();
@@ -238,10 +217,16 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 		var betMax = game.state.betMaxLimit - game.state.betMax;
-		Settings.betCurrent = betMax;
-
-//		Settings.betCurrent.inBetMath = game.state.betMaxLimit.inBetMath;
 		
+		if (game.player.balanceInCredits > betMax.inCredits) {
+			Settings.betCurrent = betMax;
+		} else {
+			Settings.betCurrent.inCredits = game.player.balanceInCredits;
+		}
+
+		if (Settings.betCurrent < 0d) {
+			Settings.betCurrent.inCredits = Settings.betNull;
+		}
 		string b = Settings.betCurrent.inCredits.f();
 		inputBetField.text = b;
 		panelInitBet.GetComponentInChildren<InputField>().text = b;
@@ -253,13 +238,14 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 
-//		Settings.betCurrent.inBetMath += Settings.betMinMath;// * Settings.betCurrentMultiplier;
-
 		Bet betMin = new Bet(0);
 		betMin.inBetMath = Settings.betMinMath;
 		Settings.betCurrent += betMin;
 
-		if (Settings.betCurrent > game.state.betMaxLimit - game.state.betMax)
+		if (
+			(Settings.betCurrent > game.state.betMaxLimit - game.state.betMax) 
+		    || (Settings.betCurrent > game.player.balanceInCredits)
+		   )
 			Settings.betCurrent.inBetMath = Settings.betNull;
 
 		inputBetField.text = Settings.betCurrent.inCredits.f();

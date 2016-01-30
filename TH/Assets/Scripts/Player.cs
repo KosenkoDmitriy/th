@@ -389,7 +389,7 @@ public class Player {
 			for(int i = 1; i <= patternCurrent.betMaxCallOrRaise; i++) {
 				var betRaise = new Bet(0);
 				betRaise.inBetMath = i;
-				if (betMax + betRaise <= betMaxLimit) {
+				if (betMax + betRaise <= betMaxLimit && (betMax + betRaise).inCredits <= balanceInCredits) {
 					actionFinal = new Raise (this, betMax - betInvested, betRaise);
 					isOk = true;
 					break;
@@ -401,6 +401,7 @@ public class Player {
 		} else {
 			actionFinal = new Call (this, betMax - betInvested, new Bet(0));
 		}
+
 		return actionFinal;
 	}
 	#endregion actions
