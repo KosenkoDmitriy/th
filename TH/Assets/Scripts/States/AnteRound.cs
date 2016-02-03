@@ -14,6 +14,7 @@ public class AnteRound : BetRound {
 		base.FirstAction ();
 
 		game.ui.btnFold.GetComponent<Button>().interactable = false;
+		game.ui.btnAllIn.GetComponent<Button>().interactable = false;
 	}
 	
 	public override void BetSubRounds ()
@@ -108,6 +109,7 @@ public class AnteRound : BetRound {
 	{
 		base.LastAction ();
 		game.ui.btnFold.GetComponent<Button>().interactable = true;
+		game.ui.btnAllIn.GetComponent<Button>().interactable = true;
 
 		game.state = new PreflopRound (game);
 	}

@@ -68,7 +68,6 @@ public class AllInRound : BetRound {
 				game.state.isWaiting = true;
 //				game.player = player;
 				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
-
 			} else {
 				if (player.isWinner) {
 					if (Settings.isDev) player.actionCurrentString += "> " + Settings.aAllIn + " (w)"; else player.actionCurrentString = Settings.aAllIn;
