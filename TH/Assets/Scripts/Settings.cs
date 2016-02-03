@@ -41,7 +41,7 @@ static class Settings
 	public static double betBonusMin = 1;
 	public static double betBonusMax = 5;
 
-	public static int paytableRowSize = 9; //rows
+	public static int paytableRowSize = 7; //rows
 	public static int paytableColumnSize = 6; //cols
 	
 	public static readonly int ColsCount = 5;
