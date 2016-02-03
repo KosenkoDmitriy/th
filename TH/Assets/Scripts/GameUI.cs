@@ -103,7 +103,9 @@ public class GameUI : MonoBehaviour
 	public void btnFoldClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		game.state = new InitGame (game);
+
+		game.player.isFolded = true;
+		game.state = new EndGame (game);
 	}
 
 	public void btnAllInClick()
