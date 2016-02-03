@@ -121,8 +121,49 @@ public class AllInRound : BetRound {
 		return minAllIn;
 	}
 
-	
 	public override void LastAction () {
+//		LastActionDetailed (); // main pot, other pots (win info with details)
+//		return;
+
+		game.state.isWaiting = true;
+
+		// display all community cards
+		for (int i = 0; i < Settings.playerHandMaxSize; i++) {
+			var card = game.cards[i];
+			card.FaceUp = true;
+		}
+
+		var potAmountOld = game.potAmount;
+		foreach (var player in playersAllIn) {
+			player.ShowCards(game);
+
+			game.potAmount += player.balanceInCredits;
+
+			player.balanceInCredits = 0;
+			player.lblCredits.text = player.balanceInCredits.f();
+		}
+
+		game.ui.lblPot.text = string.Format("{0} + {1} = {2}", potAmountOld.f (), game.potAmount.f (), (potAmountOld + game.potAmount).f() );
+		game.potAmount += potAmountOld;
+		
+		game.WinInfo (playersAllIn);
+
+
+		game.ui.panelWin.SetActive (true);
+//		game.ui.lblWinInfo.text = winInfo;
+		
+		game.ui.panelGame.SetActive(true);
+		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
+		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
+		game.ui.btnRaise.GetComponent<Button>().interactable = true;	//.SetActive(false);
+		game.ui.btnFold.GetComponent<Button>().interactable = true;		//.SetActive(false);
+		game.ui.btnAllIn.GetComponentInChildren<Text>().text = Settings.aAllIn;
+		game.ui.panelGame.SetActive(false);
+		
+		playerFirstToAllIn = null;
+	}
+
+	public void LastActionDetailed () {
 		game.state.isWaiting = true;
 
 		game.winners = game.GetWinners (playersAllIn);
@@ -147,17 +188,17 @@ public class AllInRound : BetRound {
 		// main pot
 		double winPotAmount = game.potAmount/game.winners.Count;
 		List<Player> winList = new List<Player> ();
-
+		
 		if (game.winners.Count > 0)
 			winInfo += string.Format("{0} \n\n", game.winners [0].GetHandStringFromHandObj () );
-
+		
 		winInfo += "Main Pot:\n";
 		foreach(var player in game.winners) {
 			player.balanceInCredits += winPotAmount;
 			player.lblCredits.text = player.balanceInCredits.f();
 			winInfo += string.Format("{0} win {1}\n", player.name, winPotAmount.f());
 			winList.Add (player);
-			//TODO
+//TODO
 //			if (player.isReal) {
 //				game.ui.audio.PlayOneShot (game.ui.soundWin);
 //				// check for bonus
@@ -204,11 +245,9 @@ public class AllInRound : BetRound {
 		game.ui.panelGame.SetActive(false);
 
 		playerFirstToAllIn = null;
-
 	}
 
 	Player player;//current
-//	Game game;
 	List<Pot> pots;
 	double betBeforeAllIn;
 	double minAllIn;

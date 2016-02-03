@@ -77,7 +77,7 @@ public class Game
 	}
 
 	public void WinInfo(List<Player> players) {
-		Game game = this; //TODO
+		Game game = this;
 		game.winners = game.GetWinners (players);
 
 		string winString = "";
@@ -116,7 +116,7 @@ public class Game
 		Settings.playerCredits = game.player.balanceInCredits;
 
 //		game.potAmount = 0;
-//		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.to_s();
+//		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.f();
 		game.ui.lblWinInfo.GetComponent<UnityEngine.UI.Text> ().text = winString;
 		
 		game.ui.HideDynamicPanels ();
