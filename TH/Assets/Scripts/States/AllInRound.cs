@@ -133,18 +133,19 @@ public class AllInRound : BetRound {
 			card.FaceUp = true;
 		}
 
-		var potAmountOld = game.potAmount;
+		double potAmountOld = game.potAmount;
+		double potAmountNew = 0;
 		foreach (var player in playersAllIn) {
 			player.ShowCards(game);
 
-			game.potAmount += player.balanceInCredits;
+			potAmountNew += player.balanceInCredits;
 
 			player.balanceInCredits = 0;
 			player.lblCredits.text = player.balanceInCredits.f();
 		}
 
-		game.ui.lblPot.text = string.Format("{0} + {1} = {2}", potAmountOld.f (), game.potAmount.f (), (potAmountOld + game.potAmount).f() );
-		game.potAmount += potAmountOld;
+		game.ui.lblPot.text = string.Format("{0} + {1} = {2}", potAmountOld.f (), potAmountNew.f (), (potAmountOld + potAmountNew).f() );
+		game.potAmount = potAmountOld + potAmountNew;
 		
 		game.WinInfo (playersAllIn);
 
