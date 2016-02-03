@@ -126,7 +126,7 @@ public class AllInRound : BetRound {
 	public override void LastAction () {
 		game.state.isWaiting = true;
 
-		game.winners = game.GetWinnersAndSetWinPercentage (playersAllIn);
+		game.winners = game.GetWinners (playersAllIn);
 		
 		double minAllIn = GetMinBetTotal (playersAllIn);
 
@@ -175,7 +175,7 @@ public class AllInRound : BetRound {
 
 		int no = 1;
 		foreach (var pot in pots) {
-			var tempWinners = game.GetWinnersAndSetWinPercentage (pot.players);
+			var tempWinners = game.GetWinners (pot.players);
 			double winAmount = 0;
 			winAmount = pot.maxWinIfWin / tempWinners.Count;
 			foreach(var player in tempWinners) {

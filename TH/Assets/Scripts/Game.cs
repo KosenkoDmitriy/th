@@ -78,7 +78,7 @@ public class Game
 
 	public void WinInfo(List<Player> players) {
 		Game game = this; //TODO
-		game.winners = game.GetWinnersAndSetWinPercentage (players);
+		game.winners = game.GetWinners (players);
 
 		string winString = "";
 		double winAmount = game.potAmount;
@@ -147,15 +147,15 @@ public class Game
 		
 		// detect max win hand
 		foreach (var player in players) {
-			if (player.hand > winHandMax && !player.isFolded) {
+			if (!player.isFolded && player.hand > winHandMax)
 				winHandMax = player.hand;
-			}
 		}
 		
-		// detect winners
 		List<Player> winners = new List<Player>();
 		foreach (var player in players) {
 			if (winHandMax == player.hand && !player.isFolded) {
+				player.winPercent = 100;
+				player.isWinner = true;
 				winners.Add(player);
 			}
 		}
@@ -163,25 +163,61 @@ public class Game
 		return winners;
 	}
 	
-	public List<Player> GetWinnersAndSetWinPercentage(List<Player> players) {
-		List<Player> winners = GetWinners (players);
-		
-		// start calculating the win percentage/hand strength
-		if (winners.Count > 0) {
-			double winPercentage = 100/winners.Count;
-			foreach (var item in winners) {
-				foreach (var player in players) {
-					if (player.id == item.id && player.name == item.name) {
-						item.winPercent = winPercentage;
-						player.winPercent = winPercentage;
-						player.isWinner = true;
-					}
+	public List<Player> GetPlayersAndSetWinPercentage(List<Player> players) {
+		if (this.winners == null || this.winners.Count == 0) {
+			this.winners = GetWinners (players);
+		}
+
+		// set win percetage for winners
+		foreach (var winner in winners)
+			foreach (var player in players)
+				if (player.id == winner.id) {
+					player.winPercent = winner.winPercent;
+					player.isWinner = winner.isWinner;
+				}
+
+		// sort by low hand strength
+		List<Player> playersSorted = new List<Player> ();
+		playersSorted.AddRange (players);
+
+		Player tempPlayer = null;
+		for(int i = 0; i < playersSorted.Count - 1; i++)
+		{
+			for(int j = i + 1; j < playersSorted.Count; j++)
+			{
+				if (playersSorted[i].hand < playersSorted[j].hand)
+				{
+					tempPlayer = playersSorted[i];
+					playersSorted[i] = playersSorted[j];
+					playersSorted[j] = tempPlayer;
 				}
 			}
 		}
-		// end calculating the win percentage/hand strength
-		
-		return winners;
+
+		List<Player> loosers = new List<Player> ();
+		foreach (var player in playersSorted) {
+			if (player.hand < winners[0].hand) {
+				loosers.Add(player);
+			}
+		}
+
+		// win percentage for losers
+		var dp = 100 / loosers.Count;
+		int no = 1;
+		foreach (var player in loosers) {
+			if (!player.isWinner) {
+				double winPercent = 100 - no * dp;
+				player.winPercent = winPercent;
+				no++;
+			}
+		}
+
+		foreach (var l in loosers)
+			foreach (var player in players)
+				if (player.id == l.id)
+					player.winPercent = l.winPercent;
+
+		return players;
 	}
 
 	public List<Player> winners;

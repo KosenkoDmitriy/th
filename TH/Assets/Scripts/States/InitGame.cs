@@ -116,7 +116,8 @@ public class InitGame : BetRound {
 			player.hand = player.GetBestPlayerHand (game.cards);
 		}
 
-		game.winners = game.GetWinnersAndSetWinPercentage (game.players); // calculating the win percentage/hand strength
+		game.winners = game.GetWinners (game.players); // calculating the win percentage/hand strength
+		game.players = game.GetPlayersAndSetWinPercentage (game.players); // calculating the win percentage/hand strength
 
 		if (Settings.isDev)
 		foreach(var player in game.players) {
