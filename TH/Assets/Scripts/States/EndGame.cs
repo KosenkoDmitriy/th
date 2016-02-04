@@ -32,7 +32,7 @@ public class EndGame : BetRound {
 
 		// display hand combination for active players only
 		foreach(var player in game.players) {
-			if (!player.isFolded || Settings.isDev) {
+			if (!player.isFolded || Settings.isDev || (player.isFolded && player.isReal)) {
 				string winHandString = player.GetHandStringFromHandObj();
 				player.lblAction.text = winHandString; // show player's hand
 			} else {
