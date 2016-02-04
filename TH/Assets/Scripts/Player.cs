@@ -658,6 +658,14 @@ public class Player {
 		}
 	}
 
+	public void HideCards (Game game)
+	{
+		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
+			var card = handPreflop.getCard(i);
+			card.isHidden = true;
+		}
+	}
+
 	public string GetHandStringFromHandObj() {
 		string handWinBestString = HandCombination.GetHandStringByHandObj (this.hand);
 		return handWinBestString;

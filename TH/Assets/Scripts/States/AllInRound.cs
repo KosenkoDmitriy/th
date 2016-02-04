@@ -69,7 +69,7 @@ public class AllInRound : BetRound {
 //				game.player = player;
 				if (Settings.isDev) game.ui.lblBet.text = string.Format("c:{0} m:{1}", Settings.betCurrent, game.state.betMax);
 			} else {
-				if (player.isWinner) {
+				if (player.isWinner) { // || betMax.inBetMath <= player.patternCurrent.betMaxCallOrRaise) {
 					if (Settings.isDev) player.actionCurrentString += "> " + Settings.aAllIn + " (w)"; else player.actionCurrentString = Settings.aAllIn;
 					player.lblAction.text = player.actionCurrentString;
 
@@ -135,9 +135,24 @@ public class AllInRound : BetRound {
 
 		double potAmountOld = game.potAmount;
 		double potAmountNew = 0;
-		foreach (var player in playersAllIn) {
-			player.ShowCards(game);
 
+		// display cards for winners / hide cards for loosers
+		foreach (var player in game.players) {
+			if (!player.isFolded || (player.isFolded && player.isReal)) {
+				player.ShowCards(game);
+				player.lblAction.text = player.GetHandStringFromHandObj();
+			} else {
+				player.HideCards(game);
+				player.lblAction.text = "";
+			}
+			
+			if (player.isReal) {
+				player.ShowCards(game);
+				player.lblAction.text = player.GetHandStringFromHandObj();
+			}
+		}
+
+		foreach (var player in playersAllIn) {
 			potAmountNew += player.balanceInCredits;
 
 			player.balanceInCredits = 0;
