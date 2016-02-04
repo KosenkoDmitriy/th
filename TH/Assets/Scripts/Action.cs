@@ -245,11 +245,7 @@ public class AllIn : Action
 		if (game.state.playerFirstToAllIn == null) {
 			game.state = new AllInRound (game, p, game.state.betMax.inCredits);
 		} else {
-			if (p.isReal) {
 
-			} else {
-
-			}
 		}
 
 		if (p.isAllIn) {
@@ -258,13 +254,7 @@ public class AllIn : Action
 				game.state.betMax.inCredits = p.balanceInCredits;
 			}
 			p.lblCredits.text = Settings.betNull.f ();
-//			game.potAmount += p.betTotal;
-//			game.ui.lblPot.text = game.potAmount.to_s ();
 		}
-
-
-//		game.ui.UpdatePlayerActionAndCredits(p);
-
 		game.state.isWaiting = false;
 	}
 }

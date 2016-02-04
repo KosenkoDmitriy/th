@@ -7,7 +7,7 @@ public class AllInRound : BetRound {
 	public AllInRound(Game game, Player playerFirstToAllIn, double betDx) {
 		this.game = game;
 		this.playerFirstToAllIn = playerFirstToAllIn;
-		this.betBeforeAllIn = betDx;
+		this.betMaxBeforeAllIn = betDx;
 		this.subRoundMaxSize = 1;
 		this.betMaxLimit = new Bet(Settings.betCurrentMultiplier);
 
@@ -27,18 +27,24 @@ public class AllInRound : BetRound {
 			}
 		}
 		
-		//return back last betToStayInGame
+		// if (subrounds.Count == 1) then return back all invested bet in current subround
+		// if (subrounds.Count > 1) we should return back last invested bet in current subround instead of all invested bets
+		// find player with min balance and player.balance += player.balance - minBalance
 		foreach (var player in before) {
-			player.betInvested  -= betBeforeAllIn;
-			player.balanceInCredits += betBeforeAllIn;
-			game.potAmount += player.betInvested.inCredits;
+			double betLastInCredits = playerFirstToAllIn.balanceInCredits - player.balanceInCredits;
+			if (betLastInCredits > 0) {
+				player.balanceInCredits += betLastInCredits;
+				player.betInvested.inCredits -= betLastInCredits;
+//				game.potAmount -= betLastInCredits;
 
-			player.lblCredits.text = player.balanceInCredits.f();
-			game.ui.lblPot.text = game.potAmount.f();
+				player.lblCredits.text = player.balanceInCredits.f();
+				game.ui.lblPot.text = game.potAmount.f();
+			}
 		}
 		
 		// reorder players - first all in player
 		List<Player> players = new List<Player>();
+//		players.Add(playerFirstToAllIn);
 		players.AddRange (before);
 		players.AddRange (after);
 
@@ -265,7 +271,7 @@ public class AllInRound : BetRound {
 
 	Player player;//current
 	List<Pot> pots;
-	double betBeforeAllIn;
+	double betMaxBeforeAllIn;
 	double minAllIn;
 	PlayerIterator playerIterator;
 }

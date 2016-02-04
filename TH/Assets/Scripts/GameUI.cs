@@ -111,8 +111,11 @@ public class GameUI : MonoBehaviour
 	public void btnAllInClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-
-		game.player.actionFinal = new AllIn (game.player, game.state.betMax, new Bet(0));
+		var betToStay = game.state.betMax - game.player.betInvested;
+		if (betToStay < 0) {
+			betToStay = new Bet(0);
+		}
+		game.player.actionFinal = new AllIn (game.player, betToStay, new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
 
 		
