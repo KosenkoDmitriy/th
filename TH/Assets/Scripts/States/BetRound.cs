@@ -123,6 +123,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //			if (Settings.isDev) player.LogDevInfo(player, false, false);
 
 			if (player.isReal) {
+				if (player.betInvested >= betMaxLimit) { // skip action
+					return;
+				}
 				game.state.isWaiting = true;
 				var bet = new Bet(player.betInvested.inCredits - game.state.betMax.inCredits);
 				if (bet > 0) { // raise amount ?
