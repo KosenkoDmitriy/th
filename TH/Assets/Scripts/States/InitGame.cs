@@ -155,12 +155,24 @@ public class InitGame : BetRound {
 		if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
 
 		if (game.players [0].isReal) {
-			if (game.ui.panelInitBet) game.ui.panelGame.SetActive(false);
+			if (game.ui.panelGame) game.ui.panelGame.SetActive(false);
 			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(true);
 		} else {
-			if (game.ui.panelInitBet) game.ui.panelGame.SetActive(true);
+			if (game.ui.panelGame) game.ui.panelGame.SetActive(true);
 			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
 		}
+
+		foreach (var player in game.players) {
+			if (player.isReal) {
+				if (player.balanceInCredits <= 0) {
+					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
+				} else {
+					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = true;
+				}
+				break;
+			}
+		}
+
 	}
 	
 }
