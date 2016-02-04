@@ -230,6 +230,8 @@ public class GameUI : MonoBehaviour
 
 		if (Settings.betCurrent < 0d) {
 			Settings.betCurrent.inCredits = Settings.betNull;
+		} else {
+			Settings.betCurrent.inCredits = betMax.inCredits;
 		}
 
 		string b = Settings.betCurrent.inCredits.f();
