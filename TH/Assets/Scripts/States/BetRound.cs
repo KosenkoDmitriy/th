@@ -152,7 +152,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 				Bet betMin = new Bet(0);
 				betMin.inBetMath = Settings.betMinMath;
-				if (game.player.balanceInCredits < bet.inCredits || game.player.balanceInCredits < betMin.inCredits ) { // don't allow raise
+				if (game.player.balanceInCredits < bet.inCredits || game.player.balanceInCredits < betMin.inCredits || (player.betInvested >= betMaxLimit) ) { // don't allow raise
 					game.ui.btnRaise.GetComponent<Button>().interactable = false;
 				} else {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
