@@ -148,6 +148,14 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				} else {
 					game.ui.btnRaise.GetComponent<Button>().interactable = false;
 				}
+
+				Bet betMin = new Bet(0);
+				betMin.inBetMath = Settings.betMinMath;
+				if (game.player.balanceInCredits < bet.inCredits || game.player.balanceInCredits < betMin.inCredits ) { // don't allow raise
+					game.ui.btnRaise.GetComponent<Button>().interactable = false;
+				} else {
+					game.ui.btnRaise.GetComponent<Button>().interactable = true;
+				}
 			} else {
 				if (!player.isFolded) {
 					player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
