@@ -41,7 +41,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
 		this.betMaxLimit = new Bet(0);
 		this.betMaxLimit.inBetMath = Settings.betMathLimit;
-		this.pot = this.betMax = new Bet (0);
+		this.pot = new Bet (0);
+		this.betMax = new Bet (0);
 	}
 	
 	#region IBetRoundState implementation
