@@ -202,8 +202,12 @@ public class Fold : Action
 	}
 
 	public override void Do(Game game, Player p) {
+		if (Settings.isDev) {
+			p.Log (false, true, string.Format ("{0} folded", p.name));
+			p.LogDevInfo(p, true, false);
+		}
 		p.isFolded = true;
-		if (Settings.isDev) p.Log(false, true, string.Format("{0} folded", p.name));
+
 		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}

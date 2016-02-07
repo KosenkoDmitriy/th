@@ -48,10 +48,36 @@ public class Player {
 			}
 			if (player.patternCurrent != null) {
 				str2 = string.Format (
-					"cur pattern: {0} ({8}% of all time): p2:{1} p3:{2} d:{3}\n {4} {5} {6} max:{7} ",
-                      player.patternCurrent.name, player.patternCurrent.actionPriority2, player.patternCurrent.actionPriority3, player.patternCurrent.actionDefault, 
-                      "", "", "", player.patternCurrent.betMaxCallOrRaise, player.patternCurrent.percent);
+					"CURRENT pattern: {0} ({1}% of all time): p2:{2} p3:{3} d:{4}\n max Call:{5} ",
+					player.patternCurrent.name, player.patternCurrent.percent, 
+					player.patternCurrent.actionPriority2, player.patternCurrent.actionPriority3, 
+					player.patternCurrent.actionDefault, player.patternCurrent.betMaxCallOrRaise);
 				Log(str2, isWarning, isError);
+				if (player.pattern != null) {
+					var item = player.pattern;
+					str2 = string.Format (
+						"Default pattern: {0} ({1}% of all time): p2:{2} p3:{3} d:{4}\n max Call:{5} ",
+						item.name, item.percent,
+						item.actionPriority2, item.actionPriority3, 
+						item.actionDefault, item.betMaxCallOrRaise
+					);
+					Log(str2, isWarning, isError);
+				}
+				if (player.alt_patterns != null) {
+					Log("ALT patterns:", isWarning, isError);
+					int i = 1;
+					foreach(var item in player.alt_patterns) {
+						str2 = string.Format (
+							"#{6}) {0} ({1}% of all time): p2:{2} p3:{3} d:{4}\n max Call:{5} ",
+							item.name, item.percent,
+							item.actionPriority2, item.actionPriority3,
+							item.actionDefault, item.betMaxCallOrRaise,
+							i
+						);
+						i++;
+					}
+				}
+
 			}
 		}
 	}
@@ -137,8 +163,8 @@ public class Player {
 		if (actionTipTemp == null) {
 			// actions with priority 2-4
 			var actionNames = new List<String> () {
-				patternCurrent.actionPriority2,
-				patternCurrent.actionPriority3,
+//				patternCurrent.actionPriority2,
+//				patternCurrent.actionPriority3,
 				patternCurrent.actionDefault,
 			};
 			foreach (var actionName in actionNames) {
@@ -149,7 +175,7 @@ public class Player {
 			}
 		}
 
-
+		/*
 		if (betMax >= 0 && betMaxLimit >= 0) {
 			if (betMax < betMaxLimit) {	// any action allowed
 				if (betMax == betMaxLimit) {	// can't raise
@@ -179,15 +205,16 @@ public class Player {
 			actionTipTemp = new ActionTip();
 			actionTipTemp.isFold = true;
 			Log(true, false, "actionTipTemp is null > fold");
-		}
+		}*/
 
 		// final action
 		actionFinal = GetActionReal(actionTipTemp, game.state.betMax, game.state.betMaxLimit, game.state.isCanToRaise);
 //		actionFinal = GetActionMath(actionTipTemp, game.state.isCanToRaise);
 
 		if (actionFinal == null) {
-			Log(true, false, "actionFinal is null > fold");
-			actionFinal = new Fold (this, new Bet(0), new Bet(0));
+			Log(true, false, "actionFinal is null");
+//			Log(true, false, "actionFinal is null > fold");
+//			actionFinal = new Fold (this, new Bet(0), new Bet(0));
 		}
 
 		return actionFinal;
@@ -381,9 +408,9 @@ public class Player {
 //			actionFinal = new Fold (this, actionTip.betCall, actionTip.betRaise);
 //		}
 
-		if (isFolded) {
-			actionFinal = new Fold (this, new Bet(0), new Bet(0));
-		}
+//		if (isFolded) {
+//			actionFinal = new Fold (this, new Bet(0), new Bet(0));
+//		}
 		return actionFinal;
 	}
 
