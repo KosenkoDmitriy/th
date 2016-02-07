@@ -65,6 +65,7 @@ public class InitGame : BetRound {
 		}
 		
 		foreach (var player in game.players) {
+			player.handPreflop = new Hand();
 			for (int i = 1; i <= Settings.playerHandSizePreflop; i++) {
 				card = game.deck.Deal ();
 				var cardImg = GameObject.Find ("player" + player.id + "hold" + i);
@@ -76,9 +77,10 @@ public class InitGame : BetRound {
 //					else
 //						card.FaceUp = false;
 				}
-				player.hand.Add (card);
+				player.handPreflop.Add (card);
+				player.hand = player.handPreflop;
+
 			}
-			player.handPreflop = player.hand;
 			player.handPreflopString = player.GetHandPreflopString();
 		}
 
@@ -111,10 +113,54 @@ public class InitGame : BetRound {
 			card.FaceUp = true;
 
 		game.cards.Add (card);
+
+
 		
+		// use test data (straight)
+		if (Settings.isTest) {
+
+			game.cards[0].setCard(RANK.FOUR, SUIT.CLUBS);
+			game.cards[1].setCard(RANK.SEVEN, SUIT.CLUBS);
+			game.cards[2].setCard(RANK.QUEEN, SUIT.CLUBS);
+			game.cards[3].setCard(RANK.JACK, SUIT.CLUBS);
+			game.cards[4].setCard(RANK.ACE, SUIT.HEARTS);
+
+			game.players[0].handPreflop.getCard(0).setCard(RANK.SIX, SUIT.SPADES);
+			game.players[0].handPreflop.getCard(1).setCard(RANK.TWO, SUIT.HEARTS);
+
+			game.players[1].handPreflop.getCard(0).setCard(RANK.ACE, SUIT.CLUBS);
+			game.players[1].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.HEARTS);
+
+			game.players[2].handPreflop.getCard(0).setCard(RANK.SIX, SUIT.SPADES);
+			game.players[2].handPreflop.getCard(1).setCard(RANK.FIVE, SUIT.DIAMONDS);
+
+			game.players[3].handPreflop.getCard(0).setCard(RANK.THREE, SUIT.CLUBS);
+			game.players[3].handPreflop.getCard(1).setCard(RANK.NINE, SUIT.HEARTS);
+
+			game.players[4].handPreflop.getCard(0).setCard(RANK.QUEEN, SUIT.DIAMONDS);
+			game.players[4].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.SPADES);
+
+			game.players[5].handPreflop.getCard(0).setCard(RANK.TEN, SUIT.CLUBS);
+			game.players[5].handPreflop.getCard(1).setCard(RANK.TEN, SUIT.DIAMONDS);
+
+			if (Settings.isDebug) { 
+			foreach(var item in game.cards) {
+				item.FaceUp = true;
+			}
+					
+			foreach(var player in game.players) {
+				foreach (var item in player.handPreflop.getCards()) {
+					item.FaceUp = true;
+				}
+			}
+			}
+		}
+		// use test data
+
 		foreach (var player in game.players) {
 			player.hand = player.GetBestPlayerHand (game.cards);
 		}
+
 
 		game.winners = game.GetWinners (game.players); // calculating the win percentage/hand strength
 		game.players = game.GetPlayersAndSetWinPercentage (game.players); // calculating the win percentage/hand strength
@@ -131,7 +177,6 @@ public class InitGame : BetRound {
 			player.lblName.text = player.name;
 		}
 
-		game.ui.btnBetBonus.GetComponent<Button> ().interactable = true; // enable "bet bonus" button
 
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
@@ -162,6 +207,8 @@ public class InitGame : BetRound {
 			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
 		}
 
+
+		// enable "bet bonus" button
 		foreach (var player in game.players) {
 			if (player.isReal) {
 				if (player.balanceInCredits <= 0) {
@@ -172,6 +219,7 @@ public class InitGame : BetRound {
 				break;
 			}
 		}
+
 
 	}
 	
