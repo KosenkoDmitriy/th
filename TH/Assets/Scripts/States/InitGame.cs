@@ -112,10 +112,8 @@ public class InitGame : BetRound {
 			card.FaceUp = true;
 
 		game.cards.Add (card);
-
-
 		
-		// use test data (straight)
+		// start using of test data (straight)
 		if (Settings.isTest) {
 
 			game.cards[0].setCard(RANK.FOUR, SUIT.CLUBS);
@@ -124,7 +122,7 @@ public class InitGame : BetRound {
 			game.cards[3].setCard(RANK.JACK, SUIT.CLUBS);
 			game.cards[4].setCard(RANK.ACE, SUIT.HEARTS);
 
-			game.players[0].handPreflop.getCard(0).setCard(RANK.SIX, SUIT.SPADES);
+			game.players[0].handPreflop.getCard(0).setCard(RANK.SIX, SUIT.CLUBS);
 			game.players[0].handPreflop.getCard(1).setCard(RANK.TWO, SUIT.HEARTS);
 
 			game.players[1].handPreflop.getCard(0).setCard(RANK.ACE, SUIT.CLUBS);
@@ -143,23 +141,24 @@ public class InitGame : BetRound {
 			game.players[5].handPreflop.getCard(1).setCard(RANK.TEN, SUIT.DIAMONDS);
 
 			if (Settings.isDebug) { 
-			foreach(var item in game.cards) {
-				item.FaceUp = true;
-			}
-					
-			foreach(var player in game.players) {
-				foreach (var item in player.handPreflop.getCards()) {
+				foreach(var item in game.cards) {
 					item.FaceUp = true;
 				}
-			}
+						
+				foreach(var player in game.players) {
+					player.handPreflopString = player.GetHandPreflopString();
+
+					foreach (var item in player.handPreflop.getCards()) {
+						item.FaceUp = true;
+					}
+				}
 			}
 		}
-		// use test data
+		// end using of test data (straight)
 
 		foreach (var player in game.players) {
 			player.hand = player.GetBestPlayerHand (game.cards);
 		}
-
 
 		game.winners = game.GetWinners (game.players); // calculating the win percentage/hand strength
 		game.players = game.GetPlayersAndSetWinPercentage (game.players); // calculating the win percentage/hand strength

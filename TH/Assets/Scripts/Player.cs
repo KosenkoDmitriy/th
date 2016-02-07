@@ -63,7 +63,7 @@ public class Player {
 					);
 					Log(str2, isWarning, isError);
 				}
-				if (player.alt_patterns != null) {
+				if (player.alt_patterns != null && player.alt_patterns.Count > 0) {
 					Log("ALT patterns:", isWarning, isError);
 					int i = 1;
 					foreach(var item in player.alt_patterns) {
