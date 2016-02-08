@@ -357,11 +357,10 @@ public class Player {
 				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (betInvestedAfterAction > betInvested) { // > call or raise
-			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
+//			if (dt.inBetMath <= betMaxLimit.inBetMath) {
+			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) {
 				if (actionTip.isRaise) {
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
-				} else if (actionTip.isCheck || actionTip.isFold) {
-					actionFinal = new Fold (this, new Bet(0), new Bet(0));
 				} else { // call only
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, false);
 				}
