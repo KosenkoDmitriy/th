@@ -25,7 +25,7 @@ public class Constants {
 	public List<Pattern> GetPatterns() {
 		if (patterns.Count > 0)
 			return patterns;
-		foreach (string item in c_str_pattern) {
+		foreach (string item in c_str_patterns) {
 
 			string[] items = item.Split ('\t');
 			string arg0 = "";
@@ -228,8 +228,7 @@ public class Constants {
 		return GetFTR (flops, c_str_flop);
 	}
 
-	private readonly string[] c_str_pattern = new string[]
-	{
+	private readonly string[] c_str_patterns = new string[] {
 		"PATTERN	CHECK/FOLD	FOLD",
 		"PATTERN	CHECK/CALL*	CALL",
 		"PATTERN	CHECK/CALL1	FOLD",
@@ -284,11 +283,10 @@ public class Constants {
 		"43	CALL",
 		"20	CALL",
 		"31	CALL",
-		"42	CALL",
+		"42	CALL"
 	};
-
-	private readonly string[] c_str_preflop = new string[]
-	{
+	
+	private readonly string[] c_str_preflop = new string[] {
 		"POSITION	0	",
 		"HAND	22	CHECK/CALL1",
 		"HAND	32s	CHECK/CALL1",
@@ -1355,12 +1353,10 @@ public class Constants {
 		"HAND	AJo	RAISE/CALL1",
 		"HAND	AQo	RAISE/CALL2",
 		"HAND	AKo	RAISE*",
-		"HAND	AA	RAISE*",
+		"HAND	AA	RAISE*"
 	};
 	
-	
-	private readonly string[] c_str_flop = new string[]
-	{
+	private readonly string[] c_str_flop = new string[] {
 		"OPPONENTS	1",
 		"POSITION	0",
 		"RANGE	95	100	RAISE*",
@@ -1560,7 +1556,7 @@ public class Constants {
 		"ALT	CHECK/CALL1	5",
 		"POSITION	2",
 		"RANGE	95	100	RAISE*",
-		"RANGE  	90	94	RAISE*",
+		"RANGE	90	94	RAISE*",
 		"RANGE	78	89	CHECK/RAISE*",
 		"ALT	RAISE*	60",
 		"ALT	CHECK/CALL*	35",
@@ -1606,12 +1602,10 @@ public class Constants {
 		"RANGE	42	72	OPEN/CALL2",
 		"ALT	CHECK/CALL1	35",
 		"RANGE	0	42	CHECK/FOLD",
-		"ALT	CHECK/CALL1	5",
+		"ALT	CHECK/CALL1	5"
 	};
 	
-	
-	private readonly string[] c_str_turn = new string[]
-	{
+	private readonly string[] c_str_turn = new string[] {
 		"OPPONENTS	1",
 		"POSITION	0",
 		"RANGE	95	100	RAISE*",
@@ -1856,14 +1850,13 @@ public class Constants {
 		"RANGE	42	72	OPEN/CALL2",
 		"ALT	CHECK/CALL1	35",
 		"RANGE	0	42	CHECK/FOLD",
-		"ALT	CHECK/CALL1	5",
+		"ALT	CHECK/CALL1	5"
 	};
-
-	private readonly string[] c_str_river = new string[]
-	{
+	
+	private readonly string[] c_str_river = new string[] {
 		"OPPONENTS	1",
 		"POSITION	0",
-		"RANGE  95	100	RAISE*",
+		"RANGE	95	100	RAISE*",
 		"RANGE	90	94	RAISE/CALL2",
 		"ALT	CHECK/RAISE*	5",
 		"ALT	CHECK/CALL*	35	",
@@ -2065,7 +2058,8 @@ public class Constants {
 		"ALT	CHECK/CALL1	35",
 		"RANGE	42	72	CHECK/CALL1",
 		"RANGE	0	42	CHECK/CALL1",
-		"ALT	CHECK/FOLD	5",
+		"ALT	CHECK/FOLD	5"
 	};
+	
 
 }
