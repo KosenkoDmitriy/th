@@ -74,6 +74,7 @@ public class Player {
 							item.actionDefault, item.betMaxCallOrRaise,
 							i
 						);
+						Log(str2, isWarning, isError);
 						i++;
 					}
 				}
