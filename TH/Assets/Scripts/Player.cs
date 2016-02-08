@@ -288,7 +288,7 @@ public class Player {
 				actionT.betCall.inBetMath = betToStay;
 			}
 		} else if (actionT.isRaise) { // raise
-			if (betToStay >= 0 && betToStay <= game.state.betMaxLimit) {
+			if (betToStay >= 0 && betToStay <= game.state.betMaxLimit.inBetMath) {
 				double betForRaise = patternCurrent.betMaxCallOrRaise - betToStay;
 				if (betForRaise > 0 && betForRaise <= maxPossibleRaise) {
 					actionT.betRaise.inBetMath = betForRaise;
