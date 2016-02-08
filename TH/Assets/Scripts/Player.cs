@@ -437,19 +437,19 @@ public class Player {
 	}
 	#endregion actions
 
-	public string GetHandPreflopString() {
+	public string GetStringByHand(Hand handTemp) {
 		handPreflopString = "";
 		handPreflopStringReversed = "";
 		bool isSuited = false;
-		if (hand.Count() >= Settings.playerHandSizePreflop) {
-			if (hand.getCard(0).getSuit() == hand.getCard(1).getSuit()) {
+		if (handTemp.Count() >= Settings.playerHandSizePreflop) {
+			if (handTemp.getCard(0).getSuit() == handTemp.getCard(1).getSuit()) {
 				isSuited = true;
 			}
-			handPreflopString += Card.rankToMathString(hand.getCard(0).getRank());
-			handPreflopString += Card.rankToMathString(hand.getCard(1).getRank());
-			handPreflopStringReversed += Card.rankToMathString(hand.getCard(1).getRank());
-			handPreflopStringReversed += Card.rankToMathString(hand.getCard(0).getRank());
-			if (hand.getCard(0).getRank() == hand.getCard(1).getRank()) {
+			handPreflopString += Card.rankToMathString(handTemp.getCard(0).getRank());
+			handPreflopString += Card.rankToMathString(handTemp.getCard(1).getRank());
+			handPreflopStringReversed += Card.rankToMathString(handTemp.getCard(1).getRank());
+			handPreflopStringReversed += Card.rankToMathString(handTemp.getCard(0).getRank());
+			if (handTemp.getCard(0).getRank() == handTemp.getCard(1).getRank()) {
 			}
 			else if (isSuited) {
 				handPreflopString += "s";
@@ -698,6 +698,10 @@ public class Player {
 		return handWinBestString;
 	}
 
+	public string GetHandPreflopStringFromHandObj() {
+		string handWinBestString = HandCombination.GetHandStringByHandObj (this.handPreflop);
+		return handWinBestString;
+	}
 
 
 	public double winPercent;

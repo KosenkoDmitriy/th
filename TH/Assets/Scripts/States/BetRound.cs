@@ -210,7 +210,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 
 	public void SetPatternAndHisAlternatives(List<PatternFTR> items) {
-		foreach (var player in game.players)
+		foreach (var player in game.players) {
+			player.pattern = null;
 			foreach (var item in items) {
 				if (item.position == player.position) {
 					if (item.winPercentMin > player.winPercent && player.winPercent <= item.winPercentMax) {
@@ -219,27 +220,30 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 						player.alt_patterns = item.alt_patterns;
 					
 						break;
-					} else {
-						player.pattern = game.source.GetPatternByName (Settings.defaultPreflopPattern);
 					}
 				}
 			}
+			if (player.pattern == null)
+				player.pattern = game.source.GetPatternByName (Settings.defaultPreflopPattern);
+		}
 	}
 
 	public void SetPatternAndHisAlternativesForPreflop(List<PatternPreflop> items) {
-		foreach (var player in game.players)
-		foreach (var preflop in items) {
-			if (preflop.position == player.position) {
-				if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
+		foreach (var player in game.players) {
+			player.pattern = null;
+			foreach (var preflop in items) {
+				if (preflop.position == player.position) {
+					if (preflop.hand == player.handPreflopString || preflop.hand == player.handPreflopStringReversed) {
 					
-					player.pattern = preflop.pattern;
-					player.alt_patterns = preflop.alt_patterns;
+						player.pattern = preflop.pattern;
+						player.alt_patterns = preflop.alt_patterns;
 					
-					break;
-				} else {
-					player.pattern = game.source.GetPatternByName(Settings.defaultPreflopPattern);
+						break;
+					}
 				}
 			}
+			if (player.pattern == null)
+				player.pattern = game.source.GetPatternByName (Settings.defaultPreflopPattern);
 		}
 	}
 

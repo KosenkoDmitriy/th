@@ -80,13 +80,9 @@ public class InitGame : BetRound {
 				player.handPreflop.Add (card);
 //				player.hand = player.handPreflop;
 			}
-			player.handPreflopString = player.GetHandPreflopString();
+			player.handPreflopString = player.GetStringByHand(player.handPreflop);
 		}
 
-		// preflop bet rounds
-		var preflops = game.source.GetPreflops ();
-		SetPatternAndHisAlternativesForPreflop (preflops);
-		
 		// flop
 		for (int i = 1; i <= 3; i++) {
 			card = game.deck.Deal ();
@@ -146,7 +142,6 @@ public class InitGame : BetRound {
 				}
 						
 				foreach(var player in game.players) {
-					player.handPreflopString = player.GetHandPreflopString();
 
 					foreach (var item in player.handPreflop.getCards()) {
 						item.FaceUp = true;
@@ -158,6 +153,7 @@ public class InitGame : BetRound {
 
 		foreach (var player in game.players) {
 			player.hand = player.GetBestPlayerHand (game.cards);
+			player.handPreflopString = player.GetStringByHand(player.handPreflop);
 		}
 
 		game.winners = game.GetWinners (game.players); // calculating the win percentage/hand strength
@@ -170,11 +166,11 @@ public class InitGame : BetRound {
 			}
 			if (player.position == game.players.Count - 1) {
 				player.isLastToAct = true;
-			} 
-			player.name += string.Format(" {0} {1}", player.winPercent, player.GetHandStringFromHandObj());
+			}
+			player.name = string.Format("#{0} {1} {2}", player.id, player.winPercent, player.GetHandPreflopStringFromHandObj());
 			player.lblName.text = player.name;
+//			player.LogDevInfo(player, false, false);
 		}
-
 
 		// using in update() of the game loop
 		game.playerCollection = new PlayerCollection ();
@@ -205,7 +201,6 @@ public class InitGame : BetRound {
 			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
 		}
 
-
 		// enable "bet bonus" button
 		foreach (var player in game.players) {
 			if (player.isReal) {
@@ -217,7 +212,6 @@ public class InitGame : BetRound {
 				break;
 			}
 		}
-
 
 	}
 	

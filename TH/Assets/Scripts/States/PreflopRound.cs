@@ -7,6 +7,10 @@ public class PreflopRound : BetRound {
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
 
 		game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
+
+		// preflop bet rounds
+		var preflops = game.source.GetPreflops ();
+		SetPatternAndHisAlternativesForPreflop (preflops);
 	}
 	
 	public override void FirstAction ()
