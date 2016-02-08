@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Pattern
+public class Pattern : ICloneable
 {
 	public Pattern ()
 	{
@@ -16,14 +16,29 @@ public class Pattern
 
 	public int betMaxCallOrRaise;	// in number of bets
 	public double percentOfTime;	// of all time
+
+	public object Clone()
+	{
+		Pattern newPattern = (Pattern)this.MemberwiseClone();
+		var newBetSubRounds = new List<PatternBetRoundAndAction>();
+		foreach(var betSubRound in this.betSubRounds) {
+			newBetSubRounds.Add((PatternBetRoundAndAction)betSubRound.Clone());
+		}
+		newPattern.betSubRounds = newBetSubRounds;
+		return newPattern;
+	}
 }
 
-public class PatternBetRoundAndAction
+public class PatternBetRoundAndAction : ICloneable
 {
 	public string name_action;
 	//	public double costBetDx;	// costBet - costBetTotal
 	public double costBetToStayInGame;		// in number of bets (1 credit = 1 bet * multiplier)
 	public double costBetAlreadyInvested; // in number of bets (1 credit = 1 bet * multiplier)
+
+	public object Clone() {
+		return this.MemberwiseClone();
+	}
 }
 
 public class Oppontents

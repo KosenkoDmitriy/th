@@ -129,13 +129,13 @@ public class Player {
 		Pattern patternCurrent = null;
 		if (pattern != null) {
 //			if (percentOfTime <= pattern.percent) {
-				patternCurrent = pattern;
+				patternCurrent = (Pattern)pattern.Clone();
 //			}
 		}
 		if (alt_patterns.Count > 0) {
 			foreach(var item in alt_patterns) {
 				if (percentOfTime <= item.percentOfTime) {
-					patternCurrent = item;
+					patternCurrent = (Pattern)item.Clone();
 				}
 			}
 		}
