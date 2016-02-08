@@ -358,7 +358,11 @@ public class Player {
 			}
 		} else if (betInvestedAfterAction > betInvested) { // > call or raise
 			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
-				actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+				if (actionTip.isRaise) {
+					actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+				} else { // call only
+					actionFinal = RaiseOrCall(betMax, betMaxLimit, false);
+				}
 			} else {
 				actionFinal = new Fold (this, new Bet(0), new Bet(0));
 			}
