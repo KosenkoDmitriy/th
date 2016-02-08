@@ -19,7 +19,7 @@ public class AnteRound : BetRound {
 	
 	public override void BetSubRounds ()
 	{
-		if (Settings.isDev) game.player.Log(true, false, string.Format("AnteRound BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
+		if (Settings.isDev) game.player.Log(false, true, string.Format("AnteRound BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 
 		//		base.BetSubRounds ();
 		if (!game.state.isWaiting) {

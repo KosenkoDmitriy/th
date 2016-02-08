@@ -167,7 +167,7 @@ public class InitGame : BetRound {
 			if (player.position == game.players.Count - 1) {
 				player.isLastToAct = true;
 			}
-			player.name = string.Format("#{0} {1} {2}", player.id, player.winPercent, player.GetHandPreflopStringFromHandObj());
+			player.name = string.Format("#{0} {1} {2}", player.id, player.winPercent, player.GetHandStringFromHandObj());
 			player.lblName.text = player.name;
 //			player.LogDevInfo(player, false, false);
 		}
