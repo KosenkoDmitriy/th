@@ -1,14 +1,15 @@
 using System;
 
 public class FlopRound : BetRound {
+
 	public FlopRound(Game game) {
 		this.game = game;
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
 
 		// flop bet rounds
-		var flops = game.source.GetFlops ();
-		SetPatternAndHisAlternatives (flops);
+		items = game.source.GetFlops ();
+		UpdatePattern ();
 	}
 
 	public override void FirstAction() {

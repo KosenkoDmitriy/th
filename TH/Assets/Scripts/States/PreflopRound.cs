@@ -8,11 +8,14 @@ public class PreflopRound : BetRound {
 
 		game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
 
-		// preflop bet rounds
-		var preflops = game.source.GetPreflops ();
-		SetPatternAndHisAlternativesForPreflop (preflops);
+		UpdatePattern (); // preflop bet rounds
 	}
-	
+
+	public override void UpdatePattern() {
+		var items = game.source.GetPreflops ();
+		SetPatternAndHisAlternativesForPreflop (items);
+	}
+
 	public override void FirstAction ()
 	{
 //		game.ui.DealPreflopCards (); // without waiting

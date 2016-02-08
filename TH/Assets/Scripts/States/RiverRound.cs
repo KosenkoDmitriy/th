@@ -10,8 +10,8 @@ public class RiverRound : BetRound {
 		this.betMaxLimit.inBetMath = Settings.betMathLimit;
 
 		// rivers bet rounds
-		var rivers = game.source.GetRivers ();
-		SetPatternAndHisAlternatives (rivers);
+		items = game.source.GetRivers ();
+		UpdatePattern ();
 	}
 	
 	public override void FirstAction() {

@@ -208,6 +208,17 @@ public class Fold : Action
 		}
 		p.isFolded = true;
 
+		//start | if folded then reinit player's position, patterns and it alternatives
+		int i = 0;
+		for(var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+			if (!player.isFolded) {
+				player.position = i;
+				i++;
+			}
+		}
+		game.state.UpdatePattern();
+		//end | if folded then reinit player's position, patterns and it alternatives
+
 		base.Do (game, p);
 		game.ui.audio.PlayOneShot(game.ui.soundFold);
 	}

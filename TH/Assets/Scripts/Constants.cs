@@ -113,7 +113,6 @@ public class Constants {
 				arg1 = items[1];
 			if (items.Length > 2)
 				arg2 = items[2];
-
 			if (arg0 == "POSITION") {
 				Int32.TryParse(arg1, out position);
 			} else if (arg0 == "HAND") {

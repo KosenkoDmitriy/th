@@ -10,8 +10,8 @@ public class TurnRound : BetRound {
 		this.betMaxLimit.inBetMath = Settings.betMathLimit;
 
 		// turn bet rounds
-		var turns = game.source.GetTurns ();
-		SetPatternAndHisAlternatives (turns);
+		items = game.source.GetTurns ();
+		UpdatePattern ();
 	}
 	
 	public override void FirstAction() {

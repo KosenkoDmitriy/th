@@ -24,6 +24,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	public bool isCanToRaise;
 	public Player playerFirstToAllIn;
 	public List<Player> playersAllIn;
+	public List<PatternFTR> items; // preflop, flop, turn, river
 
 	public BetRound() {
 		Init ();
@@ -218,7 +219,6 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					
 						player.pattern = item.pattern;
 						player.alt_patterns = item.alt_patterns;
-					
 						break;
 					}
 				}
@@ -270,5 +270,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 			}
 		}
 	}
-	
+
+	public virtual void UpdatePattern() {
+		SetPatternAndHisAlternatives (items); // for all bet rounds except preflop
+	}
 }
