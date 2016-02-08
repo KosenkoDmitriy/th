@@ -223,8 +223,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					}
 				}
 			}
-			if (player.pattern == null)
+			if (player.pattern == null) {
+				player.Log(true, false, "player.pattern == null Flop/Turn/River");
 				player.pattern = game.source.GetPatternByName (Settings.defaultPreflopPattern);
+			}
 		}
 	}
 
@@ -242,8 +244,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					}
 				}
 			}
-			if (player.pattern == null)
+			if (player.pattern == null) {
+				player.Log(true, false, "player.pattern == null Preflop");
 				player.pattern = game.source.GetPatternByName (Settings.defaultPreflopPattern);
+			}
 		}
 	}
 
