@@ -143,8 +143,11 @@ public class Constants {
 		foreach (var p in patterns) {
 			if (p.name == name) {
 				pattern = p;
-				return pattern;
+				break;
 			}
+		}
+		if (pattern == null) {
+			UnityEngine.Debug.LogError("pattern == null");
 		}
 		return pattern;
 	}
@@ -190,9 +193,6 @@ public class Constants {
 				flop.winPercentMin = min;
 				flop.winPercentMax = max;
 				flop.pattern = GetPatternByName(arg3);
-				if (flop.pattern == null) {
-					UnityEngine.Debug.LogError("pattern == null");
-				}
 				flop.pattern.percentOfTime = 100;
 				flop.alt_patterns = new List<Pattern>();
 				list.Add(flop);
@@ -200,9 +200,9 @@ public class Constants {
 				var altPattern = GetPatternByName(arg1);
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
-				flop.pattern.percentOfTime -= percent;
 				altPattern.percentOfTime = percent;
-				flop.alt_patterns.Add (altPattern);
+				list[list.Count-1].pattern.percentOfTime -= percent;
+				list[list.Count-1].alt_patterns.Add (altPattern);
 			}
 		}
 		//		"OPPONENTS	1",
