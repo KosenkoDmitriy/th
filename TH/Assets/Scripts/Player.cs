@@ -360,6 +360,8 @@ public class Player {
 			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise ) {
 				if (actionTip.isRaise) {
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+				} else if (actionTip.isCheck || actionTip.isFold) {
+					actionFinal = new Fold (this, new Bet(0), new Bet(0));
 				} else { // call only
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, false);
 				}
