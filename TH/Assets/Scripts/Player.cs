@@ -49,7 +49,7 @@ public class Player {
 			if (player.patternCurrent != null) {
 				str2 = string.Format (
 					"CURRENT pattern: {0} ({1}% of all time): p2:{2} p3:{3} d:{4}\n max Call:{5} ",
-					player.patternCurrent.name, player.patternCurrent.percent, 
+					player.patternCurrent.name, player.patternCurrent.percentOfTime, 
 					player.patternCurrent.actionPriority2, player.patternCurrent.actionPriority3, 
 					player.patternCurrent.actionDefault, player.patternCurrent.betMaxCallOrRaise);
 				Log(str2, isWarning, isError);
@@ -57,7 +57,7 @@ public class Player {
 					var item = player.pattern;
 					str2 = string.Format (
 						"Default pattern: {0} ({1}% of all time): p2:{2} p3:{3} d:{4}\n max Call:{5} ",
-						item.name, item.percent,
+						item.name, item.percentOfTime,
 						item.actionPriority2, item.actionPriority3, 
 						item.actionDefault, item.betMaxCallOrRaise
 					);
@@ -69,7 +69,7 @@ public class Player {
 					foreach(var item in player.alt_patterns) {
 						str2 = string.Format (
 							"#{6}) {0} ({1}% of all time): p2:{2} p3:{3} d:{4}\n max Call:{5} ",
-							item.name, item.percent,
+							item.name, item.percentOfTime,
 							item.actionPriority2, item.actionPriority3,
 							item.actionDefault, item.betMaxCallOrRaise,
 							i
@@ -133,7 +133,7 @@ public class Player {
 		}
 		if (alt_patterns.Count > 0) {
 			foreach(var item in alt_patterns) {
-				if (percentOfTime <= item.percent) {
+				if (percentOfTime <= item.percentOfTime) {
 					patternCurrent = item;
 				}
 			}

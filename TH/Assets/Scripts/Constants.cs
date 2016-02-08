@@ -121,15 +121,15 @@ public class Constants {
 				pf.hand = arg1;
 				pf.position = position;
 				pf.pattern = GetPatternByName(arg2);
-				pf.pattern.percent = 100;
+				pf.pattern.percentOfTime = 100;
 				pf.alt_patterns = new List<Pattern>();
 				preflops.Add(pf);
 			} else if (arg0 == "ALT") {
 				var altPattern = GetPatternByName(arg1);
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
-				altPattern.percent = percent;
-				preflops[preflops.Count-1].pattern.percent -= percent;
+				altPattern.percentOfTime = percent;
+				preflops[preflops.Count-1].pattern.percentOfTime -= percent;
 				preflops[preflops.Count-1].alt_patterns.Add(altPattern);
 			}
 //		"POSITION	0	",
@@ -155,6 +155,9 @@ public class Constants {
 			return list;
 
 		PatternFTR flop = null;
+		int opponentsCount = 0;
+		int position = 0;
+
 		foreach (var item in stringList) {
 			string[] items = item.Split ('\t');
 			string arg0, arg1, arg2, arg3;
@@ -168,34 +171,38 @@ public class Constants {
 				arg2 = items[2];
 			if (items.Length > 3)
 				arg3 = items[3];
-			
+
 			if (arg0 == "OPPONENTS") {
-				flop = new PatternFTR();
-				flop.alt_patterns = new List<Pattern>();
-				int opponentsCount = 0;
 				Int32.TryParse(arg1, out opponentsCount);
-				flop.enemyCount = opponentsCount;
 			} else if (arg0 == "POSITION") {
-				int position = 0;
 				Int32.TryParse(arg1, out position);
-				flop.position = position;
 			} else if (arg0 == "RANGE") {
 				double min = 0;
 				double max = 0;
 				Double.TryParse(arg1, out min);
 				Double.TryParse(arg2, out max);
+
+				flop = new PatternFTR();
+				flop.alt_patterns = new List<Pattern>();
+
+				flop.enemyCount = opponentsCount;
+				flop.position = position;
+
 				flop.winPercentMin = min;
-				flop.winPercentMin = max;
+				flop.winPercentMax = max;
 				flop.pattern = GetPatternByName(arg3);
-				flop.pattern.percent = 100;
+				if (flop.pattern == null) {
+					UnityEngine.Debug.LogError("pattern == null");
+				}
+				flop.pattern.percentOfTime = 100;
 				flop.alt_patterns = new List<Pattern>();
 				list.Add(flop);
 			} else if (arg0 == "ALT") {
 				var altPattern = GetPatternByName(arg1);
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
-				flop.pattern.percent -= percent;
-				altPattern.percent = percent;
+				flop.pattern.percentOfTime -= percent;
+				altPattern.percentOfTime = percent;
 				flop.alt_patterns.Add (altPattern);
 			}
 		}

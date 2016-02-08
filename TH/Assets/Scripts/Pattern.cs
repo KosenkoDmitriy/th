@@ -15,7 +15,7 @@ public class Pattern
 	public string actionDefault;	// priority 4
 
 	public int betMaxCallOrRaise;	// in number of bets
-	public double percent;	// of all time
+	public double percentOfTime;	// of all time
 }
 
 public class PatternBetRoundAndAction
@@ -74,4 +74,9 @@ public class PatternFTR: AbstractPattern
 	public int enemyCount;	// opponents count
 	public double winPercentMin;
 	public double winPercentMax;
+
+	public override string ToString ()
+	{
+		return string.Format ("{0} pos:{1} eCount:{2} {3}%-{4}%", pattern.name, position, enemyCount, winPercentMin, winPercentMax );
+	}
 }
