@@ -175,7 +175,6 @@ public class Constants {
 				int opponentsCount = 0;
 				Int32.TryParse(arg1, out opponentsCount);
 				flop.enemyCount = opponentsCount;
-				list.Add(flop);
 			} else if (arg0 == "POSITION") {
 				int position = 0;
 				Int32.TryParse(arg1, out position);
@@ -189,6 +188,8 @@ public class Constants {
 				flop.winPercentMin = max;
 				flop.pattern = GetPatternByName(arg3);
 				flop.pattern.percent = 100;
+				flop.alt_patterns = new List<Pattern>();
+				list.Add(flop);
 			} else if (arg0 == "ALT") {
 				var altPattern = GetPatternByName(arg1);
 				double percent = 0;
