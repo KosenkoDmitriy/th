@@ -192,12 +192,14 @@ public class Constants {
 
 				flop.winPercentMin = min;
 				flop.winPercentMax = max;
+//				flop.pattern = new Pattern();
 				flop.pattern = GetPatternByName(arg3);
 				flop.pattern.percentOfTime = 100;
 				flop.alt_patterns = new List<Pattern>();
 				list.Add(flop);
 			} else if (arg0 == "ALT") {
-				var altPattern = GetPatternByName(arg1);
+//				Pattern altPattern = new Pattern();
+				Pattern altPattern = GetPatternByName(arg1);
 				double percent = 0;
 				Double.TryParse(arg2, out percent);
 				altPattern.percentOfTime = percent;

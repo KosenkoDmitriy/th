@@ -211,10 +211,7 @@ public class Fold : Action
 		//start | if folded then reinit player's position, patterns and it alternatives
 		int i = 0;
 		foreach (var player in game.players) {
-//		for(var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
 			if (!player.isFolded) {
-//				p.Log (true, false, string.Format ("{0} folded", player.name));
-
 				player.position = i;
 				i++;
 			}
