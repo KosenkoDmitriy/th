@@ -169,8 +169,10 @@ public class InitGame : BetRound {
 			if (player.isReal) {
 				if (player.balanceInCredits <= 0) {
 					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
+					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
 				} else {
 					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = true;
+					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = true;
 				}
 				break;
 			}

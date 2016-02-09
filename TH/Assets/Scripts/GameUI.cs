@@ -325,6 +325,11 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnBetForBonusTableClick()");
 		if (panelBonus) panelBonus.SetActive (true);
 	}
+
+	public void btnBonusBetRepeatClick() {
+		if (Settings.isDebug) Debug.Log("btnBonusBetRepeatClick()");
+		btnBonusPanelCloseClick();
+	}
 	
 	public void btnBonusPanelCloseClick() {
 		if (Settings.betBonus > 0) {
@@ -410,12 +415,8 @@ public class GameUI : MonoBehaviour
 		btnStartGame = GameObject.Find ("btnStartGame");
 			
 		//left panel
-		btnBetNow = GameObject.Find ("btnBetNow");
 		btnBetBonus = GameObject.Find ("btnBetBonus");
-		btnRepeatLastBet = GameObject.Find ("btnRepeatLastBet");
-		if (btnRepeatLastBet)
-			btnRepeatLastBet.SetActive (false);
-			
+		btnBetBonusRepeat = GameObject.Find ("btnBetBonusRepeat");
 
 		btnCredit = GameObject.Find ("btnCredit");
 		if (btnCredit)
@@ -764,7 +765,7 @@ public class GameUI : MonoBehaviour
 	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
-	btnRepeatBet, btnRepeatLastBet, btnBetNow, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
+	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;

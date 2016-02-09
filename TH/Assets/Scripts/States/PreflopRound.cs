@@ -6,8 +6,9 @@ public class PreflopRound : BetRound {
 		this.subRoundMaxSize = Settings.betSubRoundMaxSize;
 		Settings.betCurrentMultiplier = Settings.bePreflopFlopMultiplier;
 
-		game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
-
+		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
+		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<UnityEngine.UI.Button>().interactable = false;
+		
 		UpdatePattern (); // preflop bet rounds
 	}
 
