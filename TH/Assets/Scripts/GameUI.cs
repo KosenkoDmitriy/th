@@ -145,7 +145,7 @@ public class GameUI : MonoBehaviour
 		} else {
 			game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
 		}
-		game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} REPEAT BET", Settings.betRepeat.f());
+		game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetRepeat, Settings.betRepeat.f());
 	}
 
 	public void btnRepeatBetClick() {

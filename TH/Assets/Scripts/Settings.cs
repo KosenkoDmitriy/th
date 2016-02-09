@@ -10,6 +10,9 @@ static class Settings
 	public static readonly string aAllIn = "ALL IN";
 	public static readonly string aUnknown = "OPEN";
 
+	public static readonly string btnBetBonusRepeat = "REPEAT BONUS BET OF";
+	public static readonly string btnBetRepeat = "REPEAT BET OF";
+
 	public static bool isDev = false;	// dev logs
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
