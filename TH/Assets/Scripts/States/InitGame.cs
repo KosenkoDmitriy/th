@@ -178,7 +178,7 @@ public class InitGame : BetRound {
 				} else {
 					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
 				}
-				if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetBonusRepeat, Settings.betBonus.f());
+				if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetBonusRepeat, Settings.betBonus.to_b());
 				break;
 			}
 		}
