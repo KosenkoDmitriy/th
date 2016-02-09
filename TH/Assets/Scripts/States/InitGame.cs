@@ -179,6 +179,16 @@ public class InitGame : BetRound {
 					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
 				}
 				if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetBonusRepeat, Settings.betBonus.to_b());
+
+				if (player.balanceInCredits <= 0) {
+					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
+
+					game.ui.HideDynamicPanels();
+					game.ui.panelWin.SetActive(true);
+					game.ui.lblWinInfo.text = "Please add some credits and then click button below";
+//					game.state.isWaiting = true;
+				}
+
 				break;
 			}
 		}

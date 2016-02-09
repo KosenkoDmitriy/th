@@ -712,7 +712,7 @@ public class GameUI : MonoBehaviour
 		yield return www;
 		var lblMyCreditsTitle = GameObject.Find("lblMyCredits") ;
 		// check for errors
-		if (www.error == null)
+		if (www.error == null && !string.IsNullOrEmpty(Settings.key))
 		{
 			double credits = 0;
 			Double.TryParse(www.text, out credits);
