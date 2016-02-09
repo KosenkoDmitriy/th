@@ -167,12 +167,15 @@ public class InitGame : BetRound {
 		// enable "bet bonus" button
 		foreach (var player in game.players) {
 			if (player.isReal) {
-				if (player.balanceInCredits <= 0) {
-					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
-					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
-				} else {
+				if (player.balanceInCredits > 0) {
 					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = true;
+				} else {
+					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
+				}
+				if (Settings.betBonus > 0) {
 					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = true;
+				} else {
+					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
 				}
 				break;
 			}

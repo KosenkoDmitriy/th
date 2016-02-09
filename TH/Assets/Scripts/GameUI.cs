@@ -342,6 +342,8 @@ public class GameUI : MonoBehaviour
 			}
 		}
 		if (panelBonus) panelBonus.SetActive (false);
+		// disable button
+		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
 	}
 	
 	public void btnBonusBetMinClick() {
