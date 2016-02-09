@@ -132,22 +132,28 @@ public class GameUI : MonoBehaviour
 
 	public void btnRepeatBetPrepare ()
 	{
-		if (Settings.betRepeat > 0 && Settings.betRepeat > game.state.betMaxLimit.inCredits) {
-			Settings.betRepeat = game.state.betMaxLimit.inCredits;
-		}
+//		if (Settings.betRepeat > 0 && Settings.betRepeat > game.state.betMaxLimit.inCredits) {
+//			Settings.betRepeat = game.state.betMaxLimit.inCredits;
+//		}
 		if (game.ui.btnRepeatBet) {
 			game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} REPEAT BET", Settings.betRepeat.f());
 
-			if (Settings.betRepeat <= game.player.balanceInCredits) {
-				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
-			} else {
-				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+			if (game.state != null) {
+				var bet = game.state.betMax - game.player.betInvested;
+				if (bet < 0d) bet.inCredits = 0;
+				if ((game.player.betInvested + bet <= game.state.betMaxLimit)
+				    ) {
+					game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
+				} else {
+					game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+				}
 			}
 		}
 	}
 
 	public void btnRepeatBetClick() {
-		var bet = new Bet(Settings.betRepeat);
+		var bet = new Bet(0);
+		bet.inCredits = Settings.betRepeat;
 		DoFinalActionByCurrentBet(bet);
 	}
 
