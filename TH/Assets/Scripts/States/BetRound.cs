@@ -22,19 +22,6 @@ public abstract class AbstractBetRound {
 public class BetRound : AbstractBetRound, IBetRoundState {
 	private bool _isWaiting;
 	public bool isWaiting; // wait for corountine
-	/*{ 
-		get {
-			return _isWaiting;
-		}
-		set {
-			_isWaiting = value;
-			if (this.game != null)
-			if (_isWaiting)
-				this.game.ui.DisableButtons(true);
-			else
-				this.game.ui.DisableButtons(false);
-		}
-	}*/
 	public bool isCanToRaise;
 	public Player playerFirstToAllIn;
 	public List<Player> playersAllIn;
