@@ -106,7 +106,7 @@ public class Game
 		}
 		
 		string winBonusString = "";
-		if (game.player.isReal && game.player.isWinner) { // only winner player will get bonus
+		if (game.player.isReal && game.player.isWinner && !game.player.isFolded) { // only active winner player will get bonus
 			winBonusString = GetAndSetBonusString(game.player);
 			if (!string.IsNullOrEmpty (winBonusString)) {
 				winString += winBonusString;

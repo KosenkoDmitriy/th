@@ -20,13 +20,12 @@ public class EndGame : BetRound {
 		// hide cards for folded players, show cards for active players
 		foreach(var player in game.players) {
 			foreach (var card in player.handPreflop.getCards()) {
-				if (player.id != Settings.playerRealIndex) {
-					if (player.isFolded) {
-						card.isHidden = true;
-					} else {
-						card.FaceUp = true;
-					}
+				if (player.isFolded) {
+					card.isHidden = true;
+				} else {
+					card.FaceUp = true;
 				}
+				if (player.isReal) card.FaceUp = true;
 			}
 		}
 
