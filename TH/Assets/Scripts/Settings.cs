@@ -10,9 +10,9 @@ static class Settings
 	public static readonly string aAllIn = "ALL IN";
 	public static readonly string aUnknown = "OPEN";
 
-	public static bool isDev = true;
-	public static bool isDebug = false;
-	public static bool isTest = true;
+	public static bool isDev = false;	// dev logs
+	public static bool isDebug = false;	// logs, display cards, etc
+	public static bool isTest = false;	// test hands
 	public static int levelGame = 2;
 	public static int levelMainMenu = 0;
 	
