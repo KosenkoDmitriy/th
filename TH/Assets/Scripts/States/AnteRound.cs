@@ -69,8 +69,12 @@ public class AnteRound : BetRound {
 
 					if (player.balanceInCredits <= 0) {
 						game.ui.btnCall.GetComponent<Button>().interactable = false;
+						game.ui.btnFold.GetComponent<Button>().interactable = false;
+						game.ui.btnAllIn.GetComponent<Button>().interactable = false;
 					} else {
 						game.ui.btnCall.GetComponent<Button>().interactable = true;
+						game.ui.btnFold.GetComponent<Button>().interactable = true;
+						game.ui.btnAllIn.GetComponent<Button>().interactable = true;
 					}
 				} else {
 					game.ui.DisableButtons(true);
@@ -113,6 +117,7 @@ public class AnteRound : BetRound {
 	public override void LastAction ()
 	{
 		base.LastAction ();
+
 		game.ui.btnFold.GetComponent<Button>().interactable = true;
 		game.ui.btnAllIn.GetComponent<Button>().interactable = true;
 
