@@ -111,43 +111,10 @@ public class InitGame : BetRound {
 		
 		// start using of test data (straight)
 		if (Settings.isTest) {
-
-			game.cards[0].setCard(RANK.FOUR, SUIT.CLUBS);
-			game.cards[1].setCard(RANK.SEVEN, SUIT.CLUBS);
-			game.cards[2].setCard(RANK.QUEEN, SUIT.CLUBS);
-			game.cards[3].setCard(RANK.JACK, SUIT.CLUBS);
-			game.cards[4].setCard(RANK.ACE, SUIT.HEARTS);
-
-			game.players[0].handPreflop.getCard(0).setCard(RANK.SIX, SUIT.CLUBS);
-			game.players[0].handPreflop.getCard(1).setCard(RANK.TWO, SUIT.HEARTS);
-
-			game.players[1].handPreflop.getCard(0).setCard(RANK.ACE, SUIT.CLUBS);
-			game.players[1].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.HEARTS);
-
-			game.players[2].handPreflop.getCard(0).setCard(RANK.SIX, SUIT.SPADES);
-			game.players[2].handPreflop.getCard(1).setCard(RANK.FIVE, SUIT.DIAMONDS);
-
-			game.players[3].handPreflop.getCard(0).setCard(RANK.THREE, SUIT.CLUBS);
-			game.players[3].handPreflop.getCard(1).setCard(RANK.NINE, SUIT.HEARTS);
-
-			game.players[4].handPreflop.getCard(0).setCard(RANK.QUEEN, SUIT.DIAMONDS);
-			game.players[4].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.SPADES);
-
-			game.players[5].handPreflop.getCard(0).setCard(RANK.TEN, SUIT.CLUBS);
-			game.players[5].handPreflop.getCard(1).setCard(RANK.TEN, SUIT.DIAMONDS);
-
-			if (Settings.isDebug) { 
-				foreach(var item in game.cards) {
-					item.FaceUp = true;
-				}
-						
-				foreach(var player in game.players) {
-
-					foreach (var item in player.handPreflop.getCards()) {
-						item.FaceUp = true;
-					}
-				}
-			}
+			var test = new TestData(game);
+//			test.StraightSouldntFold();
+//			test.ThreeOfAKindShouldNotFold();
+			test.StraightShouldNotFold(); // should not fold when raise and bet with 40 credits (flop)
 		}
 		// end using of test data (straight)
 

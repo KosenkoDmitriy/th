@@ -72,6 +72,7 @@
      <Compile Include="Assets\Scripts\States\RiverRound.cs" />
      <Compile Include="Assets\Scripts\States\States.cs" />
      <Compile Include="Assets\Scripts\States\TurnRound.cs" />
+     <Compile Include="Assets\Scripts\TestData.cs" />
      <Compile Include="Assets\Scripts\WebApi.cs" />
      <None Include="Assets\3DText.shader" />
  <Reference Include="UnityEngine.UI">
