@@ -22,8 +22,6 @@ public class InitGame : BetRound {
 		game.isGameRunning = false;
 
 		if (game.ui.payTable != null) game.ui.payTable.SelectColumnByIndex(-1);
-		Settings.betBonus = 0;
-		Settings.betCurrent = new Bet (0);
 		game.betAmount = new Bet (0);
 
 		if (game.ui.inputBetField) game.ui.inputBetField.text = game.betAmount.inCredits.f ();
@@ -150,11 +148,9 @@ public class InitGame : BetRound {
 		isWaiting = false;
 
 		if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(true);
-//		if (Settings.betRepeat > 0) {
-//			if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
-//		} else {
-			if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
-//		}
+
+		game.ui.btnRepeatBetPrepare();
+
 		if (game.ui.btnStartGame) game.ui.btnStartGame.GetComponentInChildren<Text>().text = "START GAME";
 		// if (btnStartGame) btnStartGame.GetComponent<Button>().onClick.Invoke();
 		// if (lblPanelBet) lblPanelBet.GetComponent<Text>().text = "PLACE YOUR BET";

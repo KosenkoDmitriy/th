@@ -87,16 +87,18 @@ public class GameUI : MonoBehaviour
 	public void btnRaiseClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		Settings.betCurrent.inCredits = game.betAmount.inCredits = 0;
+
+		game.betAmount.inCredits = 0;
 		HideDynamicPanels ();
 		if (panelInitBet) {
 			panelInitBet.SetActive (true);
 
-//			if (Settings.betRepeat > 0) if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
-//			else if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
 			if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
 
-			inputBetField.text = Settings.betCurrent.inCredits.f();
+			inputBetField.text = game.betAmount.inCredits.f();
+
+			game.ui.btnRepeatBetPrepare();
+
 		}
 	}
 
@@ -128,17 +130,25 @@ public class GameUI : MonoBehaviour
 		game.ui.btnAllIn.GetComponentInChildren<Text>().text = "CONTINUE";
 	}
 
-	public void btnRepeatBetClick() {
-		if (Settings.betRepeat > 0) {
-			if (game.ui.btnRepeatBet)
-				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
-			game.player.actionFinal = new Raise (game.player, new Bet (0), new Bet (Settings.betRepeat));
-			game.player.actionFinal.Do (game, game.player);
-			game.ui.panelInitBet.SetActive (false);
-			game.ui.panelGame.SetActive (true);
-		} else {
-			if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+	public void btnRepeatBetPrepare ()
+	{
+		if (Settings.betRepeat > 0 && Settings.betRepeat > game.state.betMaxLimit.inCredits) {
+			Settings.betRepeat = game.state.betMaxLimit.inCredits;
 		}
+		if (game.ui.btnRepeatBet) {
+			game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} REPEAT BET", Settings.betRepeat.f());
+
+			if (Settings.betRepeat <= game.player.balanceInCredits) {
+				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
+			} else {
+				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+			}
+		}
+	}
+
+	public void btnRepeatBetClick() {
+		var bet = new Bet(Settings.betRepeat);
+		DoFinalActionByCurrentBet(bet);
 	}
 
 	public void btnHelpClick()
@@ -164,7 +174,6 @@ public class GameUI : MonoBehaviour
 		
 		audio.PlayOneShot(soundBtnClicked);
 
-//		betAmount = 0;
 		string betAmountString = "0";
 		if (inputBetField)
 			betAmountString = inputBetField.text;
@@ -172,12 +181,16 @@ public class GameUI : MonoBehaviour
 		Double.TryParse (betAmountString, out bet);
 		game.betAmount.inCredits = bet;
 
+		DoFinalActionByCurrentBet(game.betAmount);
+	}
+
+	public void DoFinalActionByCurrentBet(Bet bet) {
 		// from recommend to optimal
-		double betTotalAfterAction = game.player.balanceInCredits - game.betAmount.inCredits;
-		double betTotalSubRoundAfterA = game.player.betInvested.inCredits + game.betAmount.inCredits;
-
+		double betTotalAfterAction = game.player.balanceInCredits - bet.inCredits;
+		double betTotalSubRoundAfterA = game.player.betInvested.inCredits + bet.inCredits;
+		
 		if (game.isGameRunning) {
-
+			
 			var betCall = game.state.betMax - game.player.betInvested;
 			if (betCall < 0) { // raised already
 				betCall.inCredits = 0; // should be positive
@@ -189,32 +202,31 @@ public class GameUI : MonoBehaviour
 					game.player.actionFinal = new Call (game.player, betCall, new Bet(0));
 				}
 			} else {
-				game.player.actionFinal = new Raise (game.player, betCall, game.betAmount);
+				game.player.actionFinal = new Raise (game.player, betCall, bet);
 			}
-
+			
 			if (lblCall) lblCall.text = game.state.betMax.inCredits.f();
-			if (lblRaise) lblRaise.text = game.betAmount.inCredits.f();
-
+			if (lblRaise) lblRaise.text = bet.inCredits.f();
+			
 			game.player.actionFinal.Do (game, game.player);
-			if (lblBet) lblBet.text = game.betAmount.inCredits.f();
-		} else if (!game.isGameRunning && game.betAmount.inCredits > 0 && betTotalAfterAction >= 0) {
+			if (lblBet) lblBet.text = bet.inCredits.f();
+		} else if (!game.isGameRunning && bet.inCredits > 0 && betTotalAfterAction >= 0) {
 			game.isGameRunning = true;
 			game.player.actionFinal = new Raise(game.player, game.state.betMax, Settings.betCurrent);
 			game.player.actionFinal.Do (game, game.player);
-			if (lblBet) lblBet.text = game.betAmount.inCredits.f();
+			if (lblBet) lblBet.text = bet.inCredits.f();
 		} else {
 			return;
 		}
-
-		Settings.betRepeat = game.betAmount.inCredits;
-//		if (Settings.betRepeat > 0) if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
-//		else if (game.ui.btnRepeatBet) game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+		
+		Settings.betRepeat = bet.inCredits;
+		
 		if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
-
+		
 		if (panelInitBet) panelInitBet.SetActive(false);
 		if (panelGame) panelGame.SetActive(true);
 	}
-	
+
 	public void btnMaxBetClick()
 	{
 		if (Settings.isDebug) Debug.Log("btnMaxBetClick()");
@@ -291,6 +303,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	#region add credits
+	
 	private void btnCreditAddClickListener()
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
@@ -352,9 +365,7 @@ public class GameUI : MonoBehaviour
 
 		if (Settings.isLogined)
 			this.GetBalance ();
-
-		Settings.betCurrent = new Bet(0);
-			
+					
 		panelAddCredits = GameObject.Find ("PanelAddCredits");
 		if (panelAddCredits) {
 			btnCreditOk = panelAddCredits.transform.FindChild ("btnOk").gameObject;

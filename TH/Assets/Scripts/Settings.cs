@@ -50,7 +50,7 @@ static class Settings
 	// end bonus table
 
 	public static readonly double betNull = 0.00;
-	public static Bet betCurrent;
+	public static Bet betCurrent = new Bet(0);
 
 	public static double playerCredits = 25000;
 	public static string credits = " credits ";// { get; internal set; }

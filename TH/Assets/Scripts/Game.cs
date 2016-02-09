@@ -226,7 +226,7 @@ public class Game
 	public States states;
 	public BetRound state;
 
-	public Bet betAmountAnt, betAmount;
+	public Bet betAmount = new Bet(0);
 	public double potAmount;
 
 	public PlayerIterator playerIterator;
