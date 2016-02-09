@@ -277,6 +277,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 	}
 
 	public virtual void UpdatePattern() {
-		SetPatternAndHisAlternatives (items); // for all bet rounds except preflop
+		if (items != null && items.Count > 0)
+			SetPatternAndHisAlternatives (items); // for all bet rounds except preflop
 	}
 }
