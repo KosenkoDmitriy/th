@@ -346,9 +346,9 @@ public class Player {
 
 		if (betInvestedAfterAction == betInvested) { // > check
 			if (actionTip.isRaise) {
-				if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) { // raise
+				if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) { // raise or call
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
-				} else { // can't raise (check)
+				} else { // check because can't raise or call
 					actionTip.isCheck = true;
 					actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 				}
@@ -357,10 +357,11 @@ public class Player {
 				actionFinal = new Check (this, actionTip.betCall, actionTip.betRaise);
 			}
 		} else if (betInvestedAfterAction > betInvested) { // > call or raise
-//			if (dt.inBetMath <= betMaxLimit.inBetMath) {
-			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) {
-				if (actionTip.isRaise) {
+			if (dt.inBetMath <= patternCurrent.betMaxCallOrRaise) { // less than bet max limit 
+				if (actionTip.isRaise) { // raise
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
+				} else if (actionTip.isCheck || actionTip.isFold) { // check or fold
+					actionFinal = new Fold (this, new Bet(0), new Bet(0));
 				} else { // call only
 					actionFinal = RaiseOrCall(betMax, betMaxLimit, false);
 				}
@@ -371,7 +372,6 @@ public class Player {
 
 		if (isWinner) {
 			actionFinal = RaiseOrCall(betMax, betMaxLimit, isCanToRaise);
-			//TODO check when the player will exceed the bet max limit
 		}
 
 //		if (balanceInCredits < 0 || betInvestedAfterAction < 0) { // > fold
