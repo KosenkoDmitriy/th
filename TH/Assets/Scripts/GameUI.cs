@@ -311,6 +311,9 @@ public class GameUI : MonoBehaviour
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
 		if (panelAddCredits) panelAddCredits.SetActive(true);
+		game.ui.SetBalance(Settings.playerCredits.ToString());
+		var lblMyCreditsTitle = GameObject.Find("lblMyCredits");
+		if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = Settings.playerCredits.f();
 	}
 	
 	private void btnCreditOkClickListener()
