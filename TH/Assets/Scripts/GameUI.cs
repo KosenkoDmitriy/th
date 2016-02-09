@@ -132,23 +132,20 @@ public class GameUI : MonoBehaviour
 
 	public void btnRepeatBetPrepare ()
 	{
-//		if (Settings.betRepeat > 0 && Settings.betRepeat > game.state.betMaxLimit.inCredits) {
-//			Settings.betRepeat = game.state.betMaxLimit.inCredits;
-//		}
-		if (game.ui.btnRepeatBet) {
-			game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} REPEAT BET", Settings.betRepeat.f());
-
-			if (game.state != null) {
-				var bet = game.state.betMax - game.player.betInvested;
-				if (bet < 0d) bet.inCredits = 0;
-				if ((game.player.betInvested + bet <= game.state.betMaxLimit)
-				    ) {
-					game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
-				} else {
-					game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
-				}
+		if (game.state != null) {
+			var betMax = game.state.betMaxLimit - game.state.betMax;
+			if (betMax < 0d) {
+				Settings.betCurrent.inCredits = Settings.betNull;
 			}
+			if (Settings.betCurrent <= betMax.inCredits) {
+				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = true;
+			} else {
+				game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
+			}
+		} else {
+			game.ui.btnRepeatBet.GetComponent<Button> ().interactable = false;
 		}
+		game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} REPEAT BET", Settings.betRepeat.f());
 	}
 
 	public void btnRepeatBetClick() {
