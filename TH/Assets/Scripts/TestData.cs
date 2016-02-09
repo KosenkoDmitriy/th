@@ -22,6 +22,21 @@ public class TestData {
 		}
 	}
 
+	public void LivePlayerWin() {
+		game.cards[0].setCard(RANK.FOUR, SUIT.CLUBS);
+		game.cards[1].setCard(RANK.TEN, SUIT.CLUBS);
+		game.cards[2].setCard(RANK.QUEEN, SUIT.CLUBS);
+		game.cards[3].setCard(RANK.JACK, SUIT.CLUBS);
+		game.cards[4].setCard(RANK.ACE, SUIT.HEARTS);
+
+		foreach(var player in game.players) {
+			if (player.isReal) {
+				player.handPreflop.getCard(0).setCard(RANK.KING, SUIT.CLUBS);
+				player.handPreflop.getCard(1).setCard(RANK.ACE, SUIT.CLUBS);
+			}
+		}
+	}
+
 	public void StraightSouldntFold() {
 		game.cards[0].setCard(RANK.FOUR, SUIT.CLUBS);
 		game.cards[1].setCard(RANK.SEVEN, SUIT.CLUBS);

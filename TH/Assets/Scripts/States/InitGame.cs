@@ -112,7 +112,8 @@ public class InitGame : BetRound {
 			var test = new TestData(game);
 //			test.StraightSouldntFold();
 //			test.ThreeOfAKindShouldNotFold();
-			test.StraightShouldNotFold(); // should not fold when raise and bet with 40 credits (flop)
+//			test.StraightShouldNotFold(); // should not fold when raise and bet with 40 credits (flop)
+			test.LivePlayerWin();
 		}
 		// end using of test data (straight)
 
