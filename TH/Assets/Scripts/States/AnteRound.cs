@@ -22,6 +22,7 @@ public class AnteRound : BetRound {
 		if (Settings.isDev) game.player.Log(false, true, string.Format("AnteRound BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 
 		//		base.BetSubRounds ();
+
 		if (!game.state.isWaiting) {
 			var player = game.playerIterator.Next ();
 			if (player == null) {
@@ -29,6 +30,8 @@ public class AnteRound : BetRound {
 				return;
 			} else {
 				if (player.isReal) {
+					game.ui.DisableButtons(false);
+
 					game.state.isWaiting = true;
 					game.player = player;
 
@@ -70,6 +73,8 @@ public class AnteRound : BetRound {
 						game.ui.btnCall.GetComponent<Button>().interactable = true;
 					}
 				} else {
+					game.ui.DisableButtons(true);
+
 					if (player.position == 0 && !player.isReal) {
 						game.isGameRunning = true;
 

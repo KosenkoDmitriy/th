@@ -20,7 +20,21 @@ public abstract class AbstractBetRound {
 }
 
 public class BetRound : AbstractBetRound, IBetRoundState {
+	private bool _isWaiting;
 	public bool isWaiting; // wait for corountine
+	/*{ 
+		get {
+			return _isWaiting;
+		}
+		set {
+			_isWaiting = value;
+			if (this.game != null)
+			if (_isWaiting)
+				this.game.ui.DisableButtons(true);
+			else
+				this.game.ui.DisableButtons(false);
+		}
+	}*/
 	public bool isCanToRaise;
 	public Player playerFirstToAllIn;
 	public List<Player> playersAllIn;
@@ -124,6 +138,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //			if (Settings.isDev) player.LogDevInfo(player, false, false);
 
 			if (player.isReal) {
+				game.ui.DisableButtons(false);
+
 				if (player.betInvested >= betMaxLimit) { // skip action
 					return;
 				}
@@ -162,6 +178,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					game.ui.btnRaise.GetComponent<Button>().interactable = true;
 				}
 			} else {
+				game.ui.DisableButtons(true);
+
 				if (!player.isFolded) {
 					player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
 					player.actionFinal.Do(game, player);

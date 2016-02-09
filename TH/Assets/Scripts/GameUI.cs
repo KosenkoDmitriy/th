@@ -457,6 +457,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	public IEnumerator DealCards() {
+		DisableButtons(true);
 		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
 			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 				var card = player.handPreflop.getCard (i);
@@ -469,11 +470,43 @@ public class GameUI : MonoBehaviour
 				yield return new WaitForSeconds (Settings.updateInterval);
 			}
 		}
-	
+		DisableButtons(false);
 		game.state.isWaiting = false;
 		game.playerIterator = new PlayerIterator (game.playerCollection);
 	}
 
+	public void DisableButtons(bool isDisable) {
+		bool WillHide = false;
+		if (game.ui.panelGame.activeInHierarchy) {
+			
+		} else {
+			WillHide = true;
+			game.ui.panelGame.SetActive(true);
+		}
+
+		if (isDisable) {
+
+//			if (game.ui.panelGame)
+			game.ui.btnRaise.GetComponent<Button>().interactable = false;
+			game.ui.btnCall.GetComponent<Button>().interactable = false;
+			game.ui.btnAllIn.GetComponent<Button>().interactable = false;
+			game.ui.btnFold.GetComponent<Button>().interactable = false;
+			game.ui.btnCheck.GetComponent<Button>().interactable = false;
+
+		} else {
+
+			game.ui.btnRaise.GetComponent<Button>().interactable = true;
+			game.ui.btnCall.GetComponent<Button>().interactable = true;
+			game.ui.btnAllIn.GetComponent<Button>().interactable = true;
+			game.ui.btnFold.GetComponent<Button>().interactable = true;
+			game.ui.btnCheck.GetComponent<Button>().interactable = true;
+
+ 		}
+
+		if (WillHide) {
+			game.ui.panelGame.SetActive(false);
+		}
+	}
 	public void UpdatePlayerActionAndCredits(Player player) {
 		player.lblCredits.text = player.balanceInCredits.f();
 		player.lblAction.text = player.actionCurrentString;
