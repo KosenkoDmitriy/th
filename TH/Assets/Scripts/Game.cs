@@ -202,6 +202,7 @@ public class Game
 		}
 
 		// win percentage for losers
+		if (loosers != null || loosers.Count > 0) {
 		var dp = 100 / loosers.Count;
 		int no = 1;
 		foreach (var player in loosers) {
@@ -216,7 +217,7 @@ public class Game
 			foreach (var player in players)
 				if (player.id == l.id)
 					player.winPercent = l.winPercent;
-
+		}
 		return players;
 	}
 
