@@ -102,6 +102,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					if (Settings.isDev) Debug.Log ("one active player > EndGame()");
 					game.winners = new List<Player>();
 					game.winners.Add(player);
+					LastAction();
 					game.state = new EndGame(game);
 					return;
 				}
