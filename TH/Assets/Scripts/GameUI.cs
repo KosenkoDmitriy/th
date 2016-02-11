@@ -88,6 +88,7 @@ public class GameUI : MonoBehaviour
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
+		Settings.betCurrent.inCredits = 0;
 		game.betAmount.inCredits = 0;
 		HideDynamicPanels ();
 		if (panelInitBet) {
