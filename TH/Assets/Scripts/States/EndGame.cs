@@ -37,12 +37,16 @@ public class EndGame : BetRound {
 			} else {
 				player.lblAction.text = "";
 			}
+			if (player.isFolded && player.isReal) {
+				player.lblName.text = "YOU FOLDED";
+			}
 		}
 
 		// preparation active players for winners detection
 		var players = new List<Player> ();
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
-			players.Add(player);
+			if (!player.isFolded)
+				players.Add(player);
 		}
 		game.WinInfo (players);
 	}
