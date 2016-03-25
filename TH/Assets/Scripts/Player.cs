@@ -112,8 +112,8 @@ public class Player {
 			// start init chips
 			chipSpriteList = new List<Sprite> ()
 			{
-				Resources.Load("chips_red", typeof(Sprite)) as Sprite,
-				Resources.Load("chips_blue", typeof(Sprite)) as Sprite
+				Resources.Load(Settings.chipsRed, typeof(Sprite)) as Sprite,
+				Resources.Load(Settings.chipsBlue, typeof(Sprite)) as Sprite
 			};
 			// end init chips
 		}

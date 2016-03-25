@@ -58,6 +58,9 @@ static class Settings
 	public static double playerCredits = 25000;
 	public static string credits = " credits ";// { get; internal set; }
 
+	public static string chipsRed = "chip_red";	//"chips_red";
+	public static string chipsBlue = "chip_yellow";	//"chips_blue";
+
 	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
 	#endregion
 
