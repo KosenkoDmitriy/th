@@ -93,7 +93,7 @@ static class Settings
 
     // cards
     public static string cardsPrefix = "cards_new/";
-	public static string cardBackName = cardsPrefix + "card_back_black_with_logo";
+	public static string cardBackName = cardsPrefix + "card_back_black";
 	public static string cardBg = "transparent";
     public static int cardsSize = 52;
 	// end cards
