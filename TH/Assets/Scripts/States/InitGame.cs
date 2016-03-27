@@ -88,6 +88,7 @@ public class InitGame : BetRound {
 			card.setImage (image);
 			if (Settings.isDebug)
 				card.FaceUp = true;
+			card.isHidden = true;
 			game.cards.Add (card);
 		}
 		// turn
@@ -96,6 +97,7 @@ public class InitGame : BetRound {
 		card.setImage (image);
 		if (Settings.isDebug)
 			card.FaceUp = true;
+		card.isHidden = true;
 		game.cards.Add (card);
 		
 		// river
@@ -104,7 +106,7 @@ public class InitGame : BetRound {
 		card.setImage (image);
 		if (Settings.isDebug)
 			card.FaceUp = true;
-
+		card.isHidden = true;
 		game.cards.Add (card);
 		
 		// start using of test data (straight)
