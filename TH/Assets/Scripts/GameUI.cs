@@ -39,6 +39,7 @@ public class GameUI : MonoBehaviour
 //			}
 //			// commented because we don't need clear it
 		}
+
 		if (game.cards != null)
 		foreach (var card in game.cards) {
 			card.isHidden = true;
@@ -431,12 +432,19 @@ public class GameUI : MonoBehaviour
 		btnAutoPlay = GameObject.Find ("btnAutoPlay");
 		btnNewGame = GameObject.Find ("btnNewGame");
 		btnAllIn = GameObject.Find ("btnAllIn");
-		lblPot = GameObject.Find ("lblPot").GetComponent<Text>();
-		lblRaise = GameObject.Find ("lblRaise").GetComponent<Text>();
-		lblBet = GameObject.Find ("lblBet").GetComponent<Text>();
-		lblBetBonus = GameObject.Find ("lblBetBonus").GetComponent<Text>();
-		lblCall = GameObject.Find ("lblCall").GetComponent<Text>();
-			
+
+		var lblPotObj = GameObject.Find ("lblPot");
+		var lblRaiseObj = GameObject.Find ("lblRaise");
+		var lblBetObj = GameObject.Find ("lblBet");
+		var lblBetBonusObj = GameObject.Find ("lblBetBonus");
+		var lblCallObj = GameObject.Find ("lblCall");
+
+		if (lblPotObj) lblPot = lblPotObj.GetComponent<Text>();
+		if (lblRaiseObj) lblRaise = lblRaiseObj.GetComponent<Text>();
+		if (lblBetObj) lblBet = lblBetObj.GetComponent<Text>();
+		if (lblBetBonusObj) lblBetBonus = lblBetBonusObj.GetComponent<Text>();
+		if (lblCallObj) lblCall = lblCallObj.GetComponent<Text>();
+
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
 		audio.volume = 0.1f;

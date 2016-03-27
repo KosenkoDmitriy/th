@@ -27,11 +27,11 @@ public class InitGame : BetRound {
 		if (game.ui.inputBetField) game.ui.inputBetField.text = game.betAmount.inCredits.f ();
 
 //		game.ui.ClearAll ();
-		game.ui.lblPot.text = Settings.betNull.f();
-		game.ui.lblBet.text = Settings.betNull.f();
-		game.ui.lblBetBonus.text = Settings.betNull.f();
-		game.ui.lblRaise.text = Settings.betNull.f();
-		game.ui.lblCall.text = Settings.betNull.f();
+		if (game.ui.lblPot) game.ui.lblPot.text = Settings.betNull.f();
+		if (game.ui.lblBet) game.ui.lblBet.text = Settings.betNull.f();
+		if (game.ui.lblBetBonus) game.ui.lblBetBonus.text = Settings.betNull.f();
+		if (game.ui.lblRaise) game.ui.lblRaise.text = Settings.betNull.f();
+		if (game.ui.lblCall) game.ui.lblCall.text = Settings.betNull.f();
 		
 		game.ui.HideDynamicPanels ();
 		game.ui.panelInitBet.SetActive (true);
