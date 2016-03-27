@@ -110,13 +110,24 @@ public class Player {
 	private void UpdateWinImage ()
 	{
 		if (isWinHidden) {
-			var sprite = Resources.Load<Sprite> (Settings.icWin);
-			if (this.winImage != null)
-				this.winImage.sprite = sprite;
-		} else {
 			var sprite = Resources.Load<Sprite> (Settings.cardBg);
 			if (this.winImage != null)
 				this.winImage.sprite = sprite;
+		} else {
+			var sprite = Resources.Load<Sprite> (Settings.icWin);
+			if (this.winImage != null)
+				this.winImage.sprite = sprite;
+		}
+	}
+
+	private void UpdateChipImage ()
+	{
+		if (_isChipHidden) {
+			var sprite = Resources.Load<Sprite> (Settings.cardBg);
+			if (this.chip != null)
+				this.chip.sprite = sprite;
+		} else {
+			this.SetChipRandomly();
 		}
 	}
 
@@ -741,6 +752,15 @@ public class Player {
 		}
 	}
 
+	private bool _isChipHidden;
+	public bool isChipHidden {
+		get { return _isChipHidden; }
+		set { 
+			_isChipHidden = value;
+			UpdateChipImage ();
+		}
+	}
+
 	public Image winImage;
 	private bool _isWinHidden;
 	public bool isWinHidden {
@@ -754,4 +774,5 @@ public class Player {
 	public Text lblCredits;
 	public Text lblAction;
 	public Text lblName;
+	public Text lblCurBet;
 }

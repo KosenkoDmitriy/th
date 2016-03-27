@@ -27,6 +27,15 @@ public class Action : IAction {
 	public virtual void Do (Game game, Player p)
 	{
 		if (p != null) {
+
+			if (betToStay.inCredits > 0f) {
+				p.lblCurBet.text = betToStay.inCredits.f();
+				p.isChipHidden = false;
+			} else {
+				p.lblCurBet.text = "";
+				p.isChipHidden = true;
+			}
+
 			if (p.isReal) {
 				if (p.isFolded) {
 					game.state = new InitGame(game);
@@ -174,6 +183,10 @@ public class Call : Action
 	}
 	public override void Do(Game game, Player p) {
 		base.Do (game, p);
+
+//		p.lblCurBet.text = betToStay.inCredits.f();
+//		p.isChipHidden = false;
+
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
 	}
 }
@@ -237,6 +250,10 @@ public class Raise : Action
 
 	public override void Do(Game game, Player p) {
 		base.Do (game, p);
+
+//		p.lblCurBet.text = betToStay.inCredits.f();
+//		p.isChipHidden = false;
+
 		game.ui.audio.PlayOneShot(game.ui.soundRaise);
 	}
 }

@@ -132,6 +132,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					return;
 				}
 				game.state.isWaiting = true;
+
+				player.lblCurBet.text = "";
+				player.isChipHidden = true;
+
 				var bet = new Bet(player.betInvested.inCredits - game.state.betMax.inCredits);
 				if (bet > 0) { // raise amount ?
 					game.ui.lblRaise.text = bet.inCredits.f ();

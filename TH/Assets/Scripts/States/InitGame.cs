@@ -56,7 +56,7 @@ public class InitGame : BetRound {
 		
 		// chips
 		foreach (var player in game.players) {
-			player.SetChipRandomly();
+//			player.SetChipRandomly();
 			player.lblName.text = player.name;
 			player.lblCredits.text = player.balanceInCredits.f();
 			player.lblAction.text = "";

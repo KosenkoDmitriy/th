@@ -14,11 +14,14 @@ public class EndGame : BetRound {
 		// display all community cards
 		for (int i = 0; i < Settings.playerHandMaxSize; i++) {
 			var card = game.cards[i];
-				card.FaceUp = true;
+			card.FaceUp = true;
 		}
 
 		// hide cards for folded players, show cards for active players
 		foreach(var player in game.players) {
+			player.lblCurBet.text = "";
+			player.isChipHidden = true;
+
 			foreach (var card in player.handPreflop.getCards()) {
 				if (player.isFolded) {
 					card.isHidden = true;

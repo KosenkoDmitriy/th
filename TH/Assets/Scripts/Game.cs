@@ -47,8 +47,12 @@ public class Game
 			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
 			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
 			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
+			player.lblCurBet = GameObject.Find("lblCurBet"+i).GetComponent<Text>();
 
-			player.isWinHidden = false;
+			player.isWinHidden = true;
+
+			player.isChipHidden = true;
+			player.lblCurBet.text = "";
 
 			players.Add (player);
 		}
@@ -110,7 +114,7 @@ public class Game
 		}
 
 		foreach(var player in game.winners)
-			player.isWinHidden = true;
+			player.isWinHidden = false;
 
 		string winBonusString = "";
 		if (game.player.isReal && game.player.isWinner && !game.player.isFolded) { // only active winner player will get bonus
