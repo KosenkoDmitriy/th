@@ -38,6 +38,8 @@ public class Game
 
 			player.chip = GameObject.Find("Chip"+i).GetComponent<Image>();
 			player.dealer = GameObject.Find("Dealer"+i).GetComponent<Image>();
+
+			player.winImage = GameObject.Find("win"+i).GetComponentInChildren<Image>();
 			if (player.id == dealerIndex)
 				player.isDealer = true; 
 			else
@@ -45,6 +47,8 @@ public class Game
 			player.lblAction = GameObject.Find ("lblBetPlayer"+i).GetComponent<Text>();
 			player.lblCredits = GameObject.Find ("lblCreditPlayer"+i).GetComponent<Text>();
 			player.lblName = GameObject.Find("lblPlayerName"+i).GetComponent<Text>();
+
+			player.isWinHidden = false;
 
 			players.Add (player);
 		}
@@ -104,7 +108,10 @@ public class Game
 			player.lblCredits.text = player.balanceInCredits.f();
 			winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, winAmount.f(), player.GetHandStringFromHandObj ());
 		}
-		
+
+		foreach(var player in game.winners)
+			player.isWinHidden = true;
+
 		string winBonusString = "";
 		if (game.player.isReal && game.player.isWinner && !game.player.isFolded) { // only active winner player will get bonus
 			winBonusString = GetAndSetBonusString(game.player);

@@ -97,13 +97,26 @@ public class Player {
 	private void UpdateDealerImage ()
 	{
 		if (isDealer) {
-			var sprite = Resources.Load<Sprite> ("ic_dealer_old");
+			var sprite = Resources.Load<Sprite> (Settings.icDealer);
 			if (this.dealer != null)
 				this.dealer.sprite = sprite;
 		} else {
 			var sprite = Resources.Load<Sprite> (Settings.cardBg);
 			if (this.dealer != null)
 				this.dealer.sprite = sprite;
+		}
+	}
+
+	private void UpdateWinImage ()
+	{
+		if (isWinHidden) {
+			var sprite = Resources.Load<Sprite> (Settings.icWin);
+			if (this.winImage != null)
+				this.winImage.sprite = sprite;
+		} else {
+			var sprite = Resources.Load<Sprite> (Settings.cardBg);
+			if (this.winImage != null)
+				this.winImage.sprite = sprite;
 		}
 	}
 
@@ -727,9 +740,18 @@ public class Player {
 			UpdateDealerImage ();
 		}
 	}
-	
+
+	public Image winImage;
+	private bool _isWinHidden;
+	public bool isWinHidden {
+		get { return _isWinHidden; }
+		set { 
+			_isWinHidden = value;
+			UpdateWinImage ();
+		}
+	}
+
 	public Text lblCredits;
 	public Text lblAction;
 	public Text lblName;
-
 }

@@ -2,7 +2,10 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static string icWin = "winner_start";
+	public static string icDealer = "ic_dealer_old";
 	public static double betRepeat = 0;
+	public static string win = "win";
 	public static readonly string aCheck = "CHECK";
 	public static readonly string aCall = "CALL";
 	public static readonly string aFold = "FOLD";
@@ -96,7 +99,7 @@ static class Settings
 
     // cards
     public static string cardsPrefix = "cards_new/";
-	public static string cardBackName = cardsPrefix + "card_back_black";
+	public static string cardBackName = cardsPrefix + "card_back_red";
 	public static string cardBg = "transparent";
     public static int cardsSize = 52;
 	// end cards
