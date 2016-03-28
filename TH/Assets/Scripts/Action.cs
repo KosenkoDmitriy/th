@@ -28,8 +28,8 @@ public class Action : IAction {
 	{
 		if (p != null) {
 
-			if (betToStay.inCredits > 0f) {
-				p.lblCurBet.text = betToStay.inCredits.f();
+			if (!p.isFolded && (p.betInvested + betToStay) > 0f) {
+				p.lblCurBet.text = (p.betInvested + betToStay).inCredits.f();
 				p.isChipHidden = false;
 			} else {
 				p.lblCurBet.text = "";

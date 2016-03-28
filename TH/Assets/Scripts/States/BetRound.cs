@@ -82,6 +82,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 			pot += player.betInvested;
 			player.betInvested.inCredits = 0;
+
+			player.lblCurBet.text = "";
+			player.isChipHidden = true;
+
 		}
 	
 		game.potAmount += pot.inCredits;
@@ -133,8 +137,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 				game.state.isWaiting = true;
 
-				player.lblCurBet.text = "";
-				player.isChipHidden = true;
+//				player.lblCurBet.text = "";
+//				player.isChipHidden = true;
 
 				var bet = new Bet(player.betInvested.inCredits - game.state.betMax.inCredits);
 				if (bet > 0) { // raise amount ?
