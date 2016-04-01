@@ -90,8 +90,9 @@ static class Settings
     public static readonly string urlFortuneWheel = host + "#credits";//"/fortune_wheel"; //TODO: implement on website
     public static readonly string urlCredits = host + "#credits";//"/credits"; //TODO: implement on website
 
-    public static readonly string actionLogin = "login";
-    public static readonly string actionAdd = "add";
+	public static readonly string actionLogin = "login";
+	public static readonly string actionFacebookLogin = "flogin";
+	public static readonly string actionAdd = "add";
     public static readonly string actionSub = "sub";
     public static readonly string actionGetBalance = "get";
     public static readonly string actionSetBalance = "set";
