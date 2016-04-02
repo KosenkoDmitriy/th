@@ -79,7 +79,7 @@ static class Settings
     public static bool isLogined = false;
 
 	public static string key = "";
-    public static readonly string http = "http://";
+    public static readonly string http = "https://";
     public static readonly string host = http + "th.shopomob.ru";
 
     public static readonly string urlSignUp = host + "#sign_in_up";
