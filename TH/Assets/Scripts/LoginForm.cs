@@ -78,6 +78,7 @@ public class LoginForm : MonoBehaviour
 	// Awake function from Unity's MonoBehavior
 	void Awake ()
 	{
+		Debug.Log("Awake()");
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
 			FB.Init(InitCallback, OnHideUnity);
@@ -89,9 +90,13 @@ public class LoginForm : MonoBehaviour
 	
 	private void InitCallback ()
 	{
+		Debug.Log("InitCallback()");
 		if (FB.IsInitialized) {
 			// Signal an app activation App Event
+			Debug.Log("start ActivateApp()");
 			FB.ActivateApp();
+			Debug.Log("end ActivateApp()");
+
 			// Continue with Facebook SDK
 			// ...
 		} else {
@@ -101,6 +106,8 @@ public class LoginForm : MonoBehaviour
 	
 	private void OnHideUnity (bool isGameShown)
 	{
+		Debug.Log("OnHideUnity()");
+
 		if (!isGameShown) {
 			// Pause the game - we will need to hide
 			Time.timeScale = 0;
@@ -111,16 +118,22 @@ public class LoginForm : MonoBehaviour
 	}
 
 	public void FacebookLogin() {
+		Debug.Log("FacebookLogin()");
+
 		//		var perms = new new System.Collections.Generic.List<string>(){"public_profile", "email", "user_friends"};
 		var perms = new System.Collections.Generic.List<string>(){"public_profile"};
 		FB.LogInWithReadPermissions(perms, AuthCallback);
 	}
 
 	public void FacebookLogout() {
+		Debug.Log("FacebookLogout()");
+
 		FB.LogOut();
 	}
 
 	private void AuthCallback (ILoginResult result) {
+		Debug.Log("AuthCallback()");
+
 		if (FB.IsLoggedIn) {
 			// AccessToken class will have session details
 			var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
@@ -161,6 +174,7 @@ public class LoginForm : MonoBehaviour
 
 	private void BusinessTokenCallback(IGraphResult result){
 //		Debug.Log(result);
+		Debug.Log("BusinessTokenCallback()");
 
 		var dict = Json.Deserialize(result.RawResult) as Dictionary<string,object>;
 		string businessToken = (string)dict["token_for_business"];
