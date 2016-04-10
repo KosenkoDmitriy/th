@@ -118,7 +118,7 @@ public class Game
 
 		string winBonusString = "";
 		if (game.player.isReal && game.player.isWinner && !game.player.isFolded) { // only active winner player will get bonus
-			winBonusString = GetAndSetBonusString(game.player);
+			winBonusString = GetAndSetBonusString(game.player, game.winners.Count);
 			if (!string.IsNullOrEmpty (winBonusString)) {
 				winString += winBonusString;
 			}
@@ -134,7 +134,7 @@ public class Game
 		game.ui.panelWin.SetActive (true);
 	}
 	
-	public string GetAndSetBonusString(Player player) {
+	public string GetAndSetBonusString(Player player, int winnersCount) {
 		Game game = this; // TODO
 		// check for bet bonus
 		string winBonusString = "";
@@ -142,10 +142,17 @@ public class Game
 			if (game.ui.payTable != null) {
 				double winBonus = game.ui.payTable.GetAndSelectBonusWin (player);
 				if (winBonus > 0) {
+					if (winnersCount > 1) { 
+						winBonus /= 2;
+						winBonusString = string.Format ("\n{0} win half of bonus {1} credits\n", player.name, winBonus.to_b ());
+					} else {
+						winBonusString = string.Format ("\n{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
+					}
+
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
+
 					player.balanceInCredits += winBonus * Settings.betCreditsMultiplier;
 					player.lblCredits.text = player.balanceInCredits.f();
-					winBonusString = string.Format ("\n{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
 				}
 			}
 		}

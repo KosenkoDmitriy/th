@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 static class Settings
 {
+	public static bool isDev = false;	// advanced debug info
+	public static bool isDebug = false;	// logs, display cards, etc
+	public static bool isTest = false;	// test hands
+
 	public static string icWin = "winner_start";
 	public static string icDealer = "ic_dealer_old";
 	public static double betRepeat = 0;
@@ -16,9 +20,6 @@ static class Settings
 	public static readonly string btnBetBonusRepeat = "REPEAT BONUS BET OF";
 	public static readonly string btnBetRepeat = "REPEAT BET OF";
 
-	public static bool isDev = false;	// dev logs
-	public static bool isDebug = false;	// logs, display cards, etc
-	public static bool isTest = false;	// test hands
 	public static int levelGame = 2;
 	public static int levelMainMenu = 0;
 	
