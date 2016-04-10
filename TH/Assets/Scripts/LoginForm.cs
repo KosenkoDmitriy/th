@@ -54,7 +54,7 @@ public class LoginForm : MonoBehaviour
         else
         {
             Settings.isLogined = false;
-            string msg = "error login";// "WWW Error: " + www.error;
+			string msg = string.Format("error login ({0})", www.error);
             if (Settings.isDebug) Debug.Log(msg);
             GameObject.Find("textInfo").GetComponent<Text>().text = msg;
         }
@@ -114,9 +114,12 @@ public class LoginForm : MonoBehaviour
 		//		var perms = new new System.Collections.Generic.List<string>(){"public_profile", "email", "user_friends"};
 		var perms = new System.Collections.Generic.List<string>(){"public_profile"};
 		FB.LogInWithReadPermissions(perms, AuthCallback);
-
 	}
-	
+
+	public void FacebookLogout() {
+		FB.LogOut();
+	}
+
 	private void AuthCallback (ILoginResult result) {
 		if (FB.IsLoggedIn) {
 			// AccessToken class will have session details
