@@ -329,6 +329,7 @@ public class GameUI : MonoBehaviour
 
 	public void btnOpenCloseBonusTableClick() {
 		if (panelBonusTable.activeInHierarchy) panelBonusTable.SetActive(false); else panelBonusTable.SetActive(true);
+		if (panelBonus) panelBonus.SetActive(false);
 	}
 
 	public void btnBetForBonusTableClick() {
@@ -354,6 +355,7 @@ public class GameUI : MonoBehaviour
 		// disable bonus buttons
 		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
 		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
+		if (panelBonusTable) panelBonusTable.SetActive(false);
 	}
 	
 	public void btnBonusBetMinClick() {
