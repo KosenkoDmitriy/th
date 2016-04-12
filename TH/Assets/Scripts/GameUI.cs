@@ -279,6 +279,27 @@ public class GameUI : MonoBehaviour
 
 		inputBetField.text = Settings.betCurrent.inCredits.f();
 	}
+
+	public void btnSubBetClick()
+	{
+		if (Settings.isDebug) Debug.Log("btnSubBetClick()");
+		
+		audio.PlayOneShot(soundBtnClicked);
+		
+		var betMax = game.state.betMaxLimit - game.state.betMax;
+		
+		Bet betMin = new Bet(0);
+		betMin.inBetMath = Settings.betMinMath;
+		Settings.betCurrent -= betMin;
+		if (Settings.betCurrent < 0) Settings.betCurrent = betMax;
+		if (
+			(Settings.betCurrent > betMax) 
+			|| (Settings.betCurrent > game.player.balanceInCredits)
+			)
+			Settings.betCurrent.inBetMath = Settings.betNull;
+		
+		inputBetField.text = Settings.betCurrent.inCredits.f();
+	}
 	
 	public void btnClearBetClick()
 	{
