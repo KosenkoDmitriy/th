@@ -49,6 +49,7 @@ public class Action : IAction {
 			} else {
 				if (p.isFolded) {
 					p.ShowCards(game);
+					p.VisibleSmallCards(game, false); // hide small cards
 				} else {
 					DoActive(game, p);
 				}

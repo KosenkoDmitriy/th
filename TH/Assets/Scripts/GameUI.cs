@@ -498,14 +498,21 @@ public class GameUI : MonoBehaviour
 
 	public IEnumerator DealCards() {
 		DisableButtons(true);
+
 		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
 			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next()) {
 				var card = player.handPreflop.getCard (i);
 				if (player.id == Settings.playerRealIndex || Settings.isDebug) {
-					card.FaceUp = true;
+					card.FaceUp = true; // show cards
 				} else {
-					card.FaceUp = false;
+//					card.FaceUp = false; // hide cards
 				}
+
+				// show small cards
+				if (player.id > 0) {
+					player.VisibleSmallCard(game, true, i);
+				}
+
 				audio.PlayOneShot(soundDeal);
 				yield return new WaitForSeconds (Settings.updateInterval);
 			}

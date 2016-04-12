@@ -79,7 +79,11 @@ public class InitGame : BetRound {
 //				player.hand = player.handPreflop;
 			}
 			player.handPreflopString = player.GetStringByHand(player.handPreflop);
+
+			// hide small cards
+			player.VisibleSmallCards(game, false);
 		}
+
 
 		// flop
 		for (int i = 1; i <= 3; i++) {

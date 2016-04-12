@@ -680,6 +680,22 @@ public class Player {
 		}
 	}
 
+	public void VisibleSmallCards (Game game, bool isVisible) {
+		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {
+			VisibleSmallCard(game, isVisible, i);
+		}
+	}
+
+	public void VisibleSmallCard (Game game, bool isVisible, int i) {
+		var name = string.Format("card{0}.{1}", this.id, i + 1);
+		var cardSmallImg = UnityEngine.GameObject.Find (name);
+		if (cardSmallImg) {
+			string imgName = "";
+			if (isVisible) imgName = Settings.cardBackName; else imgName = Settings.cardBg;
+			cardSmallImg.GetComponent<UnityEngine.UI.Image>().sprite = UnityEngine.Resources.Load<UnityEngine.Sprite> (imgName);
+		}
+	}
+
 	public void HideCards (Game game)
 	{
 		for (int i = 0; i < Settings.playerHandSizePreflop; i++) {

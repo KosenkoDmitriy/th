@@ -19,6 +19,8 @@ public class EndGame : BetRound {
 
 		// hide cards for folded players, show cards for active players
 		foreach(var player in game.players) {
+			player.VisibleSmallCards(game, false);	// hide small cards
+
 			player.lblCurBet.text = "";
 			player.isChipHidden = true;
 
