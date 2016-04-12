@@ -82,9 +82,11 @@ public class LoginForm : MonoBehaviour
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
 			FB.Init(InitCallback, OnHideUnity);
+			Debug.Log("FB.Init()");
 		} else {
 			// Already initialized, signal an app activation App Event
 			FB.ActivateApp();
+			Debug.Log("FB.ActivateApp()");
 		}
 	}
 	
