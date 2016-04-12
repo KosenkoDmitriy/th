@@ -366,6 +366,14 @@ public class GameUI : MonoBehaviour
 		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
 	}
 
+	public void btnBonusBetSubClick() {
+		Settings.betBonus -= Settings.betBonusMin;
+		if (Settings.betBonus < 0)
+			Settings.betBonus = Settings.betBonusMax;
+		if (payTable != null) payTable.SetBet(Settings.betBonus);
+		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
+	}
+
 	public void btnBonusBetMaxClick() 
 	{
 		Settings.betBonus = Settings.betBonusMax;
