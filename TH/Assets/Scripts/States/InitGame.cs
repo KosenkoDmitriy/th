@@ -172,6 +172,8 @@ public class InitGame : BetRound {
 		}
 
 		// enable "bet bonus" button
+		if (game.ui.panelBonusTable) {
+			game.ui.panelBonusTable.SetActive (true);
 		foreach (var player in game.players) {
 			if (player.isReal) {
 				if (player.balanceInCredits > 0) {
@@ -197,6 +199,8 @@ public class InitGame : BetRound {
 
 				break;
 			}
+		}
+			game.ui.panelBonusTable.SetActive (false);
 		}
 
 	}

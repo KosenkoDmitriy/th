@@ -326,6 +326,11 @@ public class GameUI : MonoBehaviour
 	#endregion add credits
 
 	#region bonus pane/table
+
+	public void btnOpenCloseBonusTableClick() {
+		if (panelBonusTable.activeInHierarchy) panelBonusTable.SetActive(false); else panelBonusTable.SetActive(true);
+	}
+
 	public void btnBetForBonusTableClick() {
 		if (Settings.isDebug) Debug.Log("btnBetForBonusTableClick()");
 		if (panelBonus) panelBonus.SetActive (true);
@@ -464,13 +469,19 @@ public class GameUI : MonoBehaviour
 		panelInstructions = GameObject.Find ("PanelInstructions");
 		if (panelInstructions)
 			panelInstructions.SetActive (false);
-			
-		
+
+
+		panelBonusTable = GameObject.Find ("BonusTableAndInstructions");
+
 		payTable = new PayTable ();
 		if (payTable != null) {
 			payTable.Init();
 			payTable.SelectColumnByIndex(9);
 		}
+
+		if (panelBonusTable)
+			panelBonusTable.SetActive (false);
+
 
 //		InitCards (); // get dealers from parent object
 		HideDynamicPanels ();
@@ -777,7 +788,7 @@ public class GameUI : MonoBehaviour
 	}
 	
 	public PayTable payTable;
-	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus;
+	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
