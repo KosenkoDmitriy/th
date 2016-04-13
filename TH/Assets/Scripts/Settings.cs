@@ -6,6 +6,8 @@ static class Settings
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
 
+	public static UnityEngine.Sprite avatar;
+
 	public static string icWin = "winner_start";
 	public static string icDealer = "ic_dealer_old";
 	public static double betRepeat = 0;

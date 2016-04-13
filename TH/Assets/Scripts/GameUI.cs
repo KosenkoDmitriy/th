@@ -513,6 +513,15 @@ public class GameUI : MonoBehaviour
 		if (panelBonusTable)
 			panelBonusTable.SetActive (false);
 
+		// avatar for real/live player
+		var avatar = GameObject.Find("Avatar0");
+		if (avatar) {
+			if (Settings.isLogined) {
+				avatar.GetComponent<Image>().sprite = Settings.avatar;
+			} else {
+				avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>("heroes/hero2");
+			}
+		}
 
 //		InitCards (); // get dealers from parent object
 		HideDynamicPanels ();
@@ -551,7 +560,9 @@ public class GameUI : MonoBehaviour
 		DisableButtons(false);
 		game.state.isWaiting = false;
 		game.playerIterator = new PlayerIterator (game.playerCollection);
+
 	}
+
 
 	public void DisableButtons(bool isDisable) {
 		bool WillHide = false;
