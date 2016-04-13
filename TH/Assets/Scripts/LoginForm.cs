@@ -169,8 +169,8 @@ public class LoginForm : MonoBehaviour
 		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 		
 		string url = "https" + "://graph.facebook.com/"+ aToken.UserId +"/picture";
-		url += "?access_token=" + aToken.TokenString;
-//		string url = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
+		url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
 		WWW www = new WWW(url);
 		yield return www;
 		Texture2D profilePic = www.texture;
