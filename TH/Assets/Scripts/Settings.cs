@@ -85,7 +85,7 @@ static class Settings
 
 	public static string key = "";
     public static readonly string http = "https://";
-    public static readonly string host = http + "th.shopomob.ru";
+    public static readonly string host = http + "yourplaceforfun.com";
 
     public static readonly string urlSignUp = host + "#sign_in_up";
     public static readonly string urlRestore = host + "/restore"; //TODO: implement on website

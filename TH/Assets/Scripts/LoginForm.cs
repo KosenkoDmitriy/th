@@ -48,13 +48,13 @@ public class LoginForm : MonoBehaviour
             // TODO: check
             Settings.key = www.text;
             Settings.isLogined = true;
-            if (Settings.isDebug) Debug.Log("WWW Ok!: " + www.data);
+            if (Settings.isDebug) Debug.Log("WWW Ok!: " + www.text);
             Application.LoadLevel(Settings.levelGame);
         }
         else
         {
             Settings.isLogined = false;
-			string msg = string.Format("error login ({0})", www.error);
+			string msg = string.Format("error login ({0}\n{1})", www.text, www.error);
             if (Settings.isDebug) Debug.Log(msg);
             GameObject.Find("textInfo").GetComponent<Text>().text = msg;
         }
@@ -197,6 +197,5 @@ public class LoginForm : MonoBehaviour
 		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForRequest(www));
 	}
-	
 	
 }
