@@ -87,7 +87,7 @@ static class Settings
     public static readonly string http = "https://";
     public static readonly string host = http + "yourplaceforfun.com";
 
-    public static readonly string urlSignUp = host + "#sign_in_up";
+    public static readonly string urlSignUp = host + "/sign_in_up";
     public static readonly string urlRestore = host + "/restore"; //TODO: implement on website
     public static readonly string urlLogin = urlSignUp;
     public static readonly string urlBuy = host + "#credits";// "/buy"; //TODO: implement on website
