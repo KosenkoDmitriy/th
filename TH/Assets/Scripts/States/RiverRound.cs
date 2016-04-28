@@ -22,8 +22,10 @@ public class RiverRound : BetRound {
 
 	public override void LastAction ()
 	{
-		base.LastAction ();
-		game.state = new EndGame (game);
+		if (!base.IsOneActivePlayer()) {
+			base.LastAction ();
+			game.state = new EndGame (game);
+		}
 	}
 
 	public override void BetSubRounds ()

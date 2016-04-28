@@ -201,7 +201,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		return isNextBetRound;
 	}
 
-	private bool IsOneActivePlayer() {
+	public bool IsOneActivePlayer() {
 		bool isOneActivePlayer = false;
 		var list = new List<Player> ();
 
