@@ -520,7 +520,7 @@ public class GameUI : MonoBehaviour
 			if (Settings.isLogined) {
 				avatar.GetComponent<Image>().sprite = Settings.avatar;
 			} else {
-				avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>("heroes/hero2");
+				avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 			}
 		}
 
