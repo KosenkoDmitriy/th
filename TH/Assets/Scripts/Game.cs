@@ -120,7 +120,7 @@ public class Game
 		if (game.player.isReal && game.player.isWinner && !game.player.isFolded) { // only active winner player will get bonus
 			winBonusString = GetAndSetBonusString(game.player, game.winners.Count);
 			if (!string.IsNullOrEmpty (winBonusString)) {
-				winString += winBonusString;
+				winString += '\n' + winBonusString;
 			}
 		}
 
@@ -128,8 +128,9 @@ public class Game
 
 //		game.potAmount = 0;
 //		game.ui.lblPot.GetComponent<UnityEngine.UI.Text> ().text = game.potAmount.f();
-		game.ui.lblWinInfo.GetComponent<UnityEngine.UI.Text> ().text = winString;
-		
+		game.ui.lblWinInfo.text = winString;
+		game.ui.lblWinBonusInfo.text = winBonusString;
+
 		game.ui.HideDynamicPanels ();
 		game.ui.panelWin.SetActive (true);
 	}
@@ -144,9 +145,9 @@ public class Game
 				if (winBonus > 0) {
 					if (winnersCount > 1) { 
 						winBonus /= 2;
-						winBonusString = string.Format ("\n{0} win half of bonus {1} credits\n", player.name, winBonus.to_b ());
+						winBonusString = string.Format ("{0} win half of bonus {1} credits\n", player.name, winBonus.to_b ());
 					} else {
-						winBonusString = string.Format ("\n{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
+						winBonusString = string.Format ("{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
 					}
 
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);

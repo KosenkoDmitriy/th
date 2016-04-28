@@ -435,7 +435,8 @@ public class GameUI : MonoBehaviour
 		lblWinInfo = GameObject.Find ("lblWinInfo").GetComponent<Text>();
 		if (panelWin)
 			panelWin.SetActive (false);
-			
+		lblWinBonusInfo = GameObject.Find ("lblWinBonusInfo").GetComponent<Text>();
+
 		panelBonus = GameObject.Find ("PanelBonus");
 		if (panelBonus)
 			panelBonus.SetActive (false);
@@ -840,7 +841,7 @@ public class GameUI : MonoBehaviour
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
-	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo;
+	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;

@@ -206,7 +206,7 @@ public class InitGame : BetRound {
 		}
 			game.ui.panelBonusTable.SetActive (false);
 		}
-
+		game.ui.lblWinBonusInfo.text = "";
 	}
 	
 }
