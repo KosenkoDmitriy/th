@@ -8,7 +8,8 @@ public class PreflopRound : BetRound {
 
 		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
 		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<UnityEngine.UI.Button>().interactable = false;
-		
+		game.ui.btnBonusBetRepeatClick(); // automatically repeating a bonus bet each new hand
+
 		UpdatePattern (); // preflop bet rounds
 	}
 
