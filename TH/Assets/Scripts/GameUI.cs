@@ -517,7 +517,7 @@ public class GameUI : MonoBehaviour
 		// avatar for real/live player
 		var avatar = GameObject.Find("Avatar0");
 		if (avatar) {
-			if (Settings.isLogined) {
+			if (Settings.isLogined && Settings.avatar != null) {
 				avatar.GetComponent<Image>().sprite = Settings.avatar;
 			} else {
 				avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
