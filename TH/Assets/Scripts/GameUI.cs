@@ -313,13 +313,24 @@ public class GameUI : MonoBehaviour
 	}
 	
 	#endregion bet panel
+//	private bool isInstructionOpen;
 
 	public void btnInstructionClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
 
 		if (Settings.isDebug) Debug.Log("btnInstructionClick()");
-		if (panelInstructions) panelInstructions.SetActive (true);
+
+		if (panelInstructions)
+		if (panelInstructions.activeSelf)
+			panelInstructions.SetActive (false);
+		else
+			panelInstructions.SetActive (true);
+
+//		if (isInstructionOpen)
+//			if (panelInstructions) panelInstructions.SetActive (true);
+//		else
+//			if (panelInstructions) panelInstructions.SetActive (false);
 	}
 	
 	public void btnInstructionCloseClick() {
