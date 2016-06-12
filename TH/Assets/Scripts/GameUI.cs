@@ -313,7 +313,6 @@ public class GameUI : MonoBehaviour
 	}
 	
 	#endregion bet panel
-//	private bool isInstructionOpen;
 
 	public void btnInstructionClick()
 	{
@@ -326,11 +325,6 @@ public class GameUI : MonoBehaviour
 			panelInstructions.SetActive (false);
 		else
 			panelInstructions.SetActive (true);
-
-//		if (isInstructionOpen)
-//			if (panelInstructions) panelInstructions.SetActive (true);
-//		else
-//			if (panelInstructions) panelInstructions.SetActive (false);
 	}
 	
 	public void btnInstructionCloseClick() {
