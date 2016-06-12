@@ -9,7 +9,7 @@ namespace Assets.Scripts
     public class PayTable
     {
         #region init_vars
-		int selectedCol;
+		public int selectedCol;
 		private double bonusVideoPoker;
 
         public int paytableRowSize = Settings.paytableRowSize; //rows

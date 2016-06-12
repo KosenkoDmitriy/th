@@ -145,16 +145,26 @@ public class Game
 			if (game.ui.payTable != null) {
 				double winBonus = game.ui.payTable.GetAndSelectBonusWin (player);
 				if (winBonus > 0) {
+					/*
+					 * bonus table value (btv)
+					 * 50 credits = btv x 5
+					 * 40 credits = btv x 4
+					 * 30 credits = btv x 3
+					 * 20 credits = btv x 2
+					 * 10 credits = btv x 1
+					 */
+					winBonus *= game.ui.payTable.selectedCol; // where selectedCol is multiplier 
+
 //					if (winnersCount > 1) { 
 //						winBonus /= 2;
 //						winBonusString = string.Format ("{0} win half of bonus {1} credits\n", player.name, winBonus.to_b ());
 //					} else {
-						winBonusString = string.Format ("{0} win bonus {1} credits\n", player.name, winBonus.to_b ());
+					winBonusString = string.Format ("{0} win bonus: {1} x {2} = {3} credits\n", player.name, (winBonus / game.ui.payTable.selectedCol).f (), game.ui.payTable.selectedCol, winBonus.f ());
 //					}
 
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
 
-					player.balanceInCredits += winBonus * Settings.betCreditsMultiplier;
+					player.balanceInCredits += winBonus;// * Settings.betCreditsMultiplier;
 					player.lblCredits.text = player.balanceInCredits.f();
 				}
 			}
