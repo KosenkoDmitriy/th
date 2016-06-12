@@ -421,7 +421,9 @@ public class GameUI : MonoBehaviour
 
 		if (Settings.isLogined)
 			this.GetBalance ();
-					
+
+		IsAutoBonusBet = GameObject.Find("AutoBonusToggle").GetComponent<Toggle>();
+
 		panelAddCredits = GameObject.Find ("PanelAddCredits");
 		if (panelAddCredits) {
 			btnCreditOk = panelAddCredits.transform.FindChild ("btnOk").gameObject;
@@ -850,5 +852,6 @@ public class GameUI : MonoBehaviour
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
+	public Toggle IsAutoBonusBet;
 }
 

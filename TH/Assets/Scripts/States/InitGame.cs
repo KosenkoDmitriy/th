@@ -185,6 +185,12 @@ public class InitGame : BetRound {
 				} else {
 					if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
 				}
+
+				// on/off auto bonus
+				if (!game.ui.IsAutoBonusBet.isOn) {
+					Settings.betBonus = 0;
+				}
+
 				if (Settings.betBonus > 0) {
 					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = true;
 				} else {
