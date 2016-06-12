@@ -72,7 +72,7 @@ public class AnteRound : BetRound {
 						game.ui.btnFold.GetComponent<Button>().interactable = false;
 					} else {
 						game.ui.btnCall.GetComponent<Button>().interactable = true;
-						game.ui.btnFold.GetComponent<Button>().interactable = true;
+						game.ui.btnFold.GetComponent<Button>().interactable = false;
 					}
 					game.ui.btnAllIn.GetComponent<Button>().interactable = false;
 				} else {
