@@ -369,12 +369,24 @@ public class GameUI : MonoBehaviour
 	}
 	
 	public void btnBonusPanelCloseClick() {
+		GameObject obj = GameObject.Find("InputBonusBetField");
+		if (obj) {
+			string textValue = obj.GetComponent<InputField>().text;
+			double floatValue = 0;
+			double.TryParse(textValue, out floatValue);
+			if (floatValue > 0) {
+				floatValue /= Settings.betCreditsMultiplier;
+				Settings.betBonus = floatValue;
+			}
+		}
 		if (Settings.betBonus > 0) {
 			if (payTable != null) {
 				game.player.balanceInCredits -= Settings.betBonus * Settings.betCreditsMultiplier;
 				game.player.lblCredits.text = game.player.balanceInCredits.f();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
-				payTable.SetBet(Settings.betBonus);
+				if (payTable != null) payTable.SetBet(Settings.betBonus);
+//				if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
+
 			}
 		}
 		if (panelBonus) panelBonus.SetActive (false);
