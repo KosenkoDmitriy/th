@@ -186,6 +186,8 @@ public class GameUI : MonoBehaviour
 		Double.TryParse (betAmountString, out bet);
 		game.betAmount.inCredits = bet;
 
+		Settings.betCurrent.inCredits = bet;
+
 		DoFinalActionByCurrentBet(game.betAmount);
 	}
 
