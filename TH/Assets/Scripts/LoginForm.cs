@@ -64,8 +64,10 @@ public class LoginForm : MonoBehaviour
 			string msg = ""; 
 			if (string.IsNullOrEmpty(www.text))
 				msg = "please login on website first and try again";
-			else
+			else {
+				msg = www.text;
 				Debug.Log(www.text);
+			}
             if (Settings.isDebug) Debug.Log(msg);
             GameObject.Find("textInfo").GetComponent<Text>().text = msg;
         }
