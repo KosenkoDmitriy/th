@@ -43,7 +43,7 @@ public class LoginForm : MonoBehaviour
     {
         yield return www;
         // check for errors
-        if (www.error == null)
+        if (string.IsNullOrEmpty(www.error))
         {
             // TODO: check
             Settings.key = www.text;
@@ -51,10 +51,21 @@ public class LoginForm : MonoBehaviour
             if (Settings.isDebug) Debug.Log("WWW Ok!: " + www.text);
             Application.LoadLevel(Settings.levelGame);
         }
-        else
-        {
+        else 
+		{
             Settings.isLogined = false;
-			string msg = string.Format("error login ({0}\n{1})", www.text, www.error);
+//			string errorFromBytes3 = System.Text.Encoding.UTF8.GetString(www.bytes, 3, www.bytes.Length - 3);  // Skip thr first 3 bytes (i.e. the UTF8 BOM)
+//			string errorFromBytes = System.Text.Encoding.UTF8.GetString(www.bytes);
+//			Debug.Log(www.error);
+//			Debug.Log(www.text);
+//			Debug.Log(www.data);
+//			Debug.Log(errorFromBytes3);
+//			string msg = string.Format("error login ({0}\n{1})", errorFromBytes, www.error);
+			string msg = ""; 
+			if (string.IsNullOrEmpty(www.text))
+				msg = "please login on website first and try again";
+			else
+				Debug.Log(www.text);
             if (Settings.isDebug) Debug.Log(msg);
             GameObject.Find("textInfo").GetComponent<Text>().text = msg;
         }
