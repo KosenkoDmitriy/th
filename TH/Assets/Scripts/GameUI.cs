@@ -354,6 +354,34 @@ public class GameUI : MonoBehaviour
 	#endregion add credits
 
 	#region bonus pane/table
+	public void btnBonusBetSetClick() {
+
+		string textValue = betBonusDropdown.captionText.text;
+		double floatValue = 0;
+		double.TryParse(textValue, out floatValue);
+		if (floatValue > 0) {
+			floatValue /= Settings.betCreditsMultiplier;
+			Settings.betBonus = floatValue;
+		}
+
+
+		if (Settings.betBonus > 0) {
+			if (payTable != null) {
+				game.player.balanceInCredits -= Settings.betBonus * Settings.betCreditsMultiplier;
+				game.player.lblCredits.text = game.player.balanceInCredits.f();
+				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
+				if (payTable != null) payTable.SetBet(Settings.betBonus);
+				//				if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
+				
+			}
+		}
+		if (panelBonus) panelBonus.SetActive (false);
+		// disable bonus buttons
+		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
+		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
+		if (panelBonusTable) panelBonusTable.SetActive(false);
+
+	}
 
 	public void btnOpenCloseBonusTableClick() {
 		if (panelBonusTable.activeInHierarchy) panelBonusTable.SetActive(false); else panelBonusTable.SetActive(true);
@@ -531,6 +559,20 @@ public class GameUI : MonoBehaviour
 			payTable.Init();
 			payTable.SelectColumnByIndex(9);
 		}
+
+		GameObject betBonusObj = GameObject.Find("BetBonusDropdown");
+		if (betBonusObj)
+			betBonusDropdown = betBonusObj.GetComponent<Dropdown>();
+		betBonusDropdown.onValueChanged.AddListener(delegate {
+			double bet = 0;
+			double.TryParse(betBonusDropdown.captionText.text, out bet);
+			if (bet > 0) {
+				bet /= Settings.betCreditsMultiplier;
+			}
+			Settings.betBonus = bet;
+//			betBonusDropdown.itemText.text = string.Format("current bet bonus is {0} credits", bet * Settings.betCreditsMultiplier);
+			payTable.SetBet(Settings.betBonus);
+		});
 
 		if (panelBonusTable)
 			panelBonusTable.SetActive (false);
@@ -867,5 +909,7 @@ public class GameUI : MonoBehaviour
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
 	public Toggle IsAutoBonusBet;
+	public Dropdown betBonusDropdown;
+
 }
 
