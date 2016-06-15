@@ -190,6 +190,10 @@ public class InitGame : BetRound {
 				if (!game.ui.IsAutoBonusBet.isOn) {
 					Settings.betBonus = 0;
 				}
+				
+				// enable bonus bet feature
+				if (game.ui.btnBonusBetSet) game.ui.btnBonusBetSet.GetComponent<Button>().interactable = true;
+				if (game.ui.betBonusDropdown) game.ui.betBonusDropdown.GetComponent<Dropdown>().interactable = true;
 
 				if (Settings.betBonus > 0) {
 					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = true;

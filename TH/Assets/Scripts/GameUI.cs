@@ -364,23 +364,19 @@ public class GameUI : MonoBehaviour
 			Settings.betBonus = floatValue;
 		}
 
-
 		if (Settings.betBonus > 0) {
 			if (payTable != null) {
 				game.player.balanceInCredits -= Settings.betBonus * Settings.betCreditsMultiplier;
 				game.player.lblCredits.text = game.player.balanceInCredits.f();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
 				if (payTable != null) payTable.SetBet(Settings.betBonus);
-				//				if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.to_b();
-				
 			}
 		}
-		if (panelBonus) panelBonus.SetActive (false);
-		// disable bonus buttons
-		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
-		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
-		if (panelBonusTable) panelBonusTable.SetActive(false);
 
+		// disable bonus buttons
+		if (game.ui.btnBonusBetSet) game.ui.btnBonusBetSet.GetComponent<Button>().interactable = false;
+		if (game.ui.betBonusDropdown) game.ui.betBonusDropdown.GetComponent<Dropdown>().interactable = false;
+		if (panelBonusTable) panelBonusTable.SetActive(false);
 	}
 
 	public void btnOpenCloseBonusTableClick() {
@@ -487,6 +483,8 @@ public class GameUI : MonoBehaviour
 		lblWinBonusInfo = GameObject.Find ("lblWinBonusInfo").GetComponent<Text>();
 
 		panelBonus = GameObject.Find ("PanelBonus");
+		btnBonusBetSet = GameObject.Find("btnBonusBetSet");
+
 		if (panelBonus)
 			panelBonus.SetActive (false);
 
@@ -566,12 +564,8 @@ public class GameUI : MonoBehaviour
 		betBonusDropdown.onValueChanged.AddListener(delegate {
 			double bet = 0;
 			double.TryParse(betBonusDropdown.captionText.text, out bet);
-			if (bet > 0) {
-				bet /= Settings.betCreditsMultiplier;
-			}
-			Settings.betBonus = bet;
-//			betBonusDropdown.itemText.text = string.Format("current bet bonus is {0} credits", bet * Settings.betCreditsMultiplier);
-			payTable.SetBet(Settings.betBonus);
+			if (bet > 0) bet /= Settings.betCreditsMultiplier;
+			payTable.SetBet(bet);
 		});
 
 		if (panelBonusTable)
@@ -910,6 +904,6 @@ public class GameUI : MonoBehaviour
 	public InputField inputBetField;
 	public Toggle IsAutoBonusBet;
 	public Dropdown betBonusDropdown;
-
+	public GameObject btnBonusBetSet;
 }
 
