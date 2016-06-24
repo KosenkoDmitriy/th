@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | TH</title>
+    <title>Texas Hold'em Foldup | Unity WebGL Player</title>
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="shortcut icon" href="TemplateData/favicon.ico" />
     <script src="TemplateData/UnityProgress.js"></script>
   </head>
   <body class="template">
-    <p class="header"><span>Unity WebGL Player | </span>TH</p>
+    <p class="header"><span>Texas Hold'em Foldup | </span>Unity WebGL Player </p>
     <div class="template-wrap clear">
     <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="500px" width="935px"></canvas>
       <div class="logo"></div>
@@ -63,11 +63,11 @@
 <script src="Release/fileloader.js"></script>
 <script>if (!(!Math.fround)) {
   var script = document.createElement('script');
-  script.src = "Release/WebGL128BetaV5.3.js";
+  script.src = "Release/WebGL128BetaV5.4.js";
   document.body.appendChild(script);
 } else {
   var codeXHR = new XMLHttpRequest();
-  codeXHR.open('GET', 'Release/WebGL128BetaV5.3.js', true);
+  codeXHR.open('GET', 'Release/WebGL128BetaV5.4.js', true);
   codeXHR.onload = function() {
     var code = codeXHR.responseText;
     if (!Math.fround) { 
