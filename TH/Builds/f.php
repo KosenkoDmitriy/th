@@ -1,5 +1,5 @@
 <?php
-$url = $_GET["url"];
+$url = $_GET["url"] + "&width=" + $_GET["width"] + "&height=" + $_GET["height"];
 if (!preg_match("~^https?://~i", $url)) {
   $url = "http://" . $url;
 }
