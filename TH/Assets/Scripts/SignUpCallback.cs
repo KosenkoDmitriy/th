@@ -45,9 +45,12 @@ public class SignUpCallback : MonoBehaviour {
 
         if (message.path == "add") {
 			Settings.key = message.args["key"];
-			Settings.facebookMobileImageUrl = string.Format (Settings.facebookGraphPictureUrl, message.args["uid"]);
-			Settings.facebookMobileImageUrl += "?&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-
+			if (!string.IsNullOrEmpty(message.args["uid"])) {
+				Settings.facebookMobileImageUrl = string.Format (Settings.facebookGraphPictureUrl, message.args["uid"]);
+				Settings.facebookMobileImageUrl += "?&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+			} else {
+				Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
+			}
 			Settings.isLogined = true;
 			Application.LoadLevel(Settings.levelGame);
         }

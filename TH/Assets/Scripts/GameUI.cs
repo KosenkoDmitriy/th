@@ -607,7 +607,6 @@ public class GameUI : MonoBehaviour
 		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
 		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
 		avatar.GetComponent<Image>().sprite = Settings.avatar;
-
 	}
 
 	public IEnumerator DealCards() {

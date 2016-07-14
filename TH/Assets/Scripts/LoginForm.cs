@@ -48,6 +48,8 @@ public class LoginForm : MonoBehaviour
             // TODO: check
             Settings.key = www.text;
             Settings.isLogined = true;
+			Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
+
             if (Settings.isDebug) Debug.Log("WWW Ok!: " + www.text);
             Application.LoadLevel(Settings.levelGame);
         }
