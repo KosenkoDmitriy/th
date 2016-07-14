@@ -89,6 +89,8 @@ static class Settings
 	public static readonly string host = http + "yourplaceforfun.com";
 	public static readonly string facebookImageHost = "https://game.yourplaceforfun.com";
 	public static readonly string facebookImageUrl = facebookImageHost + "/f.php?url=";
+	public static readonly string facebookGraphPictureUrl = "https://graph.facebook.com/{0}/picture"; 
+	public static string facebookMobileImageUrl = "";
 
 	public static readonly string urlSignUp = host + "/sign_in_up";
 	public static readonly string urlMobileSignUp = host + "/mobile/signup";

@@ -572,10 +572,14 @@ public class GameUI : MonoBehaviour
 			panelBonusTable.SetActive (false);
 
 		// avatar for real/live player
-		var avatar = GameObject.Find("Avatar0");
+		avatar = GameObject.Find("Avatar0");
 		if (avatar) {
-			if (Settings.isLogined && Settings.avatar != null) {
-				avatar.GetComponent<Image>().sprite = Settings.avatar;
+			if (Settings.isLogined) {
+				if (Settings.avatar != null) {
+					avatar.GetComponent<Image>().sprite = Settings.avatar;
+				} else {
+					StartCoroutine("AvatarLoading");
+				}
 			} else {
 				avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 			}
@@ -591,6 +595,18 @@ public class GameUI : MonoBehaviour
 		ReInitGame ();
 
 		InvokeRepeating ("UpdateInterval", Settings.updateInterval, Settings.updateInterval); // override default frequency of the update()
+
+	}
+
+	private IEnumerator AvatarLoading() {
+		string urlFinal = Settings.facebookImageUrl + Settings.facebookMobileImageUrl;
+		WWW www = new WWW(urlFinal);
+		Debug.Log(urlFinal);
+		yield return www;
+		Texture2D profilePic = www.texture;
+		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
+		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
+		avatar.GetComponent<Image>().sprite = Settings.avatar;
 
 	}
 
@@ -905,5 +921,6 @@ public class GameUI : MonoBehaviour
 	public Toggle IsAutoBonusBet;
 	public Dropdown betBonusDropdown;
 	public GameObject btnBonusBetSet;
+	public GameObject avatar;
 }
 

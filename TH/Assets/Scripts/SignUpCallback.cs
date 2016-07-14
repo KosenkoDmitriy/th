@@ -15,7 +15,10 @@ public class SignUpCallback : MonoBehaviour {
         }
 
         _webView = CreateWebView();
-        _webView.url = _url;
+		_webView.toolBarShow = true;
+		_webView.backButtonEnable = true;
+
+		_webView.url = _url;
 
         // Set the height of webview half of the screen height.
         int bottomInset = UniWebViewHelper.screenHeight;
@@ -42,6 +45,9 @@ public class SignUpCallback : MonoBehaviour {
 
         if (message.path == "add") {
 			Settings.key = message.args["key"];
+			Settings.facebookMobileImageUrl = string.Format (Settings.facebookGraphPictureUrl, message.args["uid"]);
+			Settings.facebookMobileImageUrl += "?&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+
 			Settings.isLogined = true;
 			Application.LoadLevel(Settings.levelGame);
         }

@@ -15,6 +15,9 @@ public class CallbackFromWebSceneManager : MonoBehaviour {
         }
 
         _webView = CreateWebView();
+		_webView.toolBarShow = true;
+		_webView.backButtonEnable = true;
+
 		_webView.url = Settings.urlMobileSignUp;// UniWebViewHelper.streamingAssetURLForPath(_fileName);
 
         // Set the height of webview half of the screen height.

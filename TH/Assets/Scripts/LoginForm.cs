@@ -181,7 +181,7 @@ public class LoginForm : MonoBehaviour
 	public IEnumerator LoadAvatar() {
 		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 		
-		string url = "https" + "://graph.facebook.com/"+ aToken.UserId +"/picture";
+		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
 		url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
 //		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
 		Dictionary<string, string> headers = new Dictionary<string, string>();
