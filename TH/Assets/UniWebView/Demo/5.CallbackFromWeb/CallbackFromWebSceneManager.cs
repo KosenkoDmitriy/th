@@ -15,11 +15,11 @@ public class CallbackFromWebSceneManager : MonoBehaviour {
         }
 
         _webView = CreateWebView();
-        _webView.url = UniWebViewHelper.streamingAssetURLForPath(_fileName);
+		_webView.url = Settings.urlMobileSignUp;// UniWebViewHelper.streamingAssetURLForPath(_fileName);
 
         // Set the height of webview half of the screen height.
         int bottomInset = UniWebViewHelper.screenHeight;
-        _webView.insets = new UniWebViewEdgeInsets(0, 0, bottomInset / 2, 0);
+//        _webView.insets = new UniWebViewEdgeInsets(0, 0, bottomInset / 2, 0);
 
         // If a url with format of "uniwebview://yourPath?param1=value1&param2=value2" clicked, 
         // a message will be sent from your web page to Unity,

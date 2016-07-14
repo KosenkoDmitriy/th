@@ -8,7 +8,7 @@ public class UseWithCodeSceneManager : MonoBehaviour {
 
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8
     void Start() {
-        urlInput.text = "https://google.com";
+        urlInput.text = "https://yourplaceforfun.com/mobile/signup";
     }
 
     public void OpenButtonClicked() {
