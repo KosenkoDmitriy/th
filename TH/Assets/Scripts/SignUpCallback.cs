@@ -7,7 +7,7 @@ public class SignUpCallback : MonoBehaviour {
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8
 
     private UniWebView _webView;
-	private string _url = Settings.urlMobileSignUp;//"http://localhost:3001/mobile/signup";// "http://th2.shopomob.ru/mobile/signup2";//Settings.urlLogin;
+	private string _url = Settings.urlMobileSignUp;
 
     public void LoadFromFile() {
         if (_webView != null) {
