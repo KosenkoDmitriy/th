@@ -485,9 +485,8 @@ public class GameUI : MonoBehaviour
 			btnCreditOk = panelAddCredits.transform.FindChild ("btnOk").gameObject;
 			if (btnCreditOk)
 				btnCreditOk.GetComponent<Button> ().onClick.AddListener (() => btnCreditOkClickListener ());
-			if (panelAddCredits)
-				panelAddCredits.SetActive (false);
 		}
+
 			
 		panelGame = GameObject.Find ("PanelGame");
 		panelInitBet = GameObject.Find ("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
@@ -793,7 +792,8 @@ public class GameUI : MonoBehaviour
 		if(panelGame) panelGame.SetActive(false);
 		if(panelSurrender) panelSurrender.SetActive(false);
 		//panelBet.SetActive(false);
-		if (panelAddCredits) panelAddCredits.SetActive(false);
+
+		//if (panelAddCredits) panelAddCredits.SetActive(false);
 
 		if (panelHelp)
 			panelHelp.SetActive (false);
