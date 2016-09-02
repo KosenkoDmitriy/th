@@ -327,6 +327,9 @@ public class GameUI : MonoBehaviour
 			panelInstructions.SetActive (false);
 		else
 			panelInstructions.SetActive (true);
+
+		if (panelBonusTable) panelBonusTable.SetActive (false);
+		if (panelAddCredits) panelAddCredits.SetActive (false);
 	}
 	
 	public void btnInstructionCloseClick() {
@@ -340,10 +343,21 @@ public class GameUI : MonoBehaviour
 	private void btnCreditAddClickListener()
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
-		if (panelAddCredits) panelAddCredits.SetActive(true);
+		//if (panelAddCredits) panelAddCredits.SetActive(true);
+		if (panelAddCredits) {
+			if (panelInstructions) panelInstructions.SetActive (false);
+			if (panelBonusTable) panelBonusTable.SetActive (false);
+
+			if (panelAddCredits.activeSelf)
+				panelAddCredits.SetActive (false);
+			else
+				panelAddCredits.SetActive (true);
+		}
+
 		game.ui.SetBalance(Settings.playerCredits.ToString());
 		var lblMyCreditsTitle = GameObject.Find("lblMyCredits");
 		if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = Settings.playerCredits.f();
+
 	}
 	
 	private void btnCreditOkClickListener()
@@ -382,6 +396,9 @@ public class GameUI : MonoBehaviour
 	public void btnOpenCloseBonusTableClick() {
 		if (panelBonusTable.activeInHierarchy) panelBonusTable.SetActive(false); else panelBonusTable.SetActive(true);
 		if (panelBonus) panelBonus.SetActive(false);
+
+		if (panelInstructions) panelInstructions.SetActive (false);
+		if (panelAddCredits) panelAddCredits.SetActive (false);
 	}
 
 	public void btnBetForBonusTableClick() {
@@ -420,6 +437,7 @@ public class GameUI : MonoBehaviour
 		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<Button>().interactable = false;
 		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
 		if (panelBonusTable) panelBonusTable.SetActive(false);
+
 	}
 	
 	public void btnBonusBetMinClick() {
