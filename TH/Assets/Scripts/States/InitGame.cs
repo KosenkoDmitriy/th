@@ -202,7 +202,7 @@ public class InitGame : BetRound {
 				}
 				if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetBonusRepeat, Settings.betBonus.to_b());
 
-				if (player.balanceInCredits <= 0) {
+					if (player.balanceInCredits < Settings.betCreditsMultiplier * Settings.bePreflopFlopMultiplier ) {
 					if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<Button>().interactable = false;
 
 					game.ui.HideDynamicPanels();

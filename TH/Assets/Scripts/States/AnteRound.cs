@@ -106,7 +106,7 @@ public class AnteRound : BetRound {
 					if (player.balanceInCredits <= 0) {
 						player.actionFinal = new Check(player, new Bet(0), new Bet(0));
 					}
-					player.actionFinal.Do (game, player);
+					if (player.actionFinal != null) player.actionFinal.Do (game, player);
 
 				}
 			}
