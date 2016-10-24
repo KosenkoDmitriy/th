@@ -107,7 +107,8 @@ static class Settings
 	public static readonly string actionAdd = "add";
     public static readonly string actionSub = "sub";
     public static readonly string actionGetBalance = "get";
-    public static readonly string actionSetBalance = "set";
+	public static readonly string actionSetBalance = "set";
+	public static readonly string id = "th";
 	#endregion api
 
     // cards

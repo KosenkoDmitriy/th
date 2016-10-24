@@ -850,7 +850,8 @@ public class GameUI : MonoBehaviour
 		WWWForm form = new WWWForm();
 		form.AddField("a", amount);
 		form.AddField("k", Settings.key);
-		
+		form.AddField("id", Settings.id);
+
 		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForRequest(www));
 	}
