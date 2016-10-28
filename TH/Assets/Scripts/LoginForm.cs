@@ -1,18 +1,61 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using Facebook.MiniJSON;
+using UnityEngine.EventSystems;
+
+using System.Collections;
+using System.Collections.Generic;
 
 // Include Facebook namespace
 using Facebook.Unity;
-using System.Collections.Generic;
+using Facebook.MiniJSON;
+
 
 public class LoginForm : MonoBehaviour
 {
+	EventSystem system;
+
     void Start()
     {
-        
+		system = EventSystem.current;
+		var inputField = GameObject.Find("Login").GetComponent<InputField>();
+		//system.SetSelectedGameObject(inputField.gameObject, null);
+		//inputField.OnPointerClick(new PointerEventData(EventSystem.current));
+		//inputField.ActivateInputField();
+		//inputField.Select();
     }
+
+	// Update is called once per frame
+	public void Update()
+	{
+		
+		if (Input.GetKeyDown(KeyCode.Tab))
+		{
+			Selectable next = null;
+			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+			{
+				if (system.currentSelectedGameObject != null) next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+				if (next == null && system.lastSelectedGameObject != null )
+					next = system.lastSelectedGameObject.GetComponent<Selectable>();
+			}
+			else
+			{
+				if (system.currentSelectedGameObject != null) next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+				if (next == null && system.lastSelectedGameObject != null)
+					next = system.firstSelectedGameObject.GetComponent<Selectable>();
+			}
+			
+			if (next != null)
+			{
+				
+				InputField inputfield = next.GetComponent<InputField>();
+				if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
+				
+				system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
+			}
+			//else Debug.Log("next nagivation element not found");
+			
+		}
+	}
 
     public void LoginGet() {
         string email = GameObject.Find("Login").GetComponent<InputField>().text;
@@ -76,7 +119,8 @@ public class LoginForm : MonoBehaviour
     }
 
     public void VisitSignUp() {
-		Settings.OpenUrl (Settings.urlSignUp);
+		UnityEngine.Application.OpenURL(Settings.urlSignUp);
+		//Settings.OpenUrl (Settings.urlSignUp);
     }
 
     public void VisitRestore()
@@ -86,7 +130,8 @@ public class LoginForm : MonoBehaviour
 
     public void VisitCredits()
     {
-		Settings.OpenUrl (Settings.urlCredits);
+		UnityEngine.Application.OpenURL(Settings.urlCredits);
+		//Settings.OpenUrl (Settings.urlCredits);
     }
 
 
