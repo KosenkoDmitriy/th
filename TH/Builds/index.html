@@ -14,7 +14,7 @@
     <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="500px" width="935px"></canvas>
       <div class="logo"></div>
       <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
-      <div class="title">TH</div>
+      <div class="title">Full Screen</div>
     </div>
     <p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
     <script type='text/javascript'>
@@ -101,6 +101,24 @@ try {
   codeXHR.send(null);
 }
 window.alert = function() {};
+</script>
+<script>
+var cancelKeypress = false;
+
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    cancelKeypress = /^(9|13|32|37|38|39|40)$/.test("" + evt.keyCode);
+    if (cancelKeypress) {
+        return false;
+    }
+};
+
+/* For Opera */
+document.onkeypress = function(evt) {
+    if (cancelKeypress) {
+        return false;
+    }
+};
 </script>
   </body>
 </html>
