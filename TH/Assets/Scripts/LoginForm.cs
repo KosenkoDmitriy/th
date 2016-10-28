@@ -118,20 +118,23 @@ public class LoginForm : MonoBehaviour
         }
     }
 
-    public void VisitSignUp() {
-		UnityEngine.Application.OpenURL(Settings.urlSignUp);
-		//Settings.OpenUrl (Settings.urlSignUp);
-    }
-
     public void VisitRestore()
     {
 		Settings.OpenUrl (Settings.urlRestore);
     }
 
+	public void VisitSignUp() {
+		
+		//Settings.OpenUrl (Settings.urlSignUp); // it opens in new tab
+		//UnityEngine.Application.OpenURL(Settings.urlSignUp); // will open inside iframe
+		Application.ExternalCall("OpenNormalLink", Settings.urlSignUp);
+	}
+
     public void VisitCredits()
     {
-		UnityEngine.Application.OpenURL(Settings.urlCredits);
-		//Settings.OpenUrl (Settings.urlCredits);
+		//UnityEngine.Application.OpenURL(Settings.urlCredits); // will open inside iframe
+		//Settings.OpenUrl (Settings.urlCredits); // it opens in new tab
+		Application.ExternalCall("OpenNormalLink", Settings.urlCredits);
     }
 
 
