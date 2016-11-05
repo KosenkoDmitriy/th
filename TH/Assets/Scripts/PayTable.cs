@@ -18,7 +18,7 @@ namespace Assets.Scripts
         public int ColsCount = Settings.ColsCount;
         public int RowsCount = Settings.RowsCount; // Entries - the number of entries you wish in the paytable
 
-        public List<int> payTableValuesOfFirstColumn;
+		public List<int> payTableValuesOfFirstColumn, payTableDt;
 		public List<string> payTableStrings;
 
         Text[,] payTableGrid;
@@ -33,14 +33,25 @@ namespace Assets.Scripts
             payTableValuesOfFirstColumn = new List<int> {
                 250,	//minBonusBetInCredits * 10		// ROYAL_FLUSH,
                 50,     // STRAIGHT_FLUSH,
-                25,     // FOUR_OF_A_KIND,
-                9,      // FULL_HOUSE,
-                6,      // FLUSH,
-                4,      // STRAIGHT,
-                3,      // THREE_OF_A_KIND,
-                2,      // TWO_PAIR,
-                1,      // PAIR
+                30,     // FOUR_OF_A_KIND,
+                25,      // FULL_HOUSE,
+                20,      // FLUSH,
+                15,      // STRAIGHT,
+                10,      // THREE_OF_A_KIND,
+                4,      // TWO_PAIR,
+                2,      // PAIR
             };
+			payTableDt = new List<int> {
+				250,
+				50,
+				30,
+				25,
+				20,
+				15,
+				10,
+				4,
+				2
+			};
 
 			payTableGrid = new Text[paytableRowSize, paytableColumnSize];
 			payTableValues = new double[paytableRowSize, paytableColumnSize];
@@ -105,7 +116,7 @@ namespace Assets.Scripts
 				double val = 0;
                 for (int j = 1; j < paytableColumnSize; j++)
                 {
-					val = payTableValuesOfFirstColumn[i] * j;
+					val = payTableValuesOfFirstColumn[i] + (payTableDt[i] * j);
                     payTableGrid[i, j].text = val.ToString();
 					payTableValues[i, j] = val;
                 }
