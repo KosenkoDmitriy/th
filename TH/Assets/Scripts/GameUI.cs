@@ -909,7 +909,8 @@ public class GameUI : MonoBehaviour
 	
 	public void urlLogin()
 	{
-		Settings.OpenUrl (Settings.urlLogin);
+		//Settings.OpenUrl (Settings.urlLogin);
+		Settings.OpenUrlInNewTabAsExternalCall(Settings.urlLogin);
 	}
 	
 	public void urlInviteFriend()

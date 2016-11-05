@@ -124,19 +124,13 @@ public class LoginForm : MonoBehaviour
     }
 
 	public void VisitSignUp() {
-		
-		//Settings.OpenUrl (Settings.urlSignUp); // it opens in new tab
-		//UnityEngine.Application.OpenURL(Settings.urlSignUp); // will open inside iframe
-		Application.ExternalCall("OpenNormalLink", Settings.urlSignUp);
+		Settings.OpenUrlAsExternalCall (Settings.urlSignUp); // it opens in new tab
 	}
 
     public void VisitCredits()
     {
-		//UnityEngine.Application.OpenURL(Settings.urlCredits); // will open inside iframe
-		//Settings.OpenUrl (Settings.urlCredits); // it opens in new tab
-		Application.ExternalCall("OpenNormalLink", Settings.urlCredits);
-    }
-
+		Settings.OpenUrlAsExternalCall (Settings.urlCredits); // it opens in new tab
+	}
 
 	// Awake function from Unity's MonoBehavior
 	void Awake ()

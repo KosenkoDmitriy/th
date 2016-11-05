@@ -120,10 +120,24 @@ static class Settings
 
 
 	public static void OpenUrl(string url) {
-		#if UNITY_WEBPLAYER
-		UnityEngine.Application.ExternalEval(string.Format("window.open('{0}', '_blank')", url));
-		#elif UNITY_WEBGL
+		#if UNITY_WEBPLAYER || UNITY_WEBGL
 		UnityEngine.Application.ExternalEval(string.Format("window.open('{0}', '_blank')", url)); // open url in new tab
+		#else
+		UnityEngine.Application.OpenURL(url);
+		#endif
+	}
+
+	public static void OpenUrlAsExternalCall(string url) {
+		#if UNITY_WEBPLAYER || UNITY_WEBGL
+		UnityEngine.Application.ExternalCall("OpenNormalLink", url);
+		#else
+		UnityEngine.Application.OpenURL(url);
+		#endif
+	}
+
+	public static void OpenUrlInNewTabAsExternalCall(string url) {
+		#if UNITY_WEBPLAYER || UNITY_WEBGL
+		UnityEngine.Application.ExternalCall("OpenTabLink", url);
 		#else
 		UnityEngine.Application.OpenURL(url);
 		#endif
