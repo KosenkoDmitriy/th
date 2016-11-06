@@ -380,9 +380,14 @@ public class GameUI : MonoBehaviour
 
 		if (Settings.betBonus > 0) {
 			if (payTable != null) {
-				game.player.balanceInCredits -= Settings.betBonus * Settings.betCreditsMultiplier;
+				double amount = Settings.betBonus * Settings.betCreditsMultiplier;
+				game.player.balanceInCredits -= amount;
+				game.ui.LoseBalance(amount.ToString());
+				Settings.btnBetBonusIsDone = true;
+
 				game.player.lblCredits.text = game.player.balanceInCredits.f();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
+
 				if (payTable != null) payTable.SetBet(Settings.betBonus);
 			}
 		}
@@ -424,7 +429,9 @@ public class GameUI : MonoBehaviour
 		}
 		if (Settings.betBonus > 0) {
 			if (payTable != null) {
-				game.player.balanceInCredits -= Settings.betBonus * Settings.betCreditsMultiplier;
+				double amount = Settings.betBonus * Settings.betCreditsMultiplier;
+				game.player.balanceInCredits -= amount;
+				game.ui.LoseBalance(amount.ToString());
 				game.player.lblCredits.text = game.player.balanceInCredits.f();
 				if (lblBetBonus) lblBetBonus.text = Settings.betBonus.to_b();
 				if (payTable != null) payTable.SetBet(Settings.betBonus);

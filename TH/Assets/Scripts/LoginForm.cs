@@ -59,6 +59,7 @@ public class LoginForm : MonoBehaviour
 			{
 				
 				InputField inputfield = next.GetComponent<InputField>();
+
 				if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
 				
 				system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));

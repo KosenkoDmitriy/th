@@ -5,6 +5,7 @@ static class Settings
 	public static bool isDev = false;	// advanced debug info
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
+	public static bool btnBetBonusIsDone;
 
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;

@@ -216,6 +216,7 @@ public class InitGame : BetRound {
 				break;
 			}
 		}
+			Settings.btnBetBonusIsDone = false;
 			game.ui.panelBonusTable.SetActive (false);
 		}
 		game.ui.lblWinBonusInfo.text = "";
