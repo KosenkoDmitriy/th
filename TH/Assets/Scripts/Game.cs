@@ -104,10 +104,14 @@ public class Game
 				player.balanceInCredits += winAmount;
 				player.lblCredits.text = player.balanceInCredits.f();
 				winString += string.Format ("{0}) {1}\n", no, player.name);
+				if (player.isReal) game.ui.WinBalance(winAmount.ToString());
 			}
 		} else if (game.winners.Count == 1) { // one win player
 			Player player = game.winners[0];
-			if (player.isReal) game.ui.audio.PlayOneShot (game.ui.soundWin);
+			if (player.isReal) {
+				game.ui.audio.PlayOneShot (game.ui.soundWin);
+				game.ui.WinBalance(winAmount.ToString());
+			}
 			player.balanceInCredits += winAmount;
 			player.lblCredits.text = player.balanceInCredits.f();
 			winString += string.Format ("{2}\n\n{0} win\n {1} credits\n".ToUpper (), player.name, winAmount.f(), player.GetHandStringFromHandObj ());

@@ -121,7 +121,7 @@ public class GameUI : MonoBehaviour
 		}
 		game.player.actionFinal = new AllIn (game.player, betToStay, new Bet(0));
 		game.player.actionFinal.Do (game, game.player);
-
+		game.ui.LoseBalance(game.player.balanceInCredits.ToString());
 		
 		game.ui.HideDynamicPanels();
 		game.ui.panelGame.SetActive(true);
@@ -354,7 +354,7 @@ public class GameUI : MonoBehaviour
 				panelAddCredits.SetActive (true);
 		}
 
-		game.ui.SetBalance(Settings.playerCredits.ToString());
+		//game.ui.SetBalance(Settings.playerCredits.ToString());
 		var lblMyCreditsTitle = GameObject.Find("lblMyCredits");
 		if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = Settings.playerCredits.f();
 
@@ -841,21 +841,41 @@ public class GameUI : MonoBehaviour
 		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForGetBalanceRequest(www));
 	}
-	
+
+	private void PostBalance(string amount, string url) {
+		WWWForm form = new WWWForm();
+		form.AddField("a", amount);
+		form.AddField("k", Settings.key);
+		form.AddField("id", Settings.id);
+		
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForRequest(www));
+	}
+
 	public void SetBalance(string amount)
 	{
 		string url = string.Format("{0}/{1}", Settings.host, Settings.actionSetBalance);
 		if (Settings.isDebug) Debug.Log(url);
 		
-		WWWForm form = new WWWForm();
-		form.AddField("a", amount);
-		form.AddField("k", Settings.key);
-		form.AddField("id", Settings.id);
-
-		WWW www = new WWW(url, form);
-		StartCoroutine(WaitForRequest(www));
+		PostBalance(amount, url);
 	}
-	
+
+	public void LoseBalance(string amount)
+	{
+		string url = string.Format("{0}/{1}", Settings.host, Settings.actionLoseBalance);
+		if (Settings.isDebug) Debug.Log(url);
+		
+		PostBalance(amount, url);
+	}
+
+	public void WinBalance(string amount)
+	{
+		string url = string.Format("{0}/{1}", Settings.host, Settings.actionWinBalance);
+		if (Settings.isDebug) Debug.Log(url);
+		
+		PostBalance(amount, url);
+	}
+
 	IEnumerator WaitForRequest(WWW www)
 	{
 		yield return www;

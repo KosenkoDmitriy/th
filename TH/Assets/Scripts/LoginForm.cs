@@ -22,9 +22,12 @@ public class LoginForm : MonoBehaviour
 		//inputField.OnPointerClick(new PointerEventData(EventSystem.current));
 		//inputField.ActivateInputField();
 		//inputField.Select();
-		#if UNITY_WEBGL
+
+		#if UNITY_WEBGL && !UNITY_EDITOR
 		Settings.actionGetBalance = "get2";
 		Settings.actionSetBalance = "set2";
+		Settings.actionWinBalance = "add2";
+		Settings.actionLoseBalance = "sub2";
 		Settings.isLogined = true;
 		Settings.key = "p";
 		Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);

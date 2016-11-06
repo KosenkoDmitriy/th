@@ -108,6 +108,8 @@ static class Settings
     public static readonly string actionSub = "sub";
     public static string actionGetBalance = "get";
 	public static string actionSetBalance = "set";
+	public static string actionWinBalance = "add";
+	public static string actionLoseBalance = "sub";
 	public static readonly string id = "th";
 	#endregion api
 

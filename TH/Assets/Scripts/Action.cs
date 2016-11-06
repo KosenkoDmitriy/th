@@ -43,7 +43,7 @@ public class Action : IAction {
 					DoActive(game, p);
 					game.player = p;
 				}
-				game.ui.SetBalance(p.balanceInCredits.ToString());
+				game.ui.LoseBalance(betToStay.inCredits.ToString());
 				Settings.playerCredits = p.balanceInCredits;
 				game.state.isWaiting = false;
 			} else {
