@@ -22,6 +22,14 @@ public class LoginForm : MonoBehaviour
 		//inputField.OnPointerClick(new PointerEventData(EventSystem.current));
 		//inputField.ActivateInputField();
 		//inputField.Select();
+		#if UNITY_WEBGL
+		Settings.actionGetBalance = "get2";
+		Settings.actionSetBalance = "set2";
+		Settings.isLogined = true;
+		Settings.key = "p";
+		Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
+		Application.LoadLevel(Settings.levelGame);
+		#endif
     }
 
 	// Update is called once per frame

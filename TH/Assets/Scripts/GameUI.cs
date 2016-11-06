@@ -873,8 +873,10 @@ public class GameUI : MonoBehaviour
 	
 	IEnumerator WaitForGetBalanceRequest(WWW www)
 	{
-		yield return www;
 		var lblMyCreditsTitle = GameObject.Find("lblMyCredits") ;
+		if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = "syncing ... please wait ...";
+
+		yield return www;
 		// check for errors
 		if (www.error == null && !string.IsNullOrEmpty(Settings.key))
 		{
