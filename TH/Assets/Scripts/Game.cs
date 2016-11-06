@@ -157,14 +157,15 @@ public class Game
 					 * 20 credits = btv x 2
 					 * 10 credits = btv x 1
 					 */
-					winBonus *= game.ui.payTable.selectedCol; // where selectedCol is multiplier 
-
+					//winBonus *= game.ui.payTable.selectedCol; // where selectedCol is multiplier 
+					game.ui.WinBalance(winBonus.ToString());
 //					if (winnersCount > 1) { 
 //						winBonus /= 2;
 //						winBonusString = string.Format ("{0} win half of bonus {1} credits\n", player.name, winBonus.to_b ());
 //					} else {
-					winBonusString = string.Format ("{0} win bonus: {1} x {2} = {3} credits\n", player.name, (winBonus / game.ui.payTable.selectedCol).f (), game.ui.payTable.selectedCol, winBonus.f ());
-//					}
+					//winBonusString = string.Format ("{0} win bonus: {1} x {2} = {3} credits\n", player.name, (winBonus / game.ui.payTable.selectedCol).f (), game.ui.payTable.selectedCol, winBonus.f ());
+					winBonusString = string.Format ("{0} win bonus: {1} credits\n", player.name, winBonus.f ());
+					//					}
 
 					game.ui.audio.PlayOneShot (game.ui.soundVideoWin);
 
