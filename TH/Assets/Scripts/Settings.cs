@@ -99,6 +99,7 @@ static class Settings
 	public static readonly string facebookGraphPictureUrl = "https://graph.facebook.com/{0}/picture"; 
 	public static string facebookMobileImageUrl = "";
 	public static string FacebookImageFinalUrl = "";
+	public static readonly string actionFbAvatarUrl = "avatar_url";
 
 	public static readonly string urlSignUp = host + "/sign_in_up";
 	public static readonly string urlMobileSignUp = host + "/mobile/signup";

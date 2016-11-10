@@ -224,7 +224,7 @@ public class LoginForm : MonoBehaviour
 			FB.API(query, HttpMethod.GET, BusinessTokenCallback, form);
 
 			//fb avatar url for real/live player
-			SetFBImageUrl();
+			SetFBImageUrl(aToken);
 		} else {
 			Settings.isLogined = false;
 			string msg = "User cancelled login";
@@ -233,12 +233,11 @@ public class LoginForm : MonoBehaviour
 		}
 	}
 
-	public void SetFBImageUrl() {
-		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-		
+	public void SetFBImageUrl(AccessToken aToken) {
 		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
-		url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-		//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
+		//url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		url += "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
 		Dictionary<string, string> headers = new Dictionary<string, string>();
 //		headers.Add("Origin", Settings.facebookImageHost);
 		string urlFinal = Settings.facebookImageUrl + url;
