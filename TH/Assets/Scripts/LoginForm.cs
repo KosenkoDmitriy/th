@@ -89,7 +89,7 @@ public class LoginForm : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("e", email);
         form.AddField("p", password);
-
+		Settings.isLoginedViaEmail  = true;
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www));
     }
@@ -223,32 +223,32 @@ public class LoginForm : MonoBehaviour
 //			form.AddField("access_token", aToken.TokenString);
 			FB.API(query, HttpMethod.GET, BusinessTokenCallback, form);
 
-			//Load Picture/Avatar for real/live player
-			StartCoroutine(LoadAvatar());
+			//fb avatar url for real/live player
+			SetFBImageUrl();
 		} else {
 			Settings.isLogined = false;
 			string msg = "User cancelled login";
 			if (Settings.isDebug) Debug.Log(msg);
 			GameObject.Find("textInfo").GetComponent<Text>().text = msg;
 		}
-
 	}
 
-	public IEnumerator LoadAvatar() {
+	public void SetFBImageUrl() {
 		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 		
 		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
 		url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
+		//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
 		Dictionary<string, string> headers = new Dictionary<string, string>();
 //		headers.Add("Origin", Settings.facebookImageHost);
 		string urlFinal = Settings.facebookImageUrl + url;
-		WWW www = new WWW(urlFinal, null, headers);
-		Debug.Log(urlFinal);
-		yield return www;
-		Texture2D profilePic = www.texture;
-		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
-		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
+		Settings.FacebookImageFinalUrl = urlFinal;
+//		WWW www = new WWW(urlFinal, null, headers);
+//		Debug.Log(urlFinal);
+//		yield return www;
+//		Texture2D profilePic = www.texture;
+//		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
+//		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
 	}
 
 	private void BusinessTokenCallback(IGraphResult result){

@@ -5,7 +5,6 @@ static class Settings
 	public static bool isDev = false;	// advanced debug info
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
-	public static bool btnBetBonusIsDone;
 
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;
@@ -54,6 +53,7 @@ static class Settings
 	public static double betBonus = 0;
 	public static double betBonusMin = 1;
 	public static double betBonusMax = 5;
+	public static bool btnBetBonusIsDone; // if false then auto bonus rebet 
 
 	public static int paytableRowSize = 7; //rows
 	public static int paytableColumnSize = 6; //cols
@@ -84,14 +84,21 @@ static class Settings
 	    
 	#region api
     public static bool isLogined = false;
+	public static bool isLoginedViaEmail = false;
 
 	public static string key = "";
-    public static readonly string http = "https://";
+
+//	public static readonly string http = "http://";
+//	public static readonly string host = http + "localhost:3001";
+//
+	public static readonly string http = "https://";
 	public static readonly string host = http + "yourplaceforfun.com";
-	public static readonly string facebookImageHost = "https://game.yourplaceforfun.com";
+
+	public static readonly string facebookImageHost = "https://yourplaceforfun.com";
 	public static readonly string facebookImageUrl = facebookImageHost + "/f.php?url=";
 	public static readonly string facebookGraphPictureUrl = "https://graph.facebook.com/{0}/picture"; 
 	public static string facebookMobileImageUrl = "";
+	public static string FacebookImageFinalUrl = "";
 
 	public static readonly string urlSignUp = host + "/sign_in_up";
 	public static readonly string urlMobileSignUp = host + "/mobile/signup";

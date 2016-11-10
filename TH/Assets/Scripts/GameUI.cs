@@ -477,6 +477,24 @@ public class GameUI : MonoBehaviour
 	}
 	#endregion bonus pane/table
 
+	public IEnumerator LoadAvatar() {
+		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
+		
+		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
+		url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
+		Dictionary<string, string> headers = new Dictionary<string, string>();
+		//		headers.Add("Origin", Settings.facebookImageHost);
+		string urlFinal = Settings.facebookImageUrl + url;
+		Settings.FacebookImageFinalUrl = urlFinal;
+		WWW www = new WWW(urlFinal, null, headers);
+		Debug.Log(urlFinal);
+		yield return www;
+		Texture2D profilePic = www.texture;
+		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
+		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
+	}
+
 	public void Start ()
 	{
 		if (Settings.isDebug)
@@ -598,15 +616,10 @@ public class GameUI : MonoBehaviour
 		// avatar for real/live player
 		avatar = GameObject.Find("Avatar0");
 		if (avatar) {
-			if (Settings.isLogined) {
-				if (Settings.avatar != null) {
-					avatar.GetComponent<Image>().sprite = Settings.avatar;
-				} else {
-					StartCoroutine("AvatarLoading");
-				}
-			} else {
-				avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
-			}
+			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
+
+			if (Settings.isLogined && !Settings.isLoginedViaEmail)
+				StartCoroutine(AvatarLoading());
 		}
 
 //		InitCards (); // get dealers from parent object
@@ -623,14 +636,18 @@ public class GameUI : MonoBehaviour
 	}
 
 	private IEnumerator AvatarLoading() {
-		string urlFinal = Settings.facebookImageUrl + Settings.facebookMobileImageUrl;
+		string urlFinal = Settings.FacebookImageFinalUrl;// Settings.facebookImageUrl + Settings.facebookMobileImageUrl;
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
-		Texture2D profilePic = www.texture;
-		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
-		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
-		avatar.GetComponent<Image>().sprite = Settings.avatar;
+		if (string.IsNullOrEmpty(www.error)) {
+			Texture2D profilePic = www.texture;
+			Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
+			Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
+			avatar.GetComponent<Image>().sprite = Settings.avatar;
+		} else {
+			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
+		}
 	}
 
 	public IEnumerator DealCards() {
@@ -657,7 +674,6 @@ public class GameUI : MonoBehaviour
 		DisableButtons(false);
 		game.state.isWaiting = false;
 		game.playerIterator = new PlayerIterator (game.playerCollection);
-
 	}
 
 
@@ -911,6 +927,13 @@ public class GameUI : MonoBehaviour
 			Double.TryParse(www.text, out credits);
 
 			Settings.playerCredits = credits;
+//			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next())
+			foreach (var player in game.players)
+			{
+				player.balanceInCredits = credits;
+				player.lblCredits.text = credits.f();
+			}
+
 			game.player.balanceInCredits = credits;
 			game.player.lblCredits.text = credits.f();
 			if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = credits.f();
