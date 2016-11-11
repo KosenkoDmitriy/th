@@ -477,24 +477,6 @@ public class GameUI : MonoBehaviour
 	}
 	#endregion bonus pane/table
 
-	public IEnumerator LoadAvatar() {
-		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-		
-		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
-		url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-		//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
-		Dictionary<string, string> headers = new Dictionary<string, string>();
-		//		headers.Add("Origin", Settings.facebookImageHost);
-		string urlFinal = Settings.facebookImageUrl + url;
-		Settings.FacebookImageFinalUrl = urlFinal;
-		WWW www = new WWW(urlFinal, null, headers);
-		Debug.Log(urlFinal);
-		yield return www;
-		Texture2D profilePic = www.texture;
-		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
-		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
-	}
-
 	public void Start ()
 	{
 		if (Settings.isDebug)
@@ -619,7 +601,7 @@ public class GameUI : MonoBehaviour
 			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 
 			//if (Settings.isLogined && !Settings.isLoginedViaEmail)
-			#if UNITY_WEBGL
+			#if UNITY_WEBGL && !UNITY_EDITOR
 				StartCoroutine(AvatarLoading());
 			#else
 				StartCoroutine(AvatarLoadingMobile());
@@ -644,13 +626,13 @@ public class GameUI : MonoBehaviour
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
-		if (string.IsNullOrEmpty(www.error)) {
+		if (string.IsNullOrEmpty(www.error) && !string.IsNullOrEmpty(www.text)) {
 			StartCoroutine(AvatarLoading2(www.text));
 		}
 	}
 
 	private IEnumerator AvatarLoading2(string url) {
-		url += "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		url += "?&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
 		string urlFinal = Settings.facebookImageUrl + url;
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);

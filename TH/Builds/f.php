@@ -1,5 +1,5 @@
 <?php
-$url = $_GET["url"] + "&width=" + $_GET["width"] + "&height=" + $_GET["height"];
+$url = $_GET["url"];// . "&width=" . $_GET["width"] . "&height=" . $_GET["height"];
 if (!preg_match("~^https?://~i", $url)) {
   $url = "http://" . $url;
 }
@@ -18,10 +18,8 @@ $response_headers = explode("\r\n", substr($response, 0, curl_getinfo($ch, CURLI
 $response_body = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
 curl_close($ch);
 */
-
 $context = stream_context_create($request_headers);
-$response = file_get_contents($_GET["url"], false, $context);
-
+$response = file_get_contents($url, false, $context);
 $propagate_headers = array("content-type"); //add additonal headers you want to propagate to this array in lower case
 foreach ($response_headers as $header) {
   if (in_array(strtolower(explode(": ", $header)[0]), $propagate_headers)) {

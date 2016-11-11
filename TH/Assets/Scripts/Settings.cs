@@ -7,8 +7,8 @@ static class Settings
 	public static bool isTest = false;	// test hands
 
 	public static UnityEngine.Sprite avatar;
-	public static int avatarHeight = 150;
-	public static int avatarWidth = 150;
+	public static int avatarHeight = 300;
+	public static int avatarWidth = 300;
 	public static string avatarDefault = "mast/krest";
 
 	public static string icWin = "winner_start";
@@ -94,9 +94,8 @@ static class Settings
 	public static readonly string http = "https://";
 	public static readonly string host = http + "yourplaceforfun.com";
 
-	public static readonly string facebookImageHost = "https://yourplaceforfun.com";
-	public static readonly string facebookImageUrl = facebookImageHost + "/f.php?url=";
-	public static readonly string facebookGraphPictureUrl = "https://graph.facebook.com/{0}/picture"; 
+	public static readonly string facebookImageUrl = host + "/f.php?url=";
+	public static readonly string facebookGraphPictureUrl = "https://graph.facebook.com/{0}/picture";//"?width={1}&height{2}&access_token={3}"; 
 	public static string facebookMobileImageUrl = "";
 	public static string FacebookImageFinalUrl = "";
 	public static readonly string actionFbAvatarUrl = "avatar_url";

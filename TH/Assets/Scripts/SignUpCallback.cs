@@ -47,7 +47,7 @@ public class SignUpCallback : MonoBehaviour {
 			Settings.key = message.args["key"];
 			if (!string.IsNullOrEmpty(message.args["uid"])) {
 				Settings.facebookMobileImageUrl = string.Format (Settings.facebookGraphPictureUrl, message.args["uid"]);
-				Settings.facebookMobileImageUrl += "?&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+				Settings.facebookMobileImageUrl += "?width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
 			} else {
 				Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
 			}

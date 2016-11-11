@@ -235,19 +235,11 @@ public class LoginForm : MonoBehaviour
 
 	public void SetFBImageUrl(AccessToken aToken) {
 		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
-		//url += "?access_token=" + aToken.TokenString + "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-		url += "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-//		string urlTest = "https://th.shopomob.ru/assets/logo-ae05cc58d17983b5c41cd54530d1071ba7f03b7a5a92e75461873292c558bd56.png";
+		//url += "?width="+Settings.avatarWidth+"&height="+Settings.avatarHeight + "&access_token=" + aToken.TokenString;
+		url += "?width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
 		Dictionary<string, string> headers = new Dictionary<string, string>();
-//		headers.Add("Origin", Settings.facebookImageHost);
-		string urlFinal = Settings.facebookImageUrl + url;
-		Settings.FacebookImageFinalUrl = urlFinal;
-//		WWW www = new WWW(urlFinal, null, headers);
-//		Debug.Log(urlFinal);
-//		yield return www;
-//		Texture2D profilePic = www.texture;
-//		Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
-//		Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
+//		headers.Add("Origin", Settings.host);
+		Settings.FacebookImageFinalUrl = Settings.facebookImageUrl + url;
 	}
 
 	private void BusinessTokenCallback(IGraphResult result){
