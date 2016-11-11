@@ -46,8 +46,8 @@ public class SignUpCallback : MonoBehaviour {
         if (message.path == "add") {
 			Settings.key = message.args["key"];
 			if (!string.IsNullOrEmpty(message.args["uid"])) {
-				Settings.facebookMobileImageUrl = string.Format (Settings.facebookGraphPictureUrl, message.args["uid"]);
-				Settings.facebookMobileImageUrl += "?width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+				string url = string.Format (Settings.facebookGraphPictureUrl, message.args["uid"], Settings.avatarWidth, Settings.avatarHeight, "");//aToken.TokenString
+				Settings.facebookFinalImageUrl = string.Format(Settings.facebookImageUrl, url);
 			} else {
 				Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
 			}

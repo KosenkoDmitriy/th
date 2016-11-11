@@ -89,7 +89,6 @@ public class LoginForm : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("e", email);
         form.AddField("p", password);
-		Settings.isLoginedViaEmail  = true;
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www));
     }
@@ -234,12 +233,8 @@ public class LoginForm : MonoBehaviour
 	}
 
 	public void SetFBImageUrl(AccessToken aToken) {
-		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId);
-		//url += "?width="+Settings.avatarWidth+"&height="+Settings.avatarHeight + "&access_token=" + aToken.TokenString;
-		url += "?width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-		Dictionary<string, string> headers = new Dictionary<string, string>();
-//		headers.Add("Origin", Settings.host);
-		Settings.FacebookImageFinalUrl = Settings.facebookImageUrl + url;
+		string url = string.Format (Settings.facebookGraphPictureUrl, aToken.UserId, Settings.avatarWidth, Settings.avatarHeight, "");//aToken.TokenString
+		Settings.facebookFinalImageUrl = string.Format(Settings.facebookImageUrl, url);
 	}
 
 	private void BusinessTokenCallback(IGraphResult result){

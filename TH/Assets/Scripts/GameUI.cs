@@ -600,7 +600,6 @@ public class GameUI : MonoBehaviour
 		if (avatar) {
 			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 
-			//if (Settings.isLogined && !Settings.isLoginedViaEmail)
 			#if UNITY_WEBGL && !UNITY_EDITOR
 				StartCoroutine(AvatarLoading());
 			#else
@@ -622,7 +621,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	private IEnumerator AvatarLoading() {
-		string urlFinal = string.Format("{0}/{1}", Settings.host, Settings.actionFbAvatarUrl);
+		string urlFinal = string.Format("{0}/{1}", Settings.host, Settings.actionFbAvatar);
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
@@ -632,8 +631,8 @@ public class GameUI : MonoBehaviour
 	}
 
 	private IEnumerator AvatarLoading2(string url) {
-		url += "?&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-		string urlFinal = Settings.facebookImageUrl + url;
+		url += "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		string urlFinal = Settings.facebookFinalImageUrl + url;
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
@@ -642,11 +641,13 @@ public class GameUI : MonoBehaviour
 			Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
 			Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
 			avatar.GetComponent<Image>().sprite = Settings.avatar;
+		} else {
+			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 		}
 	}
 
 	private IEnumerator AvatarLoadingMobile() {
-		string urlFinal = Settings.FacebookImageFinalUrl;
+		string urlFinal = Settings.facebookFinalImageUrl;
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
@@ -655,6 +656,8 @@ public class GameUI : MonoBehaviour
 			Rect rect = new Rect(0, 0, profilePic.width, profilePic.height);
 			Settings.avatar = Sprite.Create(profilePic, rect, new Vector2(0.5f, 0.5f), 100);
 			avatar.GetComponent<Image>().sprite = Settings.avatar;
+		} else {
+			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 		}
 	}
 
