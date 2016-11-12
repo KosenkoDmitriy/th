@@ -642,8 +642,8 @@ public class GameUI : MonoBehaviour
 	}
 
 	private IEnumerator AvatarLoading2(string url) {
-		url += "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
-		string urlFinal = Settings.facebookFinalImageUrl + url;
+		Settings.facebookFinalImageUrl = "?url="+url+"&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		string urlFinal = Settings.facebookFinalImageUrl;
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
