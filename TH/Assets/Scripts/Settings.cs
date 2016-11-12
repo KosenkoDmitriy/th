@@ -65,7 +65,7 @@ static class Settings
 	public static readonly double betNull = 0.00;
 	public static Bet betCurrent = new Bet(0);
 
-	public static double playerCredits = 250000;
+	public static double playerCredits = 2500;
 	public static string credits = " credits ";// { get; internal set; }
 
 	public static string chipsRed = "chip_red";	//"chips_red";
