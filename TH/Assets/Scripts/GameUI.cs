@@ -611,7 +611,8 @@ public class GameUI : MonoBehaviour
 		if (avatar) {
 			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 
-			#if UNITY_WEBGL && !UNITY_EDITOR
+			#if UNITY_WEBGL
+			// && !UNITY_EDITOR
 				StartCoroutine(AvatarLoading());
 			#else
 				StartCoroutine(AvatarLoadingMobile());
@@ -636,13 +637,12 @@ public class GameUI : MonoBehaviour
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
-		if (string.IsNullOrEmpty(www.error) && !string.IsNullOrEmpty(www.text)) {
-			StartCoroutine(AvatarLoading2(www.text));
-		}
+		StartCoroutine(AvatarLoading2(www.text));
 	}
 
 	private IEnumerator AvatarLoading2(string url) {
-		Settings.facebookFinalImageUrl = "?url="+url+"&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		url += "&width="+Settings.avatarWidth+"&height="+Settings.avatarHeight;
+		Settings.facebookFinalImageUrl = string.Format(Settings.facebookImageUrl, url);
 		string urlFinal = Settings.facebookFinalImageUrl;
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
