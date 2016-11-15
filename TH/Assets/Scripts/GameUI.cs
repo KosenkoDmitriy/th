@@ -637,7 +637,8 @@ public class GameUI : MonoBehaviour
 		WWW www = new WWW(urlFinal);
 		Debug.Log(urlFinal);
 		yield return www;
-		StartCoroutine(AvatarLoading2(www.text));
+		if (string.IsNullOrEmpty(www.error) && !string.IsNullOrEmpty(www.text) && www.text != "error")
+			StartCoroutine(AvatarLoading2(www.text));
 	}
 
 	private IEnumerator AvatarLoading2(string url) {
