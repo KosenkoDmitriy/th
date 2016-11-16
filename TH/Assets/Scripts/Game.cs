@@ -75,10 +75,11 @@ public class Game
 
 		int j = 0;
 		foreach (var player in playerList) {
-			player.avatar = GameObject.Find("Avatar"+j).GetComponent<Image>();
-			string path = "avatars/avatar"+(j);
-			if (j>0)
-			player.avatar.sprite = Resources.Load<Sprite>(path);
+			if (j > 0) {
+				player.avatar = GameObject.Find("Avatar"+j).GetComponent<Image>();
+				string path = "avatars/avatar"+(j);
+				player.avatar.sprite = Resources.Load<Sprite>(path);
+			}
 			player.position = j;	// for math (first to act player)
 			j++;
 		}

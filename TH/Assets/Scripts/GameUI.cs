@@ -611,8 +611,7 @@ public class GameUI : MonoBehaviour
 		if (avatar) {
 			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 
-			#if UNITY_WEBGL
-			// && !UNITY_EDITOR
+			#if UNITY_WEBGL && !UNITY_EDITOR
 				StartCoroutine(AvatarLoading());
 			#else
 				StartCoroutine(AvatarLoadingMobile());

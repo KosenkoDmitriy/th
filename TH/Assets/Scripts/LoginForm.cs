@@ -70,6 +70,8 @@ public class LoginForm : MonoBehaviour
 
     public void LoginPost()
     {
+		GameObject.Find("textInfo").GetComponent<Text>().text = "please wait ...";
+
         string email = GameObject.Find("Login").GetComponent<InputField>().text;
         string password = GameObject.Find("Password").GetComponent<InputField>().text;
         string url = string.Format("{0}/{1}", Settings.host, Settings.actionLogin);
@@ -94,7 +96,9 @@ public class LoginForm : MonoBehaviour
 			Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
 
             if (Settings.isDebug) Debug.Log("WWW Ok!: " + www.text);
+
             Application.LoadLevel(Settings.levelGame);
+			GameObject.Find("textInfo").GetComponent<Text>().text = "";
         }
         else 
 		{
@@ -178,6 +182,7 @@ public class LoginForm : MonoBehaviour
 
 	public void FacebookLogin() {
 		Debug.Log("FacebookLogin()");
+		GameObject.Find("textInfo").GetComponent<Text>().text = "please wait ...";
 
 		//		var perms = new new System.Collections.Generic.List<string>(){"public_profile", "email", "user_friends"};
 		var perms = new System.Collections.Generic.List<string>(){"public_profile"};
@@ -186,8 +191,9 @@ public class LoginForm : MonoBehaviour
 
 	public void FacebookLogout() {
 		Debug.Log("FacebookLogout()");
-
+		GameObject.Find("textInfo").GetComponent<Text>().text = "please wait ...";
 		FB.LogOut();
+		GameObject.Find("textInfo").GetComponent<Text>().text = "you logged out";
 	}
 
 	private void AuthCallback (ILoginResult result) {
