@@ -9,7 +9,7 @@ static class Settings
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;
 	public static int avatarWidth = 150;
-	public static string avatarDefault = "mast/krest";
+	public static string avatarDefault = "mast/chervR";//krest";
 
 	public static string icWin = "winner_start";
 	public static string icDealer = "ic_dealer_old";

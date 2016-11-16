@@ -787,6 +787,8 @@ public class Player {
 		}
 	}
 
+	public Image avatar;
+
 	public Text lblCredits;
 	public Text lblAction;
 	public Text lblName;
