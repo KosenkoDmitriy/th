@@ -61,12 +61,14 @@ namespace CompleteProject
 			// Create a builder, first passing in a suite of Unity provided stores.
 			var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 			// buy consumable packs
-			builder.AddProduct(kProductIDSubscription, ProductType.Consumable, new IDs(){
-				{ Pack1Consumable, AppleAppStore.Name },
-				{ Pack2Consumable, AppleAppStore.Name },
-				{ Pack3Consumable, AppleAppStore.Name },
-				{ Pack4Consumable, AppleAppStore.Name },
-			});
+			builder.AddProduct(Pack1Consumable, ProductType.Consumable);
+			builder.AddProduct(Pack2Consumable, ProductType.Consumable);
+			builder.AddProduct(Pack3Consumable, ProductType.Consumable);
+			builder.AddProduct(Pack4Consumable, ProductType.Consumable);
+//			builder.AddProduct(Pack1Consumable, ProductType.Consumable, new IDs(){
+//				{ Pack1Consumable, AppleAppStore.Name },
+//				{ Pack2Consumable, GooglePlay.Name },
+//			});
 
 			// Add a product to sell / restore by way of its identifier, associating the general identifier
 			// with its store-specific identifiers.
