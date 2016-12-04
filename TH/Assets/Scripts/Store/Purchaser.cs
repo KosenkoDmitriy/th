@@ -33,6 +33,12 @@ namespace CompleteProject
 		// Google Play Store-specific product identifier subscription product.
 		private static string kProductNameGooglePlaySubscription =  "com.yourplaceforfun.game.original"; 
 
+		// packs
+		private static string Pack1Consumable =  "com.yourplaceforfun.game.0.5M";
+		private static string Pack2Consumable =  "com.yourplaceforfun.game.2.5M";
+		private static string Pack3Consumable =  "com.yourplaceforfun.game.4M";
+		private static string Pack4Consumable =  "com.yourplaceforfun.game.5M";
+
 		void Start()
 		{
 			// If we haven't set up the Unity Purchasing reference
@@ -54,20 +60,27 @@ namespace CompleteProject
 
 			// Create a builder, first passing in a suite of Unity provided stores.
 			var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+			// buy consumable packs
+			builder.AddProduct(kProductIDSubscription, ProductType.Consumable, new IDs(){
+				{ Pack1Consumable, AppleAppStore.Name },
+				{ Pack2Consumable, AppleAppStore.Name },
+				{ Pack3Consumable, AppleAppStore.Name },
+				{ Pack4Consumable, AppleAppStore.Name },
+			});
 
 			// Add a product to sell / restore by way of its identifier, associating the general identifier
 			// with its store-specific identifiers.
-			builder.AddProduct(kProductIDConsumable, ProductType.Consumable);
+			//builder.AddProduct(kProductIDConsumable, ProductType.Consumable);
 			// Continue adding the non-consumable product.
-			builder.AddProduct(kProductIDNonConsumable, ProductType.NonConsumable);
+			//builder.AddProduct(kProductIDNonConsumable, ProductType.NonConsumable);
 			// And finish adding the subscription product. Notice this uses store-specific IDs, illustrating
 			// if the Product ID was configured differently between Apple and Google stores. Also note that
 			// one uses the general kProductIDSubscription handle inside the game - the store-specific IDs 
 			// must only be referenced here. 
-			builder.AddProduct(kProductIDSubscription, ProductType.Subscription, new IDs(){
-				{ kProductNameAppleSubscription, AppleAppStore.Name },
-				{ kProductNameGooglePlaySubscription, GooglePlay.Name },
-			});
+//			builder.AddProduct(kProductIDSubscription, ProductType.Subscription, new IDs(){
+//				{ kProductNameAppleSubscription, AppleAppStore.Name },
+//				{ kProductNameGooglePlaySubscription, GooglePlay.Name },
+//			});
 
 			// Kick off the remainder of the set-up with an asynchrounous call, passing the configuration 
 			// and this class' instance. Expect a response either in OnInitialized or OnInitializeFailed.
@@ -79,6 +92,27 @@ namespace CompleteProject
 		{
 			// Only say we are initialized if both the Purchasing references are set.
 			return m_StoreController != null && m_StoreExtensionProvider != null;
+		}
+
+
+		public void BuyConsumablePack1()
+		{
+			BuyProductID(Pack1Consumable);
+		}
+
+		public void BuyConsumablePack2()
+		{
+			BuyProductID(Pack2Consumable);
+		}
+
+		public void BuyConsumablePack3()
+		{
+			BuyProductID(Pack3Consumable);
+		}
+
+		public void BuyConsumablePack4()
+		{
+			BuyProductID(Pack4Consumable);
 		}
 
 
@@ -205,6 +239,37 @@ namespace CompleteProject
 
 		public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
 		{
+			if (String.Equals(args.purchasedProduct.definition.id, Pack1Consumable, StringComparison.Ordinal))
+			{
+				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
+				Settings.playerCredits += 500000;
+			}
+
+			if (String.Equals(args.purchasedProduct.definition.id, Pack2Consumable, StringComparison.Ordinal))
+			{
+				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
+				Settings.playerCredits += 2500000;
+			}
+
+			if (String.Equals(args.purchasedProduct.definition.id, Pack3Consumable, StringComparison.Ordinal))
+			{
+				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
+				Settings.playerCredits += 4000000;
+			}
+
+			if (String.Equals(args.purchasedProduct.definition.id, Pack4Consumable, StringComparison.Ordinal))
+			{
+				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
+				Settings.playerCredits += 5000000;
+			}
+
+			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = Settings.playerCredits.f();
+			return PurchaseProcessingResult.Complete;
+
 			// A consumable product has been purchased by this user.
 			if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
 			{
