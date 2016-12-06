@@ -8,6 +8,7 @@ using System.Collections.Generic;
 // Include Facebook namespace
 using Facebook.Unity;
 using Facebook.MiniJSON;
+using System;
 
 
 public class LoginForm : MonoBehaviour
@@ -182,11 +183,18 @@ public class LoginForm : MonoBehaviour
 
 	public void FacebookLogin() {
 		Debug.Log("FacebookLogin()");
-		GameObject.Find("textInfo").GetComponent<Text>().text = "please wait ...";
-
+		try {
+			GameObject.Find("textInfo").GetComponent<Text>().text = "please wait ...";
+		} catch (Exception e) {
+			Debug.Log("can't update textInfo obj.text: " + e.Message);
+		}
+		try {
 		//		var perms = new new System.Collections.Generic.List<string>(){"public_profile", "email", "user_friends"};
 		var perms = new System.Collections.Generic.List<string>(){"public_profile"};
 		FB.LogInWithReadPermissions(perms, AuthCallback);
+		} catch (Exception e) {
+			Debug.Log("LogInWithReadPermissions error: " + e.Message);
+		}
 	}
 
 	public void FacebookLogout() {

@@ -23,15 +23,15 @@ namespace CompleteProject
 		// when defining the Product Identifiers on the store. Except, for illustration purposes, the 
 		// kProductIDSubscription - it has custom Apple and Google identifiers. We declare their store-
 		// specific mapping to Unity Purchasing's AddProduct, below.
-		public static string kProductIDConsumable =    "consumable";   
-		public static string kProductIDNonConsumable = "nonconsumable";
-		public static string kProductIDSubscription =  "subscription"; 
+		//public static string kProductIDConsumable =    "consumable";   
+		//public static string kProductIDNonConsumable = "nonconsumable";
+		//public static string kProductIDSubscription =  "subscription"; 
 
 		// Apple App Store-specific product identifier for the subscription product.
-		private static string kProductNameAppleSubscription =  "com.yourplaceforfun.game.new";
+		//private static string kProductNameAppleSubscription =  "com.yourplaceforfun.game.new";
 
 		// Google Play Store-specific product identifier subscription product.
-		private static string kProductNameGooglePlaySubscription =  "com.yourplaceforfun.game.original"; 
+		//private static string kProductNameGooglePlaySubscription =  "com.yourplaceforfun.game.original"; 
 
 		// packs
 		private static string Pack1Consumable =  "com.yourplaceforfun.game.0.5M";
@@ -122,7 +122,7 @@ namespace CompleteProject
 		{
 			// Buy the consumable product using its general identifier. Expect a response either 
 			// through ProcessPurchase or OnPurchaseFailed asynchronously.
-			BuyProductID(kProductIDConsumable);
+			//BuyProductID(kProductIDConsumable);
 		}
 
 
@@ -130,7 +130,7 @@ namespace CompleteProject
 		{
 			// Buy the non-consumable product using its general identifier. Expect a response either 
 			// through ProcessPurchase or OnPurchaseFailed asynchronously.
-			BuyProductID(kProductIDNonConsumable);
+			//BuyProductID(kProductIDNonConsumable);
 		}
 
 
@@ -140,7 +140,7 @@ namespace CompleteProject
 			// through ProcessPurchase or OnPurchaseFailed asynchronously.
 			// Notice how we use the general product identifier in spite of this ID being mapped to
 			// custom store-specific identifiers above.
-			BuyProductID(kProductIDSubscription);
+			//BuyProductID(kProductIDSubscription);
 		}
 
 
@@ -224,6 +224,7 @@ namespace CompleteProject
 		{
 			// Purchasing has succeeded initializing. Collect our Purchasing references.
 			Debug.Log("OnInitialized: PASS");
+			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = "Initialized Successfully";
 
 			// Overall Purchasing system, configured with products for this application.
 			m_StoreController = controller;
@@ -236,6 +237,7 @@ namespace CompleteProject
 		{
 			// Purchasing set-up has not succeeded. Check error for reason. Consider sharing this reason with the user.
 			Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
+			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = "Initialization Error: " + error;
 		}
 
 
@@ -272,6 +274,7 @@ namespace CompleteProject
 			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = Settings.playerCredits.f();
 			return PurchaseProcessingResult.Complete;
 
+			/*
 			// A consumable product has been purchased by this user.
 			if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
 			{
@@ -302,6 +305,7 @@ namespace CompleteProject
 			// to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
 			// saving purchased products to the cloud, and when that save is delayed. 
 			return PurchaseProcessingResult.Complete;
+			*/
 		}
 
 
@@ -309,6 +313,7 @@ namespace CompleteProject
 		{
 			// A product purchase attempt did not succeed. Check failureReason for more detail. Consider sharing 
 			// this reason with the user to guide their troubleshooting actions.
+			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = "Can't purchase this product: " + product.definition + " reason: " + failureReason;
 			Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
 		}
 	}

@@ -31,8 +31,8 @@ namespace Facebook.Unity.Editor
     public class FacebookSettingsEditor : UnityEditor.Editor
     {
         private bool showFacebookInitSettings = false;
-        private bool showAndroidUtils = EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
-        private bool showIOSSettings = EditorUserBuildSettings.activeBuildTarget.ToString() == "iOS";
+		private bool showAndroidUtils = EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android; //false
+		private bool showIOSSettings = EditorUserBuildSettings.activeBuildTarget.ToString() == "iOS"; //false
         private bool showAppLinksSettings = false;
         private bool showAboutSection = false;
 

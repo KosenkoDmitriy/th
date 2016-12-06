@@ -105,11 +105,35 @@
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity5.5.0/Unity5.5.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
+ <Reference Include="Common">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Common.dll</HintPath>
+ </Reference>
+ <Reference Include="Editor">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Security">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Security.dll</HintPath>
+ </Reference>
+ <Reference Include="Stores">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
+ </Reference>
+ <Reference Include="Apple">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
+ </Reference>
+ <Reference Include="Tizen">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
+ </Reference>
+ <Reference Include="winrt">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
+ </Reference>
  <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
  <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>
  <Reference Include="SyntaxTree.VisualStudio.Unity.Messaging">
  <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityVS.VersionSpecific">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>/Applications/Unity5.5.0/Unity5.5.app/Contents/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -125,30 +149,6 @@
  </Reference>
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity5.5.0/Unity5.5.app/Contents/PlaybackEngines/macstandalonesupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="UnityVS.VersionSpecific">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll</HintPath>
- </Reference>
- <Reference Include="Security">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Security.dll</HintPath>
- </Reference>
- <Reference Include="Apple">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
- </Reference>
- <Reference Include="Common">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Common.dll</HintPath>
- </Reference>
- <Reference Include="Stores">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
- </Reference>
- <Reference Include="Tizen">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
- </Reference>
- <Reference Include="winrt">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
- </Reference>
- <Reference Include="Editor">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

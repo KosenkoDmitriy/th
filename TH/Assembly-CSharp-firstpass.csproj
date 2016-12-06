@@ -84,26 +84,26 @@
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity5.5.0/Unity5.5.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
- <Reference Include="Security">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Security.dll</HintPath>
- </Reference>
- <Reference Include="Apple">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
- </Reference>
  <Reference Include="Common">
  <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Common.dll</HintPath>
  </Reference>
+ <Reference Include="Editor">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Security">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Security.dll</HintPath>
+ </Reference>
  <Reference Include="Stores">
  <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
+ </Reference>
+ <Reference Include="Apple">
+ <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
  </Reference>
  <Reference Include="Tizen">
  <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
  </Reference>
  <Reference Include="winrt">
  <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
- </Reference>
- <Reference Include="Editor">
- <HintPath>/Users/dmitrij/Dev/prj/unity/th/TH/Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
