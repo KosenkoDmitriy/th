@@ -255,7 +255,6 @@ namespace CompleteProject
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
-				Settings.playerCredits += 500000;
 				Add(500000);
 			}
 
@@ -263,7 +262,6 @@ namespace CompleteProject
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
-				Settings.playerCredits += 2500000;
 				Add(2500000);
 			}
 
@@ -271,7 +269,6 @@ namespace CompleteProject
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
-				Settings.playerCredits += 4000000;
 				Add(4000000);
 			}
 
@@ -279,7 +276,6 @@ namespace CompleteProject
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
-				Settings.playerCredits += 5000000;
 				Add(5000000);
 			}
 
@@ -329,13 +325,15 @@ namespace CompleteProject
 			Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
 		}
 
-		private void Add(string amount)
+		private void Add(double amount)
 		{
+			Settings.playerCredits += amount;
+			string amountStr = Convert.ToString(amount);
 			string url = string.Format("{0}/{1}", Settings.host, Settings.actionAdd);
 			if (Settings.isDebug) Debug.Log(url);
 
 			WWWForm form = new WWWForm();
-			form.AddField("a", amount);
+			form.AddField("a", amountStr);
 			form.AddField("k", Settings.key);
 
 			WWW www = new WWW(url, form);
