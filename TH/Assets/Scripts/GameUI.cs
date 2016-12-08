@@ -358,12 +358,24 @@ public class GameUI : MonoBehaviour
 		var lblMyCreditsTitle = GameObject.Find("lblMyCredits");
 		if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = Settings.playerCredits.f();
 
+		updateUserCredits();
+	}
+
+	public void updateUserCredits() {
+//		game.player.balanceInCredits = Settings.playerCredits;
+//		game.player.lblCredits.text = Settings.playerCredits.f();
+		foreach(var player in game.players) {
+			player.balanceInCredits = Settings.playerCredits;
+			player.lblCredits.text = Settings.playerCredits.f();
+		}
 	}
 	
 	private void btnCreditOkClickListener()
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditOkClickListener()");
 		if (panelAddCredits) panelAddCredits.SetActive(false);
+
+		updateUserCredits();
 	}
 	#endregion add credits
 

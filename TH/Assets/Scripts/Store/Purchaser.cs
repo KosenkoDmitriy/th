@@ -38,9 +38,15 @@ namespace CompleteProject
 		private static string Pack2Consumable =  "com.yourplaceforfun.game.2.5M";
 		private static string Pack3Consumable =  "com.yourplaceforfun.game.4M";
 		private static string Pack4Consumable =  "com.yourplaceforfun.game.5M";
+		private UnityEngine.UI.Text msg;
 
 		void Start()
 		{
+			var obj = GameObject.Find("lblMyCredits");
+			if (obj != null) {
+				msg = GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>();
+			}
+
 			// If we haven't set up the Unity Purchasing reference
 			if (m_StoreController == null)
 			{
@@ -166,6 +172,7 @@ namespace CompleteProject
 				{
 					// ... report the product look-up failure situation  
 					Debug.Log("BuyProductID: FAIL. Not purchasing product, either is not found or is not available for purchase");
+					msg.text = "item is not found or is not available for purchase";
 				}
 			}
 			// Otherwise ...
@@ -174,6 +181,7 @@ namespace CompleteProject
 				// ... report the fact Purchasing has not succeeded initializing yet. Consider waiting longer or 
 				// retrying initiailization.
 				Debug.Log("BuyProductID FAIL. Not initialized.");
+				msg.text = "please wait or retry again ...";
 			}
 		}
 
@@ -224,8 +232,8 @@ namespace CompleteProject
 		{
 			// Purchasing has succeeded initializing. Collect our Purchasing references.
 			Debug.Log("OnInitialized: PASS");
-			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = "Initialized Successfully";
-
+			//msg.text = "Ready to purchase";//"Initialized Successfully";
+			msg.text = Settings.playerCredits.f();
 			// Overall Purchasing system, configured with products for this application.
 			m_StoreController = controller;
 			// Store specific subsystem, for accessing device-specific store features.
@@ -237,7 +245,7 @@ namespace CompleteProject
 		{
 			// Purchasing set-up has not succeeded. Check error for reason. Consider sharing this reason with the user.
 			Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
-			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = "Initialization Error: " + error;
+			msg.text = "Initialization Error " + error;
 		}
 
 
@@ -248,6 +256,7 @@ namespace CompleteProject
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
 				Settings.playerCredits += 500000;
+				Add(500000);
 			}
 
 			if (String.Equals(args.purchasedProduct.definition.id, Pack2Consumable, StringComparison.Ordinal))
@@ -255,6 +264,7 @@ namespace CompleteProject
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
 				Settings.playerCredits += 2500000;
+				Add(2500000);
 			}
 
 			if (String.Equals(args.purchasedProduct.definition.id, Pack3Consumable, StringComparison.Ordinal))
@@ -262,6 +272,7 @@ namespace CompleteProject
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
 				Settings.playerCredits += 4000000;
+				Add(4000000);
 			}
 
 			if (String.Equals(args.purchasedProduct.definition.id, Pack4Consumable, StringComparison.Ordinal))
@@ -269,9 +280,10 @@ namespace CompleteProject
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// The consumable item has been successfully purchased, add 500,000 coins to the player's in-game score.
 				Settings.playerCredits += 5000000;
+				Add(5000000);
 			}
 
-			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = Settings.playerCredits.f();
+			msg.text = Settings.playerCredits.f();
 			return PurchaseProcessingResult.Complete;
 
 			/*
@@ -313,8 +325,37 @@ namespace CompleteProject
 		{
 			// A product purchase attempt did not succeed. Check failureReason for more detail. Consider sharing 
 			// this reason with the user to guide their troubleshooting actions.
-			GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>().text = "Can't purchase this product: " + product.definition + " reason: " + failureReason;
+			msg.text = "Can't purchase this product: " + product.definition + " reason: " + failureReason;
 			Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
 		}
+
+		private void Add(string amount)
+		{
+			string url = string.Format("{0}/{1}", Settings.host, Settings.actionAdd);
+			if (Settings.isDebug) Debug.Log(url);
+
+			WWWForm form = new WWWForm();
+			form.AddField("a", amount);
+			form.AddField("k", Settings.key);
+
+			WWW www = new WWW(url, form);
+			StartCoroutine(WaitForRequest(www));
+		}
+
+		System.Collections.IEnumerator WaitForRequest(WWW www)
+		{
+			yield return www;
+			// check for errors
+			if (www.error == null)
+			{
+				if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
+			}
+			else
+			{
+				string msg = "error api: " + www.error;
+				if (Settings.isDebug) Debug.Log(msg);
+			}
+		}
+
 	}
 }
