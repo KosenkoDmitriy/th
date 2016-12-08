@@ -63,9 +63,6 @@
      <None Include="Assets\UniWebView\Readme.txt" />
      <None Include="Assets\FacebookSDK\SDK\Scripts\Canvas\Resources\JSSDKBindings.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest 1.xml" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/Applications/Unity5.5.0/Unity5.5.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity5.5.0/Unity5.5.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
