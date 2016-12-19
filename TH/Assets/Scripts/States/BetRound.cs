@@ -99,22 +99,15 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		// bet sub rounds
 		if (!game.state.isWaiting) {
 			var player = game.playerIterator.Next();
-			
-			if (player == null) {
-				if (Settings.isDev) Debug.Log(string.Format("end player iterator CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
-				if (IsOneActivePlayer()) { // if one active player then he is winner
-					if (Settings.isDev) Debug.Log ("one active player > EndGame()");
-					game.winners = new List<Player>();
-					game.winners.Add(player);
-					LastAction();
-					game.state = new EndGame(game);
-					return;
-				}
 
+			if (player == null) { // end first sub round
 				game.state.CheckForNextSubOrRound();
-				
+
+				if (Settings.isDev) Debug.Log(string.Format("end player iterator CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
+
+
 				var playersActive = new PlayerCollection();
-				
+
 				int i = 0;
 				for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
 					if (!p.isFolded) {
@@ -123,6 +116,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					}
 				}
 				game.playerIterator = new PlayerIterator(playersActive);
+
 //				player = game.playerIterator.Next();
 				return;
 			}
@@ -130,6 +124,15 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //			if (Settings.isDev) player.LogDevInfo(player, false, false);
 
 			if (player.isReal) {
+				if (IsOneActivePlayer()) { // if one active player then he is winner
+					if (Settings.isDev) Debug.Log ("one active player > EndGame()");
+					game.winners = new List<Player>();
+					game.winners.Add(game.player);
+					LastAction();
+					game.state = new EndGame(game);
+					return;
+				}
+
 				game.ui.DisableButtons(false);
 
 				if (player.betInvested >= betMaxLimit) { // skip action
@@ -178,7 +181,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 				if (!player.isFolded) {
 					player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
+//					if (Settings.isDev) Debug.Log(string.Format("{3} actionFinal.preDo(): {0} isFolded: {1} isFolded: {2}", player.actionFinal.isRaise,  player.actionFinal.isFold, player.isFolded, player.id));
 					player.actionFinal.Do(game, player);
+//					if (Settings.isDev) Debug.Log(string.Format("{3} actionFinal: isRaised: {0} isFolded: {1} isFolded: {2}", player.actionFinal.isRaise,  player.actionFinal.isFold, player.isFolded, player.id));
 				}
 			}
 
