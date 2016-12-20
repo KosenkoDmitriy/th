@@ -88,6 +88,9 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 		}
 	
+		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next())
+			player.isLastToRaise = false;
+
 		game.potAmount += pot.inCredits;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();
 
@@ -105,9 +108,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 				if (Settings.isDev) Debug.Log(string.Format("end player iterator CUR SUB ROUND:{0}/{1} isCanToRaise:{2} POT: cur:{3}/main:{4}", subRoundCount, subRoundMaxSize, isCanToRaise, pot, game.potAmount));
 
-
 				var playersActive = new PlayerCollection();
-
 				int i = 0;
 				for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
 					if (!p.isFolded) {
@@ -123,7 +124,14 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 //			if (Settings.isDev) player.Log(false, false, "BetRound>SubRounds()");
 //			if (Settings.isDev) player.LogDevInfo(player, false, false);
 
+			if (player.isLastToRaise) {
+				player.isLastToRaise = false;
+				//game.state.CheckForNextSubOrRound();
+				return;
+			}
+
 			if (player.isReal) {
+
 				if (IsOneActivePlayer()) { // if one active player then he is winner
 					if (Settings.isDev) Debug.Log ("one active player > EndGame()");
 					game.winners = new List<Player>();
@@ -139,7 +147,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					return;
 				}
 				game.state.isWaiting = true;
-
+				player.lblAction.text = "pls select your action >>";
 //				player.lblCurBet.text = "";
 //				player.isChipHidden = true;
 
@@ -180,6 +188,8 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				game.ui.DisableButtons(true);
 
 				if (!player.isFolded) {
+					//if (player.isLastToRaise) return; // skip check or any other action of no any raise
+
 					player.actionFinal = player.GetFinalAction(game);//(betMax, isCanToRaise, game);
 //					if (Settings.isDev) Debug.Log(string.Format("{3} actionFinal.preDo(): {0} isFolded: {1} isFolded: {2}", player.actionFinal.isRaise,  player.actionFinal.isFold, player.isFolded, player.id));
 					player.actionFinal.Do(game, player);
@@ -187,8 +197,10 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				}
 			}
 
+
 		}
 	}
+
 
 	private bool IsNextBetRound() {
 		var iterator = new PlayerIterator (game.playerCollection);

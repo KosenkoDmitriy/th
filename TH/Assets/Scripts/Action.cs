@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public interface IAction
 {
@@ -72,6 +73,18 @@ public class Action : IAction {
 			}
 		}
 		*/
+		// skip check or any other action if no any raise 
+		if (p.actionFinal.isRaise) {
+			p.isLastToRaise = true;
+			var playersActive = ReorderPlayers(game, p.id);
+			game.playerIterator = new PlayerIterator(playersActive);
+			//						for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+			//							if (p.id == player.id || p.isLastToRaise ) {
+			var playerTemp = game.playerIterator.Next();
+			//								break;
+			//							}
+			//						}
+		}
 
 		if (betToStay > 0 && p.betInvested <= game.state.betMaxLimit) {
 			p.betInvested += betToStay;
@@ -107,6 +120,44 @@ public class Action : IAction {
 //			p.ToString();
 			p.LogDevInfo(p, false, false);
 		}
+	}
+
+	public PlayerCollection ReorderPlayers(Game game, int id) {
+		if (Settings.isDev) Debug.LogWarning(string.Format("reorder players: #{0}",id));
+
+		var playersActive = new PlayerCollection();
+		for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next())
+			if (p.id == id) {
+				p.isLastToRaise = true; 
+				playersActive[0] = p;
+			} else {
+				p.isLastToRaise = false;
+			}
+		int i = 1;
+		for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+			if (!p.isFolded) {
+				if (p.id > id) {
+					playersActive[i] = p;
+				} 
+				i++;
+			}
+		}
+		i = 1;
+		for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+			if (!p.isFolded) {
+				if (p.id < id) {
+					playersActive[i] = p;
+				}
+				i++;
+			}
+		}
+		if (Settings.isDev) {
+			var iterator = new PlayerIterator(playersActive);
+			for(var p = iterator.First(); !iterator.IsDoneFor; p = iterator.Next()) {
+				Debug.Log(string.Format("#{0} isLastToRaise: {1}",p.id,p.isLastToRaise));
+			}
+		}
+		return playersActive;
 	}
 
 	public string name = "";

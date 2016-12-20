@@ -726,6 +726,7 @@ public class Player {
 
 	public bool isFirstToAct;
 	public bool isLastToAct;
+	public bool isLastToRaise;
 
 	public Bet betInvested; // already invested in current subround
 
