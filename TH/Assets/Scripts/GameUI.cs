@@ -316,6 +316,8 @@ public class GameUI : MonoBehaviour
 	
 	#endregion bet panel
 
+	#region instructions
+
 	public void btnInstructionClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
@@ -330,6 +332,8 @@ public class GameUI : MonoBehaviour
 
 		if (panelBonusTable) panelBonusTable.SetActive (false);
 		if (panelAddCredits) panelAddCredits.SetActive (false);
+		if (panelDifference) panelDifference.SetActive (false);
+
 	}
 	
 	public void btnInstructionCloseClick() {
@@ -337,6 +341,30 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log("btnInstructionCloseClick()");
 		if (panelInstructions) panelInstructions.SetActive (false);
 	}
+
+	public void btnDifferenceClick()
+	{
+		audio.PlayOneShot(soundBtnClicked);
+
+		if (Settings.isDebug) Debug.Log("btnDifferenceClick()");
+
+		if (panelDifference)
+		if (panelDifference.activeSelf)
+			panelDifference.SetActive (false);
+		else
+			panelDifference.SetActive (true);
+
+		if (panelBonusTable) panelBonusTable.SetActive (false);
+		if (panelAddCredits) panelAddCredits.SetActive (false);
+		if (panelInstructions) panelInstructions.SetActive (false);
+	}
+
+	public void btnDifferenceCloseClick() {
+		audio.PlayOneShot(soundBtnClicked);
+		if (Settings.isDebug) Debug.Log("btnDifferenceCloseClick()");
+		if (panelDifference) panelDifference.SetActive (false);
+	}
+	#endregion instructions
 
 	#region add credits
 	
@@ -347,6 +375,7 @@ public class GameUI : MonoBehaviour
 		if (panelAddCredits) {
 			if (panelInstructions) panelInstructions.SetActive (false);
 			if (panelBonusTable) panelBonusTable.SetActive (false);
+			if (panelDifference) panelDifference.SetActive (false);
 
 			if (panelAddCredits.activeSelf)
 				panelAddCredits.SetActive (false);
@@ -416,6 +445,7 @@ public class GameUI : MonoBehaviour
 
 		if (panelInstructions) panelInstructions.SetActive (false);
 		if (panelAddCredits) panelAddCredits.SetActive (false);
+		if (panelDifference) panelDifference.SetActive (false);
 	}
 
 	public void btnBetForBonusTableClick() {
@@ -596,6 +626,10 @@ public class GameUI : MonoBehaviour
 		if (panelInstructions)
 			panelInstructions.SetActive (false);
 
+		panelDifference = GameObject.Find ("PanelDifference");
+		if (panelDifference)
+			panelDifference.SetActive (false);
+		
 
 		panelBonusTable = GameObject.Find ("BonusTableAndInstructions");
 
@@ -1016,7 +1050,7 @@ public class GameUI : MonoBehaviour
 	}
 	
 	public PayTable payTable;
-	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelWin, panelBonus, panelBonusTable;
+	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
