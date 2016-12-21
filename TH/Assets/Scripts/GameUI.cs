@@ -555,6 +555,8 @@ public class GameUI : MonoBehaviour
 			
 		panelWin = GameObject.Find ("PanelWin");
 		lblWinInfo = GameObject.Find ("lblWinInfo").GetComponent<Text>();
+		lblGamePanel = GameObject.Find ("lblGamePanel").GetComponent<Text>();
+
 		if (panelWin)
 			panelWin.SetActive (false);
 		lblWinBonusInfo = GameObject.Find ("lblWinBonusInfo").GetComponent<Text>();
@@ -799,13 +801,52 @@ public class GameUI : MonoBehaviour
 	private void UpdateInterval() {
 //		test ();
 //		return;
+
 		if (game == null) {
 			Debug.LogError ("game is null");
 		} else {
-			if (game.state != null && !game.state.isWaiting) {
-				game.state.SubRound ();
+			if (game.state != null) {
+				if (!game.state.isWaiting)
+					game.state.SubRound ();
+				else
+					lblBlinking();
 			}
 		}
+	}
+
+	private void lblBlinking() {
+		if (lblPanelBet != null)
+		if (lblPanelBet.color == Color.white)
+			lblPanelBet.color = Color.yellow;
+		else
+			lblPanelBet.color = Color.white;
+
+		if (btnStartGame != null)
+		if (btnStartGame.GetComponentInChildren<Text>().color == Color.white)
+			btnStartGame.GetComponentInChildren<Text>().color = Color.yellow;
+		else
+			btnStartGame.GetComponentInChildren<Text>().color = Color.white;
+
+//		// game panel title (available actions)
+//		if (lblGamePanel != null)
+//		if (lblGamePanel.GetComponentInChildren<Text>().color == Color.white)
+//			lblGamePanel.GetComponentInChildren<Text>().color = Color.yellow;
+//		else
+//			lblGamePanel.GetComponentInChildren<Text>().color = Color.white;
+
+
+		if (inputBetField)
+		if (inputBetField.textComponent.color == Color.white)
+			inputBetField.textComponent.color = Color.yellow;
+		else
+			inputBetField.textComponent.color = Color.white;
+
+
+		if (game != null && game.player != null && game.player.lblAction != null && game.player.lblAction.text == Settings.lblWaitAction) 
+		if (game.player.lblAction.color == Color.white)
+			game.player.lblAction.color = Color.yellow;
+		else
+			game.player.lblAction.color = Color.white;
 	}
 
 	private void test() {
@@ -1053,7 +1094,7 @@ public class GameUI : MonoBehaviour
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
-	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
+	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblGamePanel, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;

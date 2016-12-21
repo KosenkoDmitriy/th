@@ -11,6 +11,7 @@ static class Settings
 	public static int avatarWidth = 150;
 	public static string avatarDefault = "avatars/avatar0";//krest";
 
+	public static string lblWaitAction = "pls select your action >>";
 	public static string icWin = "winner_start";
 	public static string icDealer = "ic_dealer_old";
 	public static double betRepeat = 0;

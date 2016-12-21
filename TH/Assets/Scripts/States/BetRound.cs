@@ -147,7 +147,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 					return;
 				}
 				game.state.isWaiting = true;
-				player.lblAction.text = "pls select YOUr action >>";
+				player.lblAction.text = Settings.lblWaitAction;
 //				player.lblCurBet.text = "";
 //				player.isChipHidden = true;
 
