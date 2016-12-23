@@ -80,7 +80,14 @@ public class LoginForm : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("e", email);
-        form.AddField("p", password);
+		form.AddField("p", password);
+		#if UNITY_ANDROID
+		form.AddField("t", "android");
+		#elif UNITY_IOS
+		form.AddField("t", "ios");
+		#elif UNITY_WEBGL || UNITY_WEBPLAYER
+		form.AddField("t", "web");
+		#endif
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www));
     }
