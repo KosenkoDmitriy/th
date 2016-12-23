@@ -150,12 +150,6 @@ public class GameUI : MonoBehaviour
 		game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetRepeat, Settings.betRepeat.f());
 	}
 
-	public void btnRepeatBetClick() {
-		var bet = new Bet(0);
-		bet.inCredits = Settings.betRepeat;
-		DoFinalActionByCurrentBet(bet);
-	}
-
 	public void btnHelpClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
@@ -190,6 +184,12 @@ public class GameUI : MonoBehaviour
 
 		DoFinalActionByCurrentBet(game.betAmount);
 	}
+		
+	public void btnRepeatBetClick() {
+		var bet = new Bet(0);
+		bet.inCredits = Settings.betRepeat;
+		DoFinalActionByCurrentBet(bet);
+	}
 
 	public void DoFinalActionByCurrentBet(Bet bet) {
 		// from recommend to optimal
@@ -199,6 +199,7 @@ public class GameUI : MonoBehaviour
 		if (game.isGameRunning) {
 			
 			var betCall = game.state.betMax - game.player.betInvested;
+			betTotalSubRoundAfterA += betCall.inCredits;
 			if (betCall < 0) { // raised already
 				betCall.inCredits = 0; // should be positive
 			}
@@ -531,7 +532,7 @@ public class GameUI : MonoBehaviour
 		//Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
 		//Application.LoadLevel(Settings.levelGame);
 		#endif
-
+//		Facebook.Unity.FB.Mobile.AppInvite();
 		if (Settings.isDebug)
 			Debug.Log ("Start()");
 
