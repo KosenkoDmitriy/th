@@ -557,6 +557,7 @@ public class GameUI : MonoBehaviour
 		lblWinInfo = GameObject.Find ("lblWinInfo").GetComponent<Text>();
 		lblGamePanel = GameObject.Find ("lblGamePanel").GetComponent<Text>();
 
+		btnWinPanelOk = GameObject.Find("btnWinPanelClose");
 		if (panelWin)
 			panelWin.SetActive (false);
 		lblWinBonusInfo = GameObject.Find ("lblWinBonusInfo").GetComponent<Text>();
@@ -1056,6 +1057,10 @@ public class GameUI : MonoBehaviour
 			string msg = "error getting balance: " + www.error;
 			if (Settings.isDebug) Debug.Log(msg);
 		}
+		if (game.ui.btnWinPanelOk) {
+			game.ui.btnWinPanelOk.GetComponent<Button>().interactable = true;
+			game.ui.btnWinPanelOk.GetComponentInChildren<Text>().text = "Start New Hand";
+		}
 	}
 	
 	public void urlBuy()
@@ -1093,7 +1098,7 @@ public class GameUI : MonoBehaviour
 	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
-	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn;
+	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn, btnWinPanelOk;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblGamePanel, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
