@@ -138,8 +138,8 @@ public class Action : IAction {
 			if (!p.isFolded) {
 				if (p.id > id) {
 					playersActive[i] = p;
+					i++;
 				} 
-				i++;
 			}
 		}
 		i = 1;
@@ -147,8 +147,8 @@ public class Action : IAction {
 			if (!p.isFolded) {
 				if (p.id < id) {
 					playersActive[i] = p;
+					i++;
 				}
-				i++;
 			}
 		}
 		if (Settings.isDev) {
