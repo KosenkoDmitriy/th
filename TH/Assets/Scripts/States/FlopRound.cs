@@ -28,7 +28,7 @@ public class FlopRound : BetRound {
 
 	public override void BetSubRounds ()
 	{
-		if (Settings.isDev) game.player.Log(false, true, string.Format("Flop BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
+		if (Settings.isLog) game.player.Log(false, true, string.Format("Flop BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 		base.BetSubRounds ();
 	}
 }

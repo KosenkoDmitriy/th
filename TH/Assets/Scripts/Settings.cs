@@ -5,6 +5,7 @@ static class Settings
 	public static bool isDev = false;	// advanced debug info
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
+	public static bool isLog = false;	// reorder players
 
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;
@@ -91,6 +92,8 @@ static class Settings
 //	public static readonly string http = "http://";
 //	public static readonly string host = http + "localhost:3001";
 //
+//	public static readonly string http = "http://";
+//	public static readonly string host = http + "localhost:3001";
 	public static readonly string http = "https://";
 	public static readonly string host = http + "yourplaceforfun.com";
 

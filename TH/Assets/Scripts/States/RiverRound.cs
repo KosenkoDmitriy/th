@@ -30,7 +30,7 @@ public class RiverRound : BetRound {
 
 	public override void BetSubRounds ()
 	{
-		if (Settings.isDev) game.player.Log(false, true, string.Format("River BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
+		if (Settings.isLog) game.player.Log(false, true, string.Format("River BetSubRounds() {0}/{1}", subRoundCount, subRoundMaxSize));
 		base.BetSubRounds ();
 	}
 }
