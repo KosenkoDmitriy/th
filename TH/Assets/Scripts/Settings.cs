@@ -27,7 +27,7 @@ static class Settings
 	public static readonly string btnBetBonusRepeat = "REPEAT BONUS BET OF";
 	public static readonly string btnBetRepeat = "REPEAT BET OF";
 
-	public static int levelGame = 2;
+	public static int levelGame = 1;
 	public static int levelMainMenu = 0;
 	
 	public static readonly int playerSize = 6;

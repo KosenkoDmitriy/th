@@ -598,6 +598,10 @@ public class GameUI : MonoBehaviour
 		btnNewGame = GameObject.Find ("btnNewGame");
 		btnAllIn = GameObject.Find ("btnAllIn");
 
+		btnExit = GameObject.Find ("btnExit");
+		#if UNITY_WEBGL
+		btnExit.SetActive (false);
+		#endif
 		var lblPotObj = GameObject.Find ("lblPot");
 		var lblRaiseObj = GameObject.Find ("lblRaise");
 		var lblBetObj = GameObject.Find ("lblBet");
@@ -1098,7 +1102,7 @@ public class GameUI : MonoBehaviour
 	
 	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
-	public GameObject btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
+	public GameObject btnExit, btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn, btnWinPanelOk;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblGamePanel, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
 	public AudioSource audio;
