@@ -158,7 +158,7 @@ public class InitGame : BetRound {
 		game.playerIterator = new PlayerIterator(game.playerCollection);
 		isWaiting = false;
 
-		if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(true);
+		if (game.ui.panelInitBet) game.ui.showPanelBet();//panelInitBet.SetActive(true);
 
 		game.ui.btnRepeatBetPrepare();
 
@@ -169,9 +169,9 @@ public class InitGame : BetRound {
 
 		if (game.players [0].isReal) {
 			if (game.ui.panelGame) game.ui.panelGame.SetActive(false);
-			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(true);
+			if (game.ui.panelInitBet) game.ui.showPanelBet();//panelInitBet.SetActive(true);
 		} else {
-			if (game.ui.panelGame) game.ui.panelGame.SetActive(true);
+			if (game.ui.panelGame) game.ui.showPanelGame();//panelGame.SetActive(true);
 			if (game.ui.panelInitBet) game.ui.panelInitBet.SetActive(false);
 		}
 

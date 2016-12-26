@@ -146,6 +146,13 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 				if (player.betInvested >= betMaxLimit) { // skip action
 					return;
 				}
+
+				// display help popup
+				if (game.ui.panelGame && game.ui.panelGame.activeSelf) {
+					if (Settings.isShowGamePrompt) if (game.ui.panelHelp) game.ui.panelHelp.SetActive (true);
+				}
+
+
 				game.state.isWaiting = true;
 				player.lblAction.text = Settings.lblWaitAction;
 //				player.lblCurBet.text = "";

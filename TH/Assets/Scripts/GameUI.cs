@@ -92,6 +92,12 @@ public class GameUI : MonoBehaviour
 		Settings.betCurrent.inCredits = 0;
 		game.betAmount.inCredits = 0;
 		HideDynamicPanels ();
+
+		// start display help popup
+		if (Settings.isShowGamePrompt) if (panelHelp) panelHelp.SetActive (true);
+		if (IsSkipPrompt) Settings.isShowGamePrompt = !IsSkipPrompt.isOn;
+		// end display help popup
+
 		if (panelInitBet) {
 			panelInitBet.SetActive (true);
 
@@ -124,7 +130,7 @@ public class GameUI : MonoBehaviour
 		game.ui.LoseBalance(game.player.balanceInCredits.ToString());
 		
 		game.ui.HideDynamicPanels();
-		game.ui.panelGame.SetActive(true);
+		game.ui.showPanelGame();//panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = false; 	//.SetActive(false);
 		game.ui.btnCheck.GetComponent<Button>().interactable = false;	//.SetActive(false);
 		game.ui.btnRaise.GetComponent<Button>().interactable = false;	//.SetActive(false);
@@ -150,17 +156,35 @@ public class GameUI : MonoBehaviour
 		game.ui.btnRepeatBet.GetComponentInChildren<Text>().text = string.Format("{0} {1}", Settings.btnBetRepeat, Settings.betRepeat.f());
 	}
 
+	public void showPanelGame() {
+		if (panelGame) panelGame.SetActive(true);
+//		if (Settings.isShowGamePrompt) if (panelHelp) panelHelp.SetActive (true);
+//
+//		if (IsSkipPrompt)
+//			Settings.isShowGamePrompt = !IsSkipPrompt.isOn;
+	}
+
+	public void showPanelBet() {
+		if (panelInitBet) panelInitBet.SetActive(true);
+//		if (Settings.isShowGamePrompt) if (panelHelp) panelHelp.SetActive (true);
+//
+//		if (IsSkipPrompt)
+//			Settings.isShowGamePrompt = !IsSkipPrompt.isOn;
+	}
+
 	public void btnHelpClick()
 	{
 		audio.PlayOneShot(soundBtnClicked);
-		
+
 		if (Settings.isDebug) Debug.Log("btnHelpClick()");
 		if (panelHelp) panelHelp.SetActive (true);
 	}
 	
 	public void btnHelpCloseClick() {
 		audio.PlayOneShot(soundBtnClicked);
-		
+
+		if (game.ui.IsSkipPrompt) Settings.isShowGamePrompt = !game.ui.IsSkipPrompt.isOn;
+
 		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
 		if (panelHelp) panelHelp.SetActive (false);
 	}
@@ -232,7 +256,7 @@ public class GameUI : MonoBehaviour
 		if (btnStartGame) btnStartGame.GetComponentInChildren<Text>().text = "BET";
 		
 		if (panelInitBet) panelInitBet.SetActive(false);
-		if (panelGame) panelGame.SetActive(true);
+		if (panelGame) showPanelGame();//panelGame.SetActive(true);
 	}
 
 	public void btnMaxBetClick()
@@ -547,6 +571,7 @@ public class GameUI : MonoBehaviour
 			this.GetBalance ();
 
 		IsAutoBonusBet = GameObject.Find("AutoBonusToggle").GetComponent<Toggle>();
+		IsSkipPrompt = GameObject.Find("AutoSkipPromptToggle").GetComponent<Toggle>();
 
 		panelAddCredits = GameObject.Find ("PanelAddCredits");
 		if (panelAddCredits) {
@@ -558,6 +583,8 @@ public class GameUI : MonoBehaviour
 			
 		panelGame = GameObject.Find ("PanelGame");
 		panelInitBet = GameObject.Find ("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
+		var btn = GameObject.Find ("btnMinBet");
+		if (btn) btnMinBet = btn.GetComponent<Button>();
 		//panelBet = GameObject.Find("PanelBet");
 		panelSurrender = GameObject.Find ("PanelSurrender");
 			
@@ -766,7 +793,7 @@ public class GameUI : MonoBehaviour
 			
 		} else {
 			WillHide = true;
-			game.ui.panelGame.SetActive(true);
+			game.ui.showPanelGame();//panelGame.SetActive(true);
 		}
 
 		if (isDisable) {
@@ -821,8 +848,10 @@ public class GameUI : MonoBehaviour
 			if (game.state != null) {
 				if (!game.state.isWaiting)
 					game.state.SubRound ();
-				else
+				else {
 					lblBlinking();
+
+				}
 			}
 		}
 	}
@@ -840,6 +869,11 @@ public class GameUI : MonoBehaviour
 		else
 			btnStartGame.GetComponentInChildren<Text>().color = Color.white;
 
+		if (btnMinBet)
+		if (btnMinBet.GetComponentInChildren<Text>().color == Color.white)
+			btnMinBet.GetComponentInChildren<Text>().color = Color.yellow;
+		else
+			btnMinBet.GetComponentInChildren<Text>().color = Color.white;
 //		// game panel title (available actions)
 //		if (lblGamePanel != null)
 //		if (lblGamePanel.GetComponentInChildren<Text>().color == Color.white)
@@ -1107,7 +1141,8 @@ public class GameUI : MonoBehaviour
 	public void DebugLog(string message) {
 		if (Settings.isDebug) Debug.Log(message);
 	}
-	
+
+	public Button btnMinBet;
 	public PayTable payTable;
 	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnExit, btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
@@ -1116,7 +1151,7 @@ public class GameUI : MonoBehaviour
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
-	public Toggle IsAutoBonusBet;
+	public Toggle IsAutoBonusBet, IsSkipPrompt;
 	public Dropdown betBonusDropdown;
 	public GameObject btnBonusBetSet;
 	public GameObject avatar;

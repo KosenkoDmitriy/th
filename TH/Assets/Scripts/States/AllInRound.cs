@@ -174,7 +174,7 @@ public class AllInRound : BetRound {
 		game.ui.panelWin.SetActive (true);
 //		game.ui.lblWinInfo.text = winInfo;
 		
-		game.ui.panelGame.SetActive(true);
+		game.ui.showPanelGame();//panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.btnRaise.GetComponent<Button>().interactable = true;	//.SetActive(false);
@@ -258,7 +258,7 @@ public class AllInRound : BetRound {
 		game.ui.panelWin.SetActive (true);
 		game.ui.lblWinInfo.text = winInfo;
 
-		game.ui.panelGame.SetActive(true);
+		game.ui.showPanelGame();//panelGame.SetActive(true);
 		game.ui.btnCall.GetComponent<Button>().interactable = true; 	//.SetActive(false);
 		game.ui.btnCheck.GetComponent<Button>().interactable = true;	//.SetActive(false);
 		game.ui.btnRaise.GetComponent<Button>().interactable = true;	//.SetActive(false);

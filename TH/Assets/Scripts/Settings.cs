@@ -6,6 +6,7 @@ static class Settings
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
 	public static bool isLog = false;	// reorder players
+	public static bool isShowGamePrompt = true;
 
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;
