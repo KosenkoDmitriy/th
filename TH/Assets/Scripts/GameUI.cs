@@ -599,7 +599,7 @@ public class GameUI : MonoBehaviour
 		btnAllIn = GameObject.Find ("btnAllIn");
 
 		btnExit = GameObject.Find ("btnExit");
-		#if UNITY_WEBGL
+		#if UNITY_WEBGL && !UNITY_EDITOR
 		btnExit.SetActive (false);
 		#endif
 		var lblPotObj = GameObject.Find ("lblPot");
@@ -1043,6 +1043,7 @@ public class GameUI : MonoBehaviour
 
 			Settings.playerCredits = credits;
 //			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next())
+			if (btnWinPanelOk && btnWinPanelOk.GetComponent<Button>().IsInteractable())
 			foreach (var player in game.players)
 			{
 				player.balanceInCredits = credits;
