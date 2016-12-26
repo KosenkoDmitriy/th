@@ -368,7 +368,14 @@ public class GameUI : MonoBehaviour
 	#endregion instructions
 
 	#region add credits
-	
+	private void btnExitClickListener()
+	{
+		#if UNITY_WEBGL && !UNITY_EDITOR
+			Settings.OpenUrlAsExternalCall(Settings.host);
+		#else
+			Application.LoadLevel(Settings.levelMainMenu);
+		#endif
+	}
 	private void btnCreditAddClickListener()
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
@@ -599,9 +606,9 @@ public class GameUI : MonoBehaviour
 		btnAllIn = GameObject.Find ("btnAllIn");
 
 		btnExit = GameObject.Find ("btnExit");
-		#if UNITY_WEBGL && !UNITY_EDITOR
-		btnExit.SetActive (false);
-		#endif
+		if (btnExit)
+			btnExit.GetComponent<Button> ().onClick.AddListener (() => btnExitClickListener ());
+		
 		var lblPotObj = GameObject.Find ("lblPot");
 		var lblRaiseObj = GameObject.Find ("lblRaise");
 		var lblBetObj = GameObject.Find ("lblBet");
