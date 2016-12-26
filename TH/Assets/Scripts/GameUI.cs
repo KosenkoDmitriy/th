@@ -95,7 +95,7 @@ public class GameUI : MonoBehaviour
 
 		// start display help popup
 		if (Settings.isShowGamePrompt) if (panelHelp) panelHelp.SetActive (true);
-		if (IsSkipPrompt) Settings.isShowGamePrompt = !IsSkipPrompt.isOn;
+		if (IsSkipGamePrompt) Settings.isShowGamePrompt = !IsSkipGamePrompt.isOn;
 		// end display help popup
 
 		if (panelInitBet) {
@@ -183,7 +183,7 @@ public class GameUI : MonoBehaviour
 	public void btnHelpCloseClick() {
 		audio.PlayOneShot(soundBtnClicked);
 
-		if (game.ui.IsSkipPrompt) Settings.isShowGamePrompt = !game.ui.IsSkipPrompt.isOn;
+		if (game.ui.IsSkipGamePrompt) Settings.isShowGamePrompt = !game.ui.IsSkipGamePrompt.isOn;
 
 		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
 		if (panelHelp) panelHelp.SetActive (false);
@@ -571,7 +571,7 @@ public class GameUI : MonoBehaviour
 			this.GetBalance ();
 
 		IsAutoBonusBet = GameObject.Find("AutoBonusToggle").GetComponent<Toggle>();
-		IsSkipPrompt = GameObject.Find("AutoSkipPromptToggle").GetComponent<Toggle>();
+		IsSkipGamePrompt = GameObject.Find("AutoSkipPromptToggle").GetComponent<Toggle>();
 
 		panelAddCredits = GameObject.Find ("PanelAddCredits");
 		if (panelAddCredits) {
@@ -1151,7 +1151,7 @@ public class GameUI : MonoBehaviour
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
-	public Toggle IsAutoBonusBet, IsSkipPrompt;
+	public Toggle IsAutoBonusBet, IsSkipGamePrompt;
 	public Dropdown betBonusDropdown;
 	public GameObject btnBonusBetSet;
 	public GameObject avatar;
