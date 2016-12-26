@@ -9,6 +9,16 @@ public class FlopRound : BetRound {
 
 		// flop bet rounds
 		items = game.source.GetFlops ();
+
+		// disable bonus bet feature
+		if (game.ui.btnBonusBetSet) game.ui.btnBonusBetSet.GetComponent<UnityEngine.UI.Button>().interactable = false;
+		if (game.ui.betBonusDropdown) game.ui.betBonusDropdown.GetComponent<UnityEngine.UI.Dropdown>().interactable = false;
+
+		if (game.ui.btnBetBonus) game.ui.btnBetBonus.GetComponent<UnityEngine.UI.Button> ().interactable = false; // enable "bet bonus" button
+		if (game.ui.btnBetBonusRepeat) game.ui.btnBetBonusRepeat.GetComponent<UnityEngine.UI.Button>().interactable = false;
+		if (!Settings.btnBetBonusIsDone) game.ui.btnBonusBetRepeatClick(); // automatically repeating a bonus bet each new hand
+		// disable bonus bet feature
+
 		UpdatePattern ();
 	}
 
