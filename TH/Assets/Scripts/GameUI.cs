@@ -94,8 +94,8 @@ public class GameUI : MonoBehaviour
 		HideDynamicPanels ();
 
 		// start display help popup
-		if (Settings.isShowGamePrompt) if (panelHelp) panelHelp.SetActive (true);
-		if (IsSkipGamePrompt) Settings.isShowGamePrompt = !IsSkipGamePrompt.isOn;
+		if (Settings.isShowBetHelp) if (panelBetHelp) panelBetHelp.SetActive (true);
+//		if (IsDisplayGamePanelHelpCheckbox) Settings.isShowBetHelp = !IsDisplayGamePanelHelpCheckbox.isOn;
 		// end display help popup
 
 		if (panelInitBet) {
@@ -183,10 +183,19 @@ public class GameUI : MonoBehaviour
 	public void btnHelpCloseClick() {
 		audio.PlayOneShot(soundBtnClicked);
 
-		if (game.ui.IsSkipGamePrompt) Settings.isShowGamePrompt = !game.ui.IsSkipGamePrompt.isOn;
+		if (game.ui.IsDisplayGamePanelHelpCheckbox) Settings.isShowGameHelp = !game.ui.IsDisplayGamePanelHelpCheckbox.isOn;
 
 		if (Settings.isDebug) Debug.Log("btnHelpCloseClick()");
 		if (panelHelp) panelHelp.SetActive (false);
+	}
+
+	public void btnBetHelpCloseClick() {
+		audio.PlayOneShot(soundBtnClicked);
+
+		if (game.ui.isDisplayBetHelpCheckbox) Settings.isShowBetHelp = !game.ui.isDisplayBetHelpCheckbox.isOn;
+
+		if (Settings.isDebug) Debug.Log("btnBetHelpCloseClick()");
+		if (panelHelp) panelBetHelp.SetActive (false);
 	}
 	#endregion game panel
 
@@ -571,7 +580,7 @@ public class GameUI : MonoBehaviour
 			this.GetBalance ();
 
 		IsAutoBonusBet = GameObject.Find("AutoBonusToggle").GetComponent<Toggle>();
-		IsSkipGamePrompt = GameObject.Find("AutoSkipPromptToggle").GetComponent<Toggle>();
+		IsDisplayGamePanelHelpCheckbox = GameObject.Find("AutoSkipPromptToggle").GetComponent<Toggle>();
 
 		panelAddCredits = GameObject.Find ("PanelAddCredits");
 		if (panelAddCredits) {
@@ -591,6 +600,9 @@ public class GameUI : MonoBehaviour
 		panelWin = GameObject.Find ("PanelWin");
 		lblWinInfo = GameObject.Find ("lblWinInfo").GetComponent<Text>();
 		lblGamePanel = GameObject.Find ("lblGamePanel").GetComponent<Text>();
+
+		panelBetHelp = GameObject.Find("PanelBetHelp");
+		isDisplayBetHelpCheckbox = GameObject.Find("isDisplayCheckbox").GetComponent<Toggle>();
 
 		btnWinPanelOk = GameObject.Find("btnWinPanelClose");
 		if (panelWin)
@@ -1144,14 +1156,14 @@ public class GameUI : MonoBehaviour
 
 	public Button btnMinBet;
 	public PayTable payTable;
-	public GameObject panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
+	public GameObject panelBetHelp, panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnExit, btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn, btnWinPanelOk;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblGamePanel, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
 	public AudioSource audio;
 	public AudioClip soundBtnClicked, soundDeal, soundRaise, soundVideoWin, soundWin, soundFold;
 	public InputField inputBetField;
-	public Toggle IsAutoBonusBet, IsSkipGamePrompt;
+	public Toggle IsAutoBonusBet, IsDisplayGamePanelHelpCheckbox, isDisplayBetHelpCheckbox;
 	public Dropdown betBonusDropdown;
 	public GameObject btnBonusBetSet;
 	public GameObject avatar;
