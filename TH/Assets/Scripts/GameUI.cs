@@ -458,6 +458,8 @@ public class GameUI : MonoBehaviour
 		if (floatValue > 0) {
 			floatValue /= Settings.betCreditsMultiplier;
 			Settings.betBonus = floatValue;
+		} else if (floatValue <= 0) {
+			Settings.betBonus = 0;
 		}
 
 		if (Settings.betBonus > 0) {
