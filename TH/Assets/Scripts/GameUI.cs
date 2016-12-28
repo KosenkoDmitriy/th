@@ -15,6 +15,14 @@ public class GameUI : MonoBehaviour
 
 	}
 
+	public void btnBetAmountAnteClick() { // change bet amount
+		Settings.isBtnAnteAmountClicked = true;
+		if (game.player.position == 1)
+			btnWinPanelCloseClick();
+		else
+			btnRaiseClick();
+	}
+
 	#region clear all deprecated
 	public void ClearAll() {
 		if (Settings.isDebug) DebugLog("ClearAll()");
@@ -55,6 +63,11 @@ public class GameUI : MonoBehaviour
 	#region win panel
 	public void btnWinPanelCloseClick()
 	{
+		if (!Settings.isBtnAnteAmountClicked) {
+			Settings.betAmountOfAnteRound = 0;
+		}
+		Settings.isBtnAnteAmountClicked = false;
+
 		ReInitGame ();
 
 		audio.PlayOneShot(soundBtnClicked);
@@ -216,6 +229,11 @@ public class GameUI : MonoBehaviour
 		Settings.betCurrent.inCredits = bet;
 
 		DoFinalActionByCurrentBet(game.betAmount);
+
+		if (Settings.isBtnAnteAmountClicked) {
+			Settings.betAmountOfAnteRound = bet;
+			btnWinPanelCloseClick();
+		}
 	}
 		
 	public void btnRepeatBetClick() {

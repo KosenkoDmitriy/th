@@ -78,9 +78,13 @@ public class AnteRound : BetRound {
 				} else {
 					game.ui.DisableButtons(true);
 
-					if (player.position == 0 && !player.isReal) {
+					if (player.position == 0 && !player.isReal) { // first to act player
 						game.isGameRunning = true;
 
+						if (Settings.betAmountOfAnteRound > 0) {
+							betMax.inCredits = Settings.betAmountOfAnteRound;
+							Settings.betAmountOfAnteRound = 0;
+						} else {
 //						betMax.inBetMath = (double)new Random().Next(1, (int)(betMaxLimit.inBetMath + 1));
 						List<Bet> betList = new List<Bet>();
 						for(int i = 0; i < betMaxLimit.inBetMath; i++) {
@@ -93,19 +97,22 @@ public class AnteRound : BetRound {
 						}
 						System.Random rand = new System.Random();
 						betMax.inBetMath = (double)rand.Next(1, betList.Count + 1);
+						}
 
 						if (player.balanceInCredits - betMax.inCredits >= 0) {
 							player.actionFinal = new Raise(player, new Bet(0), betMax);
 						}
-					} else {
+					} else { // other virtual players
 						if (player.balanceInCredits - betMax.inCredits >= 0) {
 							player.actionFinal = new Call(player, betMax, new Bet(0));
 						}
 					}
 
-					if (player.balanceInCredits <= 0) {
+					if (player.balanceInCredits == 0) {
 						player.actionFinal = new Check(player, new Bet(0), new Bet(0));
-					}
+					} else if (player.balanceInCredits < 0) {
+						player.actionFinal = new Fold(player, new Bet(0), new Bet(0));
+					} 
 					if (player.actionFinal != null) player.actionFinal.Do (game, player);
 
 				}

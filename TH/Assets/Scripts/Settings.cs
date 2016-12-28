@@ -5,8 +5,13 @@ static class Settings
 	public static bool isDev = false;	// advanced debug info
 	public static bool isDebug = false;	// logs, display cards, etc
 	public static bool isTest = false;	// test hands
-	public static bool isLog = true;	// reorder players
-	public static bool isShowGamePrompt = true;
+	public static bool isLog = false;	// reorder players
+
+	public static bool isShowGameHelp = true;
+	public static bool isShowBetHelp = true;
+
+	public static double betAmountOfAnteRound = 0;
+	public static bool isBtnAnteAmountClicked = false;
 
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;
