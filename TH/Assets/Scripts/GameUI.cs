@@ -615,6 +615,7 @@ public class GameUI : MonoBehaviour
 			btnCreditOk = panelAddCredits.transform.FindChild ("btnOk").gameObject;
 			if (btnCreditOk)
 				btnCreditOk.GetComponent<Button> ().onClick.AddListener (() => btnCreditOkClickListener ());
+			panelAddCredits.SetActive(false);
 		}
 
 			
