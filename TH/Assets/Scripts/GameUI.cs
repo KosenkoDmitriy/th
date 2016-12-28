@@ -228,17 +228,25 @@ public class GameUI : MonoBehaviour
 
 		Settings.betCurrent.inCredits = bet;
 
-		DoFinalActionByCurrentBet(game.betAmount);
-
 		if (Settings.isBtnAnteAmountClicked) {
 			Settings.betAmountOfAnteRound = bet;
 			btnWinPanelCloseClick();
+			return;
 		}
+
+		DoFinalActionByCurrentBet(game.betAmount);
 	}
 		
 	public void btnRepeatBetClick() {
 		var bet = new Bet(0);
 		bet.inCredits = Settings.betRepeat;
+
+		if (Settings.isBtnAnteAmountClicked) {
+			Settings.betAmountOfAnteRound = Settings.betRepeat;
+			btnWinPanelCloseClick();
+			return;
+		}
+
 		DoFinalActionByCurrentBet(bet);
 	}
 
