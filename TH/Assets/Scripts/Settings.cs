@@ -10,6 +10,8 @@ static class Settings
 	public static bool isShowGameHelp = true;
 	public static bool isShowBetHelp = true;
 
+	public static double freeCredits = 0;
+
 	public static double betAmountOfAnteRound = 0;
 	public static bool isBtnAnteAmountClicked = false;
 

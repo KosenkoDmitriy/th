@@ -157,6 +157,7 @@
      <Compile Include="Assets\Scripts\PlayerCollection.cs" />
      <Compile Include="Assets\Scripts\Settings.cs" />
      <Compile Include="Assets\Scripts\SignUpCallback.cs" />
+     <Compile Include="Assets\Scripts\SpinWheel.cs" />
      <Compile Include="Assets\Scripts\States\AllInRound.cs" />
      <Compile Include="Assets\Scripts\States\AnteRound.cs" />
      <Compile Include="Assets\Scripts\States\BetRound.cs" />

@@ -588,6 +588,16 @@ public class GameUI : MonoBehaviour
 	}
 	#endregion bonus pane/table
 
+	public void btnFortuneWheelClickListener() {
+		if (panelFW) {
+			game.player.balanceInCredits += Settings.freeCredits;
+			game.player.lblCredits.text = game.player.balanceInCredits.f();
+			Settings.freeCredits = 0;
+
+			if (panelFW.activeInHierarchy) panelFW.SetActive(false); else panelFW.SetActive(true);
+		}
+	}
+
 	public void Start ()
 	{
 		#if UNITY_WEBGL && !UNITY_EDITOR
@@ -618,11 +628,19 @@ public class GameUI : MonoBehaviour
 			panelAddCredits.SetActive(false);
 		}
 
-			
+
 		panelGame = GameObject.Find ("PanelGame");
 		panelInitBet = GameObject.Find ("PanelInitBet"); //GameObject.FindGameObjectWithTag("PanelInitBet");
 		var btn = GameObject.Find ("btnMinBet");
 		if (btn) btnMinBet = btn.GetComponent<Button>();
+
+		panelFW = GameObject.Find("PanelFW");
+		if (panelFW) panelFW.SetActive(false);
+		btn = GameObject.Find("btnFortuneWheel");
+		if (btn) btnFortuneWheel = btn.GetComponent<Button>();
+		if (btnFortuneWheel) 
+			btnFortuneWheel.onClick.AddListener (() => btnFortuneWheelClickListener ());
+
 		//panelBet = GameObject.Find("PanelBet");
 		panelSurrender = GameObject.Find ("PanelSurrender");
 			
@@ -1183,9 +1201,9 @@ public class GameUI : MonoBehaviour
 		if (Settings.isDebug) Debug.Log(message);
 	}
 
-	public Button btnMinBet;
+	public Button btnMinBet, btnFortuneWheel;
 	public PayTable payTable;
-	public GameObject panelBetHelp, panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
+	public GameObject panelFW, panelBetHelp, panelInitBet, panelGame, panelSurrender, panelAddCredits, panelHelp, panelInstructions, panelDifference, panelWin, panelBonus, panelBonusTable;
 	public GameObject btnExit, btnCheck, btnCall, btnRaise, btnFold, btnSurrender, btnStartGame, btnBetBonus, btnCreditOk, 
 	btnRepeatBet, btnBetBonusRepeat, btnCredit, btnAutoPlay, btnNewGame, btnAllIn, btnWinPanelOk;
 	public Text lblPot, lblRaise, lblBet, lblBetBonus, lblCall, lblPanelBet, lblGamePanel, lblPanelBetText, lblWinInfo, lblWinBonusInfo;
