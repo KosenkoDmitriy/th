@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class SpinWheel : MonoBehaviour
 {
+	public AudioSource audio;
+	public AudioClip soundBtnClicked;
+
 	public List<int> prize;
 	public List<AnimationCurve> animationCurves;
 	
@@ -18,7 +21,11 @@ public class SpinWheel : MonoBehaviour
 		//text = GameObject.Find("FwScrollView").GetComponentInChildren<Text>();
 		text = GameObject.Find("FwText").GetComponent<Text>();
 		spinning = false;
-		anglePerItem = 360/prize.Count;		
+		anglePerItem = 360/prize.Count;
+
+		audio = gameObject.AddComponent<AudioSource> ();
+		audio.volume = 0.1f;
+		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/VideoWin");
 	}
 	
 	void  Update ()
@@ -29,6 +36,8 @@ public class SpinWheel : MonoBehaviour
 	}
 
 	public void SpinWheelClick() {
+		text.text = string.Format("Fortune Wheel");
+
 		randomTime = Random.Range (1, 4);
 		itemNumber = Random.Range (0, prize.Count);
 		float maxAngle = 360 * randomTime + (itemNumber * anglePerItem);
@@ -79,6 +88,8 @@ public class SpinWheel : MonoBehaviour
 	IEnumerator WaitForRequest(WWW www)
 	{
 		yield return www;
+		audio.PlayOneShot(soundBtnClicked);
+
 		// check for errors
 		if (www.error == null)
 		{
