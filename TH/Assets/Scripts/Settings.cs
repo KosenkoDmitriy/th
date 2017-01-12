@@ -4,13 +4,16 @@ static class Settings
 {
 	public static bool isDev = false;	// advanced debug info
 	public static bool isDebug = false;	// logs, display cards, etc
-	public static bool isTest = true;	// test hands
+	public static bool isTest = false;	// test hands
 	public static bool isLog = false;	// reorder players
 
 	public static bool isShowGameHelp = true;
 	public static bool isShowBetHelp = true;
 
 	public static double freeCredits = 0;
+
+	public static readonly float audioVolume = 0.2f;
+	public static readonly string clickSound = "Sounds/click4";//cardFan1"; //pressed";
 
 	public static double betAmountOfAnteRound = 0;
 	public static bool isBtnAnteAmountClicked = false;

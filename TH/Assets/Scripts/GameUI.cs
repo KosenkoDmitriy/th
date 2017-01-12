@@ -238,6 +238,8 @@ public class GameUI : MonoBehaviour
 	}
 		
 	public void btnRepeatBetClick() {
+		audio.PlayOneShot(soundBtnClicked);
+
 		var bet = new Bet(0);
 		bet.inCredits = Settings.betRepeat;
 
@@ -429,15 +431,20 @@ public class GameUI : MonoBehaviour
 	#region add credits
 	private void btnExitClickListener()
 	{
+		audio.PlayOneShot(soundBtnClicked);
+
 		#if UNITY_WEBGL && !UNITY_EDITOR
 			Settings.OpenUrlAsExternalCall(Settings.host);
 		#else
 			Application.LoadLevel(Settings.levelMainMenu);
 		#endif
 	}
+
 	private void btnCreditAddClickListener()
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditAddClickListener()");
+		audio.PlayOneShot(soundBtnClicked);
+
 		//if (panelAddCredits) panelAddCredits.SetActive(true);
 		if (panelAddCredits) {
 			if (panelInstructions) panelInstructions.SetActive (false);
@@ -469,6 +476,9 @@ public class GameUI : MonoBehaviour
 	private void btnCreditOkClickListener()
 	{
 		if (Settings.isDebug) Debug.Log("btnCreditOkClickListener()");
+
+		audio.PlayOneShot(soundBtnClicked);
+
 		if (panelAddCredits) panelAddCredits.SetActive(false);
 
 		updateUserCredits();
@@ -477,6 +487,7 @@ public class GameUI : MonoBehaviour
 
 	#region bonus pane/table
 	public void btnBonusBetSetClick() {
+		audio.PlayOneShot(soundBtnClicked);
 
 		string textValue = betBonusDropdown.captionText.text;
 		double floatValue = 0;
@@ -509,6 +520,7 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void btnOpenCloseBonusTableClick() {
+		audio.PlayOneShot(soundBtnClicked);
 		if (panelBonusTable.activeInHierarchy) panelBonusTable.SetActive(false); else panelBonusTable.SetActive(true);
 		if (panelBonus) panelBonus.SetActive(false);
 
@@ -518,6 +530,8 @@ public class GameUI : MonoBehaviour
 	}
 
 	public void btnBetForBonusTableClick() {
+		audio.PlayOneShot(soundBtnClicked);
+
 		if (Settings.isDebug) Debug.Log("btnBetForBonusTableClick()");
 		if (panelBonus) panelBonus.SetActive (true);
 	}
@@ -587,9 +601,11 @@ public class GameUI : MonoBehaviour
 		if (panelBonus) panelBonus.GetComponentInChildren<InputField>().text = Settings.betBonus.ToString();
 	}
 	#endregion bonus pane/table
-
+	#region fw
 	public void btnFortuneWheelClickListener() {
 		if (panelFW) {
+			audio.PlayOneShot(soundBtnClicked);
+
 			game.player.balanceInCredits += Settings.freeCredits;
 			game.player.lblCredits.text = game.player.balanceInCredits.f();
 			Settings.freeCredits = 0;
@@ -597,7 +613,7 @@ public class GameUI : MonoBehaviour
 			if (panelFW.activeInHierarchy) panelFW.SetActive(false); else panelFW.SetActive(true);
 		}
 	}
-
+	#endregion
 	public void Start ()
 	{
 		#if UNITY_WEBGL && !UNITY_EDITOR
@@ -709,11 +725,11 @@ public class GameUI : MonoBehaviour
 
 		// start sounds
 		audio = gameObject.AddComponent<AudioSource> ();
-		audio.volume = 0.1f;
-		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/cardFan1");//pressed");
-		soundDeal = Resources.Load<AudioClip> ("Sounds/cardSlide8");//highlight");
-		soundRaise = Resources.Load<AudioClip> ("Sounds/chipsHandle5");//timerbeep");
-		soundFold = Resources.Load<AudioClip> ("Sounds/fold");
+		audio.volume = Settings.audioVolume;
+		soundBtnClicked = Resources.Load<AudioClip> (Settings.clickSound);
+		soundDeal = Resources.Load<AudioClip> ("Sounds/card_dealing");//cardSlide8");//highlight");
+		soundRaise = Resources.Load<AudioClip> ("Sounds/chipsHandle1");//chipsHandle5;//timerbeep");
+		soundFold = Resources.Load<AudioClip> ("Sounds/card_flip2");//fold");
 		soundVideoWin = Resources.Load<AudioClip> ("Sounds/video_poker_long");//VideoWin");
 		soundWin = Resources.Load<AudioClip> ("Sounds/VideoWin");
 

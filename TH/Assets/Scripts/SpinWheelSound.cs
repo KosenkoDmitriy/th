@@ -9,8 +9,8 @@ public class SpinWheelSound : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		audio = gameObject.AddComponent<AudioSource> ();
-		audio.volume = 0.1f;
-		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/spin-tick");
+		audio.volume = Settings.audioVolume;
+		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/spin_tick");
 	}
 	
 	// Update is called once per frame
@@ -24,10 +24,9 @@ public class SpinWheelSound : MonoBehaviour {
 
 	void OnCollisionEnter2D (Collision2D col)
 	{		
-
 		if(col.gameObject.tag == "fwCollider")
 		{
-			Debug.Log ("obj : " + col.gameObject.name);
+			//Debug.Log ("obj : " + col.gameObject.name);
 			audio.PlayOneShot(soundBtnClicked);
 			//Destroy(col.gameObject);
 		}

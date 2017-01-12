@@ -24,7 +24,7 @@ public class SpinWheel : MonoBehaviour
 		anglePerItem = 360/prize.Count;
 
 		audio = gameObject.AddComponent<AudioSource> ();
-		audio.volume = 0.1f;
+		audio.volume = Settings.audioVolume;
 		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/VideoWin");
 	}
 	

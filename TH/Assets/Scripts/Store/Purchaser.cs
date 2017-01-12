@@ -40,8 +40,15 @@ namespace CompleteProject
 		private static string Pack4Consumable =  "com.yourplaceforfun.game.5M";
 		private UnityEngine.UI.Text msg;
 
+		public AudioSource audio;
+		public AudioClip soundBtnClicked;
+
 		void Start()
 		{
+			audio = gameObject.AddComponent<AudioSource> ();
+			audio.volume = Settings.audioVolume;
+			soundBtnClicked = Resources.Load<AudioClip> (Settings.clickSound);
+
 			var obj = GameObject.Find("lblMyCredits");
 			if (obj != null) {
 				msg = GameObject.Find("lblMyCredits").GetComponentInChildren<UnityEngine.UI.Text>();
@@ -152,6 +159,8 @@ namespace CompleteProject
 
 		void BuyProductID(string productId)
 		{
+			audio.PlayOneShot(soundBtnClicked);
+
 			// If Purchasing has been initialized ...
 			if (IsInitialized())
 			{
