@@ -652,11 +652,12 @@ public class GameUI : MonoBehaviour
 
 		panelFW = GameObject.Find("PanelFW");
 		if (panelFW) panelFW.SetActive(false);
+		#if UNITY_WEBGL && !UNITY_EDITOR
 		btn = GameObject.Find("btnFortuneWheel");
 		if (btn) btnFortuneWheel = btn.GetComponent<Button>();
 		if (btnFortuneWheel) 
 			btnFortuneWheel.onClick.AddListener (() => btnFortuneWheelClickListener ());
-
+		#endif
 		//panelBet = GameObject.Find("PanelBet");
 		panelSurrender = GameObject.Find ("PanelSurrender");
 			
