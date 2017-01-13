@@ -145,7 +145,7 @@ public class Game
 		game.ui.HideDynamicPanels ();
 		game.ui.panelWin.SetActive (true);
 
-		game.ui.GetBalance();
+		game.ui.GetBalance(false);
 	}
 	
 	public string GetAndSetBonusString(Player player, int winnersCount) {

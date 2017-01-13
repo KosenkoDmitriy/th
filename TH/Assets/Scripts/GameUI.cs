@@ -631,7 +631,7 @@ public class GameUI : MonoBehaviour
 			Debug.Log ("Start()");
 
 		if (Settings.isLogined)
-			this.GetBalance ();
+			this.GetBalance (true);
 
 		IsAutoBonusBet = GameObject.Find("AutoBonusToggle").GetComponent<Toggle>();
 		IsDisplayGamePanelHelpCheckbox = GameObject.Find("AutoSkipPromptToggle").GetComponent<Toggle>();
@@ -652,12 +652,14 @@ public class GameUI : MonoBehaviour
 
 		panelFW = GameObject.Find("PanelFW");
 		if (panelFW) panelFW.SetActive(false);
-		#if UNITY_WEBGL && !UNITY_EDITOR
 		btn = GameObject.Find("btnFortuneWheel");
 		if (btn) btnFortuneWheel = btn.GetComponent<Button>();
 		if (btnFortuneWheel) 
 			btnFortuneWheel.onClick.AddListener (() => btnFortuneWheelClickListener ());
-		#endif
+		#if UNITY_WEBGL && !UNITY_EDITOR
+		btn.SetActive(false);
+		#endif		
+
 		//panelBet = GameObject.Find("PanelBet");
 		panelSurrender = GameObject.Find ("PanelSurrender");
 			
@@ -1085,7 +1087,7 @@ public class GameUI : MonoBehaviour
 		StartCoroutine(WaitForRequest(www));
 	}
 	
-	public void GetBalance()
+	public void GetBalance(bool isUpdateAllPlayers)
 	{
 		string url = string.Format("{0}/{1}", Settings.host, Settings.actionGetBalance);
 		if (Settings.isDebug) Debug.Log(url);
@@ -1094,7 +1096,7 @@ public class GameUI : MonoBehaviour
 		form.AddField("k", Settings.key);
 		
 		WWW www = new WWW(url, form);
-		StartCoroutine(WaitForGetBalanceRequest(www));
+		StartCoroutine(WaitForGetBalanceRequest(www, isUpdateAllPlayers));
 	}
 
 	private void PostBalance(string amount, string url) {
@@ -1170,9 +1172,9 @@ public class GameUI : MonoBehaviour
 		}
 	}
 	
-	IEnumerator WaitForGetBalanceRequest(WWW www)
+	IEnumerator WaitForGetBalanceRequest(WWW www, bool isUpdateAllPlayers)
 	{
-		if (game.ui.btnWinPanelOk) //syncing balance with website
+		if (game != null && game.ui.btnWinPanelOk) //syncing balance with website
 		{ 
 			game.ui.btnWinPanelOk.GetComponentInChildren<Text>().text = "balance syncing please wait ...\n";
 			game.ui.btnWinPanelOk.GetComponent<Button>().interactable = false;
@@ -1190,7 +1192,8 @@ public class GameUI : MonoBehaviour
 
 			Settings.playerCredits = credits;
 //			for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next())
-			if (btnWinPanelOk && btnWinPanelOk.GetComponent<Button>().IsInteractable())
+			//if (btnWinPanelOk && btnWinPanelOk.GetComponent<Button>().IsInteractable())
+			if (isUpdateAllPlayers)
 			foreach (var player in game.players)
 			{
 				player.balanceInCredits = credits;
