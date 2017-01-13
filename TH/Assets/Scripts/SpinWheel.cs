@@ -101,7 +101,10 @@ public class SpinWheel : MonoBehaviour
 		{
 			//Settings.freeCredits = 0;
 			string msg = "error fw api: " + www.error;
+
+			//TODO when no response - empty string
 			text.text = www.text; //or www.data (response)
+			if (string.IsNullOrEmpty(www.text)) text.text = "please check your internet connection ";
 			if (Settings.isDebug) Debug.Log(msg);
 		}
 	}

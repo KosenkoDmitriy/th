@@ -145,11 +145,6 @@ public class Game
 		game.ui.HideDynamicPanels ();
 		game.ui.panelWin.SetActive (true);
 
-		//syncing balance with website
-		if (game.ui.btnWinPanelOk) { 
-			game.ui.btnWinPanelOk.GetComponentInChildren<Text>().text = "balance syncing please wait ...\n";
-			game.ui.btnWinPanelOk.GetComponent<Button>().interactable = false;
-		}
 		game.ui.GetBalance();
 	}
 	

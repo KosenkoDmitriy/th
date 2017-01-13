@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpinWheelSound : MonoBehaviour {
-	public AudioSource audio;
-	public AudioClip soundBtnClicked;
+	private AudioSource audio;
+	private AudioClip soundBtnClicked;
 
 	// Use this for initialization
 	void Start () {
 		audio = gameObject.AddComponent<AudioSource> ();
 		audio.volume = Settings.audioVolume;
-		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/spin_tick");
+		soundBtnClicked = Resources.Load<AudioClip> ("Sounds/spin_tick");//spin_tick");
 	}
 	
 	// Update is called once per frame
@@ -26,7 +26,7 @@ public class SpinWheelSound : MonoBehaviour {
 	{		
 		if(col.gameObject.tag == "fwCollider")
 		{
-			//Debug.Log ("obj : " + col.gameObject.name);
+			Debug.Log ("obj : " + col.gameObject.name);
 			audio.PlayOneShot(soundBtnClicked);
 			//Destroy(col.gameObject);
 		}

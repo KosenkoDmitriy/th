@@ -18,7 +18,7 @@ public class InitGame : BetRound {
 
 		isWaiting = true;
 
-		game.isGameEnd = true;
+		game.isGameEnd = false;
 		game.isGameRunning = false;
 
 		if (game.ui.payTable != null) game.ui.payTable.SelectColumnByIndex(-1);

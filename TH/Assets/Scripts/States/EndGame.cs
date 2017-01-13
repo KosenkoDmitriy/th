@@ -10,6 +10,7 @@ public class EndGame : BetRound {
 
 		game.isGameRunning = false;
 		game.isGameEnd = true;
+		Settings.isNeedToSync = true;
 
 		// display all community cards
 		for (int i = 0; i < Settings.playerHandMaxSize; i++) {

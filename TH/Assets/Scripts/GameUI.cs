@@ -1132,10 +1132,27 @@ public class GameUI : MonoBehaviour
 
 	IEnumerator WaitForRequest(WWW www)
 	{
+		if (Settings.isNeedToSync) {
+			if (game.ui.btnWinPanelOk) //syncing balance with website
+			{ 
+				game.ui.btnWinPanelOk.GetComponentInChildren<Text>().text = "balance syncing please wait ...\n";
+				game.ui.btnWinPanelOk.GetComponent<Button>().interactable = false;
+			}
+		}
+
 		yield return www;
 		// check for errors
 		if (www.error == null)
 		{
+			if (Settings.isNeedToSync) {
+				double credits = 0;
+				Double.TryParse(www.text, out credits);
+
+				Settings.playerCredits = credits;
+				game.player.balanceInCredits = credits;
+				game.player.lblCredits.text = credits.f();
+			}
+
 			if (Settings.isDebug) Debug.Log("api Ok!: " + www.data);
 		}
 		else
@@ -1143,10 +1160,23 @@ public class GameUI : MonoBehaviour
 			string msg = "error api: " + www.error;
 			if (Settings.isDebug) Debug.Log(msg);
 		}
+		if (Settings.isNeedToSync) {
+			Settings.isNeedToSync = false;
+			if (game.ui.btnWinPanelOk) {
+				game.ui.btnWinPanelOk.GetComponent<Button>().interactable = true;
+				game.ui.btnWinPanelOk.GetComponentInChildren<Text>().text = "Start New Hand";
+			}
+		}
 	}
 	
 	IEnumerator WaitForGetBalanceRequest(WWW www)
 	{
+		if (game.ui.btnWinPanelOk) //syncing balance with website
+		{ 
+			game.ui.btnWinPanelOk.GetComponentInChildren<Text>().text = "balance syncing please wait ...\n";
+			game.ui.btnWinPanelOk.GetComponent<Button>().interactable = false;
+		}
+
 		var lblMyCreditsTitle = GameObject.Find("lblMyCredits") ;
 		if (lblMyCreditsTitle) lblMyCreditsTitle.GetComponent<Text>().text = "syncing ... please wait ...";
 
