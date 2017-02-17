@@ -619,17 +619,28 @@ public static class HandCombination  {
 		return str.ToUpperInvariant();
 	}
 
+//	public static List<string> names = new List<string>() {
+//		"ROYAL FLUSH",
+//		"STRAIGHT FLUSH",
+//		"FOUR OF A KIND",
+//		"FULL HOUSE",
+//		"FLUSH",
+//		"STRAIGHT",
+//		"THREE OF A KIND",
+//		"TWO PAIR",
+//		"ONE PAIR",
+//		"HIGH CARD"
+//	};
 	public static List<string> names = new List<string>() {
-		"ROYAL FLUSH",
-		"STRAIGHT FLUSH",
-		"FOUR OF A KIND",
-		"FULL HOUSE",
-		"FLUSH",
-		"STRAIGHT",
-		"THREE OF A KIND",
-		"TWO PAIR",
-		"ONE PAIR",
-		"HIGH CARD"
+		"Royal Flush",
+		"Straight Flush",
+		"Four Of A Kind",
+		"Full House",
+		"Flush",
+		"Straight",
+		"Three Of A Kind",
+		"Two Pair",
+		"One Pair",
+		"High Card"
 	};
-
 }

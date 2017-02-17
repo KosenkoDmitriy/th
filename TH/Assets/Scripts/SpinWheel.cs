@@ -36,7 +36,7 @@ public class SpinWheel : MonoBehaviour
 	}
 
 	public void SpinWheelClick() {
-		text.text = string.Format("Fortune Wheel");
+		text.text = string.Format("pls wait ...");
 
 		randomTime = Random.Range (3, 8);
 		itemNumber = Random.Range (0, prize.Count);

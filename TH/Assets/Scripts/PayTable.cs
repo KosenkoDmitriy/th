@@ -65,7 +65,7 @@ namespace Assets.Scripts
 
 			// clear selected column
 			for (int row = 0; row < paytableRowSize; row++) {
-				payTableGrid[row, col].color = Color.yellow; //.Selected = false;
+				payTableGrid[row, col].color = Color.black; //.Selected = false;
 			}
 			// select item
 			for (int row = 0; row < paytableRowSize; row++) {
@@ -90,7 +90,7 @@ namespace Assets.Scripts
                     }
                     else
                     {
-                        payTableGrid[row, col].color = Color.yellow; // .Selected = false
+                        payTableGrid[row, col].color = Color.black; // .Selected = false
                     }
                 }
             }
@@ -111,7 +111,7 @@ namespace Assets.Scripts
             for (int i = 0; i < paytableRowSize; i++)
             {
                 payTableGrid[i, 0].text = payTableStrings[i];
-                payTableGrid[i, 0].color = Color.yellow;
+                payTableGrid[i, 0].color = Color.black;
                 //paytableGrid[i, 0].enabled = false; //hide
 				double val = 0;
                 for (int j = 1; j < paytableColumnSize; j++)

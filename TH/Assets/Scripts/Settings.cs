@@ -25,7 +25,7 @@ static class Settings
 	public static string avatarDefault = "avatars/avatar0";//krest";
 
 	public static string lblWaitAction = "pls select your action >>";
-	public static string icWin = "winner_start";
+	public static string icWin = "new/starry1";//"winner_start";
 	public static string icDealer = "ic_dealer_old";
 	public static double betRepeat = 0;
 	public static string win = "win";
@@ -82,8 +82,11 @@ static class Settings
 	public static double playerCredits = 2500;
 	public static string credits = " credits ";// { get; internal set; }
 
-	public static string chipsRed = "chip_red";	//"chips_red";
-	public static string chipsBlue = "chip_yellow";	//"chips_blue";
+	public static string chipsRed = "new/chip_S_red";//"chip_red";	//"chips_red";
+	public static string chipsBlue = "new/chip_S_blue";//"chip_yellow";	//"chips_blue";
+	public static string chipsGreen = "new/chip_S_green";
+	public static string chipsWhite = "new/chip_S_white";
+	public static string chipsBlack = "new/chip_S_black";
 
 	public static double playerCreditsInNumberOfBets = playerCredits / betCreditsMultiplier;
 	#endregion
@@ -137,8 +140,8 @@ static class Settings
 	#endregion api
 
     // cards
-    public static string cardsPrefix = "cards_new/";
-	public static string cardBackName = cardsPrefix + "card_back_black_with_logo";//"card_back_red";
+	public static string cardsPrefix = "new/cards/";//"cards_new/";
+	public static string cardBackName = cardsPrefix + "card_back";//"card_back_black_with_logo";//"card_back_red";
 	public static string cardBg = "transparent";
     public static int cardsSize = 52;
 	// end cards
