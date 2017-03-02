@@ -146,6 +146,7 @@ public class AllInRound : BetRound {
 		foreach (var player in game.players) {
 			if (!player.isFolded || (player.isFolded && player.isReal)) {
 				player.ShowCards(game);
+				player.VisibleSmallCards (game, false);
 				player.lblAction.text = player.GetHandStringFromHandObj();
 			} else {
 				player.HideCards(game);
