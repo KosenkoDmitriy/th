@@ -38,7 +38,7 @@ public class SpinWheel : MonoBehaviour
 	public void SpinWheelClick() {
 		text.text = string.Format("pls wait ...");
 
-		randomTime = Random.Range (3, 8);
+		randomTime = Random.Range (3, 5);
 		itemNumber = Random.Range (0, prize.Count);
 		float maxAngle = 360 * randomTime + (itemNumber * anglePerItem);
 
