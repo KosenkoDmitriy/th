@@ -85,7 +85,7 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 
 			player.lblCurBet.text = "";
 			player.isChipHidden = true;
-
+			player.lblAction.text = "";
 		}
 	
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next())
