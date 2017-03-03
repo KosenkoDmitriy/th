@@ -306,6 +306,7 @@
      <Compile Include="Assets\Scripts\Store\Purchaser.cs" />
      <Compile Include="Assets\Scripts\TestData.cs" />
      <Compile Include="Assets\Scripts\WebApi.cs" />
+     <Compile Include="Assets\Scripts\myScreenshot.cs" />
      <Compile Include="Assets\UniWebView\Demo\1.Basic\TopSceneManager.cs" />
      <Compile Include="Assets\UniWebView\Demo\2.UseWithCode\UseWithCodeSceneManager.cs" />
      <Compile Include="Assets\UniWebView\Demo\3.LocalHTML\LocalHTMLSceneManager.cs" />
