@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public interface IAction
 {
@@ -78,7 +79,7 @@ public class Action : IAction {
 			string a = p.lblAction.text;
 			if (Settings.isLog) Debug.Log("isRaise=="+a);
 			p.isLastToRaise = true;
-			var playersActive = ReorderPlayers(game, p.id);
+			var playersActive = ReorderPlayers(game, p);
 			game.playerIterator = new PlayerIterator(playersActive);
 			var playerTemp = game.playerIterator.Next();
 		}
@@ -119,30 +120,63 @@ public class Action : IAction {
 		}
 	}
 
-	public PlayerCollection ReorderPlayers(Game game, int id) {
-		if (Settings.isLog) Debug.LogWarning(string.Format("reorder players: #{0}",id));
+	public PlayerCollection ReorderPlayers(Game game, Player player) {
 
+		/*
+	*/	
+		int id = player.position;
+		if (Settings.isLog) Debug.LogWarning(string.Format("reorder players: #{0} | {1}",id, game.players.Count));
+		var items = game.players;// new List<Player> ();// new PlayerCollection ();
+		Player temp = null;
 		var playersActive = new PlayerCollection();
-		for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next())
-			if (p.id == id) {
+		if (game != null && game.players.Count > 0) {
+			Debug.Log ("==ReorderPlayers start===");
+				
+			for (int k = 0; k < items.Count; k++) {
+				for (int l = 0; l < items.Count - 1; l++) {
+					if (items[l].position > items[l+1].position) {
+						temp = items[l];
+						items[l] = items[l+1];
+						items[l + 1] = temp;
+					}
+				}
+				//for (var player2 = game.playerIterator.First (); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next ()) {
+			}
+			foreach(var player2 in items)
+				Debug.Log (player2.ToString () + " pos: " + player2.position);
+
+			Debug.Log ("==end==");
+			//game.playerIterator = new PlayerIterator (items);
+			//game.playerIterator.Next ();
+		}
+		Player p;
+		foreach (var p1 in items) {
+			p = p1;
+			//for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next())
+			if (p.position == id) {
 				p.isLastToRaise = true; 
-				playersActive[0] = p;
+				playersActive [0] = p;
 			} else {
 				p.isLastToRaise = false;
 			}
+		}
 		int i = 1;
-		for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+			foreach(var p2 in items) {
+				p = p2;
+		//for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
 			if (!p.isFolded) {
-				if (p.id > id) {
+				if (p.position > id) {
 					playersActive[i] = p;
 					i++;
 				} 
 			}
 		}
 		i = 1;
-		for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+			foreach(var p3 in items) {
+				p = p3;
+		//for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
 			if (!p.isFolded) {
-				if (p.id < id) {
+				if (p.position < id) {
 					playersActive[i] = p;
 					i++;
 				}
@@ -150,8 +184,8 @@ public class Action : IAction {
 		}
 		if (Settings.isLog) {
 			var iterator = new PlayerIterator(playersActive);
-			for(var p = iterator.First(); !iterator.IsDoneFor; p = iterator.Next()) {
-				Debug.Log(string.Format("#{0} isLastToRaise: {1}",p.id,p.isLastToRaise));
+			for(var item = iterator.First(); !iterator.IsDoneFor; item = iterator.Next()) {
+				Debug.Log(string.Format("#{0} isLastToRaise: {1} isDealer: {2} pos: {3}",item.id,item.isLastToRaise, item.isDealer, item.position));
 			}
 		}
 		return playersActive;

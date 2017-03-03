@@ -208,7 +208,7 @@ public class InitGame : BetRound {
 					game.ui.HideDynamicPanels();
 					game.ui.panelWin.SetActive(true);
 					game.ui.lblWinInfo.text = "Please add some credits and then click on OK button";
-
+					
 					if (game.ui.panelAddCredits) game.ui.panelAddCredits.SetActive(true); // open "add credits" panel
 //					game.state.isWaiting = true;
 				}

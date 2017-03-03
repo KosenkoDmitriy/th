@@ -91,6 +91,19 @@ public class BetRound : AbstractBetRound, IBetRoundState {
 		for (var player = game.playerIterator.First(); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next())
 			player.isLastToRaise = false;
 
+		/*var items = new PlayerCollection ();
+		Debug.Log( "==start===");
+		for(int i = 0; i < game.players.Count; i++)
+			for (var player = game.playerIterator.First (); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next ()) {
+				if (player.position == i) {
+					items [i] = player;
+					Debug.Log (player.ToString ()+" pos: "+player.position);
+				}
+			}
+		Debug.Log( "==end==");
+		game.playerIterator = new PlayerIterator (items);
+
+			*/
 		game.potAmount += pot.inCredits;
 		game.ui.lblPot.GetComponent<Text>().text = game.potAmount.f();
 

@@ -22,7 +22,7 @@ static class Settings
 	public static UnityEngine.Sprite avatar;
 	public static int avatarHeight = 150;
 	public static int avatarWidth = 150;
-	public static string avatarDefault = "avatars/avatar0"; //"new/avatar"; //krest";
+	public static string avatarDefault = "avatars/avatar000"; //"new/avatar"; //krest";
 
 	public static string lblWaitAction = "pls select your action >>";
 	public static string icWin = "new/starry1";//"winner_start";
