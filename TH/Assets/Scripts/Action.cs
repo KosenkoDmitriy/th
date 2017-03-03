@@ -122,15 +122,13 @@ public class Action : IAction {
 
 	public PlayerCollection ReorderPlayers(Game game, Player player) {
 
-		/*
-	*/	
 		int id = player.position;
 		if (Settings.isLog) Debug.LogWarning(string.Format("reorder players: #{0} | {1}",id, game.players.Count));
-		var items = game.players;// new List<Player> ();// new PlayerCollection ();
+		var items = game.players;
 		Player temp = null;
 		var playersActive = new PlayerCollection();
 		if (game != null && game.players.Count > 0) {
-			Debug.Log ("==ReorderPlayers start===");
+			if (Settings.isLog) Debug.Log ("==ReorderPlayers start===");
 				
 			for (int k = 0; k < items.Count; k++) {
 				for (int l = 0; l < items.Count - 1; l++) {
@@ -140,19 +138,16 @@ public class Action : IAction {
 						items[l + 1] = temp;
 					}
 				}
-				//for (var player2 = game.playerIterator.First (); !game.playerIterator.IsDoneFor; player = game.playerIterator.Next ()) {
 			}
-			foreach(var player2 in items)
-				Debug.Log (player2.ToString () + " pos: " + player2.position);
-
-			Debug.Log ("==end==");
-			//game.playerIterator = new PlayerIterator (items);
-			//game.playerIterator.Next ();
+			if (Settings.isLog) {
+				foreach (var player2 in items)
+					Debug.Log (player2.ToString () + " pos: " + player2.position);
+				Debug.Log ("==end==");
+			}
 		}
 		Player p;
 		foreach (var p1 in items) {
 			p = p1;
-			//for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next())
 			if (p.position == id) {
 				p.isLastToRaise = true; 
 				playersActive [0] = p;
@@ -161,9 +156,8 @@ public class Action : IAction {
 			}
 		}
 		int i = 1;
-			foreach(var p2 in items) {
-				p = p2;
-		//for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+		foreach(var p2 in items) {
+			p = p2;
 			if (!p.isFolded) {
 				if (p.position > id) {
 					playersActive[i] = p;
@@ -172,9 +166,8 @@ public class Action : IAction {
 			}
 		}
 		i = 1;
-			foreach(var p3 in items) {
-				p = p3;
-		//for(var p = game.playerIterator.First(); !game.playerIterator.IsDoneFor; p = game.playerIterator.Next()) {
+		foreach(var p3 in items) {
+			p = p3;
 			if (!p.isFolded) {
 				if (p.position < id) {
 					playersActive[i] = p;

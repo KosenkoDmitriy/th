@@ -120,9 +120,12 @@ public class InitGame : BetRound {
 //			test.ThreeOfAKindShouldNotFold();
 //			test.StraightShouldNotFold(); // should not fold when raise and bet with 40 credits (flop)
 //			test.LivePlayerWin();
-			test.LivePlayerWinThreeOfAKind();
+//			test.LivePlayerWinThreeOfAKind();
+			//test.LivePlayerWin4OfAKind();
+			test.LivePlayerRoyalFlush();
+			//test.SplitPotFullHouse();
 
-//			test.SplitPotRoyalFlush();
+			//test.SplitPotRoyalFlush();
 //			test.SplitPotThreeOfAKind();
 		}
 		// end using of test data (straight)

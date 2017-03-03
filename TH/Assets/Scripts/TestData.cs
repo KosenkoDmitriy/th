@@ -37,6 +37,105 @@ public class TestData {
 		}
 	}
 
+	public void LivePlayerRoyalFlush() {
+		game.cards[0].setCard(RANK.NINE, SUIT.HEARTS);
+		game.cards[1].setCard(RANK.EIGHT, SUIT.HEARTS);
+		game.cards[2].setCard(RANK.TEN, SUIT.HEARTS);
+		game.cards[3].setCard(RANK.JACK, SUIT.HEARTS);
+		game.cards[4].setCard(RANK.QUEEN, SUIT.HEARTS);
+
+		game.players[0].handPreflop.getCard(0).setCard(RANK.FOUR, SUIT.HEARTS);
+		game.players[0].handPreflop.getCard(1).setCard(RANK.FIVE, SUIT.HEARTS);
+
+		game.players[1].handPreflop.getCard(0).setCard(RANK.SEVEN, SUIT.DIAMONDS);
+		game.players[1].handPreflop.getCard(1).setCard(RANK.EIGHT, SUIT.CLUBS);
+
+		game.players[2].handPreflop.getCard(0).setCard(RANK.THREE, SUIT.HEARTS);
+		game.players[2].handPreflop.getCard(1).setCard(RANK.QUEEN, SUIT.DIAMONDS);
+
+		game.players[3].handPreflop.getCard(0).setCard(RANK.JACK, SUIT.SPADES);
+		game.players[3].handPreflop.getCard(1).setCard(RANK.JACK, SUIT.CLUBS);
+
+		game.players[4].handPreflop.getCard(0).setCard(RANK.SEVEN, SUIT.HEARTS);
+		game.players[4].handPreflop.getCard(1).setCard(RANK.SIX, SUIT.HEARTS);
+
+		game.players[5].handPreflop.getCard(0).setCard(RANK.QUEEN, SUIT.SPADES);
+		game.players[5].handPreflop.getCard(1).setCard(RANK.KING, SUIT.DIAMONDS);
+
+		foreach(var player in game.players) {
+			if (player.isReal) {
+				player.handPreflop.getCard(0).setCard(RANK.KING, SUIT.HEARTS);
+				player.handPreflop.getCard(1).setCard(RANK.ACE, SUIT.HEARTS);
+			}
+		}
+	}
+
+	public void LivePlayerWin4OfAKind() {
+		game.cards[0].setCard(RANK.JACK, SUIT.SPADES);
+		game.cards[1].setCard(RANK.QUEEN, SUIT.HEARTS);
+		game.cards[2].setCard(RANK.ACE, SUIT.CLUBS);
+		game.cards[3].setCard(RANK.ACE, SUIT.HEARTS);
+		game.cards[4].setCard(RANK.ACE, SUIT.SPADES);
+
+		game.players[0].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.CLUBS);
+		game.players[0].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.DIAMONDS);
+
+		game.players[1].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.DIAMONDS);
+		game.players[1].handPreflop.getCard(1).setCard(RANK.JACK, SUIT.DIAMONDS);
+
+		game.players[2].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.HEARTS);
+		game.players[2].handPreflop.getCard(1).setCard(RANK.QUEEN, SUIT.CLUBS);
+
+		game.players[3].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.SPADES);
+		game.players[3].handPreflop.getCard(1).setCard(RANK.JACK, SUIT.HEARTS);
+
+		game.players[4].handPreflop.getCard(0).setCard(RANK.FOUR, SUIT.CLUBS);
+		game.players[4].handPreflop.getCard(1).setCard(RANK.QUEEN, SUIT.DIAMONDS);
+
+		game.players[5].handPreflop.getCard(0).setCard(RANK.FOUR, SUIT.DIAMONDS);
+		game.players[5].handPreflop.getCard(1).setCard(RANK.JACK, SUIT.CLUBS);
+
+		foreach(var player in game.players) {
+			if (player.isReal) {
+				player.handPreflop.getCard(0).setCard(RANK.QUEEN, SUIT.SPADES);
+				player.handPreflop.getCard(1).setCard(RANK.ACE, SUIT.DIAMONDS);
+			}
+		}
+	}
+
+	public void SplitPotFullHouse() {
+		game.cards[0].setCard(RANK.JACK, SUIT.SPADES);
+		game.cards[1].setCard(RANK.QUEEN, SUIT.HEARTS);
+		game.cards[2].setCard(RANK.ACE, SUIT.CLUBS);
+		game.cards[3].setCard(RANK.ACE, SUIT.HEARTS);
+		game.cards[4].setCard(RANK.ACE, SUIT.SPADES);
+
+		game.players[0].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.CLUBS);
+		game.players[0].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.DIAMONDS);
+
+		game.players[1].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.DIAMONDS);
+		game.players[1].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.CLUBS);
+
+		game.players[2].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.HEARTS);
+		game.players[2].handPreflop.getCard(1).setCard(RANK.QUEEN, SUIT.CLUBS);
+
+		game.players[3].handPreflop.getCard(0).setCard(RANK.TWO, SUIT.SPADES);
+		game.players[3].handPreflop.getCard(1).setCard(RANK.THREE, SUIT.HEARTS);
+
+		game.players[4].handPreflop.getCard(0).setCard(RANK.FOUR, SUIT.CLUBS);
+		game.players[4].handPreflop.getCard(1).setCard(RANK.QUEEN, SUIT.DIAMONDS);
+
+		game.players[5].handPreflop.getCard(0).setCard(RANK.FOUR, SUIT.DIAMONDS);
+		game.players[5].handPreflop.getCard(1).setCard(RANK.FIVE, SUIT.CLUBS);
+
+		foreach(var player in game.players) {
+			if (player.isReal) {
+				player.handPreflop.getCard(0).setCard(RANK.QUEEN, SUIT.SPADES);
+				player.handPreflop.getCard(1).setCard(RANK.KING, SUIT.HEARTS);
+			}
+		}
+	}
+
 	public void SplitPotRoyalFlush() {
 		game.cards[0].setCard(RANK.FOUR, SUIT.CLUBS);
 		game.cards[1].setCard(RANK.TEN, SUIT.CLUBS);
