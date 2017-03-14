@@ -434,7 +434,8 @@ public class GameUI : MonoBehaviour
 		audio.PlayOneShot(soundBtnClicked);
 
 		#if UNITY_WEBGL && !UNITY_EDITOR
-			Settings.OpenUrlAsExternalCall(Settings.host);
+			if (Settings.isFB) Application.LoadLevel (Settings.levelMainMenu);
+			else Settings.OpenUrlAsExternalCall(Settings.host);
 		#else
 			Application.LoadLevel(Settings.levelMainMenu);
 		#endif
@@ -617,6 +618,7 @@ public class GameUI : MonoBehaviour
 	public void Start ()
 	{
 		#if UNITY_WEBGL && !UNITY_EDITOR
+		if (!Settings.isFB) {
 		Settings.actionGetBalance = "get2";
 		Settings.actionSetBalance = "set2";
 		Settings.actionWinBalance = "add2";
@@ -625,6 +627,7 @@ public class GameUI : MonoBehaviour
 		Settings.key = "p";
 		//Settings.avatar = Resources.Load<Sprite>(Settings.avatarDefault);
 		//Application.LoadLevel(Settings.levelGame);
+		}
 		#endif
 //		Facebook.Unity.FB.Mobile.AppInvite();
 		if (Settings.isDebug)
@@ -657,7 +660,7 @@ public class GameUI : MonoBehaviour
 		if (btnFortuneWheel) 
 			btnFortuneWheel.onClick.AddListener (() => btnFortuneWheelClickListener ());
 		#if UNITY_WEBGL && !UNITY_EDITOR
-		btn.SetActive(false);
+		if (Settings.isFB) btn.SetActive(true); else btn.SetActive(false);
 		#endif		
 
 		//panelBet = GameObject.Find("PanelBet");
@@ -778,7 +781,8 @@ public class GameUI : MonoBehaviour
 			avatar.GetComponent<Image>().sprite = Resources.Load<Sprite>(Settings.avatarDefault);
 
 			#if UNITY_WEBGL && !UNITY_EDITOR
-				StartCoroutine(AvatarLoading());
+			if (Settings.isFB) StartCoroutine(AvatarLoadingMobile());
+			else StartCoroutine(AvatarLoading());
 			#else
 				StartCoroutine(AvatarLoadingMobile());
 			#endif
@@ -1232,7 +1236,8 @@ public class GameUI : MonoBehaviour
 	public void urlLogin()
 	{
 		//Settings.OpenUrl (Settings.urlLogin);
-		Settings.OpenUrlInNewTabAsExternalCall(Settings.urlLogin);
+		//Settings.OpenUrlInNewTabAsExternalCall(Settings.urlLogin);//TODO don't work in webgl
+		Settings.OpenUrlAsExternalCall(Settings.urlLogin);
 	}
 	
 	public void urlInviteFriend()
